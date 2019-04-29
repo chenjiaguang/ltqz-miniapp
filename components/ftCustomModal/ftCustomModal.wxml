@@ -1,0 +1,26 @@
+<!--components/ftCustomModal/ftCustomModal.wxml-->
+<view class="wrapper {{visible ? 'show' : 'hide'}}" catchtouchmove="stopPropagation">
+  <view class="wrapper-bg {{visible ? 'show' : 'hide'}}" data-ele="background" catchtap="buttonTap"></view>
+  <view class="box {{visible ? 'show' : 'hide'}}" catchtap="stopPropagation">
+    <view class='header-wrapper'>
+      <view class='header'>
+        <view class="title title{{type}}" style="{{titleStyle}}">{{title}}</view>
+        <view class='close-btn-wrapper' data-ele="btn_close" catchtap="buttonTap">
+          <image wx:if="{{clostButton}}" class='close-btn' src="{{closeImage}}" mode="aspectFit"></image>
+        </view>
+      </view>
+      <view wx:if="{{headerLine}}" class='line-separator-h'></view>
+    </view>
+    <view class='content-wrapper'>
+      <slot></slot>
+    </view>
+    <view class='buttons-wrapper' wx:if="{{buttons && buttons[0]}}">
+      <view wx:if="{{buttonLine}}" class='line-separator-h'></view>
+      <view class="buttons buttons{{type}}">
+        <view class='button-wrapper' wx:for="{{buttons}}" wx:for-item="button" wx:for-index="idx" wx:key="*this">
+          <ft-button text="{{button}}" width="auto" height="72rpx" font-size="{{buttonFontSize}}" color="{{buttonColor}}" bg="{{buttonBg}}" data-ele="btn_bottom{{idx}}" bindtap="buttonTap" />
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

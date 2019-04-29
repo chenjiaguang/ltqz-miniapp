@@ -1,0 +1,2 @@
+<!--pages/permission/permission.wxml-->
+<button class='relaunch-btn' open-type="getUserInfo" disabled="{{disableAuth}}" bindgetuserinfo="getUserInfo">确认授权</button>
