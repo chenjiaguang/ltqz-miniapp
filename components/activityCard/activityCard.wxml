@@ -1,0 +1,12 @@
+<!--components/activityCard/activityCard.wxml-->
+<view class='wrapper'>
+  <image src="{{activity.image}}"></image>
+  <text>{{activity.price}}</text>
+  <text wx:if="{{activity.originPrice}}">{{activity.originPrice}}</text>
+  <text src="{{activity.title}}"></text>
+  <text src="{{activity.intro}}"></text>
+  <view wx:if="{{activity.tags && activity.tags[0]}}">
+    <view wx:for="{{activity.tags}}" wx:for-item="tag" wx:index="tidx" wx:key="name"><text>{{tag.name}}</text></view>
+  </view>
+  <view>累计{{activity.enter}}人报名</view>
+</view>

@@ -2,12 +2,37 @@
   "pages": [
     "pages/index/index",
     "pages/logs/logs",
-    "pages/permission/permission"
+    "pages/permission/permission",
+    "pages/mine/mine",
+    "pages/activitydetail/activitydetail",
+    "pages/activitylist/activitylist",
+    "pages/themeaggregation/themeaggregation"
   ],
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
     "navigationBarTitleText": "WeChat",
     "navigationBarTextStyle": "black"
+  },
+  "tabBar": {
+    "color": "#101B17",
+    "selectedColor": "#01CEB3",
+    "backgroundColor": "#fff",
+    "borderStyle": "black",
+    "position": "bottom",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "路途",
+        "iconPath": "/assets/images/home_unactived.png",
+        "selectedIconPath": "/assets/images/home_actived.png"
+      },
+      {
+        "pagePath": "pages/mine/mine",
+        "text": "我的",
+        "iconPath": "/assets/images/mine_unactived.png",
+        "selectedIconPath": "/assets/images/mine_actived.png"
+      }
+    ]
   }
 }

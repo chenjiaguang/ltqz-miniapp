@@ -2,7 +2,8 @@
 import authManager from '../../utils/authManager.js'
 
 Page({
-
+  name: 'permission',
+  userStore: true,
   /**
    * 页面的初始数据
    */
@@ -85,7 +86,15 @@ Page({
           const permissionBack = wx.getStorageSync('permissionBack')
           const url = permissionBack || '/pages/index/index'
           wx.reLaunch({
-            url: url
+            url: url,
+            success: () => {
+              const permissionBackName = permissionBack.split('pages/')[1].split('/')[0]
+              let _obj = {}
+              _obj['showRelaunchHome.' + permissionBackName] = true
+              console.log('this', this)
+              const app = getApp()
+              app.store.setState(_obj)
+            }
           })
         }, 1000)
       } else {

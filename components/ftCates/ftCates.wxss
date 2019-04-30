@@ -1,0 +1,23 @@
+/* components/ftCates/ftCates.wxss */
+.wrapper{
+  width: 100%;
+}
+.container{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+.cate{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.cate-image{
+  flex-shrink: 0;
+}
+.cate-name{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

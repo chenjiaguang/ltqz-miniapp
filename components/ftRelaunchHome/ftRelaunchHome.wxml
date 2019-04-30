@@ -1,0 +1,2 @@
+<!--components/ftReLaunchHome/ftReLaunchHome.wxml-->
+<view wx:if="{{$state.showRelaunchHome[pageName]}}" catchtap="relaunchHome"><text>首页</text></view>

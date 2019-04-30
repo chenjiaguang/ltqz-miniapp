@@ -4,7 +4,7 @@
       <swiper class='banner-swiper' previous-margin="{{previousMargin}}" next-margin="{{nextMargin}}" indicator-dots indicator-color="{{indicatorColor}}" indicator-active-color="{{indicatorCurruntColor}}" autoplay="{{autoplay}}" circular="{{circular}}" current="{{current}}" interval="{{interval}}" duration="{{duration}}">
         <swiper-item wx:for="{{banners}}" wx:for-item="banner" wx:for-index="idx" wx:key="key">
           <view class='banner-item-content' style="margin:0 {{spacing / 2}}rpx;border-radius:{{borderRadius}}" catchtap="bannerTap" data-idx="{{idx}}" data-item="{{banner}}">
-            <image class='banner-image image-bg' src="{{banner.url}}" mode="aspectFill"></image>
+            <image class='banner-image image-bg' src="{{banner.image}}" mode="aspectFill"></image>
             <view wx:if="{{banner.title}}" class='title'>{{banner.title}}</view>
           </view>
         </swiper-item>
@@ -14,6 +14,6 @@
       </view> -->
     </block>
     <block wx:if="{{banners && banners.length === 1}}">
-      <image class='single-banner' src="{{banners[0].url}}" catchtap="bannerTap" data-idx="{{0}}" data-item="{{banners[0]}}" mode="aspectFill"></image>
+      <image class='single-banner' src="{{banners[0].image}}" catchtap="bannerTap" data-idx="{{0}}" data-item="{{banners[0]}}" mode="aspectFill"></image>
     </block>
   </view>

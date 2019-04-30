@@ -55,9 +55,13 @@ App({
         icon: 'none'
       })
       console.log('authSettingChangeCallback', authSetting, changed)
-      if (changed.indexOf('scope.userInfo') !== -1 && authSetting['scope.userInfo']) { // 用户信息从授权有变更['scope.userInfo']
+      if (changed.indexOf('scope.userInfo') !== -1) { // 用户信息授权有变更['scope.userInfo']
         if (authSetting['scope.userInfo']) { // 从未授权变更为授权,重新加载页面栈中最后一个页面(wx.reLaunch 或 wx.switchTab)
-          
+          const permissionBack = wx.getStorageSync('permissionBack')
+          const url = permissionBack || '/pages/index/index'
+          wx.reLaunch({
+            url: url
+          })
         } else { // 从授权变更为未授权,跳转授权页面(permission),重新授权后才可继续使用(wx.reLaunch)
           util.goPermission(options.path, options.query)
         }
