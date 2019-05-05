@@ -1,0 +1,50 @@
+<!--pages/bepartner/bepartner.wxml-->
+<view class='page-bepartner'>
+  <view class="banner"></view>
+  <view class='partner-rights'>
+    合伙人权益
+  </view>
+  <view class='partner-rights'>合伙人权益</view>
+  <view class='partner-rights'>合伙人权益</view>
+  <view class='partner-rights'>合伙人权益</view>
+  <view class='partner-rights'>合伙人权益</view>
+  <view class='partner-rights'>合伙人权益</view>
+  <view class='partner-rights'>合伙人权益</view>
+  <view class='partner-rights'>合伙人权益</view>
+  <view class='partner-rights'>合伙人权益</view>
+  <view class='partner-rights'>合伙人权益</view>
+  <view class='partner-rights'>合伙人权益</view>
+  <view class='partner-rights'>合伙人权益</view>
+  <view class='partner-rights'>合伙人权益</view>
+  <view class='partner-rights'>合伙人权益</view>
+  <view class='partner-rights'>合伙人权益</view>
+  <view class='partner-rights'>合伙人权益</view>
+  <view class='partner-rights'>合伙人权益</view>
+  <view class='partner-rights'>合伙人权益</view>
+  <view class='partner-rights'>合伙人权益</view>
+  <view class='partner-rights'>合伙人权益</view>
+  <view class='partner-rights'>合伙人权益</view>
+  <view class='partner-rights'>合伙人权益</view>
+  <view class='partner-rights'>合伙人权益</view>
+  <view class='partner-rights'>合伙人权益</view>
+  <view class='partner-rights'>合伙人权益</view>
+  <view class='partner-rights'>合伙人权益</view>
+  <view class='partner-rights'>合伙人权益</view>
+  <view class='partner-rights'>合伙人权益</view>
+  <view class='partner-rights'>合伙人权益</view>
+  <view class='partner-rights'>合伙人权益</view>
+  <view class='partner-rights'>合伙人权益</view>
+  <view class='partner-rights'>合伙人权益</view>
+  <view class='partner-rights'>合伙人权益</view>
+  <view class='partner-rights'>合伙人权益</view>
+  <view class='partner-rights'>合伙人权益</view>
+  <view class='partner-rights'>合伙人权益</view>
+  <view class='partner-rights'>合伙人权益</view>
+  <view class='partner-rights'>合伙人权益</view>
+  <view class='bottom-btn' style="background:transparent"></view>
+  <ft-iphone-bottom-adapter />
+  <view class='bottom-btn-wrapper'>
+    <view class='bottom-btn' catchtap="goCollector">立即申请</view>
+    <ft-iphone-bottom-adapter />
+  </view>
+</view>

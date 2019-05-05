@@ -1,4 +1,4 @@
-// pages/themeaggregation/themeaggregation.js 主题聚合页
+// pages/goodsdetail/goodsdetail.js
 Page({
 
   /**
@@ -12,7 +12,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    console.log('detailonLoad_options', options)
   },
 
   /**
@@ -61,6 +61,10 @@ Page({
    * 用户点击右上角分享
    */
   onShareAppMessage: function () {
-
+    return {
+      title: '活动详情页转发',
+      path: '/pages/goodsdetail/goodsdetail?id=555&uid=999',
+      imageUrl: 'http://i1.bvimg.com/685753/f356705dcb228db3.jpg'
+    }
   }
 })

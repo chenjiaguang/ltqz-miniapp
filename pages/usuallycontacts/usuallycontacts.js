@@ -1,4 +1,4 @@
-// pages/themeaggregation/themeaggregation.js 主题聚合页
+// pages/usuallycontacts/usuallycontacts.js
 Page({
 
   /**

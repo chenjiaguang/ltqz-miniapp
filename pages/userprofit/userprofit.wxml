@@ -1,0 +1,4 @@
+<!--pages/userprofit/userprofit.wxml-->
+<view class='page-userprofit'>
+  我的收益
+</view>

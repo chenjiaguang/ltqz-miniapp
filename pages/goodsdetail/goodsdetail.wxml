@@ -1,0 +1,2 @@
+<!--pages/goodsdetail/goodsdetail.wxml-->
+<button open-type='share'>转发详情</button>

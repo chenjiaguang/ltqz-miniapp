@@ -1,2 +1,47 @@
 <!--pages/mine/mine.wxml-->
-<text>我的</text>
+<view class='page-mine'>
+  <view class='user-info'>
+    <ft-user-avatar width="120rpx" height="120rpx" avatar="{{user_avatar}}" />
+    <view class='user-intro'>
+      <view class='user-name'><ft-user-name name="{{user_name}}" /></view>
+      <view class='user-persons'>
+        <text wx:for="{{persons}}" wx:for-item="person" wx:for-index="idx" wx:key="name" class='user-person'><text class='person-name'>{{person.name}}</text><text wx:if="{{person.age}}" class='person-age'>{{person.age}}岁</text></text>
+      </view>
+      <view catchtap="goUserInfo">我的资料</view>
+    </view>
+  </view>
+  <view class='other-list'>
+    <view class='order-box'>
+      <view class='order-header'><text>我的订单</text><text catchtap="goOrder" data-type="0">查看全部订单></text></view>
+      <view class='order-type'>
+        <view wx:for="{{order_type}}" wx:for-item="type" wx:for-index="idx" wx:key="type" class='type-item' catchtap="goOrder" data-type="{{type.type}}">
+          <image class='type-icon' src="{{type.icon}}" mode="aspectFit"></image>
+          <view class='type-title'>{{type.title}}</view>
+        </view>
+      </view>
+    </view>
+    <view wx:if="{{is_partner}}" class='profit-box'>
+      <view class='profit-header'><text>我的收益</text><text catchtap="goProfit" data-type="0">查看详情></text></view>
+      <view class='profit-sum'><text>总收益</text><text>{{profit.all}}</text><text>元</text></view>
+      <view class='profit-overview'>
+        <view class='profit-overview-item'>
+          <view class='profit-overview-title'><text>今日收益</text><text>（元）</text></view>
+          <view class='profit-overview-amount'>{{profit.today}}</view>
+        </view>
+        <view class='profit-overview-item'>
+          <view class='profit-overview-title'><text>可提现收益</text><text>（元）</text></view>
+          <view class='profit-overview-amount'>{{profit.cashabled}}</view>
+        </view>
+      </view>
+    </view>
+    <view wx:if="{{show_be_partner && !is_partner}}" class='be-partner'>
+      <ft-entrance title="{{be_partner_entrance.title}}" extra-data="{{be_partner_entrance}}" catchtap="entranceTap" />
+    </view>
+    <view wx:if="{{is_partner}}" class='business-entrance'>
+      <ft-entrance title="{{assistant_entrance.title}}" extra-data="{{assistant_entrance}}" catchtap="entranceTap" />
+    </view>
+    <view class='other-entrances'>
+      <ft-entrance wx:for="{{other_entrances}}" wx:for-index="idx" wx:for-item="entrance" wx:key="title" title="{{entrance.title}}" top-border="{{idx !== 0}}" extra-data="{{entrance}}" catchtap="entranceTap" />
+    </view>
+  </view>
+</view>

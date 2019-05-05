@@ -1,0 +1,17 @@
+/* pages/partnercollector/partnercollector.wxss */
+
+.bottom-btn-wrapper{
+  width: 100%;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  background: #fff;
+}
+.bottom-btn{
+  width: 100%;
+  height: 88rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: yellow;
+}

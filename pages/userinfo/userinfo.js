@@ -1,4 +1,4 @@
-// pages/activitydetail/activitydetail.js
+// pages/userinfo/userinfo.js
 Page({
 
   /**

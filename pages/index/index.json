@@ -1,7 +1,7 @@
 {
   "usingComponents": {
-    "ft-banners": "../../components/ftBanners/ftBanners",
-    "ft-cates": "../../components/ftCates/ftCates",
+    "ft-banners": "../../ftcomponents/ftBanners/ftBanners",
+    "ft-cates": "../../ftcomponents/ftCates/ftCates",
     "activity-card": "../../components/activityCard/activityCard"
   }
 }

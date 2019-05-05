@@ -6,15 +6,15 @@ Page({
   name: 'index',
   data: {
     banners: [
-      { path: '/pages/activitydetail/activitydetail?id=1', image: 'http://i1.bvimg.com/685753/f356705dcb228db3.jpg' },
-      { path: '/pages/activitydetail/activitydetail?id=2', image: 'http://i1.bvimg.com/685753/b9ba96284fff562b.jpg' },
-      { path: '/pages/activitydetail/activitydetail?id=3', image: 'http://i1.bvimg.com/685753/c5c4046d7878cacb.png' },
-      { path: '/pages/activitydetail/activitydetail?id=4', image: 'http://i1.bvimg.com/685753/a841c521b0925e81.jpg' },
-      { path: '/pages/activitydetail/activitydetail?id=5', image: 'http://i1.bvimg.com/685753/2712acb6dc8bcd2b.jpg' },
-      { path: '/pages/activitydetail/activitydetail?id=6', image: 'http://i1.bvimg.com/685753/69601cd97e8be3cb.jpg' },
-      { path: '/pages/activitydetail/activitydetail?id=7', image: 'http://i1.bvimg.com/685753/6f8dd9c1b77d3a79.png' },
-      { path: '/pages/activitydetail/activitydetail?id=8', image: 'http://i1.bvimg.com/685753/c417dc1c13623f36.jpg' },
-      { path: '/pages/activitydetail/activitydetail?id=9', image: 'http://i1.bvimg.com/685753/1f585e337b04cef3.jpg' }
+      { path: '/pages/goodsdetail/goodsdetail?id=1', image: 'http://i1.bvimg.com/685753/f356705dcb228db3.jpg' },
+      { path: '/pages/goodsdetail/goodsdetail?id=2', image: 'http://i1.bvimg.com/685753/b9ba96284fff562b.jpg' },
+      { path: '/pages/goodsdetail/goodsdetail?id=3', image: 'http://i1.bvimg.com/685753/c5c4046d7878cacb.png' },
+      { path: '/pages/goodsdetail/goodsdetail?id=4', image: 'http://i1.bvimg.com/685753/a841c521b0925e81.jpg' },
+      { path: '/pages/goodsdetail/goodsdetail?id=5', image: 'http://i1.bvimg.com/685753/2712acb6dc8bcd2b.jpg' },
+      { path: '/pages/goodsdetail/goodsdetail?id=6', image: 'http://i1.bvimg.com/685753/69601cd97e8be3cb.jpg' },
+      { path: '/pages/goodsdetail/goodsdetail?id=7', image: 'http://i1.bvimg.com/685753/6f8dd9c1b77d3a79.png' },
+      { path: '/pages/goodsdetail/goodsdetail?id=8', image: 'http://i1.bvimg.com/685753/c417dc1c13623f36.jpg' },
+      { path: '/pages/goodsdetail/goodsdetail?id=9', image: 'http://i1.bvimg.com/685753/1f585e337b04cef3.jpg' }
     ],
     cates: [
       { name: '职业体检', id: '1', image: 'http://i2.bvimg.com/685753/b5c05b9d420d8cc1.png' },
@@ -138,7 +138,7 @@ Page({
     const { item } = e.detail
     if (item && item.id) {
       wx.navigateTo({
-        url: '/pages/activitylist/activitylist?id=' + item.id
+        url: '/pages/goodslist/goodslist?id=' + item.id
       })
     }
   },

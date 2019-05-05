@@ -1,0 +1,18 @@
+<!--pages/goodsticket/goodsticket.wxml-->
+<view class='page-goodsticket'>
+  <view class='top-info'>
+    <image class='qr-code' src="{{qrcode}}" mode="aspectFit"></image>
+    <view class='line-info'><text>过期时间：</text><text>{{deadline || ''}}</text></view>
+    <view class='line-info'><text>核销状态：</text><text>{{hexiao_status_text[hexiao_status]}}</text></view>
+    <view class='line-info'><text>核销时间：</text><text>{{hexiao_time || ''}}</text></view>
+    <view class='line-info'><text>核销人员：</text><text>{{hexiao_staff || ''}}</text></view>
+    <view wx:if="{{(hexiao_status === '1' || hexiao_status === 1) && !out_of_time}}" class='hexiao-btn' catchtap="openConfirmCode">自助核销</view>
+    <view wx:if="{{!commented && !out_of_time}}" class='hexiao-btn' catchtap="openConfirmCode">去评价</view>
+  </view>
+  <view class='bottom-info'>
+    <view class='goods-name'>{{name}}</view>
+    <view class='goods-location'>{{(location && location.name) ? location.name : '--'}}</view>
+    <view class='goods-time'>{{start_time}} 至 {{end_time}}</view>
+  </view>
+  <confirm-code id="confirm-code" confirming="{{submitting}}" catchconfirm="confirmCode" />
+</view>

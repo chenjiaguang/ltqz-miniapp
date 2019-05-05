@@ -1,0 +1,19 @@
+<!--pages/orderdetail/orderdetail.wxml-->
+<view class='page-orderdetail'>
+  <view class='user-info'>
+    <view class='user-info-header'>联系人信息</view>
+    <view class='user-name'>姓名：{{user_info.username}}</view>
+    <view class='user-name'>手机：{{user_info.phone}}</view>
+  </view>
+  <view class='order-info'>
+    <view class='order-info-header'>订单信息</view>
+    <view class='goods-name'>活动名称：{{goods_info.name}}</view>
+    <view class='goods-location'>活动地点：{{(goods_info.location && goods_info.location.text) ? goods_info.location.text : ''}}</view>
+    <view class='goods-time'>活动时间：{{goods_info.start_time}} 至 {{goods_info.end_time}}</view>
+    <view class='goods-amount'>购买数量：{{goods_info.amount}}份</view>
+    <view class='goods-price'>实付金额：¥{{goods_info.actual_price}}</view>
+    <view class='order-number'>订单编号：{{order_info.order_number}}</view>
+    <view class='order-time'>下单时间：{{order_info.order_time}}</view>
+  </view>
+  <view class='view-ticket'>查看电子票</view>
+</view>

@@ -1,4 +1,4 @@
-// pages/themeaggregation/themeaggregation.js 主题聚合页
+// pages/bepartner/bepartner.js
 Page({
 
   /**
@@ -62,5 +62,12 @@ Page({
    */
   onShareAppMessage: function () {
 
+  },
+
+  goCollector: function () {
+    console.log('goCollector')
+    wx.navigateTo({
+      url: '/pages/partnercollector/partnercollector'
+    })
   }
 })

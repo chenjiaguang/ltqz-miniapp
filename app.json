@@ -4,9 +4,19 @@
     "pages/logs/logs",
     "pages/permission/permission",
     "pages/mine/mine",
-    "pages/activitydetail/activitydetail",
-    "pages/activitylist/activitylist",
-    "pages/themeaggregation/themeaggregation"
+    "pages/goodsdetail/goodsdetail",
+    "pages/goodslist/goodslist",
+    "pages/themeaggregation/themeaggregation",
+    "pages/goodsticket/goodsticket",
+    "pages/orderdetail/orderdetail",
+    "pages/orderlist/orderlist",
+    "pages/userprofit/userprofit",
+    "pages/userinfo/userinfo",
+    "pages/businessassistant/businessassistant",
+    "pages/usuallycontacts/usuallycontacts",
+    "pages/cooperation/cooperation",
+    "pages/bepartner/bepartner",
+    "pages/partnercollector/partnercollector"
   ],
   "window": {
     "backgroundTextStyle": "light",

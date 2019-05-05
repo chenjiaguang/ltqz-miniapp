@@ -1,4 +1,4 @@
-// pages/themeaggregation/themeaggregation.js 主题聚合页
+// pages/goodslist/goodslist.js
 Page({
 
   /**

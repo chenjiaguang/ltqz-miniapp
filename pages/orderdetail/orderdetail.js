@@ -1,11 +1,29 @@
-// pages/themeaggregation/themeaggregation.js 主题聚合页
+// pages/orderdetail/orderdetail.js
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-
+    user_info: {
+      username: '陈加尧',
+      phone: '17508959493'
+    },
+    goods_info: {
+      name: '【穿行艺术】城市里的博物馆，外滩历险记（银行一条街）',
+      location: {
+        text: '北京市朝阳区 马桥路甲40号二十一世纪大北京市朝阳区 马桥路甲40号二十一世纪大',
+        lnglat: ['116.40', '39.90']
+      },
+      start_time: '2019-07-13',
+      end_time: '2020-01-01',
+      amount: 1,
+      actual_price: 5980
+    },
+    order_info: {
+      order_number: '110568508545687',
+      order_time: '2019-04-29 14:36'
+    }
   },
 
   /**
@@ -60,7 +78,7 @@ Page({
   /**
    * 用户点击右上角分享
    */
-  onShareAppMessage: function () {
-
+  onShareAppMessage: function (e) {
+    
   }
 })

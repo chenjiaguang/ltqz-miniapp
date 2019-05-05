@@ -56,12 +56,12 @@ Component({
       value: 16
     },
     previousMargin: {
-      type: String,
-      value: '0rpx'
+      type: Number,
+      value: 0
     },
     nextMargin: {
-      type: String,
-      value: '0rpx'
+      type: Number,
+      value: 0
     },
     borderRadius: {
       type: String,
@@ -77,6 +77,7 @@ Component({
    * 组件的初始数据
    */
   data: {
+    marginCurrent: 0,
     current: 0
   },
 
@@ -99,6 +100,15 @@ Component({
           current: e.detail.current
         })
       }
+      this.setData({
+        marginCurrent: e.detail.current
+      })
+    },
+    animationFinish: function (e) {
+      console.log('animationFinish', e.detail)
+      this.setData({
+        marginCurrent: e.detail.current
+      })
     },
     bannerTap: function (e) {
       let { idx, item} = e.currentTarget.dataset

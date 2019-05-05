@@ -1,4 +1,4 @@
-// pages/activitylist/activitylist.js
+// pages/partnercollector/partnercollector.js
 Page({
 
   /**
@@ -62,5 +62,9 @@ Page({
    */
   onShareAppMessage: function () {
 
+  },
+
+  submitInfo: function () {
+    console.log('submitInfo')
   }
 })

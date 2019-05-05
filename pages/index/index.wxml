@@ -1,6 +1,6 @@
 <!--index.wxml-->
 <view class="page-index">
-  <ft-banners banners="{{banners}}" height="375rpx" indicator-color="#999" indicator-currunt-color="#01CEB3" previous-margin="24rpx" next-margin="24rpx" catchtap="bannerTap" />
+  <ft-banners wx:if="{{banners && banners[0]}}" banners="{{banners}}" height="375rpx" indicator-color="#999" indicator-currunt-color="#01CEB3" previous-margin="{{24}}" next-margin="{{24}}" catchtap="bannerTap" />
   <ft-cates cates="{{cates}}" justify="flex-start" catchtap="cateTap" />
   <scroll-view scroll-x class='theme-wrapper'>
     <text wx:for="{{themes}}" wx:for-item="theme" wx:for-index="tidx" wx:key="id" class='theme-item' catchtap="themeTap" data-id="{{theme.id}}">{{theme.name}}</text>

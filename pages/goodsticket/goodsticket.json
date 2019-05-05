@@ -1,0 +1,5 @@
+{
+  "usingComponents": {
+    "confirm-code": "../../components/confirmCode/confirmCode"
+  }
+}
