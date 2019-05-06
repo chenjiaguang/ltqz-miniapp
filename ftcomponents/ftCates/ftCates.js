@@ -54,7 +54,7 @@ Component({
   },
 
   attached: function () {
-    console.log('cates', this.data.cates)
+    
   },
 
   /**

@@ -25,7 +25,14 @@ const getUrl = (path, query) => {
   return url
 }
 
-const goPermission = (path, options) => {
+const relaunchPermission = (path, options) => {
+  wx.setStorageSync('permissionBack', '/' + getUrl(path, options))
+  wx.reLaunch({
+    url: '/pages/permission/permission'
+  })
+}
+
+const redirectPermission = (path, options) => {
   wx.setStorageSync('permissionBack', '/' + getUrl(path, options))
   wx.redirectTo({
     url: '/pages/permission/permission'
@@ -38,7 +45,7 @@ const isJsonString = str => {
       return true
     }
   } catch (e) {
-
+    
   }
   return false
 }
@@ -46,5 +53,6 @@ const isJsonString = str => {
 module.exports = {
   formatTime: formatTime,
   isJsonString,
-  goPermission
+  relaunchPermission,
+  redirectPermission
 }

@@ -20,7 +20,6 @@ const authManager = {
     })
   },
   ifAuthSettingChange: function (callback) {
-    console.log('ifAuthSettingChange')
     wx.getSetting({
       success: res => {
         let authSetting = res.authSetting
