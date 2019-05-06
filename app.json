@@ -16,7 +16,11 @@
     "pages/usuallycontacts/usuallycontacts",
     "pages/cooperation/cooperation",
     "pages/bepartner/bepartner",
-    "pages/partnercollector/partnercollector"
+    "pages/partnercollector/partnercollector",
+    "pages/userprofitdetail/userprofitdetail",
+    "pages/withdrawrecord/withdrawrecord",
+    "pages/requestcash/requestcash",
+    "pages/hexiaosetting/hexiaosetting"
   ],
   "window": {
     "backgroundTextStyle": "light",

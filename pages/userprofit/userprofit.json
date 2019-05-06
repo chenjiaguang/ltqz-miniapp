@@ -1,3 +1,6 @@
 {
-  "usingComponents": {}
+  "navigationBarBackgroundColor": "#2ED264",
+  "usingComponents": {
+    "ft-entrance": "../../ftcomponents/ftEntrance/ftEntrance"
+  }
 }

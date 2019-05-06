@@ -26,6 +26,7 @@ Page({
     },
     show_be_partner: true,
     be_partner_entrance: { title: '成为合伙人', path: '/pages/bepartner/bepartner'},
+    is_business: true,
     assistant_entrance: { title: '商家助手', path: '/pages/businessassistant/businessassistant' },
     other_entrances: [
       { title: '常用信息', path: '/pages/usuallycontacts/usuallycontacts'},
@@ -120,10 +121,10 @@ Page({
       wx.navigateTo({
         url: path
       })
-    } else if (phone) [
+    } else if (phone) {
       wx.makePhoneCall({
         phoneNumber: phone
       })
-    ]
+    }
   }
 })

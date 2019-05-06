@@ -37,7 +37,7 @@
     <view wx:if="{{show_be_partner && !is_partner}}" class='be-partner'>
       <ft-entrance title="{{be_partner_entrance.title}}" extra-data="{{be_partner_entrance}}" catchtap="entranceTap" />
     </view>
-    <view wx:if="{{is_partner}}" class='business-entrance'>
+    <view wx:if="{{is_business}}" class='business-entrance'>
       <ft-entrance title="{{assistant_entrance.title}}" extra-data="{{assistant_entrance}}" catchtap="entranceTap" />
     </view>
     <view class='other-entrances'>

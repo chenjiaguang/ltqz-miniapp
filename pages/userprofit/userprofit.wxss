@@ -1,1 +1,52 @@
 /* pages/userprofit/userprofit.wxss */
+
+page{
+  background: #F1F1F1;
+}
+.page-userprofit{
+  padding-bottom: 80rpx;
+}
+.top-bg-box{
+  height: 200rpx;
+  background: #2ED264;
+}
+.main-box{
+  width: 88%;
+  margin: -100rpx auto 0;
+}
+.overview-box{
+  background: #fff;
+}
+.shortcut-box{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.shortcut-item{
+  width: 33.33%;
+  box-sizing: border-box;
+  border-left: 1px solid #999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.shortcut-item:first-child{
+  border-left: none;
+}
+
+.entrance-box{
+  margin-top: 30rpx;
+  background: #fff;
+}
+
+.withdraw-btn{
+  height: 80rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #2ED264;
+  margin-top: 80rpx;
+}
+.withdraw-btn.disabled{
+  background: #999;
+}

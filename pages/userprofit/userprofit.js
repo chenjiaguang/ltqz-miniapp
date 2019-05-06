@@ -1,18 +1,28 @@
 // pages/userprofit/userprofit.js
+
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-
+    all: 60,
+    today: 0,
+    cashed: 55,
+    cashabled: 5,
+    tobefree: 0,
+    entrances: [
+      { title: '收益明细', path: '/pages/userprofitdetail/userprofitdetail'},
+      { title: '提现记录', path: '/pages/withdrawrecord/withdrawrecord'}
+    ],
+    withdraw: true // 是否可提现
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    
   },
 
   /**
@@ -62,5 +72,21 @@ Page({
    */
   onShareAppMessage: function () {
 
+  },
+
+  entranceTap: function (e) {
+    console.log('entranceTap', e)
+    const { path, phone } = e.detail
+    if (path) {
+      wx.navigateTo({
+        url: path
+      })
+    }
+  },
+
+  requestCash: function () {
+    wx.navigateTo({
+      url: '/pages/requestcash/requestcash'
+    })
   }
 })

@@ -1,2 +1,4 @@
 <!--pages/goodsdetail/goodsdetail.wxml-->
+<import src="../../utils/wxParse/wxParse.wxml" />
+<template is="wxParse" data="{{wxParseData:article.nodes}}" />
 <button open-type='share'>转发详情</button>

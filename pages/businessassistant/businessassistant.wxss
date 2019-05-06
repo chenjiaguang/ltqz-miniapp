@@ -1,1 +1,58 @@
 /* pages/businessassistant/businessassistant.wxss */
+
+page{
+  background: #F1F1F1;
+}
+.overview{
+  width: 88%;
+  margin: 20rpx auto 0;
+  background: #fff;
+}
+.overview-top{
+  display: flex;
+  overflow: hidden;
+}
+.business-avatar{
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 50%;
+  margin: 20rpx;
+}
+.business-shortcut{
+  flex: 1;
+  overflow: hidden;
+}
+.overview-bottom{
+  display: flex;
+  overflow: hidden;
+  align-items: center;
+}
+.overview-bottom-item{
+  width: 50%;
+  box-sizing: border-box;
+  border-left: 1px solid #999;
+}
+.overview-bottom-item:first-child{
+  border-left: none;
+}
+.overview-bottom-header{
+  text-align: center
+}
+.overview-bottom-amount{
+  text-align: center
+}
+
+.hexiao-box{
+  width: 88%;
+  margin: 20rpx auto 0;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+.hexiao-btn{
+  background: #fff;
+}
+.hexiao-set-entrance{
+  flex: 1;
+  background: #fff;
+}

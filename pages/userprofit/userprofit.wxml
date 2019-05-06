@@ -1,4 +1,31 @@
 <!--pages/userprofit/userprofit.wxml-->
 <view class='page-userprofit'>
-  我的收益
+  <view class='top-bg-box'></view>
+  <view class='main-box'>
+    <view class='overview-box'>
+      <view class='all-profit'>
+        <view><text>总收益</text><text>（元）</text></view>
+        <view>{{all}}</view>
+        <view>今日+{{today}}</view>
+        <view class='shortcut-box'>
+          <view class='shortcut-item'>
+            <view class='shortcut-header'><text>已提现收益</text><text>（元）</text></view>
+            <view class='shortcut-amount'>{{cashed}}</view>
+          </view>
+          <view class='shortcut-item'>
+            <view class='shortcut-header'><text>可提现收益</text><text>（元）</text></view>
+            <view class='shortcut-amount'>{{cashabled}}</view>
+          </view>
+          <view class='shortcut-item'>
+            <view class='shortcut-header'><text>待解冻收益</text><text>（元）</text></view>
+            <view class='shortcut-amount'>{{tobefree}}</view>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class='entrance-box'>
+      <ft-entrance wx:for="{{entrances}}" wx:for-index="idx" wx:for-item="entrance" wx:key="title" title="{{entrance.title}}" top-border="{{idx !== 0}}" extra-data="{{entrance}}" catchtap="entranceTap" />
+    </view>
+    <button class="withdraw-btn" disabled="{{!withdraw}}" catchtap="requestCash">申请提现</button>
+  </view>
 </view>
