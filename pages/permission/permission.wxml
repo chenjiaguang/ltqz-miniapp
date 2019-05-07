@@ -1,2 +1,7 @@
 <!--pages/permission/permission.wxml-->
-<button class='relaunch-btn' open-type="getUserInfo" disabled="{{disableAuth}}" bindgetuserinfo="getUserInfo">确认授权</button>
+<view class='page-permission'>
+  <view wx:if="{{showType === 'update_token'}}" class='update-token-view'>正在更新登录状态...</view>
+  <view wx:if="{{showType === 'permission'}}" class='permission-view'>
+    <button class='relaunch-btn' open-type="getUserInfo" disabled="{{disableAuth}}" bindgetuserinfo="getUserInfo">确认授权</button>
+  </view>
+</view>

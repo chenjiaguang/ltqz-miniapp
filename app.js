@@ -1,6 +1,7 @@
 //app.js
 const config = require('/configs/index.js')
 import authManager from '/utils/authManager.js'
+import storageHelper from '/utils/storageHelper.js'
 import expand from '/utils/expand.js'
 import util from '/utils/util.js'
 let store = require('/store/index.js')
@@ -9,11 +10,12 @@ App({
   globalData: {
     userInfo: null
   },
-  config: null,
+  config: config,
   store,
   onLaunch: function (options) {
+    const token = storageHelper.getStorage('token')
     const getAuthSettingCallback = (authSetting) => { // 获取用户授权数据，未授权则跳转授权页面(permission)，授权后才可继续使用
-      if (!authSetting['scope.userInfo'] || !authSetting['scope.userLocation']) {
+      if (!token || !authSetting['scope.userInfo'] || !authSetting['scope.userLocation']) {
         util.relaunchPermission(options.path, options.query)
       }
     }
@@ -23,7 +25,7 @@ App({
     const authSettingChangeCallback = ({ authSetting, changed}) => {
       if (changed.indexOf('scope.userInfo') !== -1 || changed.indexOf('scope.userLocation') !== -1) { // 用户信息授权有变更['scope.userInfo']
         if (authSetting['scope.userInfo'] && authSetting['scope.userLocation']) { // 从未授权变更为授权,重新加载页面栈中最后一个页面(wx.reLaunch 或 wx.switchTab)
-          const permissionBack = wx.getStorageSync('permissionBack')
+          const permissionBack = storageHelper.getStorage('permissionBack')
           const url = permissionBack || '/pages/index/index'
           wx.reLaunch({
             url: url

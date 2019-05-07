@@ -25,4 +25,7 @@
       <ft-entrance title="{{hexiao_entrance.title + hexiao_code}}" extra-data="{{hexiao_entrance}}" catchtap="entranceTap" />
     </view>
   </view>
+  <view class='other-entrance-box'>
+    <ft-entrance wx:for="{{other_entrances}}" wx:for-index="idx" wx:for-item="entrance" wx:key="title" title="{{entrance.title}}" top-border="{{idx !== 0}}" extra-data="{{entrance}}" catchtap="entranceTap" />
+  </view>
 </view>

@@ -56,3 +56,9 @@ page{
   flex: 1;
   background: #fff;
 }
+
+.other-entrance-box{
+  width: 88%;
+  margin: 20rpx auto 0;
+  background: #fff;
+}

@@ -1,4 +1,4 @@
 module.exports = {
   env: 'test',
-  baseUrl: 'https://www.hnyskj.net/mini'
+  baseUrl: 'https://testminiapp.lutu.com/mini'
 }

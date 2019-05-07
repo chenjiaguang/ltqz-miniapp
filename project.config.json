@@ -4,13 +4,13 @@
 		"ignore": []
 	},
 	"setting": {
-		"urlCheck": true,
+		"urlCheck": false,
 		"es6": true,
 		"postcss": true,
 		"minified": true,
 		"newFeature": true,
-		"autoAudits": false,
-		"nodeModules": true
+		"nodeModules": true,
+		"autoAudits": false
 	},
 	"compileType": "miniprogram",
 	"libVersion": "2.6.6",
@@ -38,7 +38,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 7,
+			"current": 9,
 			"list": [
 				{
 					"id": -1,
@@ -85,7 +85,19 @@
 				{
 					"id": -1,
 					"name": "商家助手",
-					"pathName": "pages/businessassistant/businessassistant"
+					"pathName": "pages/businessassistant/businessassistant",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "评价管理",
+					"pathName": "pages/commentmanager/commentmanager",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "常用信息",
+					"pathName": "pages/usuallycontacts/usuallycontacts"
 				}
 			]
 		}

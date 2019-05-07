@@ -1,5 +1,7 @@
 // pages/permission/permission.js
 import authManager from '../../utils/authManager.js'
+import storageHelper from '../../utils/storageHelper.js'
+import util from '../../utils/util.js'
 
 Page({
   name: 'permission',
@@ -8,6 +10,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    showType: '', // type：['permission','update_token']
     disableAuth: true,
     authUserInfo: false,
     authUserLocation: false
@@ -17,12 +20,22 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    this.login()
-    const authSetting = authManager.authSettingStorage
-    let _obj = {}
-    _obj.authUserInfo = !!authSetting['scope.userInfo']
-    _obj.authUserLocation = !!authSetting['scope.userLocation']
-    this.setData(_obj)
+    if (options.type && options.type === 'update_token') { // token过期或不存在token时进入的该页面，则不显示授权相关信息，直接重新登录
+      this.setData({
+        showType: 'update_token'
+      })
+      this.updateToken()
+    } else { // 走授权登录流程
+      this.setData({
+        showType: 'permission'
+      })
+      this.login()
+      const authSetting = authManager.authSettingStorage
+      let _obj = {}
+      _obj.authUserInfo = !!authSetting['scope.userInfo']
+      _obj.authUserLocation = !!authSetting['scope.userLocation']
+      this.setData(_obj)
+    }
   },
 
   /**
@@ -74,23 +87,37 @@ Page({
 
   },
 
+  updateToken: function () {
+    console.log('updateToken')
+    wx.login({
+      success: res => { // login调用成功后授权按钮才可用（loginSuccess为true）
+        this.userLogin({code: res.code})
+      }
+    })
+  },
+
   login() {
     // 登录
     wx.login({
       success: res => { // login调用成功后授权按钮才可用（loginSuccess为true）
         this.setData({ disableAuth: false})
+        this.code = res.code
       }
     })
   },
 
   getUserInfo: function (e) {
+    console.log('getUserInfo', e)
+    const { encryptedData, iv} = e.detail
+    const { avatarUrl, gender, nickName } = e.detail.userInfo
+    const logingInfo = { encryptedData, iv, avatarUrl, gender, nickName}
     if (e.detail.errMsg === 'getUserInfo:ok') {
       this.setData({
         authUserInfo: true
       })
       const successCallback = (authSetting) => {
         if (authSetting['scope.userInfo'] && authSetting['scope.userLocation']) {
-          this.userLogin()
+          this.userLogin(logingInfo)
         } else if (!authSetting['scope.userInfo']) {
           wx.showModal({
             content: '需要获取您的公开信息(头像、昵称等),请授权后继续使用', //提示的内容
@@ -104,7 +131,7 @@ Page({
           wx.authorize({
             scope: 'scope.userLocation',
             success: () => {
-              this.userLogin()
+              this.userLogin(logingInfo)
             }
           })
           this.setData({
@@ -125,7 +152,7 @@ Page({
                     _obj.authUserLocation = !!authSetting['scope.userLocation']
                     this.setData(_obj)
                     if (authSetting['scope.userInfo'] && authSetting['scope.userLocation']) {
-                      this.userLogin()
+                      this.userLogin(logingInfo)
                     }
                   }
                 })
@@ -147,31 +174,44 @@ Page({
     }
   },
 
-  userLogin: function (userInfo) {
+  userLogin: function (logingInfo) {
+    console.log('userInfo', logingInfo)
     // 这里写登录逻辑（通过将signature、encryptedData、iv等信息发送给后端完成登录）
     // 模拟
     this.setData({
       authUserInfo: true,
       authUserLocation: true
     })
-    setTimeout(() => {
-      let token = 'xxx'
-      const permissionBack = wx.getStorageSync('permissionBack')
-      const url = permissionBack || '/pages/index/index'
-      wx.reLaunch({
-        url: url,
-        success: () => {
-          if (url.indexOf('pages/index/index') !== -1) { // 本身是首页，则不显示首页按钮
-            return false
+    let rData = Object.assign({}, { code: this.code }, logingInfo)
+    console.log('rData', rData)
+    // return false
+    util.request('/login', rData).then(res => {
+      console.log('/login_res')
+      if ((res.error === 0 || res.error === '0') && res.data) {
+        const app = getApp()
+        const { token, avatar, nick_name } = res.data
+        const userInfoJson = JSON.stringify({ avatar, nick_name })
+        storageHelper.setStorage('token', token)
+        storageHelper.setStorage('userInfo', userInfoJson)
+        const permissionBack = storageHelper.getStorage('permissionBack')
+        const url = permissionBack || '/pages/index/index'
+        wx.reLaunch({
+          url: url,
+          success: () => {
+            if (url.indexOf('pages/index/index') !== -1 || url.indexOf('pages/mine/mine') !== -1) { // 本身是tabbar中的页面(首页、个人中心页面)，则不显示首页按钮
+              return false
+            }
+            const permissionBackName = url.split('pages/')[1].split('/')[0]
+            let _obj = {}
+            _obj['showRelaunchHome.' + permissionBackName] = true
+            const app = getApp()
+            app.store.setState(_obj)
           }
-          const permissionBackName = url.split('pages/')[1].split('/')[0]
-          let _obj = {}
-          _obj['showRelaunchHome.' + permissionBackName] = true
-          const app = getApp()
-          app.store.setState(_obj)
-        }
-      })
-    }, 1000)
+        })
+      }
+    }).catch(err => {
+      console.log('/login_err', err)
+    })
   }
 
 })

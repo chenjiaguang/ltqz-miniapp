@@ -11,7 +11,11 @@ Page({
     profit: 899.99,
     activity_amount: 2,
     hexiao_code: 9909,
-    hexiao_entrance: { title: '商家核销码：', path: '/pages/hexiaosetting/hexiaosetting'}
+    hexiao_entrance: { title: '商家核销码：', path: '/pages/hexiaosetting/hexiaosetting'},
+    other_entrances: [
+      { title: '活动管理', path: '/pages/activitymanager/activitymanager'},
+      { title: '评价管理', path: '/pages/commentmanager/commentmanager'}
+    ]
   },
 
   /**

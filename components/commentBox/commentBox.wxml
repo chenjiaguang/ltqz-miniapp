@@ -1,0 +1,26 @@
+<!--components/commentBox/commentBox.wxml-->
+<view class='wrapper'>
+  <view wx:if="{{topBorder}}" class='line-separator-h'></view>
+  <view class='overview'>
+    <image class='avatar' src="{{comment.avatar}}" mode="aspectFill"></image>
+    <view class='overview-right'>
+      <view class='username-and-score'>
+        <text class='username'>{{comment.username}}</text>
+        <ft-star-box score="{{comment.score}}" showScoreText="{{false}}" />
+      </view>
+      <view class='time'>{{comment.time}}</view>
+    </view>
+  </view>
+  <view class='comment-main'>
+    <view class='comment-content'>{{comment.content}}</view>
+    <view wx:if="{{comment.images && comment.images[0]}}" class='comment-images'>
+      <view wx:for="{{comment.images}}" wx:for-index="idx" wx:for-item="image" wx:key="*this" class="image-wrapper{{(idx % 3 === 0) ? ' left' : ''}}" catchtap="viewImages" data-idx="{{idx}}">
+        <image class='comment-image' src="{{image}}" mode="aspectFill"></image>
+      </view>
+    </view>
+    <view wx:if="{{comment.goods && comment.goods.id}}" class='goods'>{{comment.goods.title}}</view>
+    <view wx:if="{{comment.reply}}" class='reply'>商家回复：{{comment.reply}}</view>
+    <button wx:if="{{!comment.reply && role === 'business'}}" class='reply-btn' disabled="{{role !== 'business'}}" catchtap="reply">回复</button>
+  </view>
+  <view wx:if="{{bottomBorder}}" class='line-separator-h'></view>
+</view>

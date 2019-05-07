@@ -1,3 +1,5 @@
+import storageHelper from './storageHelper.js'
+
 const isJsonString = str => {
   try {
     if (typeof JSON.parse(str) == 'object') {
@@ -10,7 +12,7 @@ const isJsonString = str => {
 }
 
 const authManager = {
-  authSettingStorage: isJsonString(wx.getStorageSync('authSetting')) ? JSON.parse(wx.getStorageSync('authSetting')) : null,
+  authSettingStorage: isJsonString(storageHelper.getStorage('authSetting')) ? JSON.parse(storageHelper.getStorage('authSetting')) : null,
   getAuthSetting: function (successCall) {
     wx.getSetting({
       success: res => {
@@ -41,7 +43,7 @@ const authManager = {
   },
   updateAuthSetting: function (authSetting) {
     const _authSetting = JSON.stringify(authSetting)
-    wx.setStorageSync('authSetting', _authSetting)
+    storageHelper.setStorage('authSetting', _authSetting)
     this.authSettingStorage = authSetting
   }
 }

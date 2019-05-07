@@ -20,7 +20,9 @@
     "pages/userprofitdetail/userprofitdetail",
     "pages/withdrawrecord/withdrawrecord",
     "pages/requestcash/requestcash",
-    "pages/hexiaosetting/hexiaosetting"
+    "pages/hexiaosetting/hexiaosetting",
+    "pages/activitymanager/activitymanager",
+    "pages/commentmanager/commentmanager"
   ],
   "window": {
     "backgroundTextStyle": "light",

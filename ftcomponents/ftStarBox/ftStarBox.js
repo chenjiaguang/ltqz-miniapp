@@ -35,6 +35,10 @@ Component({
     maxScore: {
       type: Number,
       value: 5
+    },
+    touchable: {
+      type: Boolean,
+      value: false
     }
   },
 
@@ -43,34 +47,54 @@ Component({
    */
   data: {
     stars: [],
-    scoreText: ''
+    scoreText: '',
+    showStar: false
   },
 
   ready: function () {
-    const { maxScore, score} = this.data
-    let stars = []
-    const scoreText = score.toFixed(1)
-    let fullLen = parseInt(score)
-    let decimal = score - fullLen
-    for (let i = 0; i < maxScore; i++) {
-      if (i < fullLen) {
-        stars.push({key: i, rate: 1})
-      } else if (i === fullLen) {
-        stars.push({ key: i, rate: decimal })
-      } else {
-        stars.push({ key: i, rate: 0 })
-      }
-    }
-    this.setData({
-      stars,
-      scoreText
-    })
+    const { score} = this.data
+    this.generateStar(score)
   },
 
   /**
    * 组件的方法列表
    */
   methods: {
-
+    generateStar: function (score) {
+      const { maxScore } = this.data
+      let stars = []
+      const scoreText = score.toFixed(1)
+      let fullLen = parseInt(score)
+      let decimal = score - fullLen
+      for (let i = 0; i < maxScore; i++) {
+        if (i < fullLen) {
+          stars.push({ key: i, rate: 1 })
+        } else if (i === fullLen) {
+          stars.push({ key: i, rate: decimal })
+        } else {
+          stars.push({ key: i, rate: 0 })
+        }
+      }
+      this.setData({
+        stars,
+        scoreText
+      })
+    },
+    setStar: function (e) {
+      if (!this.data.touchable) { // touchable -> 是否允许点击设置星星数
+        return false
+      }
+      const {score} = e.currentTarget.dataset
+      this.generateStar(score)
+      this.triggerEvent('change', {score})
+    },
+    imageComplete: function () { // 无论加载成功或失败
+      if (this.data.showStar) {
+        return false
+      }
+      this.setData({
+        showStar: true
+      })
+    }
   }
 })

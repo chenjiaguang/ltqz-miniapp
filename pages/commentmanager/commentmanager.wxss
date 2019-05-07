@@ -1,0 +1,57 @@
+/* pages/commentmanager/commentmanager.wxss */
+page{
+  background: #F5F5F5;
+}
+.overview{
+  position: relative;
+  width: 100%;
+  z-index: 1;
+  height: 88rpx;
+  overflow: visible;
+}
+.overview-context{
+  position: absolute;
+  width: 100%;
+  left: 0;
+  top: 0;
+  background: #fff;
+}
+.overview-context.fixed{
+  position: fixed;
+}
+.overview-content{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 88rpx;
+}
+
+.reply-wrapper-mask{
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.6);
+  visibility: hidden;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 300ms;
+}
+.reply-wrapper-mask.show{
+  visibility: visible;
+  z-index: 2;
+  opacity: 1;
+}
+.bottom-reply-box{
+  position: fixed;
+  width: 100%;
+  height: 100rpx;
+  display: flex;
+  left: 0;
+  bottom: -101rpx;
+  z-index: 3;
+}
+.bottom-reply-box.focus{
+  bottom: 0;
+}

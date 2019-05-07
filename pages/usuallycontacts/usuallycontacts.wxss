@@ -1,1 +1,45 @@
 /* pages/usuallycontacts/usuallycontacts.wxss */
+
+page{
+  background: #F5F5F5;
+}
+.header{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.contact-item{
+  background: #fff;
+  width: 92%;
+  margin: 20rpx auto 0;
+}
+.contact-item:first-child{
+  margin-top: 0;
+}
+.name-context, .gender-context, .idcard-context{
+  display: flex;
+}
+.name-title, .gender-title, .idcard-title{
+  width: 200rpx;
+}
+.name-content, .gender-content, .idcard-content{
+  flex: 1;
+}
+.gender-content{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.lutu-xinghao{
+  font-size: 24rpx;
+  color: red;
+}
+.delete-btn{
+  width: 100rpx;
+  height: 68rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  color: red;
+}
