@@ -5,6 +5,10 @@ Page({
    * 页面的初始数据
    */
   data: {
+    genderRange: [
+      {title: '男', value: '1'},
+      {title: '女', value: '2'}
+    ],
     gender_text: {
       1: '男',
       2: '女'
@@ -86,10 +90,10 @@ Page({
     
   },
 
-  idcardInput: function (e) {
-    console.log('idcardInput', e)
+  valueInput: function (e) {
+    console.log('valueInput', e)
     const {value} = e.detail
-    const {type, idx} = e.currentTarget.dataset
+    const {type, idx, key} = e.currentTarget.dataset
     let contacts = ''
     if (type === '1') {
       contacts = 'contacts'
@@ -97,7 +101,24 @@ Page({
       contacts = 'new_contacts'
     }
     let _obj = {}
-    _obj[contacts + '[' + idx + '].idcard'] = value
+    _obj[contacts + '[' + idx + '].' + key] = value
+    this.setData(_obj)
+  },
+
+  genderChange: function (e) {
+    console.log('genderChange', e)
+    let { value } = e.detail
+    value = parseInt(value)
+    const { type, idx } = e.currentTarget.dataset
+    let contacts = ''
+    if (type === '1') {
+      contacts = 'contacts'
+    } else if (type === '2') {
+      contacts = 'new_contacts'
+    }
+    let _obj = {}
+    _obj[contacts + '[' + idx + '].gender'] = this.data.genderRange[value].value
+    console.log('_obj', _obj)
     this.setData(_obj)
   },
 

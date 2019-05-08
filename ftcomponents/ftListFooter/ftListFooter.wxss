@@ -1,13 +1,23 @@
 /* components/listFooter/listFooter.wxss */
 
 .loadmore-tip{
-  height: 92rpx;
+  height: 94rpx;
+  box-sizing: border-box;
+  padding-bottom: 10rpx;
   text-align: center;
   font-size: 24rpx;
   line-height: 32rpx;
-  color: #999;
+  color: #CCCCCC;
   background: transparent;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.text{
+  padding: 0 40rpx;
+}
+.line{
+  width: 54rpx;
+  height: 2rpx;
+  background: #DCDCDC;
 }

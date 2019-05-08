@@ -1,0 +1,18 @@
+<!--ftcomponents/ftTheme/ftTheme.wxml-->
+<view class='wrapper'>
+  <scroll-view wx:if="{{themes && themes.length > 1}}" scroll-x class='theme-wrapper'>
+    <view class='left-spacing' style="width:{{paddingLeft}}"></view>
+    <view wx:for="{{themes}}" wx:for-index="idx" wx:for-item="theme" wx:key="id" class='theme-box' style="margin-left:{{idx === 0 ? 0 : spacing}};margin-top:{{paddingTop}};margin-bottom:{{paddingBottom}}" catchtap="themeTap" data-theme="{{theme}}" hover-stop-propagation hover-class='touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
+      <view class='image-box'>
+        <view wx:if="{{theme.tags && theme.tags[0]}}" class='tag'><text>{{theme.tags[0]}}</text></view>
+        <image class='cover' mode="aspectFill" src="{{theme.image}}"></image>
+        <view wx:if="{{theme.maskText}}" class='text-mask'>{{theme.maskText}}</view>
+      </view>
+      <view class='name-box'>{{theme.name}}</view>
+    </view>
+    <view class='right-spacing' style="width:{{paddingRight}}"></view>
+  </scroll-view>
+  <view wx:if="{{themes && themes.length === 1}}" class='single-theme-box' style="padding-top:{{paddingTop}};padding-right:{{paddingRight}};padding-bottom:{{paddingBottom}};padding-left:{{paddingLeft}}">
+    <image class='single-theme-image' mode="aspectFill" src="{{themes[0].image}}"></image>
+  </view>
+</view>

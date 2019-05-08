@@ -38,7 +38,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 9,
+			"current": 10,
 			"list": [
 				{
 					"id": -1,
@@ -97,7 +97,13 @@
 				{
 					"id": -1,
 					"name": "常用信息",
-					"pathName": "pages/usuallycontacts/usuallycontacts"
+					"pathName": "pages/usuallycontacts/usuallycontacts",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "活动列表",
+					"pathName": "pages/goodslist/goodslist"
 				}
 			]
 		}

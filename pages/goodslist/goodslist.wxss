@@ -1,1 +1,5 @@
 /* pages/goodslist/goodslist.wxss */
+
+page{
+  background: #FFFFFF;
+}

@@ -1,12 +1,17 @@
 <!--components/activityCard/activityCard.wxml-->
-<view class='wrapper'>
-  <image src="{{activity.image}}"></image>
-  <text>{{activity.price}}</text>
-  <text wx:if="{{activity.originPrice}}">{{activity.originPrice}}</text>
-  <text src="{{activity.title}}"></text>
-  <text src="{{activity.intro}}"></text>
-  <view wx:if="{{activity.tags && activity.tags[0]}}">
-    <view wx:for="{{activity.tags}}" wx:for-item="tag" wx:index="tidx" wx:key="name"><text>{{tag.name}}</text></view>
+<view class='wrapper' catchtap="boxTap" hover-stop-propagation hover-class='touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
+  <image class='cover' src="{{activity.image}}" mode="aspectFill"></image>
+  <view class='price-tag'>
+    <text>¥{{activity.price}}</text>
+    <text wx:if="{{activity.originPrice}}" style="font-size:28rpx;text-decoration:line-through;padding-top:6rpx;margin-left:10rpx">¥{{activity.originPrice}}</text>
   </view>
-  <view>累计{{activity.enter}}人报名</view>
+  <view style="height:8rpx;"></view>
+  <view class='title'>{{activity.title}}</view>
+  <view class='intro'>{{activity.intro}}</view>
+  <view class='tags-and-join'>
+    <view class='tags' wx:if="{{activity.tags && activity.tags[0]}}">
+      <view wx:for="{{activity.tags}}" wx:for-item="tag" wx:index="tidx" wx:key="name" class='tag-item'><text>{{tag.name}}</text></view>
+    </view>
+    <view class='join'>累计{{activity.enter}}人报名</view>
+  </view>
 </view>

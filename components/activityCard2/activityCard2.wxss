@@ -1,0 +1,133 @@
+/* components/activityCard2/activityCard2.wxss */
+@import "../../assets/styles/lutu-icon.wxss";
+
+.line-separator-h {
+  margin-left: 32rpx;
+  height: 1px;
+  background: #EEEEEE;
+  transform: scaleY(0.5);
+}
+
+.line-separator-v {
+  height: 100%;
+  width: 1px;
+  background: #e5e5e5;
+  transform: scaleX(0.5);
+}
+
+@media screen and (min-resolution: 2dppx) {
+  .line-separator-h {
+    margin-left: 32rpx;
+    height: 1rpx;
+    background: #EEEEEE;
+  }
+
+  .line-separator-v {
+    height: 100%;
+    width: 1rpx;
+    background: #e5e5e5;
+  }
+}
+
+.wrapper{
+  background: #ffffff;
+}
+.wrapper.touched{
+  background: #f5f5f5;
+}
+.wrapper-content{
+  padding: 30rpx 0 30rpx 32rpx;
+  display: flex;
+}
+.image-box{
+  width: 190rpx;
+  height: 230rpx;
+  border-radius: 8rpx;
+  overflow: hidden;
+  position: relative;
+}
+.image{
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: #D8D8D8;
+}
+.status{
+  position: absolute;
+  width: 100%;
+  height: 36rpx;
+  left: 0;
+  bottom: 0;
+  font-size: 24rpx;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.status.status1{
+  background: rgba(100,182,49, 0.65);
+}
+.status.status2, .status.status3, .status.status4{
+  background: rgba(0,0,0, 0.65);
+}
+
+.right-box{
+  min-height: 230rpx;
+  padding: 0 32rpx 0 24rpx;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+}
+.title{
+  font-size: 32rpx;
+  line-height: 46rpx;
+  color: #333333;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+.tags{
+  padding-top: 12rpx;
+  font-size: 24rpx;
+  line-height: 34rpx;
+  color: #999999;
+  display: flex;
+  flex-wrap: wrap;
+}
+.tag{
+  display: flex;
+  align-items: center;
+}
+.tag-text{
+  
+}
+.tag-line{
+  height: 24rpx;
+  margin: 10rpx;
+  background: #999999;
+}
+
+.price-and-join{
+  height: 48rpx;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 10rpx;
+  box-sizing: content-box;
+}
+.price{
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #F24724
+}
+.join{
+  font-size: 28rpx;
+  color: #999999;
+}
+.lutufont{
+  margin-right: 4rpx;
+  font-size: 24rpx;
+}

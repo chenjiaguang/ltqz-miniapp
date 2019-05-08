@@ -8,21 +8,31 @@
     <view class='name'>
       <view class='name-context'>
         <view class='name-title'><text class='lutufont lutu-xinghao'></text>姓名</view>
-        <view class='name-content'>{{contact.name || ''}}</view>
+        <view class='name-content'><input value="{{contact.name}}" bindinput="valueInput" data-type="1" data-idx="{{idx}}" data-key="name"></input></view>
       </view>
       <view class='line-separator-v'></view>
     </view>
     <view class='gender'>
       <view class='gender-context'>
         <view class='gender-title'><text class='lutufont lutu-xinghao'></text>性别</view>
-        <view class='gender-content'><text>{{gender_text[contact.gender]}}</text><text class='lutufont lutu-next'></text></view>
+        <picker
+          range="{{genderRange}}"
+          range-key="title"
+          bindchange="genderChange"
+          class='gender-picker'
+          value="{{contact.gender === '1' ? 0 : 1}}"
+          data-type="1"
+          data-idx="{{idx}}"
+        >
+          <view class="gender-content"><text>{{gender_text[contact.gender]}}</text><text class='lutufont lutu-next'></text></view>
+        </picker>
       </view>
       <view class='line-separator-v'></view>
     </view>
     <view class='idcard'>
       <view class='idcard-context'>
         <view class='idcard-title'>身份证号</view>
-        <view class='idcard-content'><input value="{{contact.idcard}}" bindinput="idcardInput" data-type="1" data-idx="{{idx}}"></input></view>
+        <view class='idcard-content'><input value="{{contact.idcard}}" bindinput="valueInput" data-type="1" data-idx="{{idx}}" data-key="idcard"></input></view>
       </view>
       <view class='line-separator-v'></view>
     </view>
@@ -32,21 +42,31 @@
     <view class='name'>
       <view class='name-context'>
         <view class='name-title'><text class='lutufont lutu-xinghao'></text>姓名</view>
-        <view class='name-content'>{{contact.name || ''}}</view>
+        <view class='name-content'><input value="{{contact.name}}" bindinput="valueInput" data-type="2" data-idx="{{idx}}" data-key="name"></input></view>
       </view>
       <view class='line-separator-v'></view>
     </view>
     <view class='gender'>
       <view class='gender-context'>
         <view class='gender-title'><text class='lutufont lutu-xinghao'></text>性别</view>
-        <view class='gender-content'><text>{{gender_text[contact.gender]}}</text><text class='lutufont lutu-next'></text></view>
+        <picker
+          range="{{genderRange}}"
+          range-key="title"
+          bindchange="genderChange"
+          class='gender-picker'
+          value="{{(!contact.gender || contact.gender === '1') ? 0 : 1}}"
+          data-type="2"
+          data-idx="{{idx}}"
+        >
+          <view class='gender-content'><text>{{gender_text[contact.gender]}}</text><text class='lutufont lutu-next'></text></view>
+        </picker>
       </view>
       <view class='line-separator-v'></view>
     </view>
     <view class='idcard'>
       <view class='idcard-context'>
         <view class='idcard-title'>身份证号</view>
-        <view class='idcard-content'><input value="{{contact.idcard}}" bindinput="idcardInput" data-type="2" data-idx="{{idx}}"></input></view>
+        <view class='idcard-content'><input value="{{contact.idcard}}" bindinput="valueInput" data-type="2" data-idx="{{idx}}" data-key="idcard"></input></view>
       </view>
       <view class='line-separator-v'></view>
     </view>

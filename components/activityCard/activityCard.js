@@ -21,6 +21,9 @@ Component({
    * 组件的方法列表
    */
   methods: {
-
+    boxTap: function () {
+      const {id} = this.data.activity
+      this.triggerEvent('activitytap', { id })
+    }
   }
 })

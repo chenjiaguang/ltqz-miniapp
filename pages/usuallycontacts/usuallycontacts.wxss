@@ -18,17 +18,25 @@ page{
 }
 .name-context, .gender-context, .idcard-context{
   display: flex;
+  height: 88rpx;
+  align-items: center;
 }
 .name-title, .gender-title, .idcard-title{
   width: 200rpx;
 }
 .name-content, .gender-content, .idcard-content{
   flex: 1;
+  height: 100%;
+}
+.gender-picker{
+  flex: 1;
+  overflow: hidden;
 }
 .gender-content{
   display: flex;
   justify-content: space-between;
   align-items: center;
+  height: 88rpx;
 }
 .lutu-xinghao{
   font-size: 24rpx;

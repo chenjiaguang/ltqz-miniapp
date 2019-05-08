@@ -1,0 +1,25 @@
+<!--components/activityCard2/activityCard2.wxml-->
+<view class='wrapper' catchtap="boxTap" hover-stop-propagation hover-class='touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
+  <view wx:if="{{topBorder}}" class='line-separator-h'></view>
+  <view class='wrapper-content'>
+    <view class='image-box'>
+      <image class='image' src="{{activity.image}}" mode="aspectFill"></image>
+      <view class="status status{{activity.status}}">{{activityStatusText[activity.status]}}</view>
+    </view>
+    <view class='right-box'>
+      <view class='title'>{{activity.title}}</view>
+      <view class='tags'>
+        <view wx:for="{{activity.tags}}" wx:for-index="idx" wx:for-item="tag" wx:key="name" class='tag'><text wx:if="{{tag.icon && tag.icon === 'location'}}" class='lutufont lutu-location'></text><text class='tag-text'>{{tag.name}}</text><view wx:if="{{(idx + 1) !== activity.tags.length}}" class='tag-line line-separator-v'></view></view>
+      </view>
+      <view style="flex:1;"></view>
+      <view class='price-and-join'>
+        <view class='price'>
+          <text>¥{{activity.price}}</text>
+          <text wx:if="{{activity.originPrice}}" style="font-size:28rpx;text-decoration:line-through;padding-top:6rpx;margin-left:10rpx">¥{{activity.originPrice}}</text>
+        </view>
+        <view class='join'>累计{{activity.enter}}人报名</view>
+      </view>
+    </view>
+  </view>
+  <view wx:if="{{bottomBorder}}" class='line-separator-h'></view>
+</view>

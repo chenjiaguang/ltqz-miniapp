@@ -1,0 +1,81 @@
+/* ftcomponents/ftTheme/ftTheme.wxss */
+
+.wrapper{
+  background: #fff;
+}
+.theme-wrapper{
+  width: 100%;
+  font-size: 0;
+  white-space: nowrap;
+}
+.left-spacing, .right-spacing{
+  display: inline-block;
+  width: 32rpx;
+  flex-shrink: 0;
+}
+.theme-box{
+  display: inline-block;
+  font-size: 26rpx;
+  overflow: visible;
+}
+.theme-box.touched{
+  background: #f5f5f5;
+}
+.image-box{
+  width: 180rpx;
+  height: 180rpx;
+  border-radius: 8rpx;
+  overflow: hidden;
+  position: relative;
+}
+.tag{
+  position: absolute;
+  left: 0;
+  top: 0;
+  border-radius: 8rpx 0 20rpx 0;
+  background: linear-gradient(to right, #FF1A1A, #FF5E00);
+  color: #fff;
+  font-size: 24rpx;
+  line-height: 44rpx;
+  padding: 0 20rpx 0 14rpx;
+  transform: scale(0.8333, 0.8333);
+  transform-origin: 0 0;
+}
+.cover{
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+.text-mask{
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 121%;
+  height: 44rpx;
+  line-height: 44rpx;
+  font-size: 24rpx;
+  color: #fff;
+  background: rgba(0,0,0,0.65);
+  text-align: center;
+  transform: scale(0.8333, 0.8333);
+  transform-origin: 0 100%;
+}
+.name-box{
+  font-size: 26rpx;
+  line-height: 26rpx;
+  color: #333;
+  overflow: visible;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  padding-top: 24rpx;
+  text-align: center;
+}
+
+.single-theme-image{
+  display: block;
+  width: 100%;
+  height: 200rpx;
+  border: none;
+  border-radius: 8rpx;
+}

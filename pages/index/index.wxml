@@ -1,13 +1,15 @@
 <!--index.wxml-->
 <view class="page-index">
-  <ft-banners wx:if="{{banners && banners[0]}}" banners="{{banners}}" height="375rpx" indicator-color="#999" indicator-currunt-color="#01CEB3" previous-margin="{{24}}" next-margin="{{24}}" catchtap="bannerTap" />
-  <ft-cates cates="{{cates}}" justify="flex-start" catchtap="cateTap" />
-  <scroll-view scroll-x class='theme-wrapper'>
-    <text wx:for="{{themes}}" wx:for-item="theme" wx:for-index="tidx" wx:key="id" class='theme-item' catchtap="themeTap" data-id="{{theme.id}}">{{theme.name}}</text>
-  </scroll-view>
-  <view class='recommendation-wrapper'>
-    <view class='recommendation-header'><text>为你推荐</text></view>
-    <activity-card wx:for="{{recommendations}}" wx:for-item="activity" wx:for-index="aidx" wx:key="id" activity="{{activity}}" />
+  <view class='page-top-padding'></view>
+  <ft-banners wx:if="{{banners && banners[0]}}" banners="{{banners}}" height="358rpx" border-radius="8rpx" indicator-color="#E8E8E8" indicator-currunt-color="#108EE9" previous-margin="{{24}}" next-margin="{{24}}" catchtap="bannerTap" />
+  <ft-cates cates="{{cates}}" padding="28rpx 26rpx 0" justify="flex-start" catchtap="cateTap" />
+  <view class='theme-box'>
+    <view class='theme-header'><text class='theme-header-title'>热门主题</text><text class='theme-header-tip'>提前领 最高<text style="color:#F24724">省¥50</text></text></view>
+    <ft-theme themes="{{themes}}" catchthemetap="themeTap" />
   </view>
-  <view catchtap="goLog">goLog</view>
+  <view class='recommendation-box'>
+    <view class='recommendation-header'><text class='recommendation-header-title'>为您推荐</text><text class='recommendation-header-tip'>甄选线下活动<text style="color:#F24724">5折体验</text></text></view>
+    <activity-card wx:for="{{recommendations}}" wx:for-item="activity" wx:for-index="aidx" wx:key="id" activity="{{activity}}" catchactivitytap="activityTap" />
+  </view>
+  <ft-list-footer loaded="{{recommendationLoaded}}" loading="{{recommendationLoading}}" page="{{recommendationPage}}" show-no-more />
 </view>

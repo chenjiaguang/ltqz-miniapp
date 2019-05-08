@@ -1,7 +1,6 @@
 /**app.wxss**/
 @import "./assets/styles/lutu-icon.wxss";
 
- 
 .line-separator-h {
   width: 100%;
   height: 1px;

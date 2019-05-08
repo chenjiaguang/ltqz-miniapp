@@ -1,7 +1,12 @@
 {
+  "backgroundColor": "#F5F5F5",
+  "backgroundColorTop": "#F5F5F5",
+  "backgroundColorBottom": "#FFFFFF",
   "usingComponents": {
     "ft-banners": "../../ftcomponents/ftBanners/ftBanners",
     "ft-cates": "../../ftcomponents/ftCates/ftCates",
+    "ft-theme": "../../ftcomponents/ftTheme/ftTheme",
+    "ft-list-footer": "../../ftcomponents/ftListFooter/ftListFooter",
     "activity-card": "../../components/activityCard/activityCard"
   }
 }

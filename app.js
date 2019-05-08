@@ -13,7 +13,8 @@ App({
   config: config,
   store,
   onLaunch: function (options) {
-    const token = storageHelper.getStorage('token')
+    let token = storageHelper.getStorage('token')
+    token = '1'
     const getAuthSettingCallback = (authSetting) => { // 获取用户授权数据，未授权则跳转授权页面(permission)，授权后才可继续使用
       if (!token || !authSetting['scope.userInfo'] || !authSetting['scope.userLocation']) {
         util.relaunchPermission(options.path, options.query)

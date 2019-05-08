@@ -17,7 +17,7 @@ Page({
       { path: '/pages/goodsdetail/goodsdetail?id=9', image: 'http://i1.bvimg.com/685753/1f585e337b04cef3.jpg' }
     ],
     cates: [
-      { name: '职业体检', id: '1', image: 'http://i2.bvimg.com/685753/b5c05b9d420d8cc1.png' },
+      { name: '职业职业体检检', id: '1', image: 'http://i2.bvimg.com/685753/b5c05b9d420d8cc1.png' },
       { name: '城市认知', id: '2', image: 'http://i2.bvimg.com/685753/ffe5458de973c2bc.png' },
       { name: '科创', id: '3', image: 'http://i2.bvimg.com/685753/ba211fc91e6e6ee6.png' },
       { name: '运动', id: '4', image: 'http://i2.bvimg.com/685753/764b8f181b8b9bd0.png' },
@@ -27,20 +27,14 @@ Page({
       { name: '漂流书屋', id: '8', image: 'http://i2.bvimg.com/685753/e3796a12f04f3c08.png' }
     ],
     themes: [
-      {name: '主题1', id: '1'},
-      {name: '主题2', id: '2'},
-      {name: '主题3', id: '3'},
-      {name: '主题4', id: '4'},
-      {name: '主题5', id: '5'},
-      {name: '主题6', id: '6'},
-      {name: '主题7', id: '7'},
-      {name: '主题8', id: '8'},
-      {name: '主题9', id: '9'},
-      {name: '主题10', id: '10'},
-      {name: '主题11', id: '11'},
-      {name: '主题12', id: '12'},
-      {name: '主题13', id: '13'},
-      {name: '主题14', id: '14'}
+      { name: '主题1', id: '1', image: 'http://i1.bvimg.com/685753/b9ba96284fff562b.jpg', maskText: '14.5万人关注', tags: ['新品', '爆款']},
+      { name: '主题2', id: '2', image: 'http://i1.bvimg.com/685753/b9ba96284fff562b.jpg', maskText: '2万人已购买', tags: ['爆款'] },
+      { name: '主题3', id: '3', image: 'http://i1.bvimg.com/685753/b9ba96284fff562b.jpg', maskText: '', tags: []},
+      { name: '主题4', id: '4', image: 'http://i1.bvimg.com/685753/b9ba96284fff562b.jpg', maskText: '14.5万人关注', tags: [] },
+      { name: '主题5', id: '5', image: 'http://i1.bvimg.com/685753/b9ba96284fff562b.jpg', maskText: '14.5万人关注', tags: [] },
+      { name: '主题6', id: '6', image: 'http://i1.bvimg.com/685753/b9ba96284fff562b.jpg', maskText: '14.5万人关注', tags: [] },
+      { name: '主题7', id: '7', image: 'http://i1.bvimg.com/685753/b9ba96284fff562b.jpg', maskText: '14.5万人关注', tags: [] },
+      { name: '主题8', id: '8', image: 'http://i1.bvimg.com/685753/b9ba96284fff562b.jpg', maskText: '14.5万人关注', tags: [] }
     ],
     recommendations: [
       {
@@ -75,7 +69,10 @@ Page({
         originPrice: 100,
         enter: 0
       }
-    ]
+    ],
+    recommendationLoaded: true,
+    recommendationLoading: false,
+    recommendationPage: {pn: 1, is_end: true}
   },
   onLoad: function () {
     
@@ -99,10 +96,19 @@ Page({
     }
   },
   themeTap: function (e) {
-    const {id} = e.currentTarget.dataset
+    const {theme} = e.detail
+    if (theme && theme.id) {
+      wx.navigateTo({
+        url: '/pages/themeaggregation/themeaggregation?id=' + theme.id
+      })
+    }
+  },
+  activityTap: function (e) {
+    console.log('activityTap', e)
+    const {id} = e.detail
     if (id) {
       wx.navigateTo({
-        url: '/pages/themeaggregation/themeaggregation?id=' + id
+        url: '/pages/goodsdetail/goodsdetail?id=' + id
       })
     }
   }

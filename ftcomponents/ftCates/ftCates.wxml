@@ -1,9 +1,9 @@
 <!--components/ftCates/ftCates.wxml-->
 <view class='wrapper'>
   <view class='container' style="justify-content:{{justify}};padding:{{padding}}">
-    <view wx:for="{{cates}}" wx:for-item="cate" wx:for-index="cidx" wx:key="id" class='cate' style="width:{{100 / max}}%">
-      <image class='cate-image' mode="aspectFill" src="{{cate.image}}" style="width:{{iconWidth}};height:{{iconHeight}}" catchtap="cateTap" data-item="{{cate}}" data-idx="{{cidx}}"></image>
-      <view class='cate-name' style="font-size:{{textSize}};line-height:{{textLineHeight}};color:{{textColor}}"><text catchtap="cateTap" data-item="{{cate}}" data-idx="{{cidx}}">{{cate.name}}</text></view>
+    <view wx:for="{{cates}}" wx:for-item="cate" wx:for-index="cidx" wx:key="id" class='cate' style="width:{{100 / max}}%" hover-stop-propagation hover-class='touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
+      <image class='cate-image' mode="aspectFill" src="{{cate.image}}" style="width:{{iconWidth}};height:{{iconHeight}};border-radius:{{iconRadius}};background:{{iconBg}}" catchtap="cateTap" data-item="{{cate}}" data-idx="{{cidx}}"></image>
+      <view class='cate-name' style="font-size:{{textSize}};line-height:{{textLineHeight}};color:{{textColor}}"><text class='cate-name-text' catchtap="cateTap" data-item="{{cate}}" data-idx="{{cidx}}">{{cate.name}}</text></view>
     </view>
   </view>
 </view>

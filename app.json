@@ -39,7 +39,7 @@
     "list": [
       {
         "pagePath": "pages/index/index",
-        "text": "路途",
+        "text": "主页",
         "iconPath": "/assets/images/home_unactived.png",
         "selectedIconPath": "/assets/images/home_actived.png"
       },

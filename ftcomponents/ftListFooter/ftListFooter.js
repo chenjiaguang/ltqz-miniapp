@@ -26,11 +26,11 @@ Component({
     },
     noMoreText: {
       type: String,
-      value: '没有更多了~'
+      value: '没有更多了'
     },
     firstPage: {
       type: Number,
-      value: 0
+      value: 1
     }
   },
 

@@ -1,3 +1,11 @@
 {
-  "usingComponents": {}
+  "backgroundColor": "#F5F5F5",
+  "backgroundColorTop": "#F5F5F5",
+  "backgroundColorBottom": "#FFFFFF",
+  "usingComponents": {
+    "ft-banners": "../../ftcomponents/ftBanners/ftBanners",
+    "ft-list-footer": "../../ftcomponents/ftListFooter/ftListFooter",
+    "ft-iphone-bottom-adapter": "../../ftcomponents/ftIphoneBottomAdapter/ftIphoneBottomAdapter",
+    "ft-activity-card2": "../../components/activityCard2/activityCard2"
+  }
 }

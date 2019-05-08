@@ -1,4 +1,11 @@
 /**index.wxss**/
+
+page{
+  background: #FFFFFF;
+}
+.page-top-padding{
+  height: 24rpx;
+}
 .theme-wrapper{
   font-size: 0;
   white-space: nowrap;
@@ -8,6 +15,21 @@
   margin: 0 30rpx;
   font-size: 28rpx;
 }
-.recommendation-wrapper{
-  
+.theme-box, recommendation-box{
+  margin-top: 28rpx;
+}
+.theme-header, .recommendation-header{
+  height: 58rpx;
+  padding: 0 32rpx;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.theme-header-title, .recommendation-header-title{
+  font-size: 36rpx;
+  color: #333333;
+}
+.theme-header-tip, .recommendation-header-tip{
+  font-size: 28rpx;
+  color: #999999;
 }
