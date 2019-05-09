@@ -1,2 +1,79 @@
 /* pages/goodsdetail/goodsdetail.wxss */
 @import "../../utils/wxParse/wxParse.wxss";
+
+page{
+  background: #F5F5F5;
+}
+.page-goodsdetail{
+  background: #F5F5F5;
+}
+.banner-wrapper{
+  height: 320rpx;
+  position: relative;
+}
+.cover{
+  display: block;
+  width: 100%;
+  height: 320rpx;
+}
+.share-wrapper{
+  position: absolute;
+  right: 0;
+  bottom: 45rpx;
+}
+
+.overview{
+  padding: 22rpx 32rpx 27rpx;
+}
+.title{
+  font-size: 34rpx;
+  line-height: 42rpx;
+  font-weight: bold;
+  color: #333;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  padding-top: 12rpx;
+}
+
+.intro{
+  font-size: 28rpx;
+  line-height: 42rpx;
+  color: #333;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  padding-top: 12rpx;
+}
+.price-and-status{
+  padding-top: 38rpx;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.price{
+  line-height: 50rpx;
+}
+.actual-price{
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #F24724;
+}
+.origin-price{
+  font-size: 28rpx;
+  color: #999999;
+  margin-left: 10rpx;
+  text-decoration: line-through;
+}
+.status{
+  font-size: 28rpx;
+  line-height: 40rpx;
+}
+.status.status1{
+  color: #64B631;
+}
+.status.status2, .status.status3{
+  color: #999
+}

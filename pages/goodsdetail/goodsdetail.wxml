@@ -1,4 +1,28 @@
 <!--pages/goodsdetail/goodsdetail.wxml-->
+<view class='page-goodsdetail'>
+  <view class='banner-wrapper'>
+    <image class='cover' src="{{cover}}" mode="aspectFill"></image>
+    <view class='share-wrapper'>
+      <share-button profit="{{shareProfit}}" />
+    </view>
+  </view>
+  <view class='overview'>
+    <view class='title'>{{title}}</view>
+    <view class='intro'>{{intro}}</view>
+    <view class='price-and-status'>
+      <view class='price'><text class='actual-price'>¥{{actualPrice}}</text><text wxif="{{actualPrice && actualPrice > 0}}" class='origin-price'>¥{{actualPrice}}</text></view>
+      <view class="status status{{status}}">{{statusText[status]}}</view>
+    </view>
+    <view class='state-block'><text class='lutufont lutu-location'></text>活动时间：{{startTime}}至{{endTime}}</view>
+    <view class='state-block'><text class='lutufont lutu-location'></text>报名截止时间：{{startTime}}至{{endTime}}</view>
+    <view class='state-block'><text class='lutufont lutu-location'></text>活动时间：{{startTime}}至{{endTime}}</view>
+    <view class='state-block'><text class='lutufont lutu-location'></text>活动时间：{{startTime}}至{{endTime}}</view>
+    <view class='state-block'><text class='lutufont lutu-location'></text>活动时间：{{startTime}}至{{endTime}}</view>
+    <view class='state-block'><text class='lutufont lutu-location'></text>活动时间：{{startTime}}至{{endTime}}</view>
+    <view class='state-block'><text class='lutufont lutu-location'></text>活动时间：{{startTime}}至{{endTime}}</view>
+    <view class='state-block'><text class='lutufont lutu-location'></text>活动时间：{{startTime}}至{{endTime}}</view>
+  </view>
+</view>
 <import src="../../utils/wxParse/wxParse.wxml" />
 <template is="wxParse" data="{{wxParseData:article.nodes}}" />
 <button open-type='share'>转发详情</button>

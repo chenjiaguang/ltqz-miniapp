@@ -1,0 +1,33 @@
+/* components/shareButton/shareButton.wxss */
+@import "../../assets/styles/lutu-icon.wxss";
+
+.wrapper1{
+  height: 60rpx;
+  padding: 0 32rpx 0 28rpx;
+  border-radius: 100rpx 0 0 100rpx;
+  background: #64B631;
+  font-size: 28rpx;
+  line-height: 40rpx;
+  color: #FFFFFF;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.share-icon{
+  font-size: 28rpx;
+  color: #fff;
+  margin-right: 6rpx;
+}
+.wrapper2{
+  height: 76rpx;
+  padding: 0 32rpx 0 38rpx;
+  border-radius: 44rpx 0 0 44rpx;
+  background: #64B631;
+  font-size: 28rpx;
+  line-height: 30rpx;
+  color: #FFFFFF;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}

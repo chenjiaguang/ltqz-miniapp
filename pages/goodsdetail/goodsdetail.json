@@ -1,3 +1,6 @@
 {
-  "usingComponents": {}
+  "usingComponents": {
+    "ft-banners": "../../ftcomponents/ftBanners/ftBanners",
+    "share-button": "../../components/shareButton/shareButton"
+  }
 }

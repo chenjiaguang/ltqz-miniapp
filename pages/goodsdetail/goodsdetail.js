@@ -7,7 +7,21 @@ Page({
    * 页面的初始数据
    */
   data: {
-
+    statusText: {
+      1: '活动报名中',
+      2: '活动已截止',
+      3: '活动已结束'
+    },
+    shareProfit: 3.99, // 分享赚shareProfit，如果为0或不存在，则分享按钮为普通样式，否则为分享赚xxx样式
+    cover: 'http://i1.bvimg.com/685753/69601cd97e8be3cb.jpg',
+    title: '【穿行艺术】城市里的博物馆，外滩历险记(银行一条街)',
+    intro: '三大保障类别，全方位守护您的财富和家庭全方位守护您的财富和家庭',
+    actualPrice: 49.9,
+    originPrice:  99.9,
+    status: '1',
+    startTime: '01-03 9:00',
+    endTime: '04-30 17:00',
+    enterEndTime: '01-01 18:00'
   },
 
   /**

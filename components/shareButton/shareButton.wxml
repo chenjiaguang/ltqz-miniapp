@@ -1,0 +1,3 @@
+<!--components/shareButton/shareButton.wxml-->
+<view wx:if="{{profit <= 0}}" class='wrapper1'><text class='share-icon lutufont lutu-location'></text>分享</view>
+<view wx:if="{{profit > 0}}" class='wrapper2'><view>分享赚</view><view>¥{{profit}}</view></view>
