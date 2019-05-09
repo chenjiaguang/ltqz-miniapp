@@ -1,28 +1,18 @@
-// pages/orderdetail/orderdetail.js
+// pages/orderComment/orderComment.js
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    user_info: {
-      username: '陈加尧',
-      phone: '17508959493'
-    },
-    goods_info: {
-      name: '【穿行艺术】城市里的博物馆，外滩历险记（银行一条街）',
-      location: {
-        text: '北京市朝阳区 马桥路甲40号二十一世纪大北京市朝阳区 马桥',
-        lnglat: ['116.40', '39.90']
-      },
-      start_time: '2019-07-13',
-      end_time: '2020-01-01',
-      amount: 1,
-      actual_price: 5980
-    },
-    order_info: {
-      order_number: '110568508545687',
-      order_time: '2019-04-29 14:36'
+    data: {
+      state: 0,
+      money: '49.9',
+      cover: 'http://i1.bvimg.com/685753/b9ba96284fff562b.jpg',
+      title: '从5万到100万，给家庭投资赋 能小天才凯叔滴滴答答叽叽从5万到100万，给家庭投资赋 能小天才凯叔滴滴答答叽叽',
+      location: '北京市朝阳区马桥路甲马桥路甲马桥路',
+      time: '2019.07.13 至 2020.01.01',
+      tickets: '成人票×1，儿童票×2'
     }
   },
 
@@ -78,7 +68,7 @@ Page({
   /**
    * 用户点击右上角分享
    */
-  onShareAppMessage: function (e) {
-    
+  onShareAppMessage: function () {
+
   }
 })

@@ -1,0 +1,14 @@
+<!--pages/orderComment/orderComment.wxml-->
+<view class='card'>
+  <activity-content data="{{data}}" />
+</view>
+
+<view class='card'>
+  <view class='rate-box row ai-center'>
+    <text class='rate-title'>评分</text>
+    <ft-star-box score="{{5}}" showScoreText="{{false}}" />
+  </view>
+  <textarea class='input' placeholder='请输入不少于10个字的描述'/>
+  <view class='pics-box'>上传图片组件</view>
+  <view class='btn'>提交评论</view>
+</view>

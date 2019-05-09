@@ -18,7 +18,7 @@ Component({
     },
     color: { // 星星及字体颜色
       type: String,
-      value: '#FFC700'
+      value: '#64B631'
     },
     startColor: { // 星星渐变（自上而下）初始颜色
       type: String,
@@ -30,7 +30,7 @@ Component({
     },
     emptyColor: {
       type: String,
-      value: '#D7D7D7'
+      value: 'transparent'
     },
     maxScore: {
       type: Number,

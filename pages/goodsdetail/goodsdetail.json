@@ -1,6 +1,12 @@
 {
+  "backgroundColor": "#F5F5F5",
+  "backgroundColorTop": "#F5F5F5",
+  "backgroundColorBottom": "#FFFFFF",
   "usingComponents": {
     "ft-banners": "../../ftcomponents/ftBanners/ftBanners",
-    "share-button": "../../components/shareButton/shareButton"
+    "share-button": "../../components/shareButton/shareButton",
+    "ft-star-box": "../../ftcomponents/ftStarBox/ftStarBox",
+    "comment-box": "../../components/commentBox/commentBox",
+    "ft-iphone-bottom-adapter": "../../ftcomponents/ftIphoneBottomAdapter/ftIphoneBottomAdapter"
   }
 }

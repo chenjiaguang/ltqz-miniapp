@@ -1,0 +1,52 @@
+/* pages/orderComment/orderComment.wxss */
+
+page {
+  background-color: #f5f5f5;
+}
+
+.card {
+  margin: 16rpx 4% 0 4%;
+  padding-top: 1rpx;
+  padding-bottom: 1rpx;
+  background-color: #fff;
+  border-radius: 8rpx;
+}
+
+.rate-box {
+  padding: 36rpx 30rpx;
+}
+
+.rate-title {
+  font-size: 36rpx;
+  font-weight: bold;
+  margin-right: 16rpx;
+}
+
+.input {
+  margin: 0 30rpx 48rpx 30rpx;
+  border-radius: 8rpx;
+  border: 1rpx solid rgba(216, 216, 216, 1);
+  font-size: 28rpx;
+  padding: 20rpx;
+  height: 240rpx;
+}
+
+.textarea-placeholder {
+  color: #ccc;
+}
+
+.pics-box {
+  margin: 0 30rpx 60rpx 30rpx;
+}
+
+.btn {
+  margin: 0 30rpx 0 30rpx;
+  height: 82rpx;
+  line-height: 82rpx;
+  background: #64b631;
+  border-radius: 8rpx;
+  font-size: 36rpx;
+  color: #fff;
+  text-align: center;
+  margin-bottom: 50rpx;
+}

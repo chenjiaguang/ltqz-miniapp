@@ -20,7 +20,7 @@
       </view>
     </view>
     <view class='slide-box'>
-      <view class='slide-block' style="background:{{currentColor}};transform:translateX({{(0.5 + current) * 250}}rpx);width:{{indicatorSize.width || 44}}rpx;height:{{indicatorSize.height || 4}}rpx;margin-left:{{-(indicatorSize.width || 44) / 2}}rpx"></view>
+      <view class='slide-block' style="background:{{currentColor}};transform:translateX({{(0.5 + current) * (750/tabs.length)}}rpx);width:{{indicatorSize.width || 44}}rpx;height:{{indicatorSize.height || 4}}rpx;margin-left:{{-(indicatorSize.width || 44) / 2}}rpx"></view>
     </view>
     <view wx:if="{{headerSeparator}}" class='line-separator-h'></view>
   </view>

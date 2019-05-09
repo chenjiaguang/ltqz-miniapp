@@ -15,7 +15,7 @@
 }
 .star-item{
   position: relative;
-  background: #D7D7D7;
+  background: transparent;
 }
 .star-bg{
   position: absolute;
@@ -31,8 +31,9 @@
   height: 100%;
 }
 .score-text{
-  color: #FF9500;
-  margin-left: 20rpx;
+  height: 100%;
+  color: #64B631;
+  margin-left: 10rpx;
   display: flex;
   justify-content: center;
   align-items: center;

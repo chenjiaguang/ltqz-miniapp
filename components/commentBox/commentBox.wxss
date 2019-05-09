@@ -1,25 +1,33 @@
 /* components/commentBox/commentBox.wxss */
-.wrapper{
+@import "../../app.wxss";
+
+.wrapper {
   overflow: hidden;
+  background-color: #fff;
 }
-.overview{
-  padding: 3% 4%;
+
+.overview {
+  padding: 30rpx 4% 20rpx 4%;
   display: flex;
 }
-.avatar{
-  width: 100rpx;
-  height: 100rpx;
+
+.avatar {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 40rpx;
   flex-shrink: 0;
 }
-.overview-right{
+
+.overview-right {
   flex: 1;
   overflow: visible;
-  margin-left: 30rpx;
+  margin-left: 18rpx;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
-.username-and-score{
+
+.username-and-score {
   width: 100%;
   display: flex;
   justify-content: space-between;
@@ -27,40 +35,86 @@
   overflow: visible;
 }
 
-.comment-main{
-  padding: 0 4%;
-  margin-left: 130rpx;
+.username {
+  color: #333;
+  font-size: 34rpx;
+  font-weight: bold;
 }
-.comment-content{
+
+.time {
+  color: #999;
+  font-size: 26rpx;
+}
+
+.comment-main {
+  margin: 0 4% 40rpx 4%;
+  padding-left: 98rpx;
+}
+
+.comment-content {
   white-space: pre-wrap;
+  color: #333;
+  font-size: 30rpx;
+  margin-bottom: 20rpx;
 }
-.comment-images{
+
+.comment-images {
   display: flex;
   flex-wrap: wrap;
+  margin-bottom: 20rpx;
 }
-.image-wrapper{
-  width: 32%;
-  padding-top: 32%;
-  margin-left: 2%;
-  margin-top: 2%;
+
+.image-wrapper {
+  margin-right: 10rpx;
+  margin-bottom: 10rpx;
+  width: 156rpx;
+  height: 156rpx;
+  border-radius: 8rpx;
   position: relative;
+  overflow: hidden;
 }
-.image-wrapper.left{
-  margin-left: 0;
-}
-.image-wrapper.first-line{
-  margin-top: 0;
-}
-.comment-image{
+
+.comment-image {
   position: absolute;
   width: 100%;
   height: 100%;
   left: 0;
   top: 0;
 }
-.goods{
+
+.goods {
   word-break: break-all;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #999;
+  font-size: 26rpx;
+  margin-bottom: 26rpx;
 }
-.reply{
+
+.triangle-up {
+  width: 0;
+  height: 0;
+  margin-left:20rpx;
+  border-right: 10rpx solid transparent;
+  border-left: 10rpx solid transparent;
+  border-bottom: 14rpx solid #f5f5f5;
+}
+
+.reply-container {
+  background-color: #f5f5f5;
+  font-size: 26rpx;
+  padding: 20rpx;
+}
+
+.reply {
   white-space: pre-wrap;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.line-separator-h {
+  margin-left: 4%;
 }

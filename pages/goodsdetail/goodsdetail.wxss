@@ -2,10 +2,10 @@
 @import "../../utils/wxParse/wxParse.wxss";
 
 page{
-  background: #F5F5F5;
+  background: #FFFFFF;
 }
 .page-goodsdetail{
-  background: #F5F5F5;
+  background: #FFFFFF;
 }
 .banner-wrapper{
   height: 320rpx;
@@ -24,6 +24,7 @@ page{
 
 .overview{
   padding: 22rpx 32rpx 27rpx;
+  background: #fff;
 }
 .title{
   font-size: 34rpx;
@@ -76,4 +77,313 @@ page{
 }
 .status.status2, .status.status3{
   color: #999
+}
+.state-block{
+  height: 60rpx;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.state-block-text{
+  flex: 1;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+   font-size: 28rpx;
+  color: #333;
+}
+
+.left-icon, .right-icon{
+  font-size: 28rpx;
+  color: #979797;
+}
+.left-icon{
+  margin-right: 10rpx;
+}
+.right-icon{
+  margin-left: 10rpx;
+}
+
+.join-box{
+  background: #fff;
+}
+.join-header{
+  padding: 0 32rpx;
+  height: 70rpx;
+  display: flex;
+  align-items: center;
+}
+.join-users{
+  height: 144rpx;
+  display: flex;
+  align-items: center;
+}
+.user{
+  width: 94rpx;
+  height: 94rpx;
+  margin-left: 24rpx;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.user:first-child{
+  margin-left: 32rpx;
+}
+.more-user{
+  width: 94rpx;
+  height: 94rpx;
+  margin-left: 24rpx;
+  border: 2px solid #979797;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+.more-user:first-child{
+  margin-left: 32rpx;
+}
+.dot{
+  width: 8rpx;
+  height: 8rpx;
+  border-radius: 50%;
+  background: #979797;
+  margin: 5rpx;
+}
+
+.sponsor-header{
+  height: 70rpx;
+  padding: 0 32rpx;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sponsor-box{
+  background: #fff;
+}
+.sponsor-overview{
+  display: flex;
+  padding: 30rpx 32rpx 24rpx;
+}
+.sponsor-avatar{
+  width: 156rpx;
+  height: 156rpx;
+  border-radius: 50%;
+}
+.sponsor-right{
+  padding: 0 0 0 30rpx;
+  flex: 1;
+}
+.sponsor-title{
+  font-size: 36rpx;
+  color: #333;
+  line-height: 50rpx;
+  font-weight: bold;
+}
+.sponsor-intro{
+  font-size: 26rpx;
+  line-height: 38rpx;
+  color: #999;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  padding-top: 14rpx;
+}
+.activity-and-score{
+  display: flex;
+  align-items: center;
+  font-size: 26rpx;
+  color: #333;
+  padding-top: 20rpx;
+  height: 38rpx;
+}
+.green-number{
+  font-weight: bold;
+  color: #64B631;
+}
+.next-icon{
+  font-size: 26rpx;
+  color: #999;
+}
+
+.detail-and-comment{
+  background: #fff;
+}
+.detail-and-comment-header{
+  display: flex;
+  position: relative;
+  justify-content: center;
+  padding: 0 90rpx;
+}
+.detail-and-comment-tab{
+  width: 50%;
+  height: 100%;
+  line-height: 90rpx;
+  position: relative;
+  font-size: 32rpx;
+  color: #333;
+  font-weight: bold;
+  text-align: center;
+}
+.detail-and-comment-tab.current{
+  color: #64B631;
+}
+.tab-indicator{
+  position: absolute;
+  width: 66rpx;
+  height: 6rpx;
+  background: transparent;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+}
+.tab-indicator.current{
+  background: #64B631;
+}
+
+.goodsdetail-content, .goodsdetail-score{
+  display: none;
+}
+.goodsdetail-content.current, .goodsdetail-score.current{
+  display: block;
+}
+.goodsdetail-content{
+  padding: 50rpx 32rpx;
+}
+.score-overview{
+  
+}
+.overview-content{
+  height: 88rpx;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 32rpx;
+}
+.comment-amount{
+  font-size: 28rpx;
+  color: #999;
+}
+.empty-comment{
+  height: 486rpx;
+  box-sizing: border-box;
+  padding-top: 102rpx;
+  text-align: center;
+}
+.empty-image{
+  display: block;
+  width: 140rpx;
+  height: 150rpx;
+  margin: 30rpx auto 0;
+}
+.empty-text{
+  font-size: 26rpx;
+  color: #999;
+  line-height: 38rpx;
+  padding-top: 30rpx;
+}
+
+.bottom-button-wrapper{
+  overflow: visible;
+}
+.bottom-button{
+  position: fixed;
+  width: 100%;
+  left: 0;
+  bottom: 0;
+}
+.bottom-button-content{
+  display: flex;
+  height: 100rpx;
+  background: #fff;
+}
+.call-btn{
+  width: 238rpx;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.call-btn.touched{
+  background: #f5f5f5;
+}
+.tel-icon{
+  font-size: 36rpx;
+  line-height: 36rpx;
+  color: #999999;
+  margin-bottom: 5rpx 0 7rpx;
+}
+
+.tel-text{
+  font-size: 24rpx;
+  line-height: 34rpx;
+  color: #333;
+}
+.go-next{
+  flex: 1;
+  border: none;
+  border-radius: 0;
+  font-size: 36rpx;
+  color: #fff;
+  background: #64B631;
+}
+.go-next:after, .go-next:before{
+  display: none;
+}
+
+/* 场次、票种选择框 */
+.sessions{
+  width: 100%;
+  font-size: 0;
+  white-space: nowrap;
+}
+.sesion{
+  font-size: 28rpx;
+  line-height: 32rpx;
+  width: 220rpx;
+  height: 140rpx;
+  position: relative;
+  border-radius: 8rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 13rpx;
+}
+.sesion:first{
+  margin-left: 32rpx;
+}
+.sesion:last{
+  margin-right: 32rpx;
+}
+
+.ticket-item{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  overflow: hidden;
+  padding: 0 32rpx;
+}
+.ticket-name{
+  width: 260rpx;
+  padding-right: 12rpx;
+  flex-shrink: 0;
+}
+.ticket-price{
+  flex: 1;
+}
+.ticket-buttons{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.choose-num{
+  min-width: 40rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 30rpx;
+  font-weight: bold;
 }

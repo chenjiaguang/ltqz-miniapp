@@ -1,0 +1,6 @@
+{
+  "usingComponents": {
+    "activity-content": "../../components/activityContent/activityContent",
+    "ft-star-box": "../../ftcomponents/ftStarBox/ftStarBox"
+  }
+}

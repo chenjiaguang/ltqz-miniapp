@@ -24,6 +24,7 @@
   font-size: 0;
   flex-grow: 0;
   flex-shrink: 0;
+  background-color: #fff;
 }
 
 .title-box {

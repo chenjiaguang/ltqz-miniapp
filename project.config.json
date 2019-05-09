@@ -20,6 +20,8 @@
 		"hidedInDevtools": []
 	},
 	"isGameTourist": false,
+	"simulatorType": "wechat",
+	"simulatorPluginLibVersion": {},
 	"condition": {
 		"search": {
 			"current": -1,
@@ -38,7 +40,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 10,
+			"current": 12,
 			"list": [
 				{
 					"id": -1,
@@ -103,7 +105,21 @@
 				{
 					"id": -1,
 					"name": "活动列表",
-					"pathName": "pages/goodslist/goodslist"
+					"pathName": "pages/goodslist/goodslist",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "全部订单",
+					"pathName": "pages/orderlist/orderlist",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "订单评价",
+					"pathName": "pages/orderComment/orderComment",
+					"scene": null
 				}
 			]
 		}

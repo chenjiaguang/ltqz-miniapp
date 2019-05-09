@@ -1,2 +1,12 @@
 <!--pages/orderlist/orderlist.wxml-->
-<text>pages/orderlist/orderlist.wxml</text>
+<ft-tabs class="tabs" type="2" tabs="{{tabs}}">
+  <view slot="tab0">
+    <block wx:for="{{list}}">
+      <order-card item="{{item}}"></order-card>
+    </block>
+  </view>
+  <view slot="tab1">
+    <image class='empty-img' src='/assets/images/order.png' />
+    <text class='empty-text'>还没有相关的订单哦，快去下单吧~</text>
+  </view>
+</ft-tabs>

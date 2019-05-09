@@ -1,3 +1,7 @@
 {
-  "usingComponents": {}
+  "navigationBarTitleText": "全部订单",
+  "usingComponents": {
+    "ft-tabs": "../../ftcomponents/ftTabs/ftTabs",
+    "order-card": "../../components/orderCard/orderCard"
+  }
 }

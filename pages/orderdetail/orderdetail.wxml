@@ -1,19 +1,57 @@
 <!--pages/orderdetail/orderdetail.wxml-->
 <view class='page-orderdetail'>
-  <view class='user-info'>
-    <view class='user-info-header'>联系人信息</view>
-    <view class='user-name'>姓名：{{user_info.username}}</view>
-    <view class='user-name'>手机：{{user_info.phone}}</view>
+  <view class='left-time'>剩余支付时间09:12</view>
+  <view class='pay'>立即支付</view>
+  <view class='ticket'>查看电子票</view>
+  <view class='title'>订单信息</view>
+  <view class='list'>
+    <view class='item row'>
+      <span class='key'>活动名称</span>
+      <span class='value'>{{goods_info.name}}</span>
+    </view>
+    <view class='line-separator-h'></view>
+    <view class='item row'>
+      <span class='key'>活动地点</span>
+      <span class='value'>{{(goods_info.location && goods_info.location.text) ? goods_info.location.text : ''}}</span>
+    </view>
+    <view class='line-separator-h'></view>
+    <view class='item row'>
+      <span class='key'>活动时间</span>
+      <span class='value'>{{goods_info.start_time}} 至 {{goods_info.end_time}}</span>
+    </view>
+    <view class='line-separator-h'></view>
+    <view class='item row'>
+      <span class='key'>购买数量</span>
+      <span class='value'>{{goods_info.amount}}份</span>
+    </view>
+    <view class='line-separator-h'></view>
+    <view class='item row'>
+      <span class='key'>实付金额</span>
+      <span class='value'>¥{{goods_info.actual_price}}</span>
+    </view>
+    <view class='line-separator-h'></view>
+    <view class='item row'>
+      <span class='key'>订单编号</span>
+      <span class='value'>{{order_info.order_number}}</span>
+    </view>
+    <view class='line-separator-h'></view>
+    <view class='item row'>
+      <span class='key'>下单时间</span>
+      <span class='value'>{{order_info.order_time}}</span>
+    </view>
   </view>
-  <view class='order-info'>
-    <view class='order-info-header'>订单信息</view>
-    <view class='goods-name'>活动名称：{{goods_info.name}}</view>
-    <view class='goods-location'>活动地点：{{(goods_info.location && goods_info.location.text) ? goods_info.location.text : ''}}</view>
-    <view class='goods-time'>活动时间：{{goods_info.start_time}} 至 {{goods_info.end_time}}</view>
-    <view class='goods-amount'>购买数量：{{goods_info.amount}}份</view>
-    <view class='goods-price'>实付金额：¥{{goods_info.actual_price}}</view>
-    <view class='order-number'>订单编号：{{order_info.order_number}}</view>
-    <view class='order-time'>下单时间：{{order_info.order_time}}</view>
+
+  <view class='title'>联系人信息</view>
+  <view class='list'>
+    <view class='item row'>
+      <span class='key'>姓名</span>
+      <span class='value'>{{user_info.username}}</span>
+    </view>
+    <view class='line-separator-h'></view>
+    <view class='item row'>
+      <span class='key'>手机</span>
+      <span class='value'>{{user_info.phone}}</span>
+    </view>
   </view>
-  <view class='view-ticket'>查看电子票</view>
+
 </view>

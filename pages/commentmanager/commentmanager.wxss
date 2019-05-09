@@ -11,8 +11,8 @@ page{
 }
 .overview-context{
   position: absolute;
-  width: 100%;
   left: 0;
+  right:0;
   top: 0;
   background: #fff;
 }
@@ -24,6 +24,11 @@ page{
   justify-content: space-between;
   align-items: center;
   height: 88rpx;
+  padding: 0 4%;
+}
+.comment-amount{
+  font-size:28rpx;
+  color:#999999;
 }
 
 .reply-wrapper-mask{
