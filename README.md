@@ -1,1 +1,1 @@
-# ltsys-miniapp
+# ltqz-miniapp
