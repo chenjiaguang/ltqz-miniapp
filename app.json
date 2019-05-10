@@ -23,7 +23,8 @@
     "pages/hexiaosetting/hexiaosetting",
     "pages/activitymanager/activitymanager",
     "pages/commentmanager/commentmanager",
-    "pages/orderComment/orderComment"
+    "pages/orderComment/orderComment",
+    "pages/merchantdetail/merchantdetail"
   ],
   "window": {
     "backgroundTextStyle": "light",

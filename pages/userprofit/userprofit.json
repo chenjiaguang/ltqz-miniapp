@@ -1,5 +1,7 @@
 {
-  "navigationBarBackgroundColor": "#2ED264",
+  "navigationBarBackgroundColor": "#64B631",
+  "navigationBarTextStyle": "white",
+  "navigationBarTitleText": "收益详情",
   "usingComponents": {
     "ft-entrance": "../../ftcomponents/ftEntrance/ftEntrance"
   }

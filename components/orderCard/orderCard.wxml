@@ -1,5 +1,5 @@
 <!--components/orderCard/orderCard.wxml-->
-<view class='wrapper'>
+<view class='card wrapper'>
   <view class='head row jc-space-between ai-center'>
     <text class='state state0' wx:if="{{item.state==0}}">待参与</text>
     <text class='state state1' wx:if="{{item.state==1}}">待付款</text>

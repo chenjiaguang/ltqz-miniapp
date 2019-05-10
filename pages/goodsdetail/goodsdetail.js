@@ -12,8 +12,8 @@ Page({
       0: '活动已失效',
       1: '活动报名中',
       2: '活动报名中',
-      3: '活动已截止',
-      4: '活动已截止',
+      3: '报名已结束',
+      4: '报名已结束',
       5: '活动已结束'
     },
     buttonStatusText: {
@@ -35,14 +35,10 @@ Page({
     valid_btime: '01-03 9:00',
     valid_etime: '04-30 17:00',
     dead_line: '01-01 18:00',
-    address: {
-      text: '北京市朝阳区 马桥路甲40号二十一使广大三个数发',
-      lnglat: [116.40, 39.90]
-    },
-    jh_address: {
-      text: '北京市朝阳区 马桥路甲40号二十一使广大三个数发',
-      lnglat: [116.40, 39.90]
-    },
+    address: '北京市朝阳区 马桥路甲40号二十一使广大三个数发',
+    address_position: [116.40, 39.90],
+    jh_address: '北京市朝阳区 马桥路甲40号二十一使广大三个数发',
+    jh_address_position: [116.40, 39.90],
     min_age: '-1',
     max_age: '60',
     limit_num: '10组开始成团',
@@ -65,7 +61,7 @@ Page({
     },
     currentTab: 0,
     content: '<div>我是HTML代码</div>',
-    evaluation_num: 1,
+    evaluation_num: 11,
     comments: [
       {
         id: '1',
@@ -135,13 +131,13 @@ Page({
         stock: null, // 剩余总库存 NULL为无限制，0为没有该票
         ticket: [
           { id: '1', stock: 0, name: '票种名称1', price: 0 }, // stock: 剩余总库存 NULL为无限制，0为没有该票
-          { id: '2', stock: null, name: '票种名称2', price: 0.55 }, // stock: 剩余总库存 NULL为无限制，0为没有该票
+          { id: '2', stock: 18, name: '票种名称2', price: 0.55 }, // stock: 剩余总库存 NULL为无限制，0为没有该票
         ]
       },
       {
         id: "2",
         name: '场次名称2',
-        stock: 50, // 剩余总库存 NULL为无限制，0为没有该票
+        stock: 0, // 剩余总库存 NULL为无限制，0为没有该票
         ticket: [
           { id: '3', stock: 0, name: '票种名称3', price: 0 }, // stock: 剩余总库存 NULL为无限制，0为没有该票
           { id: '4', stock: null, name: '票种名称4', price: 0.55 }, // stock: 剩余总库存 NULL为无限制，0为没有该票
@@ -150,7 +146,7 @@ Page({
       {
         id: "3",
         name: '场次名称3',
-        stock: 0, // 剩余总库存 NULL为无限制，0为没有该票
+        stock: null, // 剩余总库存 NULL为无限制，0为没有该票
         ticket: [
           { id: '5', stock: 0, name: '票种名称5', price: 0 }, // stock: 剩余总库存 NULL为无限制，0为没有该票
           { id: '6', stock: 0, name: '票种名称6', price: 0.55 }, // stock: 剩余总库存 NULL为无限制，0为没有该票
@@ -159,7 +155,7 @@ Page({
           { id: '9', stock: 0, name: '票种名称9', price: 0 }, // stock: 剩余总库存 NULL为无限制，0为没有该票
           { id: '10', stock: 0, name: '票种名称10', price: 0.55 }, // stock: 剩余总库存 NULL为无限制，0为没有该票
           { id: '11', stock: 0, name: '票种名称11', price: 0 }, // stock: 剩余总库存 NULL为无限制，0为没有该票
-          { id: '12', stock: 0, name: '票种名称12', price: 0.55 }, // stock: 剩余总库存 NULL为无限制，0为没有该票
+          { id: '12', stock: null, name: '票种名称12', price: 0.55 }, // stock: 剩余总库存 NULL为无限制，0为没有该票
           { id: '13', stock: 0, name: '票种名称13', price: 0 }, // stock: 剩余总库存 NULL为无限制，0为没有该票
           { id: '14', stock: 0, name: '票种名称14', price: 0.55 }, // stock: 剩余总库存 NULL为无限制，0为没有该票
         ]
@@ -173,10 +169,11 @@ Page({
         ]
       }
     ],
-    currentTickets: [
-      { id: '1', stock: 0, name: '票种名称1', price: 0, num: 0 }, // stock: 剩余总库存 NULL为无限制，0为没有该票
-      { id: '2', stock: null, name: '票种名称2', price: 0.55, num: 0 }, // stock: 剩余总库存 NULL为无限制，0为没有该票
-    ]
+    currentSession: null,
+    currentTickets: [],
+    selectedTicketLength: 0,
+    totalPrice: 0,
+    showSession: false
   },
 
   /**
@@ -194,6 +191,7 @@ Page({
     */
     let that = this
     WxParse.wxParse('article', 'html', article, that, 5)
+    this.initSession(this.data.session)
   },
 
   /**
@@ -262,5 +260,108 @@ Page({
         phoneNumber: phone.toString()
       })
     }
+  },
+
+  stopPropagation: function () {
+    return false
+  },
+
+  sessionTap: function (e) {
+    const { status, idx} = e.currentTarget.dataset
+    const session = JSON.parse(JSON.stringify(this.data.session))
+    if (status === 'disabled') { // 售罄
+      return false
+    }
+    const tickets = session[idx].ticket.map(item => Object.assign({}, item, {num: 0}))
+    this.setData({
+      selectedTicketLength: 0,
+      totalPrice: 0,
+      currentSession: idx,
+      currentTickets: tickets
+    })
+  },
+
+  initSession: function (session) {
+    let _session = JSON.parse(JSON.stringify(session))
+    let current = null
+    let selected = []
+    for (let i = 0; i < _session.length; i++) {
+      if (_session[i].stock === 0) {
+        console.log('continue1', i, _session[i].stock, null <= 0)
+        continue
+      }
+      let valid = false
+      let tickets = _session[i].ticket
+      for (let j = 0; j < tickets.length; j++) {
+        if (tickets[j].stock === 0) {
+          console.log('continue2', j, tickets[j].stock)
+          continue
+        }
+        valid = true
+      }
+      if (valid) {
+        current = i
+        break
+      }
+    }
+    if (current !== null) {
+      selected = _session[current].ticket.map(item => Object.assign({}, item, {num: 0}))
+    }
+    this.setData({
+      selectedTicketLen: 0,
+      totalPrice: 0,
+      currentSession: current,
+      currentTickets: selected
+    })
+  },
+
+  countTicket: function (e) {
+    let tickets = JSON.parse(JSON.stringify(this.data.currentTickets))
+    let selectedTicketLen = 0
+    let total = 0
+    const {type, idx} = e.currentTarget.dataset
+    let ticket = tickets[idx]
+    let disabled = ticket.stock === 0 || (ticket.num <= 0 && type === 'minus') || (ticket.stock && ticket.num >= ticket.stock && type === 'add')
+    if (disabled) {
+      return false
+    }
+    tickets.forEach((item, index) => {
+      selectedTicketLen += index === idx ? (item.num + (type === 'minus' ? -1 : 1)) : item.num
+      total += index === idx ? ((item.num + (type === 'minus' ? -1 : 1)) * item.price) : (item.num * item.price)
+    })
+    let num = ticket.num + (type === 'minus' ? -1 : 1)
+    let _obj = {}
+    _obj.selectedTicketLength = selectedTicketLen
+    _obj.totalPrice = parseFloat(total.toFixed(2))
+    _obj['currentTickets[' + idx + '].num'] = num
+    this.setData(_obj)
+  },
+
+  toggleSession: function () {
+    const {showSession} = this.data
+    this.setData({
+      showSession: !showSession
+    })
+  },
+
+  order: function () {
+    this.toggleSession()
+    console.log('跳转下单页面')
+  },
+
+  viewAllComment: function () {
+    console.log('viewAllComment')
+  },
+
+  viewLocation: function (e) {
+    console.log('viewLocation')
+  },
+
+  viewBusinessCertification: function () { // 查看商家资质
+    console.log('viewBusinessCertification')
+  },
+
+  viewBusiness: function () { // 跳转到商家
+    console.log('viewBusiness')
   }
 })

@@ -3,21 +3,20 @@
   <view wx:if="{{topBorder}}" class='line-separator-h'></view>
   <view class='wrapper-content'>
     <view class='image-box'>
-      <image class='image' src="{{activity.image}}" mode="aspectFill"></image>
+      <image class='image' src="{{activity.cover_url}}" mode="aspectFill"></image>
       <view class="status status{{activity.status}}">{{activityStatusText[activity.status]}}</view>
     </view>
     <view class='right-box'>
       <view class='title'>{{activity.title}}</view>
       <view class='tags'>
-        <view wx:for="{{activity.tags}}" wx:for-index="idx" wx:for-item="tag" wx:key="name" class='tag'><text wx:if="{{tag.icon && tag.icon === 'location'}}" class='lutufont lutu-location'></text><text class='tag-text'>{{tag.name}}</text><view wx:if="{{(idx + 1) !== activity.tags.length}}" class='tag-line line-separator-v'></view></view>
+        <view wx:for="{{activity.tags}}" wx:for-index="idx" wx:for-item="tag" wx:key="label" class='tag'><text wx:if="{{tag.type && tag.type === 'address'}}" class='lutufont lutu-location'></text><text class='tag-text'>{{tag.label}}</text><view wx:if="{{(idx + 1) !== activity.tags.length}}" class='tag-line line-separator-v'></view></view>
       </view>
       <view style="flex:1;"></view>
       <view class='price-and-join'>
         <view class='price'>
-          <text>¥{{activity.price}}</text>
-          <text wx:if="{{activity.originPrice}}" style="font-size:28rpx;text-decoration:line-through;padding-top:6rpx;margin-left:10rpx">¥{{activity.originPrice}}</text>
+          <text wx:if="{{activity.min_price && activity.min_price > 0}}" class='actual-price'>¥{{activity.min_price}}</text><text wx:if="{{activity.price_num > 1 && activity.min_price && activity.min_price > 0}}" class='actual-price-qi'>起</text><text wx:if="{{!activity.min_price || activity.min_price == 0}}" class='actual-price'>免费</text>
         </view>
-        <view class='join'>累计{{activity.enter}}人报名</view>
+        <view class='join'>累计{{activity.join_num}}人报名</view>
       </view>
     </view>
   </view>

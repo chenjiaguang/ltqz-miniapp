@@ -1,3 +1,7 @@
 {
-  "usingComponents": {}
+  "navigationBarBackgroundColor": "#64B631",
+  "navigationBarTextStyle": "white",
+  "navigationBarTitleText": "收益明细",
+  "usingComponents": {
+  }
 }

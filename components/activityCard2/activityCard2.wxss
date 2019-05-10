@@ -123,6 +123,10 @@
   font-weight: bold;
   color: #F24724
 }
+.actual-price-qi{
+  padding-top: 6rpx;
+  font-size: 24rpx;
+}
 .join{
   font-size: 28rpx;
   color: #999999;

@@ -81,6 +81,7 @@ Component({
       })
     },
     setStar: function (e) {
+      this.triggerEvent('tap')
       if (!this.data.touchable) { // touchable -> 是否允许点击设置星星数
         return false
       }

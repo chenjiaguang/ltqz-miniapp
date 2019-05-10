@@ -1,3 +1,6 @@
 {
+  "navigationBarBackgroundColor": "#64B631",
+  "navigationBarTextStyle":"white",
+  "navigationBarTitleText": "提现记录",
   "usingComponents": {}
 }

@@ -1,2 +1,44 @@
-<!--pages/userprofitdetail/userprofitdetail.wxml-->
-<text>pages/userprofitdetail/userprofitdetail.wxml</text>
+<!--pages/userprofit/userprofit.wxml-->
+<view class='page-userprofit column ai-stretch'>
+  <view class='top-bg-box'></view>
+  <view class='main-box'>
+    <view class='card overview-box'>
+      <view class='all-profit column ai-center'>
+        <view class='title row ai-center'>
+          <text>全部订单收益</text>
+          <text class='unit'> (元)</text>
+        </view>
+        <view class='money bold'>{{all}}</view>
+        <view class='line-separator-h'></view>
+        <view class='shortcut-box'>
+          <view class='shortcut-item'>
+            <view class='shortcut-header'>
+              <text>已解冻收益</text>
+              <text class='unit'> (元)</text>
+            </view>
+            <view class='shortcut-amount bold'>{{cashabled}}</view>
+          </view>
+          <view class='shortcut-item'>
+            <view class='shortcut-header'>
+              <text>待解冻收益</text>
+              <text class='unit'> (元)</text>
+            </view>
+            <view class='shortcut-amount bold'>{{tobefree}}</view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <block wx:for="{{list}}">
+    <view class='card item-box column'>
+      <text class='item-title'>{{item.title}}</text>
+      <view class='line-separator-h'></view>
+      <text class='item-content'>{{item.content}}</text>
+      <text class='item-time'>{{item.time}}</text>
+    </view>
+  </block>
+
+  <image class='empty-img' src='/assets/images/userprofit.png' />
+  <text class='empty-text'>你还没有收益哦~</text>
+</view>

@@ -13,7 +13,7 @@ page {
 }
 
 .rate-box {
-  padding: 36rpx 30rpx;
+  padding: 36rpx 0;
 }
 
 .rate-title {
@@ -23,12 +23,13 @@ page {
 }
 
 .input {
-  margin: 0 30rpx 48rpx 30rpx;
+  margin: 0 0 48rpx 0;
   border-radius: 8rpx;
   border: 1rpx solid rgba(216, 216, 216, 1);
   font-size: 28rpx;
   padding: 20rpx;
   height: 240rpx;
+  width:unset;
 }
 
 .textarea-placeholder {
@@ -36,11 +37,10 @@ page {
 }
 
 .pics-box {
-  margin: 0 30rpx 60rpx 30rpx;
+  margin: 0 0 60rpx 0;
 }
 
 .btn {
-  margin: 0 30rpx 0 30rpx;
   height: 82rpx;
   line-height: 82rpx;
   background: #64b631;

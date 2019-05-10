@@ -30,6 +30,9 @@
   border-radius: 0 8rpx 8rpx 0;
   padding: 0 32rpx;
 }
+.actual-price-qi{
+  font-size: 28rpx;
+}
 .title{
   padding: 12rpx 32rpx 4rpx;
   font-size: 32rpx;
@@ -71,4 +74,6 @@
   font-size: 28rpx;
   line-height: 36rpx;
   color: #999999;
+  display: flex;
+  align-items: center;
 }

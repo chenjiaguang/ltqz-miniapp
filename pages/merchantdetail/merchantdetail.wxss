@@ -1,0 +1,86 @@
+/* pages/merchantdetail/merchantdetail.wxss */
+
+page{
+  background: #FFFFFF;
+}
+.page-goodsdetail{
+  background: #FFFFFF;
+}
+
+.top-overview{
+  background: #fff;
+}
+.banner{
+  display: block;
+  width: 100%;
+  height: 320rpx;
+}
+.merchant-info-wrapper{
+  display: block;
+  width: 686rpx;
+  margin: -126rpx auto 50rpx;
+  border-radius: 8rpx;
+  background: #fff;
+  box-shadow: 0 14rpx 60rpx -10rpx rgba(0,0,0,0.1);
+}
+.merchant-info{
+  width: 100%;
+  padding: 16rpx 32rpx 32rpx;
+  box-sizing: border-box;
+  display: flex;
+}
+.logo{
+  width: 140rpx;
+  height: 140rpx;
+  border-radius: 50%;
+  margin-right: 32rpx;
+  margin-top: 26rpx;
+}
+.merchant-right{
+  flex: 1;
+}
+.merchant-title{
+  font-size: 38rpx;
+  line-height: 46rpx;
+  padding-top: 12rpx;
+  color: #333;
+}
+.merchant-intro{
+  font-size: 26rpx;
+  line-height: 32rpx;
+  color: #666;
+  padding-top: 8rpx;
+}
+
+.comment-box{
+  height: 88rpx;
+  padding: 0 32rpx;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.comment-title{
+  font-size: 28rpx;
+  color: #666;
+}
+.star-box{
+  display: flex;
+  align-items: center;
+}
+.next-icon{
+  margin-left: 22rpx;
+  font-size: 26rpx;
+  color: #999;
+}
+
+.activity-box{
+  background: #fff;
+}
+.activity-header{
+  padding: 0 32rpx;
+  height: 88rpx;
+  display: flex;
+  align-items: center;
+  font-size: 28rpx;
+  color: #666;
+}

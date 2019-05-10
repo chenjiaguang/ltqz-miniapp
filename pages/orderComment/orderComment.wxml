@@ -3,7 +3,7 @@
   <activity-content data="{{data}}" />
 </view>
 
-<view class='card'>
+<view class='card column ai-stretch'>
   <view class='rate-box row ai-center'>
     <text class='rate-title'>评分</text>
     <ft-star-box score="{{5}}" showScoreText="{{false}}" />

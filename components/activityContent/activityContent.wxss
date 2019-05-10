@@ -1,7 +1,6 @@
 /* components/orderContent/orderContent.wxss */
 @import "../../app.wxss";
 .content {
-  padding: 0 4%;
   margin-top: 30rpx;
   margin-bottom: 30rpx;
 }

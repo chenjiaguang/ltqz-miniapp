@@ -1,2 +1,14 @@
-<!--pages/withdrawrecord/withdrawrecord.wxml 提现记录-->
-<text>pages/withdrawrecord/withdrawrecord.wxml</text>
+<view class='column ai-stretch'>
+  <block wx:for="{{list}}">
+    <view class='card row jc-space-between ai-center'>
+      <view class='column'>
+        <text class='item-title'>{{item.title}}</text>
+        <text class='item-time'>{{item.time}}</text>
+      </view>
+      <text class='item-money bold'>+{{item.money}}元</text>
+    </view>
+  </block>
+
+  <image class='empty-img' src='/assets/images/withdrawrecord.png' />
+  <text class='empty-text'>你还没有提现记录哦~</text>
+</view>

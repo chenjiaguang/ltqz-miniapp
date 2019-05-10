@@ -39,35 +39,31 @@ Page({
     recommendations: [
       {
         id: '1',
-        image: 'http://i1.bvimg.com/685753/2712acb6dc8bcd2b.jpg',
-        title: '活动标题',
-        intro: '活动介绍',
-        tags: [ // 活动标签
-          { name: '标签名称1', type: '1' },
-          { name: '标签名称2', type: '2' },
-          { name: '标签名称3', type: '3' },
-          { name: '标签名称4', type: '1' },
-          { name: '标签名称5', type: '2' }
+        title: '或是对佛撒的发阿善良大方',
+        desc: '活动描述',
+        tags: [
+          { type: 'class', label: '标签1' }
         ],
-        price: 0.05,
-        originPrice: 0.5,
-        enter: 100
+        cover_url: 'http://i1.bvimg.com/685753/69601cd97e8be3cb.jpg',
+        join_num: 200,
+        min_price: 49.9,
+        price_num: 1,
+        status: '1' // 状态：0为失效或已删除 | 1为报名中| 2为已满额未截止| 3为已截止未满额| 4为已截止且满额| 5为已结束
       },
       {
         id: '2',
-        image: 'http://i1.bvimg.com/685753/b9ba96284fff562b.jpg',
-        title: '活动标题2',
-        intro: '活动介绍2',
-        tags: [ // 活动标签
-          { name: '标签名称6', type: '1' },
-          { name: '标签名称7', type: '2' },
-          { name: '标签名称8', type: '3' },
-          { name: '标签名称9', type: '1' },
-          { name: '标签名称10', type: '3' }
+        title: '或是对佛撒的发阿善良大方',
+        desc: '活动描述',
+        tags: [
+          { type: 'class', label: '标签1' },
+          { type: 'location', label: '标签2' },
+          { type: 'address', label: '标签3' }
         ],
-        price: 0,
-        originPrice: 100,
-        enter: 0
+        cover_url: 'http://i1.bvimg.com/685753/69601cd97e8be3cb.jpg',
+        join_num: 30,
+        min_price: 99.9,
+        price_num: 2,
+        status: '1' // 状态：0为失效或已删除 | 1为报名中| 2为已满额未截止| 3为已截止未满额| 4为已截止且满额| 5为已结束
       }
     ],
     recommendationLoaded: true,

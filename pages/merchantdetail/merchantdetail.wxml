@@ -1,0 +1,34 @@
+<!--pages/merchantdetail/merchantdetail.wxml-->
+<view class='page-merchantdetail'>
+  <view class='top-overview'>
+    <image class='banner' mode="aspectFill" src="{{bg_pic_url}}"></image>
+    <view class='merchant-info-wrapper'>
+      <view class='merchant-info'>
+        <image class='logo' mode="aspectFill" src="{{logo_url}}"></image>
+        <view class='merchant-right'>
+          <view class='merchant-title'>{{name}}</view>
+          <view class='merchant-intro'>{{introduce}}</view>
+        </view>
+      </view>
+    </view>
+    <view class='line-separator-h'></view>
+    <view class='comment-box' catchtap="viewComment">
+      <text class='comment-title'>用户评价({{evalution_num}})</text>
+      <view class='star-box'>
+        <ft-star-box score="{{rate}}" size="{{30}}" catchtap="viewComment" />
+        <text class='next-icon lutufont lutu-location'></text>
+      </view>
+    </view>
+  </view>
+  <view class='block-separator'></view>
+  <view class='activity-box'>
+    <view class='activity-header'>
+      <text>全部活动{{(page && page.total && page.total > 0) ? ('(' + page.total + ')') : ''}}</text>
+    </view>
+    <view class='line-separator-h'></view>
+    <ft-list-loader visible="{{!activityLoaded}}" />
+    <ft-activity-card2 wx:for="{{activitys}}" wx:for-index="idx" wx:for-item="activity" wx:key="id" activity="{{activity}}" top-border="{{idx !== 0}}" catchactivitytap="activityTap" />
+    <ft-list-footer loaded="{{activityLoaded}}" loading="{{activityLoading}}" page="{{activityPage}}" show-no-more />
+    <ft-iphone-bottom-adapter />
+  </view>
+</view>

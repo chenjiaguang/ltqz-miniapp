@@ -7,11 +7,7 @@ Page({
   data: {
     user_avatar: '',
     user_name: '',
-    persons: [
-      {name: '辣妈', age: 24},
-      {name: '建厚', age: 2},
-      {name: '娜恩', age: 5},
-    ],
+    sex:'1',
     order_type: [
       { icon: 'http://i2.bvimg.com/685753/b5c05b9d420d8cc1.png', type: '1', title: '待付款'},
       { icon: 'http://i2.bvimg.com/685753/ffe5458de973c2bc.png', type: '2', title: '待参与'},

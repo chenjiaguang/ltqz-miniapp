@@ -40,18 +40,12 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 12,
+			"current": 4,
 			"list": [
 				{
 					"id": -1,
 					"name": "电子票",
 					"pathName": "pages/goodsticket/goodsticket",
-					"query": ""
-				},
-				{
-					"id": -1,
-					"name": "订单详情",
-					"pathName": "pages/orderdetail/orderdetail",
 					"query": ""
 				},
 				{
@@ -62,26 +56,8 @@
 				},
 				{
 					"id": -1,
-					"name": "个人中心",
-					"pathName": "pages/mine/mine",
-					"query": ""
-				},
-				{
-					"id": -1,
 					"name": "合伙人权益",
 					"pathName": "pages/bepartner/bepartner",
-					"query": ""
-				},
-				{
-					"id": -1,
-					"name": "收益详情",
-					"pathName": "pages/userprofitdetail/userprofitdetail",
-					"query": ""
-				},
-				{
-					"id": -1,
-					"name": "用户收益",
-					"pathName": "pages/userprofit/userprofit",
 					"query": ""
 				},
 				{
@@ -92,34 +68,88 @@
 				},
 				{
 					"id": -1,
-					"name": "评价管理",
-					"pathName": "pages/commentmanager/commentmanager",
-					"query": ""
-				},
-				{
-					"id": -1,
-					"name": "常用信息",
-					"pathName": "pages/usuallycontacts/usuallycontacts",
-					"query": ""
-				},
-				{
-					"id": -1,
 					"name": "活动列表",
 					"pathName": "pages/goodslist/goodslist",
 					"query": ""
 				},
 				{
 					"id": -1,
-					"name": "全部订单",
+					"name": "我的-首页",
+					"pathName": "pages/mine/mine",
+					"query": ""
+				},
+        {
+          "id": -1,
+          "name": "我的-个人资料",
+          "pathName": "pages/userinfo/userinfo",
+          "query": "",
+          "scene": null
+        },
+        {
+          "id": 4,
+          "name": "我的-常用信息",
+          "pathName": "pages/usuallycontacts/usuallycontacts",
+          "query": "",
+          "scene": null
+        },
+				{
+					"id": -1,
+					"name": "订单-全部订单",
 					"pathName": "pages/orderlist/orderlist",
 					"query": "",
 					"scene": null
 				},
 				{
 					"id": -1,
-					"name": "订单评价",
+					"name": "订单-订单详情",
+					"pathName": "pages/orderdetail/orderdetail",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "订单-订单评价",
 					"pathName": "pages/orderComment/orderComment",
+					"query": "",
 					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "订单-评价管理",
+					"pathName": "pages/commentmanager/commentmanager",
+					"query": ""
+				},
+				{
+					"id": 6,
+					"name": "收益-收益详情",
+					"pathName": "pages/userprofit/userprofit",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": 13,
+					"name": "收益-申请提现",
+					"pathName": "pages/requestcash/requestcash",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "收益-收益明细",
+					"pathName": "pages/userprofitdetail/userprofitdetail",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "收益-提现记录",
+					"pathName": "pages/withdrawrecord/withdrawrecord",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "商家详情",
+					"pathName": "pages/merchantdetail/merchantdetail"
 				}
 			]
 		}
