@@ -14,7 +14,7 @@ Component({
     },
     padding: {
       type: String,
-      value: '10rpx 26rpx'
+      value: '0 26rpx'
     },
     justify: { // 接受space-between、space-around、center、flex-star、flex-end
       type: String,
@@ -22,19 +22,19 @@ Component({
     },
     iconWidth: {
       type: String,
-      value: '94rpx'
+      value: '112rpx'
     },
     iconHeight: {
       type: String,
-      value: '94rpx'
+      value: '114rpx'
     },
     iconRadius: {
       type: String,
-      value: '40rpx'
+      value: '0'
     },
     iconBg: {
       type: String,
-      value: '#D8D8D8'
+      value: 'transparent'
     },
     textSize: {
       type: String,
@@ -46,7 +46,7 @@ Component({
     },
     textLineHeight: {
       type: String,
-      value: '64rpx'
+      value: '32rpx'
     },
     extraData: {
       type: Object,

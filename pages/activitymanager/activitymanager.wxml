@@ -1,2 +1,4 @@
 <!--pages/activitymanager/activitymanager.wxml-->
-<text>pages/activitymanager/activitymanager.wxml</text>
+<block wx:for="{{list}}">
+  <activity-card3 activity="{{item}}" />
+</block>

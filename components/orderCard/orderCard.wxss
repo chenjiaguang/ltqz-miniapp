@@ -47,7 +47,8 @@
 
 .btn-detail {
   color: #999;
-  border: 1rpx solid #979797;
+  border: 1rpx solid #999;
+  line-height: 48rpx;
 }
 
 .btn-online {
@@ -60,7 +61,7 @@
   background-color: #ff9500;
 }
 
-.btn-btn-comment {
+.btn-comment {
   color: #fff;
   background-color: #ff9500;
 }

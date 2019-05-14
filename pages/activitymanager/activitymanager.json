@@ -1,3 +1,8 @@
 {
-  "usingComponents": {}
+  "navigationBarBackgroundColor": "#64B631",
+  "navigationBarTextStyle": "white",
+  "navigationBarTitleText": "活动管理",
+  "usingComponents": {
+    "activity-card3": "../../components/activityCard3/activityCard3"
+  }
 }

@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/chenjiaguang/ltsys-miniapp#readme",
   "dependencies": {
+    "miniprogram-computed": "0.0.7",
     "wxministore": "^1.2.3"
   }
 }

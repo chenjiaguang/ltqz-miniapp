@@ -25,7 +25,7 @@ Component({
     },
     currentColor: {
       type: String,
-      value: '#FF9500'
+      value: '#64B631'
     },
     indicatorSize: {
       type: Object,

@@ -1,0 +1,13 @@
+<!--pages/selectuser/selectuser.wxml-->
+<view class='column'>
+  <text class='head'>请选择你要登录的商家账号</text>
+  <block wx:for="{{list}}">
+    <view class='card row ai-center jc-between' bindtap='goBusiness' hover-stop-propagation hover-class='card-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
+      <view class='content column'>
+        <text class='username'>{{item.username}}</text>
+        <text class='time'>{{item.create_at}}</text>
+      </view>
+      <text class='lutufont lutu-next'></text>
+    </view>
+  </block>
+</view>

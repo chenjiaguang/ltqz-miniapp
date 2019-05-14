@@ -5,7 +5,7 @@
     <view class='card overview-box'>
       <view class='all-profit column ai-center'>
         <view class='title row ai-center'>
-          <text>全部订单收益</text>
+          <text>总收益</text>
           <text class='unit'> (元)</text>
         </view>
         <view class='money bold'>{{all}}</view>

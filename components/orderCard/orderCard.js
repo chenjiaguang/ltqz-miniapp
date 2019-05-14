@@ -21,6 +21,23 @@ Component({
    * 组件的方法列表
    */
   methods: {
+    goDetail() {
+      wx.navigateTo({
+        url: '/pages/orderdetail/orderdetail'
+      })
+    },
+    goComment() {
+      wx.navigateTo({
+        url: '/pages/orderComment/orderComment'
+      })
+    },
+    goPay() {
 
+    },
+    goTicket() {
+      wx.navigateTo({
+        url: '/pages/goodsticket/goodsticket'
+      })
+    }
   }
 })

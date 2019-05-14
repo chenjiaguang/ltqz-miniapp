@@ -1,2 +1,29 @@
 <!--pages/userinfo/userinfo.wxml-->
-<text>pages/userinfo/userinfo.wxml</text>
+<view class='card'>
+  <view class='item row ai-center jc-between'>
+    <text class='title'>头像</text>
+    <image class='avatar' src="{{avatar}}" mode="aspectFill"></image>
+  </view>
+  <view class='line-separator-h'></view>
+  <view class='item row ai-center jc-between'>
+    <text class='title'>昵称</text>
+    <text class='value'>{{username}}</text>
+  </view>
+  <view class='line-separator-h'></view>
+  <view class='item row ai-center jc-between'>
+    <text class='title'>手机号</text>
+    <text class='value'>{{phone}}</text>
+  </view>
+  <view class='line-separator-h'></view>
+  <view class='item row ai-center jc-between'>
+    <text class='title'>性别</text>
+    <picker range="{{genderRange}}" range-key="title" bindchange="genderChange" class='value flex1' value="{{sex === '1' ? 0 : 1}}" data-type="1" data-idx="{{idx}}">
+      <view class='row ai-center jc-end'>
+        <text class='sex-text input-placeholder' wx:if="{{sex==0}}">请选择性别</text>
+        <text class='sex-text' wx:else>{{gender_text[sex]}}</text>
+        <text class='lutufont lutu-next2'></text>
+      </view>
+    </picker>
+  </view>
+</view>
+<view class="btn" catchtap="">保存</view>

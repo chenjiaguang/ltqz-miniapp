@@ -1,53 +1,73 @@
 /* pages/usuallycontacts/usuallycontacts.wxss */
 
-page{
-  background: #F5F5F5;
+.header {
+  height: 70rpx;
+  margin-left: 4%;
+  margin-right: 4%;
 }
-.header{
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+
+.header-text {
+  font-size: 30rpx;
+  color: #333;
 }
-.contact-item{
-  background: #fff;
-  width: 92%;
-  margin: 20rpx auto 0;
+
+.add-btn {
+  color: #64b631;
+  font-size: 30rpx;
 }
-.contact-item:first-child{
+
+.card:first-child {
   margin-top: 0;
 }
-.name-context, .gender-context, .idcard-context{
-  display: flex;
-  height: 88rpx;
-  align-items: center;
-}
-.name-title, .gender-title, .idcard-title{
-  width: 200rpx;
-}
-.name-content, .gender-content, .idcard-content{
-  flex: 1;
-  height: 100%;
-}
-.gender-picker{
-  flex: 1;
-  overflow: hidden;
-}
-.gender-content{
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 88rpx;
-}
-.lutu-xinghao{
-  font-size: 24rpx;
+
+.xinhao {
   color: red;
 }
-.delete-btn{
-  width: 100rpx;
-  height: 68rpx;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 0 auto;
+
+.item {
+  height: 80rpx;
+}
+
+.key {
+  font-size: 28rpx;
+  color: #666;
+  width: 174rpx;
+}
+
+.value {
+  font-size: 28rpx;
+  color: #333;
+}
+
+.line-separator-h {
+  margin-left: -30rpx;
+  margin-right: -30rpx;
+  width: unset;
+}
+
+.delete-btn {
   color: red;
+  font-size: 32rpx;
+}
+
+.input-placeholder {
+  color: #ccc;
+}
+
+.lutu-next2 {
+  font-size: 25rpx;
+  color: #999;
+}
+
+.save-btn {
+  margin-top: 60rpx;
+  color: #fff;
+  text-align: center;
+  height: 82rpx;
+  line-height: 82rpx;
+  border-radius: 8rpx;
+  background-color: #64b631;
+  font-size: 36rpx;
+  margin-left: 4%;
+  margin-right: 4%;
 }

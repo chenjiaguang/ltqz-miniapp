@@ -1,7 +1,7 @@
 <!--components/orderCard/orderCard.wxml-->
-<view class='card wrapper'>
-  <view class='head row jc-space-between ai-center'>
-    <text class='state state0' wx:if="{{item.state==0}}">待参与</text>
+<view class='card wrapper' bindtap='goDetail' hover-stop-propagation hover-class='card-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
+  <view class='head row jc-between ai-center'>
+    <text class='state state0' wx:if="{{item.state==0}}">待使用</text>
     <text class='state state1' wx:if="{{item.state==1}}">待付款</text>
     <text class='state state2' wx:if="{{item.state==2}}">待评价</text>
     <text class='state state3' wx:if="{{item.state==3}}">已完成</text>
@@ -9,12 +9,13 @@
     <text class='money bold'>¥49.9</text>
   </view>
   <view class='line-separator-h'></view>
-  <activity-content data="{{item}}"/>
-  <view class='line-separator-h'></view>
-  <view class='foot row jc-end ai-center'>
-    <text class='btn btn-detail'>订单详情</text>
-    <text class='btn btn-online' wx:if="{{item.state==0}}">电子票</text>
-    <text class='btn btn-pay' wx:if="{{item.state==1}}">立即支付</text>
-    <text class='btn btn-comment' wx:if="{{item.state==2}}">去评价</text>
+  <activity-content data="{{item}}" />
+  <view wx:if="{{item.state==0||item.state==1||item.state==2}}">
+    <view class='line-separator-h'></view>
+    <view class='foot row jc-end ai-center'>
+      <text class='btn btn-online' wx:if="{{item.state==0}}" bindtap='goTicket' hover-stop-propagation>电子票</text>
+      <text class='btn btn-pay' wx:if="{{item.state==1}}" bindtap='goPay' hover-stop-propagation>立即支付</text>
+      <text class='btn btn-comment' wx:if="{{item.state==2}}" bindtap='goComment' hover-stop-propagation>去评价</text>
+    </view>
   </view>
 </view>

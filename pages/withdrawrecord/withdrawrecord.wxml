@@ -1,6 +1,6 @@
 <view class='column ai-stretch'>
   <block wx:for="{{list}}">
-    <view class='card row jc-space-between ai-center'>
+    <view class='card row jc-between ai-center'>
       <view class='column'>
         <text class='item-title'>{{item.title}}</text>
         <text class='item-time'>{{item.time}}</text>

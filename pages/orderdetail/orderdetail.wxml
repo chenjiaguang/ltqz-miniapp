@@ -1,10 +1,21 @@
 <!--pages/orderdetail/orderdetail.wxml-->
 <view class='page-orderdetail'>
-  <view class='left-time'>剩余支付时间09:12</view>
+  <view class='left-time' wx:if="{{false}}">剩余支付时间09:12</view>
   <view class='pay'>立即支付</view>
   <view class='ticket'>查看电子票</view>
-  <view class='title'>订单信息</view>
+  <view class='row goods'>
+    <image class='goods-cover' src="{{goods_info.cover}}" mode="aspectFill"></image>
+    <view class='goods-content flex1 column'>
+      <text class='goods-title bold'>{{goods_info.name}}</text>
+      <text class='goods-time'>{{goods_info.start_time}} 至 {{goods_info.end_time}}</text>
+      <text class='goods-location'>{{(goods_info.location && goods_info.location.text) ? goods_info.location.text : ''}}</text>
+    </view>
+    <text class='lutufont lutu-next2'></text>
+  </view>
+
   <view class='list'>
+    <view class='title'>订单信息</view>
+    <view class='line-separator-h'></view>
     <view class='item row'>
       <span class='key'>活动名称</span>
       <span class='value'>{{goods_info.name}}</span>
@@ -16,7 +27,7 @@
     </view>
     <view class='line-separator-h'></view>
     <view class='item row'>
-      <span class='key'>活动时间</span>
+      <span class='key'>活动场次</span>
       <span class='value'>{{goods_info.start_time}} 至 {{goods_info.end_time}}</span>
     </view>
     <view class='line-separator-h'></view>
@@ -27,7 +38,7 @@
     <view class='line-separator-h'></view>
     <view class='item row'>
       <span class='key'>实付金额</span>
-      <span class='value'>¥{{goods_info.actual_price}}</span>
+      <span class='value'>¥{{goods_info.actual_price}}(费用包含保险)</span>
     </view>
     <view class='line-separator-h'></view>
     <view class='item row'>
@@ -41,8 +52,9 @@
     </view>
   </view>
 
-  <view class='title'>联系人信息</view>
   <view class='list'>
+    <view class='title'>联系人信息</view>
+    <view class='line-separator-h'></view>
     <view class='item row'>
       <span class='key'>姓名</span>
       <span class='value'>{{user_info.username}}</span>

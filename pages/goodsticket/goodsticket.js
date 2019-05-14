@@ -5,24 +5,28 @@ Page({
    * 页面的初始数据
    */
   data: {
-    hexiao_status_text: {
+    huodong: {
+      title: '【穿行艺术】城市里的博物馆，外滩历险记（银行一条街）',
+      valid_btime: '2019-07-13',
+      valid_etime: '2020-01-01',
+      address: '北京市朝阳区 马桥路甲40号二十一世纪大北京市朝阳区 马桥路甲40号二十一世纪大'
+    },
+    hexiao_status_text: { // -1为失效订单|0为待付款|1为待参与|2为待评价|3已评价(当status为2或3时视为已核销)
+      '-1': '未核销',
+      0: '未核销',
       1: '未核销',
-      2: '已核销'
+      2: '已核销',
+      3: '已核销'
     },
-    qrcode: 'http://i1.bvimg.com/685753/bab59bb9490c8494.jpg',
-    deadline: '2020-04-25',
-    hexiao_status: '1', // 1表示未核销、2表示已核销
-    hexiao_time: '',
+    ticket: [
+      {name: 'piao1', quantity: 2},
+      {name: 'piao2', quantity: 1}
+    ],
+    ticked_num_text: '',
+    qr_code_url: 'http://i1.bvimg.com/685753/bab59bb9490c8494.jpg',
+    status: '1',
+    checked_time: '',
     hexiao_staff: '',
-    out_of_time: false, // 是否过期
-    commented: false, // 是否已评价
-    name: '【穿行艺术】城市里的博物馆，外滩历险记（银行一条街）',
-    location: {
-      text: '北京市朝阳区 马桥路甲40号二十一世纪大北京市朝阳区 马桥路甲40号二十一世纪大',
-      lnglat: ['116.40', '39.90']
-    },
-    start_time: '2019-07-13',
-    end_time: '2020-01-01',
     submitting: false
   },
 
@@ -30,7 +34,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    this.initTicketNumText(this.data.ticket)
   },
 
   /**
@@ -97,5 +101,16 @@ Page({
   },
   goComment: function () { // 跳转去评价页面
     console.log('goComment')
+  },
+  initTicketNumText: function (tickets) {
+    let text = ''
+    if (tickets && tickets[0]) {
+      tickets.forEach((item, idx) => {
+        text += (idx === 0 ? (item.name + 'x' + item.quantity) : ('，' + item.name + 'x' + item.quantity))
+      })
+    }
+    this.setData({
+      ticked_num_text: text
+    })
   }
 })

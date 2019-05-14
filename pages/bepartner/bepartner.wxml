@@ -1,6 +1,7 @@
 <!--pages/bepartner/bepartner.wxml-->
 <view class='page-bepartner'>
   <view class="banner"></view>
+  <button>f5f5f5</button>
   <view class='partner-rights'>
     合伙人权益
   </view>

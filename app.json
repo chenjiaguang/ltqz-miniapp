@@ -24,12 +24,17 @@
     "pages/activitymanager/activitymanager",
     "pages/commentmanager/commentmanager",
     "pages/orderComment/orderComment",
-    "pages/merchantdetail/merchantdetail"
+    "pages/merchantdetail/merchantdetail",
+    "pages/ordersubmit/ordersubmit",
+    "pages/editcontact/editcontact",
+    "pages/signupmanager/signupmanager",
+    "pages/selectuser/selectuser"
   ],
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "WeChat",
+    "backgroundColor":"#f5f5f5",
+    "navigationBarTitleText": "路途",
     "navigationBarTextStyle": "black"
   },
   "tabBar": {

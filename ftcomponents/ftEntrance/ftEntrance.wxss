@@ -1,32 +1,37 @@
 /* components/ftEntrance/ftEntrance.wxss */
 @import "../../assets/styles/ft-icon.wxss";
 
-.entrance-wrapper{
+.entrance-wrapper {
   width: 100%;
   flex-shrink: 0;
   flex-grow: 0;
   align-self: stretch;
   position: relative;
+  border-radius: 6rpx;
 }
-.entrance-box{
-  height: 104rpx;
+
+.entrance-box {
+  height: 78rpx;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
-.entrance-image{
+
+.entrance-image {
   display: block;
   width: 60rpx;
   height: 60rpx;
   flex-shrink: 0;
   margin-right: 32rpx;
 }
-.c-icon-xinghao{
+
+.c-icon-xinghao {
   font-size: 20rpx;
-  color: #F24724;
+  color: #f24724;
   margin-right: 20rpx;
 }
-.entrance-title{
+
+.entrance-title {
   flex: 1;
   font-size: 30rpx;
   color: #333;
@@ -35,9 +40,10 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.entrance-sub-title{
-  font-size: 32rpx;
-  color: #6E6E6E;
+
+.entrance-sub-title {
+  font-size: 28rpx;
+  color: #333;
   max-width: 30%;
   white-space: nowrap;
   overflow: hidden;
@@ -46,53 +52,61 @@
   flex-grow: 0;
   margin-left: 22rpx;
 }
-.entrance-sub-image-box{
+
+.entrance-sub-image-box {
   display: block;
   width: 70rpx;
   height: 70rpx;
   flex-shrink: 0;
   flex-grow: 0;
-  margin-left:22rpx;
+  margin-left: 22rpx;
   border-radius: 50%;
   position: relative;
   overflow: hidden;
 }
-.entrance-sub-image{
+
+.entrance-sub-image {
   display: block;
   width: 100%;
   height: 100%;
 }
-.entrance-sub-image-mask{
+
+.entrance-sub-image-mask {
   width: 100%;
   height: 100%;
   position: absolute;
   left: 0;
   top: 0;
   z-index: 1;
-  background: rgba(0,0,0,0.4);
+  background: rgba(0, 0, 0, 0.4);
   animation: opacityChange 1s ease-in-out infinite;
   animation-direction: alternate;
 }
+
 @keyframes opacityChange {
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
 }
-.c-icon-next{
+
+.c-icon-next {
   display: block;
   font-size: 24rpx;
   margin-right: -6rpx;
   margin-left: 22rpx;
   overflow: visible;
-  color: #666;
-}
-.c-icon-next.disabled{
   color: #999;
 }
-.hover-bg{
+
+.c-icon-next.disabled {
+  color: #ccc;
+}
+
+.hover-bg {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -102,17 +116,20 @@
   background: #000;
   opacity: 0;
 }
-.hover{
+
+.hover {
   opacity: 0.1;
 }
-.hover-disabled{
+
+.hover-disabled {
   opacity: 0;
 }
+
 .line-separator-h {
-  width: 100%;
   height: 1px;
   background: #e5e5e5;
   transform: scaleY(0.5);
+  margin-left: 30rpx;
 }
 
 .line-separator-v {
@@ -124,7 +141,6 @@
 
 @media screen and (min-resolution: 2dppx) {
   .line-separator-h {
-    width: 100%;
     height: 1rpx;
     background: #e5e5e5;
   }

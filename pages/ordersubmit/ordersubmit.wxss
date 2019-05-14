@@ -1,0 +1,336 @@
+/* pages/ordersubmit/ordersubmit.wxss */
+
+page{
+  background: #F5F5F5;
+}
+.page-ordersubmit{
+  background: #F5F5F5;
+}
+.goods-info{
+  padding-left: 32rpx;
+  background: #fff;
+}
+.title{
+  font-size: 32rpx;
+  line-height: 46rpx;
+  color: #333;
+  font-weight: bold;
+  padding: 10rpx 32rpx 0 0;
+}
+.address{
+  font-size: 24rpx;
+  color: #666;
+  line-height: 34rpx;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  padding: 10rpx 32rpx 0 0;
+}
+.valid-time {
+  font-size: 24rpx;
+  color: #666;
+  line-height: 34rpx;
+  padding: 10rpx 32rpx 0 0;
+}
+
+.tickets-box{
+  padding: 27rpx 32rpx 26rpx 0;
+}
+.amount{
+  font-size: 28rpx;
+  color: #333;
+  line-height: 34rpx;
+  font-weight: bold;
+}
+.ticket-info{
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  font-size: 24rpx;
+  color: #333;
+  line-height: 34rpx;
+  padding: 7rpx 32rpx 0 0;
+}
+.tags-box{
+  padding: 7rpx 32rpx 0 0;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.tag-item{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #EFF7EB;
+  font-size: 24rpx;
+  color: #64B631;
+  height: 36rpx;
+  padding: 0 8rpx;
+  margin: 5rpx 16rpx 5rpx 0;
+  border-radius: 2rpx;
+}
+
+.buy-for{
+  padding: 20rpx 32rpx;
+  background: #fff;
+}
+.buy-for-header{
+  font-size: 32rpx;
+  line-height: 52rpx;
+  color: #333;
+  font-weight: bold;
+}
+.buy-for-body{
+  display: flex;
+  align-items: center;
+}
+.buy-for-left{
+  flex: 1;
+}
+.buy-for-icon{
+  font-size: 26rpx;
+  color: #999
+}
+.buy-for-placeholder{
+  font-size: 28rpx;
+  color: #ccc;
+  line-height: 48rpx;
+  padding-right: 20rpx;
+}
+.buy-for-item-view{
+  display: flex;
+  align-items: center;
+  font-size: 28rpx;
+  color: #333;
+  padding-right: 20rpx;
+  height: 64rpx;
+}
+.buy-for-view-name{
+  min-width: 116rpx;
+}
+.buy-for-item-text{
+  font-size: 28rpx;
+  line-height: 48rpx;
+  color: #333;
+  padding-right: 20rpx;
+}
+
+.contact-info{
+  padding: 10rpx 32rpx;
+  background: #fff;
+}
+.contact-header{
+  font-size: 32rpx;
+  line-height: 72rpx;
+  color: #333;
+  font-weight: bold;
+}
+.contact-name, .contact-phone{
+  height: 68rpx;
+  display: flex;
+  align-items: center;
+}
+.contact-name-title, .contact-phone-title{
+  min-width: 116rpx;
+  font-size: 28rpx;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+.contact-name-input, .contact-phone-input{
+  font-size: 28rpx;
+  color: #333;
+  flex: 1;
+}
+.input-placeholder{
+  color: #ccc;
+  font-weight: normal;
+}
+
+.clause-box{
+  padding: 10rpx 32rpx;
+  font-size: 24rpx;
+  line-height: 34rpx;
+  color: #666;
+  text-align: center;
+  margin-top: 175rpx;
+}
+.clause-icon{
+  font-size: 24rpx;
+  color: #64B631;
+  margin-right: 6rpx;
+}
+.clause-icon.disabled{
+  color: #666666;
+}
+.clause-text{
+  color: #64B631;
+}
+
+/* 底部按钮 */
+.bottom-button-wrapper{
+  overflow: visible;
+}
+.bottom-button{
+  position: fixed;
+  width: 100%;
+  left: 0;
+  bottom: 0;
+  z-index: 2;
+}
+.bottom-button-content{
+  display: flex;
+  height: 100rpx;
+  background: #fff;
+}
+.total-box{
+  width: 450rpx;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  padding-left: 32rpx;
+}
+.total-text{
+  font-size: 24rpx;
+  color: #333;
+  margin-right: 15rpx;
+}
+
+.total-amout{
+  font-size: 46rpx;
+  color: #F24724;
+}
+.submit-btn{
+  flex: 1;
+  border: none;
+  border-radius: 0;
+  font-size: 36rpx;
+  color: #fff;
+  background: #64B631;
+}
+.submit-btn:after, .submit-btn:before{
+  display: none;
+}
+button.submit-btn.disabled{
+  background: #B8B8B8;
+  color: #fff;
+}
+
+.buyfor-wrapper{
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  bottom: 0;
+  z-index: -1;
+  visibility: hidden;
+}
+.buyfor-wrapper.show{
+  z-index: 3;
+  visibility: visible;
+}
+.buyfor-mask{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  bottom: 0;
+  background: transparent;
+  transition: background 200ms;
+}
+.buyfor-mask.show{
+  background: rgba(0,0,0,0.65);
+}
+.buyfor-context{
+  border-radius: 12rpx 12rpx 0 0;
+  background: #fff;
+  padding: 0;
+  position: absolute;
+  width: 100%;
+  left: 0;
+  bottom: 0;
+  transform: translateY(100%);
+  transition: transform 200ms;
+}
+.buyfor-context.show{
+  transform: translateY(0);
+}
+.buyfor-header{
+  height: 88rpx;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 32rpx;
+  padding: 0 32rpx;
+  background: #F5F5F5;
+}
+.cancel{
+  color: #333;
+}
+.confirm{
+  color: #333;
+  font-weight: bold;
+}
+.new-buyfor{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 80rpx;
+}
+.new-icon{
+  font-size: 38rpx;
+  color: #64B631;
+  margin-right: 10rpx;
+}
+.new-text{
+  font-size: 36rpx;
+  color: #64B631;
+}
+.buyfors{
+  max-height: 400rpx;
+}
+.buyfor-item-wrapper{
+  position: relative;
+}
+.buyfor-item{
+  height: 100rpx;
+  padding: 0 32rpx;
+  display: flex;
+  justify-content: space-between;
+  overflow: hidden;
+}
+.buyfor-check-icon{
+  width: 32rpx;
+  height: 32rpx;
+  margin-right: 10rpx;
+  color: #D8D8D8;
+  margin-top: 16rpx;
+}
+.buyfor-check-icon.checked{
+  color: #64B631;
+}
+.buyfor-center{
+  flex: 1;
+}
+.buyfor-name{
+  font-size: 28rpx;
+  line-height: 40rpx;
+  color: #333;
+  font-weight: bold;
+  padding-top: 12rpx;
+}
+.buyfor-idcard{
+  font-size: 24rpx;
+  line-height: 36rpx;
+  color: #999;
+}
+.buyfor-idcard.disabled{
+  color: #FF3A30
+}
+.wirte-icon{
+  font-size: 34rpx;
+  color: #64B631;
+  align-self: center;
+}

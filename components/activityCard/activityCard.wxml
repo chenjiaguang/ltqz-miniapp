@@ -1,5 +1,5 @@
 <!--components/activityCard/activityCard.wxml-->
-<view class='wrapper' catchtap="boxTap" hover-stop-propagation hover-class='touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
+<view class='wrapper' catchtap="boxTap" hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
   <image class='cover' src="{{activity.cover_url}}" mode="aspectFill"></image>
   <view class='price-tag'>
     <text wx:if="{{activity.min_price && activity.min_price > 0}}" class='actual-price'>¥{{activity.min_price}}</text><text wx:if="{{activity.price_num > 1 && activity.min_price && activity.min_price > 0}}" class='actual-price-qi'>起</text><text wx:if="{{!activity.min_price || activity.min_price == 0}}" class='actual-price'>免费</text>

@@ -1,8 +1,8 @@
 /* components/orderContent/orderContent.wxss */
 @import "../../app.wxss";
 .content {
-  margin-top: 30rpx;
-  margin-bottom: 30rpx;
+  padding-top: 30rpx;
+  padding-bottom: 30rpx;
 }
 
 .cover {
@@ -24,17 +24,10 @@
   margin-bottom: 20rpx;
 }
 
-.location {
-  display: block;
-  color: #999;
-  font-size: 24rpx;
-  line-height: 24rpx;
-  margin-bottom: 10rpx;
-}
 
 .time {
   display: block;
-  color: #999;
+  color: #333;
   font-size: 24rpx;
   line-height: 24rpx;
   margin-bottom: 10rpx;
@@ -43,6 +36,14 @@
 .tickets {
   display: block;
   color: #333;
+  font-size: 24rpx;
+  line-height: 24rpx;
+  margin-bottom: 10rpx;
+}
+
+.location {
+  display: block;
+  color: #999;
   font-size: 24rpx;
   line-height: 24rpx;
 }

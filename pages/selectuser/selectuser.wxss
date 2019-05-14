@@ -1,0 +1,32 @@
+/* pages/selectuser/selectuser.wxss */
+
+.card {
+  padding-top: 24rpx;
+  padding-bottom: 24rpx;
+}
+
+.head {
+  height: 84rpx;
+  background: #fff;
+  line-height: 84rpx;
+  text-align: center;
+  font-size: 30rpx;
+}
+
+.username {
+  font-size: 30rpx;
+  line-height: 30rpx;
+  color: #333;
+  margin-bottom: 14rpx;
+}
+
+.time {
+  font-size: 24rpx;
+  line-height: 24rpx;
+  color: #999;
+}
+
+.lutu-next {
+  font-size: 25rpx;
+  color: #999;
+}

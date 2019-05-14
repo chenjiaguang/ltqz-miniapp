@@ -40,58 +40,28 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 4,
+			"current": 14,
 			"list": [
-				{
-					"id": -1,
-					"name": "电子票",
-					"pathName": "pages/goodsticket/goodsticket",
-					"query": ""
-				},
-				{
-					"id": -1,
-					"name": "活动详情",
-					"pathName": "pages/goodsdetail/goodsdetail",
-					"query": ""
-				},
-				{
-					"id": -1,
-					"name": "合伙人权益",
-					"pathName": "pages/bepartner/bepartner",
-					"query": ""
-				},
-				{
-					"id": -1,
-					"name": "商家助手",
-					"pathName": "pages/businessassistant/businessassistant",
-					"query": ""
-				},
-				{
-					"id": -1,
-					"name": "活动列表",
-					"pathName": "pages/goodslist/goodslist",
-					"query": ""
-				},
 				{
 					"id": -1,
 					"name": "我的-首页",
 					"pathName": "pages/mine/mine",
 					"query": ""
 				},
-        {
-          "id": -1,
-          "name": "我的-个人资料",
-          "pathName": "pages/userinfo/userinfo",
-          "query": "",
-          "scene": null
-        },
-        {
-          "id": 4,
-          "name": "我的-常用信息",
-          "pathName": "pages/usuallycontacts/usuallycontacts",
-          "query": "",
-          "scene": null
-        },
+				{
+					"id": -1,
+					"name": "我的-个人资料",
+					"pathName": "pages/userinfo/userinfo",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": 2,
+					"name": "我的-常用联系人",
+					"pathName": "pages/usuallycontacts/usuallycontacts",
+					"query": "",
+					"scene": null
+				},
 				{
 					"id": -1,
 					"name": "订单-全部订单",
@@ -147,9 +117,69 @@
 					"scene": null
 				},
 				{
+					"id": 1,
+					"name": "商助-首页",
+					"pathName": "pages/businessassistant/businessassistant",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "商助-活动管理",
+					"pathName": "pages/activitymanager/activitymanager",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": 18,
+					"name": "商助-核销码设置",
+					"pathName": "pages/hexiaosetting/hexiaosetting",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": 14,
+					"name": "商助-报名详情",
+					"pathName": "pages/signupmanager/signupmanager",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "商助-选择账号",
+					"pathName": "pages/selectuser/selectuser",
+					"query": "",
+					"scene": null
+				},
+				{
 					"id": -1,
 					"name": "商家详情",
-					"pathName": "pages/merchantdetail/merchantdetail"
+					"pathName": "pages/merchantdetail/merchantdetail",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "电子票",
+					"pathName": "pages/goodsticket/goodsticket",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "活动详情",
+					"pathName": "pages/goodsdetail/goodsdetail",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "合伙人权益",
+					"pathName": "pages/bepartner/bepartner",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "活动列表",
+					"pathName": "pages/goodslist/goodslist",
+					"query": ""
 				}
 			]
 		}

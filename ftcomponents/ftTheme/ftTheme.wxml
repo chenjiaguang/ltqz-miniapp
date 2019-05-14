@@ -2,7 +2,7 @@
 <view class='wrapper'>
   <scroll-view wx:if="{{themes && themes.length > 1}}" scroll-x class='theme-wrapper'>
     <view class='left-spacing' style="width:{{paddingLeft}}"></view>
-    <view wx:for="{{themes}}" wx:for-index="idx" wx:for-item="theme" wx:key="id" class='theme-box' style="margin-left:{{idx === 0 ? 0 : spacing}};margin-top:{{paddingTop}};margin-bottom:{{paddingBottom}}" catchtap="themeTap" data-theme="{{theme}}" hover-stop-propagation hover-class='touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
+    <view wx:for="{{themes}}" wx:for-index="idx" wx:for-item="theme" wx:key="id" class='theme-box' style="margin-left:{{idx === 0 ? 0 : spacing}};margin-top:{{paddingTop}};margin-bottom:{{paddingBottom}}" catchtap="themeTap" data-theme="{{theme}}" hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
       <view class='image-box'>
         <view wx:if="{{theme.tags && theme.tags[0]}}" class='tag'><text>{{theme.tags[0]}}</text></view>
         <image class='cover' mode="aspectFill" src="{{theme.image}}"></image>

@@ -20,11 +20,12 @@
     </view>
     <view wx:if="{{comment.goods && comment.goods.id}}" class='goods'>{{comment.goods.title}}</view>
 
-    <view class='triangle-up' wx:if="{{comment.reply}}"></view>
     <view class='reply-container' wx:if="{{comment.reply}}">
+      <view class='triangle-up'></view>
       <text class='reply bold'>商家回复：</text>
       <text class='reply'>{{comment.reply}}</text>
     </view>
+    <view wx:if="{{!comment.reply}}" class='reply-btn' bindtap='reply'>回复</view>
   </view>
   <view wx:if="{{bottomBorder}}" class='line-separator-h'></view>
 </view>

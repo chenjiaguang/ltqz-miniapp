@@ -1,9 +1,4 @@
 /* pages/userprofit/userprofit.wxss */
-
-page {
-  background: #f5f5f5;
-}
-
 .page-userprofit {
 }
 
@@ -63,14 +58,14 @@ page {
 }
 
 .shortcut-header {
-  font-size: 24rpx;
-  line-height: 24rpx;
+  font-size: 26rpx;
+  line-height: 26rpx;
   margin-bottom: 22rpx;
   color: #666;
 }
 
 .shortcut-header .unit {
-  font-size: 24rpx;
+  font-size: 26rpx;
   color: #999;
 }
 
@@ -84,22 +79,6 @@ page {
   border-left: none;
 }
 
-.withdraw-btn {
-  height: 82rpx;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: #64b631;
-  margin-top: 41rpx;
-  font-size: 36rpx;
-  color: #fff;
-  border-width: 0;
-  border-radius: 6rpx;
-}
-
-.withdraw-btn.disabled {
-  background: #999;
-}
 
 
 .item-title {

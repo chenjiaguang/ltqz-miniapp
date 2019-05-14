@@ -1,0 +1,79 @@
+/* pages/signupmanager/signupmanager.wxss */
+
+.container {
+  background-color: #fff;
+}
+
+.head {
+  padding-left: 30rpx;
+  padding-right: 30rpx;
+  height: 105rpx;
+  font-size: 32rpx;
+  color: #333;
+  font-weight: bold;
+}
+
+.usernum {
+  margin-right: 30rpx;
+}
+
+.box {
+  padding: 36rpx 30rpx;
+}
+
+.avatar {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+  margin-right: 20rpx;
+}
+
+.username {
+  font-size: 34rpx;
+  line-height: 34rpx;
+  color: #333;
+  margin-bottom: 12rpx;
+}
+
+.content {
+  font-size: 28rpx;
+  line-height: 28rpx;
+  color: #999;
+  margin-bottom: 16rpx;
+}
+
+.state {
+  font-size: 24rpx;
+  line-height: 36rpx;
+  height: 36rpx;
+  border-radius: 8rpx;
+  border: 2rpx solid #ccc;
+  padding-left: 10rpx;
+  padding-right: 10rpx;
+  color: #ccc;
+}
+
+.state0 {
+  color: #64b631;
+  border-color: #64b631;
+}
+
+.lutu-tel2 {
+  margin-left: 20rpx;
+  font-size: 70rpx;
+  color: #64b631;
+  align-self: center;
+}
+
+.btn {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  font-size: 36rpx;
+  color: #fff;
+  height: 100rpx;
+  background-color: #64b631;
+  text-align: center;
+  line-height: 100rpx;
+}

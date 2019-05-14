@@ -5,6 +5,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    index: 0,
     tabs: [{
       title: '全部',
       list: [],
@@ -18,7 +19,7 @@ Page({
       loaded: false,
       loading: false
     }, {
-      title: '待参与',
+      title: '待使用',
       list: [],
       page: {},
       loaded: false,
@@ -83,6 +84,9 @@ Page({
    */
   onLoad: function(options) {
     console.log('orderlist_onload_options', options)
+    this.setData({
+      index: parseInt(options.type)
+    })
   },
 
   /**

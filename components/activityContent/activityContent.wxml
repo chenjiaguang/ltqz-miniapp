@@ -3,8 +3,8 @@
     <image class='cover' src="{{data.cover}}" mode="aspectFill"></image>
     <view class='flex1'>
       <text class='title bold'>{{data.title}}</text>
-      <text class='location'>{{data.location}}</text>
       <text class='time'>{{data.time}}</text>
       <text class='tickets'>{{data.tickets}}</text>
+      <text class='location'>{{data.location}}</text>
     </view>
   </view>

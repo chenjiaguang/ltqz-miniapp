@@ -1,5 +1,6 @@
 /* components/activityCard2/activityCard2.wxss */
 @import "../../assets/styles/lutu-icon.wxss";
+@import "../../app.wxss";
 
 .line-separator-h {
   margin-left: 32rpx;
@@ -41,7 +42,7 @@
 }
 .image-box{
   width: 190rpx;
-  height: 230rpx;
+  height: 190rpx;
   border-radius: 8rpx;
   overflow: hidden;
   position: relative;
@@ -72,7 +73,7 @@
 }
 
 .right-box{
-  min-height: 230rpx;
+  min-height: 190rpx;
   padding: 0 32rpx 0 24rpx;
   flex: 1;
   display: flex;

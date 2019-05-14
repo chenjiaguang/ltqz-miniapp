@@ -10,6 +10,7 @@ Page({
       phone: '17508959493'
     },
     goods_info: {
+      cover: 'http://i1.bvimg.com/685753/b9ba96284fff562b.jpg',
       name: '【穿行艺术】城市里的博物馆，外滩历险记（银行一条街）',
       location: {
         text: '北京市朝阳区 马桥路甲40号二十一世纪大北京市朝阳区 马桥',

@@ -74,7 +74,7 @@ Component({
       if (title) _obj.title = title
       if (btnText) _obj.btnText = btnText
       _obj.cursor = 0
-      _obj.focus = false
+      _obj.focus = true
       _obj.codeStr = ''
       _obj.actived = true
       this.setData(_obj)

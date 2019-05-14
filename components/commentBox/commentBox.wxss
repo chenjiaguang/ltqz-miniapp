@@ -47,7 +47,7 @@
 }
 
 .comment-main {
-  margin: 0 4% 40rpx 4%;
+  margin: 0 4% 30rpx 4%;
   padding-left: 98rpx;
 }
 
@@ -89,22 +89,27 @@
   white-space: nowrap;
   color: #999;
   font-size: 26rpx;
-  margin-bottom: 26rpx;
+  margin-bottom: 30rpx;
 }
 
 .triangle-up {
+  position: absolute;
   width: 0;
   height: 0;
-  margin-left:20rpx;
+  left: 0;
+  top: -14rpx;
+  margin-left: 20rpx;
   border-right: 10rpx solid transparent;
   border-left: 10rpx solid transparent;
   border-bottom: 14rpx solid #f5f5f5;
 }
 
 .reply-container {
+  position: relative;
   background-color: #f5f5f5;
   font-size: 26rpx;
   padding: 20rpx;
+  border-radius: 6rpx;
 }
 
 .reply {
@@ -117,4 +122,15 @@
 
 .line-separator-h {
   margin-left: 4%;
+}
+
+.reply-btn {
+  width: 104rpx;
+  height: 50rpx;
+  line-height: 50rpx;
+  text-align: center;
+  background: #64b631;
+  border-radius: 8rpx;
+  color: #fff;
+  font-size: 24rpx;
 }

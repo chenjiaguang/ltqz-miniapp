@@ -183,16 +183,6 @@ Page({
     })
   },
 
-  replyFocus: function () {
-    const { reply_focus } = this.data
-    if (reply_focus) {
-      return false
-    }
-    this.setData({
-      reply_focus: true
-    })
-  },
-
   replySubmit: function () {
     console.log('replySubmit')
   }

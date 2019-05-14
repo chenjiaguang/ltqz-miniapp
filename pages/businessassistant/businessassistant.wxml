@@ -1,31 +1,32 @@
 <!--pages/businessassistant/businessassistant.wxml-->
 <view class='page-businessassistant'>
-  <view class='overview'>
+  <view class='card overview'>
     <view class='overview-top'>
       <image class='business-avatar' mode="aspectFill" src="{{avatar}}"></image>
-      <view class='business-shortcut'>
-        <view class='business-name'>{{name}}</view>
+      <view class='business-shortcut column'>
+        <view class='business-name bold'>{{name}}</view>
         <view class='business-intro'>{{intro}}</view>
       </view>
     </view>
-    <view class='overview-bottom'>
+    <view class='line-separator-h'></view>
+    <view class='overview-bottom row center'>
       <view class='overview-bottom-item'>
-        <view class='overview-bottom-header'><text>活动报名总收入</text><text>（元）</text></view>
-        <view class='overview-bottom-amount'>{{profit}}</view>
+        <view class='overview-bottom-header'><text>活动报名总收入</text><text class='unit'>（元）</text></view>
+        <view class='overview-bottom-amount bold'>{{profit}}</view>
       </view>
       <view class='overview-bottom-item'>
         <view class='overview-bottom-header'><text>发布活动数</text></view>
-        <view class='overview-bottom-amount'>{{activity_amount}}</view>
+        <view class='overview-bottom-amount bold'>{{activity_amount}}</view>
       </view>
     </view>
   </view>
-  <view class='hexiao-box'>
-    <view class='hexiao-btn' catchtap="scanHexiaoCode">核销按钮</view>
+  <view class='hexiao-box row'>
+    <view class='hexiao-btn' catchtap="scanHexiaoCode"><text class='lutufont lutu-scan'></text></view>
     <view class='hexiao-set-entrance'>
-      <ft-entrance title="{{hexiao_entrance.title + hexiao_code}}" extra-data="{{hexiao_entrance}}" catchtap="entranceTap" />
+      <ft-entrance title="{{hexiao_entrance.title + hexiao_code}}" extra-data="{{hexiao_entrance}}" catchtap="entranceTap"/>
     </view>
   </view>
-  <view class='other-entrance-box'>
+  <view class='card-nopadding other-entrance-box'>
     <ft-entrance wx:for="{{other_entrances}}" wx:for-index="idx" wx:for-item="entrance" wx:key="title" title="{{entrance.title}}" top-border="{{idx !== 0}}" extra-data="{{entrance}}" catchtap="entranceTap" />
   </view>
 </view>

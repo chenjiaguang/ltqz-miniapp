@@ -12,6 +12,10 @@ const formatTime = date => {
   return [year, month, day].map(formatNumber).join('/') + ' ' + [hour, minute, second].map(formatNumber).join(':')
 }
 
+const formatMoney = n => {
+  return n == 0 ? 0 : n.toFixed(2)
+}
+
 const formatNumber = n => {
   n = n.toString()
   return n[1] ? n : '0' + n
@@ -48,7 +52,7 @@ const isJsonString = str => {
       return true
     }
   } catch (e) {
-    
+
   }
   return false
 }
@@ -85,7 +89,9 @@ const request = (url, data, config = {}) => {
   const app = getApp()
   const apiVersion = (config && config.apiVersion) ? config.apiVersion : (app.config.apiVersion || '/v1')
   const token = (config && config.token) || storageHelper.getStorage('token') || ''
-  let _data = Object.assign({}, data, { token: token })
+  let _data = Object.assign({}, data, {
+    token: token
+  })
   console.log('apiVersion', apiVersion)
   return new Promise((resolve, reject) => {
     wx.request({
@@ -98,7 +104,7 @@ const request = (url, data, config = {}) => {
         'content-type': (config && config.contentType) || 'application/json', // 使用传入的contentType值，或者默认的application/json
         'token': token, // 使用传入的token值，或者全局的token，都没有则默认空字符串
       },
-      success: function (res) {
+      success: function(res) {
         if (res.data.error && (res.data.error == 401 || res.data.error == 403)) {
           storageHelper.setStorage('token', '')
           checkLogin()
@@ -111,13 +117,13 @@ const request = (url, data, config = {}) => {
         }
         resolve(res.data || res)
       },
-      fail: function (res) {
+      fail: function(res) {
         if (res && res.errMsg && res.errMsg === 'request:fail') { // 小程序请求失败，可以在这里检查是否联网，处理断网
 
         }
         reject(res) // 返回错误提示信息
       },
-      complete: function (res) {
+      complete: function(res) {
 
       }
     })

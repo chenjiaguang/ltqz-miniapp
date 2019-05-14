@@ -13,62 +13,81 @@ Page({
       location: '北京市朝阳区马桥路甲马桥路甲马桥路',
       time: '2019.07.13 至 2020.01.01',
       tickets: '成人票×1，儿童票×2'
-    }
+    },
+    content: ''
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function (options) {
+  onLoad: function(options) {
 
   },
 
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
-  onReady: function () {
+  onReady: function() {
 
   },
 
   /**
    * 生命周期函数--监听页面显示
    */
-  onShow: function () {
+  onShow: function() {
 
   },
 
   /**
    * 生命周期函数--监听页面隐藏
    */
-  onHide: function () {
+  onHide: function() {
 
   },
 
   /**
    * 生命周期函数--监听页面卸载
    */
-  onUnload: function () {
+  onUnload: function() {
 
   },
 
   /**
    * 页面相关事件处理函数--监听用户下拉动作
    */
-  onPullDownRefresh: function () {
+  onPullDownRefresh: function() {
 
   },
 
   /**
    * 页面上拉触底事件的处理函数
    */
-  onReachBottom: function () {
+  onReachBottom: function() {
 
   },
 
   /**
    * 用户点击右上角分享
    */
-  onShareAppMessage: function () {
+  onShareAppMessage: function() {
 
+  },
+  contentInput(e) {
+    let _obj = {}
+    _obj['content'] = e.detail.value
+    this.setData(_obj)
+  },
+  submit() {
+    if (this.data.content.length < 10) {
+      wx.showToast({
+        title: '评价内容请输入10字以上哦~',
+        icon: 'none'
+      })
+    } else {
+      wx.showToast({
+        title: '评价成功，感谢您的支持!',
+        icon: 'none'
+      })
+    }
   }
 })

@@ -1,0 +1,23 @@
+<!--pages/signupmanager/signupmanager.wxml-->
+<view class='container'>
+  <view class='head row ai-center'>
+    <text class='usernum'>报名人数：{{usernum}}</text>
+    <text>预计收入：￥{{moneysum}}</text>
+  </view>
+  <block wx:for="{{list}}">
+    <view class='line-separator-h'></view>
+    <view class='row box'>
+      <image src="{{item.avatar}}" class='avatar' />
+      <view class='column flex1'>
+        <text class='username'>{{item.username}}</text>
+        <text class='content'>{{item.content}}</text>
+        <view class='row'>
+          <text wx:if="{{item.state==0}}" class='state state0'>未核销</text>
+          <text wx:if="{{item.state==1}}" class='state state1'>已核销</text>
+        </view>
+      </view>
+      <text class='lutufont lutu-tel2' bindtap='callPhone' data-phone='{{item.phone}}'></text>
+    </view>
+  </block>
+  <view class='btn' bindtap='goDetail'>查看活动详情</view>
+</view>

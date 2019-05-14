@@ -1,13 +1,11 @@
 /* components/activityCard/activityCard.wxss */
+@import "../../app.wxss";
 
 .wrapper{
   padding: 32rpx 0 24rpx;
   position: relative;
   overflow: hidden;
   background: #ffffff;
-}
-.wrapper.touched{
-  background: #f5f5f5;
 }
 .cover{
   display: block;

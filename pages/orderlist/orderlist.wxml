@@ -1,9 +1,9 @@
 <!--pages/orderlist/orderlist.wxml-->
-<ft-tabs class="tabs" type="2" tabs="{{tabs}}">
+<ft-tabs class="tabs" type="2" tabs="{{tabs}}" index="{{index}}">
   <view slot="tab0">
-    <block wx:for="{{list}}">
-      <order-card item="{{item}}"></order-card>
-    </block>
+    <view class='list-box'>
+      <order-card wx:for="{{list}}" item="{{item}}"></order-card>
+    </view>
   </view>
   <view slot="tab1">
     <image class='empty-img' src='/assets/images/order.png' />

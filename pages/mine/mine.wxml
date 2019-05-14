@@ -6,39 +6,41 @@
       <view class='user-name-box'>
         <ft-user-name class='user-name' name="{{user_name}}" />
       </view>
-      <view class='user-tag-box'>
-        <text class='user-tag'>潮爸</text>
-        <text class='user-tag'>辣妈</text>
+      <view class='user-tag-box row' wx:if="{{sex>0}}">
+        <text class='user-tag' wx:if="{{sex==1}}">潮爸</text>
+        <text class='user-tag' wx:if="{{sex==2}}">辣妈</text>
       </view>
     </view>
-    <text class="lutufont lutu-next"></text>
+    <text class="lutufont lutu-next2"></text>
   </view>
   <view class='other-list'>
     <view class='card order-box'>
       <view class='order-header'>
         <text class='title'>我的订单</text>
-        <text catchtap="goOrder" data-type="0" class='view-detail'>查看全部订单<text class="lutufont lutu-next"></text></text>
+        <text catchtap="goOrder" data-type="0" class='view-detail'>查看全部订单<text class="lutufont lutu-next2"></text></text>
       </view>
       <view class='line-separator-h'></view>
       <view class='order-type'>
-        <view class='type-item' catchtap="goOrder">
-          <text class="lutufont lutu-location"></text>
+        <view class='type-item' catchtap="goOrder" data-type='1'>
+          <text class="lutufont lutu-wallet itemfont"><text class='item-num'>2</text></text>
+
           <view class='type-title'>待付款</view>
         </view>
-        <view class='type-item' catchtap="goOrder">
-          <text class="lutufont lutu-location"></text>
-          <view class='type-title'>待参与</view>
+        <view class='type-item' catchtap="goOrder" data-type='2'>
+          <text class="lutufont lutu-flag itemfont"><text class='item-num'>12</text></text>
+
+          <view class='type-title'>待使用</view>
         </view>
-        <view class='type-item' catchtap="goOrder">
-          <text class="lutufont lutu-location"></text>
+        <view class='type-item' catchtap="goOrder" data-type='3'>
+          <text class="lutufont lutu-comment itemfont"></text>
           <view class='type-title'>待评价</view>
         </view>
       </view>
     </view>
     <view wx:if="{{is_partner}}" class='card profit-box'>
       <view class='profit-header'>
-        <text class='title'>总收益<text class='unit'> (元)</text></text>
-        <text catchtap="goProfit" data-type="0" class='view-detail'>查看详情<text class="lutufont lutu-next"></text></text>
+        <text class='title'>推广收益<text class='unit'> (元)</text></text>
+        <text catchtap="goProfit" data-type="0" class='view-detail'>查看详情<text class="lutufont lutu-next2"></text></text>
 
       </view>
       <view class='profit-sum bold'>
@@ -66,11 +68,12 @@
     <view wx:if="{{show_be_partner && !is_partner}}" class='be-partner'>
       <ft-entrance title="{{be_partner_entrance.title}}" extra-data="{{be_partner_entrance}}" catchtap="entranceTap" />
     </view>
-    <view wx:if="{{is_business}}" class='card business-entrance'>
+    <view wx:if="{{is_business}}" class='card-nopadding business-entrance'>
       <ft-entrance title="{{assistant_entrance.title}}" extra-data="{{assistant_entrance}}" catchtap="entranceTap" />
     </view>
-    <view class='card other-entrances'>
-      <ft-entrance wx:for="{{other_entrances}}" wx:for-index="idx" wx:for-item="entrance" wx:key="title" title="{{entrance.title}}" top-border="{{idx !== 0}}" extra-data="{{entrance}}" catchtap="entranceTap" />
+    <view class='card-nopadding other-entrances'>
+      <ft-entrance wx:for="{{other_entrances}}" wx:for-index="idx" wx:for-item="entrance" wx:key="title" title="{{entrance.title}}" top-border="{{idx !== 0}}" extra-data="{{entrance}}" catchtap="entranceTap" subTitle="{{entrance.phone}}" nextIcon="{{!entrance.phone}}"
+      />
     </view>
   </view>
 </view>

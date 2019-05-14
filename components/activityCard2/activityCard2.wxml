@@ -1,5 +1,5 @@
 <!--components/activityCard2/activityCard2.wxml-->
-<view class='wrapper' catchtap="boxTap" hover-stop-propagation hover-class='touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
+<view class='wrapper' catchtap="boxTap" hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
   <view wx:if="{{topBorder}}" class='line-separator-h'></view>
   <view class='wrapper-content'>
     <view class='image-box'>

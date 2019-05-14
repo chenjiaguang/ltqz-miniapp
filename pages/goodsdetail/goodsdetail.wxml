@@ -14,37 +14,37 @@
       <view class="status status{{status}}">{{statusText[status]}}</view>
     </view>
     <view style="height:34rpx"></view>
-    <view class='state-block-wrapper'>
+    <view wx:if="{{valid_btime && valid_etime}}" class='state-block-wrapper'>
       <view class='line-separator-h'></view>
       <view class='state-block'><image class='left-icon' mode="aspectFit" src="/assets/images/time_jointime.png"></image><text class='state-block-text'>活动时间：{{valid_btime}}至{{valid_etime}}</text></view>
     </view>
-    <view class='state-block-wrapper'>
+    <view wx:if="{{dead_line}}" class='state-block-wrapper'>
       <view class='line-separator-h'></view>
       <view class='state-block'><image class='left-icon' mode="aspectFit" src="/assets/images/time_deadline.png"></image><text class='state-block-text'>报名截止时间：{{dead_line}}</text></view>
     </view>
-    <view class='state-block-wrapper'>
+    <view wx:if="{{address}}" class='state-block-wrapper'>
       <view class='line-separator-h'></view>
-      <view wx:if="{{address}}" class='state-block' catchtap="viewLocation"><image class='left-icon' mode="aspectFit" src="/assets/images/huodong_location.png"></image><text class='state-block-text'>活动地点：{{address}}</text><text wx:if="{{address_position && address_position[0]}}" class='right-icon lutufont lutu-next2'></text></view>
+      <view class='state-block' catchtap="viewLocation"><image class='left-icon' mode="aspectFit" src="/assets/images/huodong_location.png"></image><text class='state-block-text'>活动地点：{{address}}</text><text wx:if="{{address_position && address_position[0]}}" class='right-icon lutufont lutu-next2'></text></view>
     </view>
-    <view class='state-block-wrapper'>
+    <view wx:if="{{jh_address}}" class='state-block-wrapper'>
       <view class='line-separator-h'></view>
-      <view wx:if="{{jh_address}}" class='state-block' catchtap="viewLocation"><image class='left-icon' mode="aspectFit" src="/assets/images/jihe_location.png"></image><text class='state-block-text'>集合地点：{{jh_address}}</text><text wx:if="{{jh_address_position && jh_address_position[0]}}" class='right-icon lutufont lutu-next2'></text></view>
+      <view class='state-block' catchtap="viewLocation"><image class='left-icon' mode="aspectFit" src="/assets/images/jihe_location.png"></image><text class='state-block-text'>集合地点：{{jh_address}}</text><text wx:if="{{jh_address_position && jh_address_position[0]}}" class='right-icon lutufont lutu-next2'></text></view>
     </view>
-    <view class='state-block-wrapper'>
+    <view wx:if="{{min_age}}" class='state-block-wrapper'>
       <view class='line-separator-h'></view>
       <view class='state-block'><image class='left-icon' mode="aspectFit" src="/assets/images/nianling.png"></image><text class='state-block-text'>适合年龄段：{{min_age === '-1' ? '不限年龄' : (min_age + ' ~ ' + max_age)}}</text></view>
     </view>
-    <view class='state-block-wrapper'>
+    <view wx:if="{{limit_num}}" class='state-block-wrapper'>
       <view class='line-separator-h'></view>
-      <view wx:if="{{limit_num}}" class='state-block'><image class='left-icon' mode="aspectFit" src="/assets/images/chengtuan.png"></image><text class='state-block-text'>{{limit_num}}</text></view>
+      <view class='state-block'><image class='left-icon' mode="aspectFit" src="/assets/images/chengtuan.png"></image><text class='state-block-text'>{{limit_num}}</text></view>
     </view>
-    <view class='state-block-wrapper'>
+    <view wx:if="{{include_bx === '1' || include_bx === 1}}" class='state-block-wrapper'>
       <view class='line-separator-h'></view>
-      <view class='state-block'><image class='left-icon' mode="aspectFit" src="{{include_bx ? '/assets/images/baoxian_able.png' : '/assets/images/baoxian_disabled.png'}}"></image><text class='state-block-text'>本次活动费用{{include_bx ? '' : '不'}}包含保险</text></view>
+      <view class='state-block'><image class='left-icon' mode="aspectFit" src="/assets/images/baoxian.png"></image><text class='state-block-text'>本次活动费用{{(include_bx === '1' || include_bx === 1) ? '' : '不'}}包含保险</text></view>
     </view>
-    <view wx:if="{{!refuse}}" class='state-block-wrapper'>
+    <view wx:if="{{!refund}}" class='state-block-wrapper'>
       <view class='line-separator-h'></view>
-      <view class='state-block'><image class='left-icon' mode="aspectFit" src="/assets/images/tuikuan_disabled.png"></image><text class='state-block-text'>本次活动不支持退款</text></view>
+      <view class='state-block'><image class='left-icon' mode="aspectFit" src="/assets/images/tuikuan.png"></image><text class='state-block-text'>本次活动不支持退款</text></view>
     </view>
   </view>
   <view wx:if="{{join_num && join_num > 0}}" class='join-box'>
@@ -53,7 +53,7 @@
     <view class='line-separator-h'></view>
     <view class='join-users'>
       <image wx:for="{{join_users}}" wx:for-index="idx" wx:for-item="user" wx:key="id" class='user' src="{{user.avatar}}" mode="aspectFill"></image>
-      <view wx:if="{{join_users && join_users.length && join_users.length >= 5}}" class='more-user'><view class='dot'></view><view class='dot'></view><view class='dot'></view></view>
+      <view wx:if="{{join_users && join_users.length && join_users.length >= 6}}" class='more-user'><view class='dot'></view><view class='dot'></view><view class='dot'></view></view>
     </view>
   </view>
   <view class='sponsor-box'>
@@ -83,8 +83,9 @@
     <view class='line-separator-h'></view>
     <view class='detail-and-comment-content'>
       <view class="goodsdetail-content{{currentTab === 0 ? ' current' : ''}}">
-        <import src="../../utils/wxParse/wxParse.wxml" />
-        <template is="wxParse" data="{{wxParseData:article.nodes}}" />
+        <!-- <import src="../../utils/wxParse/wxParse.wxml" />
+        <template is="wxParse" data="{{wxParseData:article.nodes}}" /> -->
+        <rich-text wx:if="{{content}}" nodes="{{content}}"></rich-text>
         <view wx:if="{{!content}}" style="text-align:center;font-size:28rpx;color:#999">加载中...</view>
       </view>
       <view class="goodsdetail-score{{currentTab === 1 ? ' current' : ''}}">
@@ -96,7 +97,7 @@
           <view class='line-separator-h'></view>
         </view>
         <view wx:if="{{!comments || !comments.length}}" class='empty-comment'>
-          <image class='empty-image' src="{{}}" mode="aspectFit"></image>
+          <image class='empty-image' src="/assets/images/empty_comment.png" mode="aspectFit"></image>
           <text class='empty-text'>啊哦，暂时还没有评价哦~</text>
         </view>
         <comment-box wx:for="{{comments}}" wx:for-index="idx" wx:for-item="comment" wx:key="id" comment="{{comment}}" top-border="{{idx !== 0}}" />
@@ -142,7 +143,7 @@
         </view>
         <view class='line-separator-h' style="transform-origin:50% 100%"></view>
         <view class='next-step-button'>
-          <view class='total-price' hover-stop-propagation hover-class='touched' hover-start-time="{{50}}" hover-stay-time="{{200}}" catchtap="call">
+          <view class='total-price' hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}" catchtap="call">
             <text class='total-price-title'>总计</text>
             <text class='total-price-text'>¥{{totalPrice}}</text>
           </view>
@@ -156,7 +157,7 @@
     <view class='bottom-button'>
       <view class='line-separator-h' style="transform-origin:50% 100%;background:#D8D8D8"></view>
       <view class='bottom-button-content'>
-        <view wx:if="{{contact}}" data-phone="{{contact}}" class='call-btn' hover-stop-propagation hover-class='touched' hover-start-time="{{50}}" hover-stay-time="{{200}}" catchtap="call">
+        <view wx:if="{{contact}}" data-phone="{{contact}}" class='call-btn' hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}" catchtap="call">
           <text class='tel-icon lutufont lutu-tel'></text>
           <text class='tel-text'>电话咨询</text>
         </view>
@@ -166,4 +167,5 @@
     </view>
     <ft-iphone-bottom-adapter />
   </view>
+  <canvas canvas-id="share-image" class="share-canvas"></canvas>
 </view>

@@ -1,1 +1,123 @@
 /* pages/goodsticket/goodsticket.wxss */
+
+page{
+  background: #F5F5F5;
+}
+.page-goodsticket{
+  background: #F5F5F5;
+}
+.info-wrapper{
+  margin: 30rpx 26rpx;
+  border-radius: 16rpx;
+  background: #fff;
+}
+.top-info{
+  overflow: hidden;
+  position: relative;
+}
+.qr-code{
+  display: block;
+  width: 280rpx;
+  height: 280rpx;
+  margin: 70rpx auto 24rpx;
+}
+.qr-code.disabled{
+  opacity: 0.5;
+}
+.line-info{
+  font-size: 30rpx;
+  line-height: 44rpx;
+  text-align: center;
+  padding: 0 32rpx;
+}
+.hexiao-btn{
+  width: 248rpx;
+  height: 80rpx;
+  line-height: 80rpx;
+  border: none;
+  border-radius: 8rpx;
+  font-size: 36rpx;
+  color: #fff;
+  background: #64B631;
+  margin: 46rpx auto 50rpx;
+}
+.hexiao-btn:after, .hexiao-btn:before{
+  display: none;
+}
+button.hexiao-btn.disabled{
+  background: #D8D8D8;
+  color: #fff;
+}
+.comment-btn{
+  width: 248rpx;
+  height: 80rpx;
+  line-height: 80rpx;
+  border: none;
+  border-radius: 8rpx;
+  font-size: 36rpx;
+  color: #fff;
+  background: #64B631;
+  margin: 46rpx auto 50rpx;
+}
+.comment-btn:after, .comment-btn:before{
+  display: none;
+}
+button.comment-btn.disabled{
+  background: #D8D8D8;
+  color: #fff;
+}
+
+.bottom-info{
+  padding: 0 30rpx;
+  position: relative;
+}
+.info-item{
+  min-height: 80rpx;
+  display: flex;
+  box-sizing: border-box;
+  padding: 24rpx 0;
+}
+.info-left{
+  font-size: 28rpx;
+  line-height: 32rpx;
+  color: #666;
+}
+.info-right{
+  font-size: 28rpx;
+  line-height: 32rpx;
+  color: #333;
+}
+.left-ball, .right-ball{
+  width: 24rpx;
+  height: 24rpx;
+  border-radius: 50%;
+  background: #F5F5F5;
+}
+.left-ball{
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform: translate(-50%, -50%);
+}
+.right-ball{
+  position: absolute;
+  right: 0;
+  top: 0;
+  transform: translate(50%, -50%);
+}
+
+.checked-icon{
+  position: absolute;
+  top: 35rpx;
+  right: 168rpx;
+  width: 114rpx;
+  height: 114rpx;
+  border-radius: 50%;
+  box-sizing: border-box;
+  border: 2px solid #FF353A;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 28rpx;
+  color: #FF353A;
+}

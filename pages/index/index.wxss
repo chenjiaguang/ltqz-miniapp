@@ -3,6 +3,9 @@
 page{
   background: #FFFFFF;
 }
+.page-index{
+  background: #fff;
+}
 .page-top-padding{
   height: 24rpx;
 }
@@ -16,7 +19,7 @@ page{
   font-size: 28rpx;
 }
 .theme-box, recommendation-box{
-  margin-top: 28rpx;
+  margin-top: 20rpx;
 }
 .theme-header, .recommendation-header{
   height: 58rpx;

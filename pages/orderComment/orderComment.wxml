@@ -6,9 +6,12 @@
 <view class='card column ai-stretch'>
   <view class='rate-box row ai-center'>
     <text class='rate-title'>评分</text>
-    <ft-star-box score="{{5}}" showScoreText="{{false}}" />
+    <ft-star-box score="{{5}}" showScoreText="{{false}}" size="38" touchable="{{true}}" />
   </view>
-  <textarea class='input' placeholder='请输入不少于10个字的描述'/>
+  <view class='input-box'>
+    <textarea class='input' maxlength='300' bindinput="contentInput" placeholder='请输入不少于10个字的描述' />
+    <text class='input-tip'>{{content.length}}/300</text>
+  </view>
   <view class='pics-box'>上传图片组件</view>
-  <view class='btn'>提交评论</view>
+  <view class='btn' bindtap='submit'>提交评论</view>
 </view>

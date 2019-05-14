@@ -1,1 +1,40 @@
 /* pages/hexiaosetting/hexiaosetting.wxss */
+.main-box {
+  margin-top: 42rpx;
+  margin-bottom: 60rpx;
+}
+
+.title {
+  font-size: 34rpx;
+  color: #333;
+  margin-right: 30rpx;
+}
+
+.input {
+  height: 54rpx;
+  border-radius: 8rpx;
+  border: 1rpx solid #D8D8D8;
+  margin-bottom: 27rpx;
+  padding-left: 14rpx;
+  font-size: 28rpx;
+}
+
+.input-placeholder {
+  color: #ccc;
+}
+
+.tip {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.btn {
+  height: 82rpx;
+  background-color: #64b631;
+  font-size: 36rpx;
+  border-radius: 8rpx;
+  color: #fff;
+  text-align: center;
+  line-height: 82rpx;
+  margin-bottom: 60rpx;
+}

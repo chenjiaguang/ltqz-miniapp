@@ -1,1 +1,66 @@
 /* pages/userinfo/userinfo.wxss */
+
+.avatar {
+  width: 70rpx;
+  height: 70rpx;
+  border-radius: 50%;
+  margin-top: 16rpx;
+  margin-bottom: 16rpx;
+}
+
+.title {
+  font-size: 28rpx;
+  color: #666;
+}
+
+.value {
+  font-size: 28rpx;
+  color: #333;
+  line-height: 80rpx;
+  height: 80rpx;
+}
+
+.input {
+  text-align: right;
+}
+
+.line-separator-h {
+  margin-right: -30rpx;
+  width: unset;
+}
+
+.btn {
+  height: 82rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #64b631;
+  margin-top: 41rpx;
+  margin-left: 4%;
+  margin-right: 4%;
+  font-size: 36rpx;
+  color: #fff;
+  border-width: 0;
+  border-radius: 6rpx;
+}
+
+.btn.disabled {
+  background: #999;
+}
+
+.lutu-next2 {
+  font-size: 25rpx;
+  color: #999;
+}
+
+.input-placeholder {
+  color: #ccc;
+}
+
+.sex-text {
+  margin-right: 20rpx;
+}
+
+.idcard-text {
+  text-align: right;
+}
