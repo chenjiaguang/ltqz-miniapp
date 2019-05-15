@@ -21,6 +21,9 @@ Component({
    * 组件的方法列表
    */
   methods: {
-
+    btnTap: function () {
+      console.log('btnTap')
+      this.triggerEvent('tap')
+    }
   }
 })

@@ -1,4 +1,4 @@
-import Store from 'wxministore'
+import Store from '../miniprogram_npm/wxministore/index.js'
 
 module.exports = new Store({
   state: {

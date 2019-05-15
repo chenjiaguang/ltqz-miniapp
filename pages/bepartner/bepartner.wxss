@@ -1,19 +1,59 @@
-/* pages/bepartner/bepartner.wxss */
-
-.bottom-btn-wrapper {
-  width: 100%;
-  position: fixed;
-  left: 0;
-  bottom: 0;
-  background: #fff;
+.item {
+  height: 80rpx;
 }
 
-.bottom-btn {
-  width: 100%;
-  height: 88rpx;
+.avatar {
+  width: 70rpx;
+  height: 70rpx;
+  border-radius: 50%;
+  margin-top: 16rpx;
+  margin-bottom: 16rpx;
+}
+
+.title {
+  font-size: 28rpx;
+  color: #666;
+}
+
+.value {
+  font-size: 28rpx;
+  color: #333;
+  line-height: 80rpx;
+}
+
+.line-separator-h {
+  margin-right: -30rpx;
+  width: unset;
+}
+
+.btn {
+  height: 82rpx;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: yellow;
+  background: #64b631;
+  margin-top: 41rpx;
+  margin-left: 4%;
+  margin-right: 4%;
+  font-size: 36rpx;
+  color: #fff;
+  border-width: 0;
+  border-radius: 6rpx;
 }
 
+.btn.disabled {
+  background: #D8D8D8;
+}
+
+.getPhone {
+  width: 120rpx;
+  height: 52rpx;
+  background: #64b631;
+  border-radius: 8rpx;
+  font-size: 28rpx;
+  color: #fff;
+  padding: 0;
+  margin: 0;
+  text-align: center;
+  line-height: 52rpx;
+}

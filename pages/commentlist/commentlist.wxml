@@ -1,0 +1,6 @@
+<!--pages/commentlist/commentlist.wxml-->
+<view class='page-commentlist'>
+  <view class='overview'>
+    
+  </view>
+</view>

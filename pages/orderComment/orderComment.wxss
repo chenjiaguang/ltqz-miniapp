@@ -1,7 +1,7 @@
 /* pages/orderComment/orderComment.wxss */
 
 .card {
-  margin: 16rpx 4% 0 4%;
+  margin: 16rpx 4% 16rpx 4%;
   padding-top: 1rpx;
   padding-bottom: 1rpx;
   background-color: #fff;
@@ -48,6 +48,10 @@
 
 .pics-box {
   margin: 0 0 60rpx 0;
+}
+
+.imageUpload{
+  margin-bottom: 60rpx;
 }
 
 .btn {

@@ -19,8 +19,10 @@ Page({
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function (options) {
-    if (options.type && options.type === 'update_token') { // token过期或不存在token时进入的该页面，则不显示授权相关信息，直接重新登录
+  onLoad: function(options) {
+    const authSetting = authManager.authSettingStorage
+    if (!!authSetting['scope.userInfo'] && !!authSetting['scope.userLocation']) {
+      // token过期或不存在token时进入的该页面，则不显示授权相关信息，直接重新登录
       this.setData({
         showType: 'update_token'
       })
@@ -30,7 +32,6 @@ Page({
         showType: 'permission'
       })
       this.login()
-      const authSetting = authManager.authSettingStorage
       let _obj = {}
       _obj.authUserInfo = !!authSetting['scope.userInfo']
       _obj.authUserLocation = !!authSetting['scope.userLocation']
@@ -41,57 +42,59 @@ Page({
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
-  onReady: function () {
+  onReady: function() {
 
   },
 
   /**
    * 生命周期函数--监听页面显示
    */
-  onShow: function () {
+  onShow: function() {
 
   },
 
   /**
    * 生命周期函数--监听页面隐藏
    */
-  onHide: function () {
+  onHide: function() {
 
   },
 
   /**
    * 生命周期函数--监听页面卸载
    */
-  onUnload: function () {
+  onUnload: function() {
 
   },
 
   /**
    * 页面相关事件处理函数--监听用户下拉动作
    */
-  onPullDownRefresh: function () {
+  onPullDownRefresh: function() {
 
   },
 
   /**
    * 页面上拉触底事件的处理函数
    */
-  onReachBottom: function () {
+  onReachBottom: function() {
 
   },
 
   /**
    * 用户点击右上角分享
    */
-  onShareAppMessage: function () {
+  onShareAppMessage: function() {
 
   },
 
-  updateToken: function () {
+  updateToken: function() {
     console.log('updateToken')
     wx.login({
       success: res => { // login调用成功后授权按钮才可用（loginSuccess为true）
-        this.userLogin({code: res.code})
+        this.userLogin({
+          code: res.code
+        })
       }
     })
   },
@@ -100,17 +103,32 @@ Page({
     // 登录
     wx.login({
       success: res => { // login调用成功后授权按钮才可用（loginSuccess为true）
-        this.setData({ disableAuth: false})
+        this.setData({
+          disableAuth: false
+        })
         this.code = res.code
       }
     })
   },
 
-  getUserInfo: function (e) {
+  getUserInfo: function(e) {
     console.log('getUserInfo', e)
-    const { encryptedData, iv} = e.detail
-    const { avatarUrl, gender, nickName } = e.detail.userInfo
-    const logingInfo = { encryptedData, iv, avatarUrl, gender, nickName}
+    const {
+      encryptedData,
+      iv
+    } = e.detail
+    const {
+      avatarUrl,
+      gender,
+      nickName
+    } = e.detail.userInfo
+    const logingInfo = {
+      encryptedData,
+      iv,
+      avatarUrl,
+      gender,
+      nickName
+    }
     if (e.detail.errMsg === 'getUserInfo:ok') {
       this.setData({
         authUserInfo: true
@@ -174,7 +192,7 @@ Page({
     }
   },
 
-  userLogin: function (logingInfo) {
+  userLogin: function(logingInfo) {
     console.log('userInfo', logingInfo)
     // 这里写登录逻辑（通过将signature、encryptedData、iv等信息发送给后端完成登录）
     // 模拟
@@ -182,15 +200,24 @@ Page({
       authUserInfo: true,
       authUserLocation: true
     })
-    let rData = Object.assign({}, { code: this.code }, logingInfo)
+    let rData = Object.assign({}, {
+      code: this.code
+    }, logingInfo)
     console.log('rData', rData)
     // return false
     util.request('/login', rData).then(res => {
       console.log('/login_res')
       if ((res.error === 0 || res.error === '0') && res.data) {
         const app = getApp()
-        const { token, avatar, nick_name } = res.data
-        const userInfoJson = JSON.stringify({ avatar, nick_name })
+        const {
+          token,
+          avatar,
+          nick_name
+        } = res.data
+        const userInfoJson = JSON.stringify({
+          avatar,
+          nick_name
+        })
         storageHelper.setStorage('token', token)
         storageHelper.setStorage('userInfo', userInfoJson)
         const permissionBack = storageHelper.getStorage('permissionBack')

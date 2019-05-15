@@ -6,30 +6,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-    user_avatar: '',
-    user_name: '',
-    sex: '0',
-    order_type: [{
-        icon: 'http://i2.bvimg.com/685753/b5c05b9d420d8cc1.png',
-        type: '1',
-        title: '待付款'
-      },
-      {
-        icon: 'http://i2.bvimg.com/685753/ffe5458de973c2bc.png',
-        type: '2',
-        title: '待参与'
-      },
-      {
-        icon: 'http://i2.bvimg.com/685753/ba211fc91e6e6ee6.png',
-        type: '3',
-        title: '待评价'
-      },
-      {
-        icon: 'http://i2.bvimg.com/685753/f547ae1b15e55e1a.png',
-        type: '4',
-        title: '退款订单'
-      }
-    ],
+    user: null,
     is_partner: true,
     profit: {
       all: 60,
@@ -37,11 +14,11 @@ Page({
       cashabled: 5
     },
     show_be_partner: true,
+    is_business: true,
     be_partner_entrance: {
       title: '成为合伙人',
       path: '/pages/bepartner/bepartner'
     },
-    is_business: true,
     assistant_entrance: {
       title: '商家助手',
       path: '/pages/businessassistant/businessassistant'
@@ -69,7 +46,15 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function() {
-
+    util.checkLogin();
+    util.request('/user/detail').then(res => {
+      this.setData({
+        user: res.data
+      })
+      console.log('res', res)
+    }).catch(err => {
+      console.log('/login_err', err)
+    })
   },
 
   /**

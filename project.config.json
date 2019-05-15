@@ -6,14 +6,24 @@
 	"setting": {
 		"urlCheck": false,
 		"es6": true,
+		"enhance": true,
 		"postcss": true,
 		"minified": true,
 		"newFeature": true,
 		"nodeModules": true,
-		"autoAudits": false
+		"autoAudits": false,
+		"uglifyFileName": true,
+		"checkInvalidKey": true,
+		"checkSiteMap": true,
+		"uploadWithSourceMap": true,
+		"babelSetting": {
+			"ignore": [],
+			"disablePlugins": [],
+			"outputPath": ""
+		}
 	},
 	"compileType": "miniprogram",
-	"libVersion": "2.6.6",
+	"libVersion": "2.0.4",
 	"appid": "wx1e538beb2007bee7",
 	"projectname": "%E8%B7%AF%E9%80%94%E4%BA%B2%E5%AD%90",
 	"debugOptions": {
@@ -40,7 +50,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 14,
+			"current": 21,
 			"list": [
 				{
 					"id": -1,
@@ -59,6 +69,13 @@
 					"id": 2,
 					"name": "我的-常用联系人",
 					"pathName": "pages/usuallycontacts/usuallycontacts",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "我的-成为合伙人",
+					"pathName": "pages/bepartner/bepartner",
 					"query": "",
 					"scene": null
 				},
@@ -164,22 +181,23 @@
 					"query": ""
 				},
 				{
-					"id": -1,
+					"id": 19,
 					"name": "活动详情",
 					"pathName": "pages/goodsdetail/goodsdetail",
-					"query": ""
-				},
-				{
-					"id": -1,
-					"name": "合伙人权益",
-					"pathName": "pages/bepartner/bepartner",
-					"query": ""
+					"query": "id=1&uid=2"
 				},
 				{
 					"id": -1,
 					"name": "活动列表",
 					"pathName": "pages/goodslist/goodslist",
 					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "登录",
+					"pathName": "pages/permission/permission",
+					"query": "",
+					"scene": null
 				}
 			]
 		}

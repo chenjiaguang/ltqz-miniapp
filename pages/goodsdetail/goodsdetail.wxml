@@ -3,7 +3,7 @@
   <view class='banner-wrapper'>
     <image class='cover' src="{{cover_url}}" mode="aspectFill"></image>
     <view class='share-wrapper'>
-      <share-button profit="{{shareProfit}}" />
+      <share-button profit="{{shareProfit}}" catchtap="shareBtnTap" />
     </view>
   </view>
   <view class='overview'>
@@ -24,11 +24,11 @@
     </view>
     <view wx:if="{{address}}" class='state-block-wrapper'>
       <view class='line-separator-h'></view>
-      <view class='state-block' catchtap="viewLocation"><image class='left-icon' mode="aspectFit" src="/assets/images/huodong_location.png"></image><text class='state-block-text'>活动地点：{{address}}</text><text wx:if="{{address_position && address_position[0]}}" class='right-icon lutufont lutu-next2'></text></view>
+      <view class='state-block' catchtap="viewLocation" data-ele="address_position"><image class='left-icon' mode="aspectFit" src="/assets/images/huodong_location.png"></image><text class='state-block-text'>活动地点：{{address}}</text><text wx:if="{{address_position && address_position[0]}}" class='right-icon lutufont lutu-next2'></text></view>
     </view>
     <view wx:if="{{jh_address}}" class='state-block-wrapper'>
       <view class='line-separator-h'></view>
-      <view class='state-block' catchtap="viewLocation"><image class='left-icon' mode="aspectFit" src="/assets/images/jihe_location.png"></image><text class='state-block-text'>集合地点：{{jh_address}}</text><text wx:if="{{jh_address_position && jh_address_position[0]}}" class='right-icon lutufont lutu-next2'></text></view>
+      <view class='state-block' catchtap="viewLocation" data-ele="jh_address_position"><image class='left-icon' mode="aspectFit" src="/assets/images/jihe_location.png"></image><text class='state-block-text'>集合地点：{{jh_address}}</text><text wx:if="{{jh_address_position && jh_address_position[0]}}" class='right-icon lutufont lutu-next2'></text></view>
     </view>
     <view wx:if="{{min_age}}" class='state-block-wrapper'>
       <view class='line-separator-h'></view>
@@ -106,7 +106,6 @@
       </view>
     </view>
   </view>
-  <!-- <button open-type='share'>转发详情</button> -->
   <view class='bottom-button-wrapper' catchtouchmove="stopPropagation">
     <view class="session-wrapper{{showSession ? ' show' : ''}}">
       <view class="session-mask{{showSession ? ' show' : ''}}" catchtap="toggleSession"></view>
@@ -125,8 +124,8 @@
           <view class='ticket-header' style="padding-top:32rpx">选择数量</view>
           <scroll-view scroll-y class='ticket-box'>
             <view wx:for="{{currentTickets}}" wx:for-index="idx" wx:for-item="ticket" wx:key="id" class='ticket-item'>
-              <view class='ticket-name'>{{ticket.name}}</view>
-              <view class='ticket-price'>¥{{ticket.price}}</view>
+              <view class='ticket-name'>{{ticket.type.name}}</view>
+              <view class='ticket-price'>¥{{ticket.type.price}}</view>
               <view class='ticket-buttons'>
                 <view class="minus-btn{{ticket.num <= 0 ? ' disabled' : ''}}" catchtap="countTicket" data-type="minus" data-idx="{{idx}}">
                   <text class="lutufont lutu-jian{{ticket.num <= 0 ? ' disabled' : ''}}"></text>
@@ -167,5 +166,31 @@
     </view>
     <ft-iphone-bottom-adapter />
   </view>
-  <canvas canvas-id="share-image" class="share-canvas"></canvas>
+  <view class="share-box{{show_share_box ? ' show' : ''}}" catchtouchmove='stopPropagation'>
+    <view class="share-bg{{show_share_box ? ' show' : ''}}"></view>
+    <view class='share-content'>
+      <view class="top-wrapper{{show_share_box ? ' show' : ''}}" catchtap="toggleShareBox">
+        <view wx:if="{{!localPoster}}" class='loading-image'><text>正在生成图片...</text></view>
+        <canvas canvas-id="share-poster" class="share-canvas{{localPoster ? ' drawed' : ''}}{{show_share_box ? ' show' : ''}}" catchtap="stopPropagation"></canvas>
+      </view>
+      <view class="bottom-wrapper{{show_share_box ? ' show' : ''}}">
+        <view class='bottom-content'>
+          <view class='share-friends'>
+            <view class='share-item-icon' style="background:#6AC535">
+              <text class='share-friend-icon lutufont lutu-weixin'></text>
+            </view>
+            <button open-type='share' class='share-friend-btn'></button>
+            <text class='share-box-text'>发给朋友</text>
+          </view>
+          <view class='save-image' catchtap="savePoster">
+            <view class="share-item-icon{{localPoster ? '' : ' disabled'}}">
+              <text class='save-image-icon lutufont lutu-pengyouquan'></text>
+            </view>
+            <text class='share-box-text'>保存图片</text>
+          </view>
+        </view>
+        <ft-iphone-bottom-adapter />
+      </view>
+    </view>
+  </view>
 </view>

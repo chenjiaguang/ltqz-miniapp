@@ -12,6 +12,6 @@
     <textarea class='input' maxlength='300' bindinput="contentInput" placeholder='请输入不少于10个字的描述' />
     <text class='input-tip'>{{content.length}}/300</text>
   </view>
-  <view class='pics-box'>上传图片组件</view>
+  <ft-image-upload class="imageUpload"/>
   <view class='btn' bindtap='submit'>提交评论</view>
 </view>

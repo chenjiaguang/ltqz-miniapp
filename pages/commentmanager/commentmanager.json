@@ -5,6 +5,7 @@
   "enablePullDownRefresh": true,
   "usingComponents": {
     "ft-star-box": "../../ftcomponents/ftStarBox/ftStarBox",
-    "comment-box": "../../components/commentBox/commentBox"
+    "comment-box": "../../components/commentBox/commentBox",
+    "ft-mask": "../../ftcomponents/ftMask/ftMask"
   }
 }

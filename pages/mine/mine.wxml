@@ -1,14 +1,14 @@
 <!--pages/mine/mine.wxml-->
 <view class='page-mine'>
   <view class='user-info row center' catchtap="goUserInfo">
-    <ft-user-avatar class="avatar" width="120rpx" height="120rpx" avatar="{{user_avatar}}" />
+    <image class="avatar" src="{{user.avatar}}" />
     <view class='user-intro'>
       <view class='user-name-box'>
-        <ft-user-name class='user-name' name="{{user_name}}" />
+        <text class='user-name'>{{user.name}}</text>
       </view>
-      <view class='user-tag-box row' wx:if="{{sex>0}}">
-        <text class='user-tag' wx:if="{{sex==1}}">潮爸</text>
-        <text class='user-tag' wx:if="{{sex==2}}">辣妈</text>
+      <view class='user-tag-box row' wx:if="{{user.sex>0}}">
+        <text class='user-tag' wx:if="{{user.sex==1}}">潮爸</text>
+        <text class='user-tag' wx:if="{{user.sex==2}}">辣妈</text>
       </view>
     </view>
     <text class="lutufont lutu-next2"></text>
@@ -65,7 +65,7 @@
         </view>
       </view>
     </view>
-    <view wx:if="{{show_be_partner && !is_partner}}" class='be-partner'>
+    <view wx:if="{{show_be_partner }}" class='card-nopadding be-partner'>
       <ft-entrance title="{{be_partner_entrance.title}}" extra-data="{{be_partner_entrance}}" catchtap="entranceTap" />
     </view>
     <view wx:if="{{is_business}}" class='card-nopadding business-entrance'>

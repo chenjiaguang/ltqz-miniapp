@@ -174,7 +174,7 @@ Page({
   },
 
   replyBlur: function () {
-    const {reply_focus} = this.data
+    const { reply_focus } = this.data
     if (!reply_focus) {
       return false
     }
@@ -184,6 +184,8 @@ Page({
   },
 
   replySubmit: function () {
-    console.log('replySubmit')
+    this.setData({
+      reply_focus: false
+    })
   }
 })

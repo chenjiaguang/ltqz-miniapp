@@ -33,15 +33,15 @@ const getUrl = (path, query) => {
 }
 
 const relaunchPermission = (path, options) => {
-  storageHelper.setStorage('permissionBack', '/' + getUrl(path, options))
+  let url = '/' + getUrl(path, options)
+  if (url.indexOf('pages/permission/permission') > -1) {
+    //防止出现无限循环login
+    let oldLoginBack = storageHelper.getStorage('permissionBack')
+    //如果有旧的回跳地址 则使用旧的 没有则跳转到首页
+    url = oldLoginBack || '/pages/index/index'
+  }
+  storageHelper.setStorage('permissionBack', url)
   wx.reLaunch({
-    url: '/pages/permission/permission'
-  })
-}
-
-const redirectPermission = (path, options) => {
-  storageHelper.setStorage('permissionBack', '/' + getUrl(path, options))
-  wx.redirectTo({
     url: '/pages/permission/permission'
   })
 }
@@ -65,38 +65,28 @@ const checkLogin = () => {
   const getAuthSettingCallback = (authSetting) => { // 获取用户授权数据，未授权则跳转授权页面(permission)，授权后才可继续使用
     const pages = getCurrentPages()
     const page = pages[pages.length - 1]
-    if (authSetting['scope.userInfo'] && authSetting['scope.userLocation']) { // 两个授权已满足，只更新token即可
-      if (page && page.route.indexOf('/permission/permission') === -1) { // 不是授权、登录页面（permission）
-        storageHelper.setStorage('permissionBack', '/' + getUrl(page.route, page.options))
-      }
-      wx.redirectTo({
-        url: '/pages/permission/permission?type=update_token' // 传入update_token时，页面只走更新token的流程
-      })
-    } else { // 两个授权未满足,需获取授权信息
-      if (page && page.route.indexOf('/permission/permission') === -1) { // 不是授权、登录页面（permission）
-        storageHelper.setStorage('permissionBack', '/' + getUrl(page.route, page.options))
-      }
-      wx.redirectTo({
-        url: '/pages/permission/permission'
-      })
-    }
+    relaunchPermission(page.route, page.options)
   }
   authManager.getAuthSetting(getAuthSettingCallback)
   return false
 }
+const showErrorToast = (msg) => {
+  wx.showToast({
+    title: msg,
+    icon: 'none',
+    duration: 2000
+  })
+}
 
 const request = (url, data, config = {}) => {
   const app = getApp()
-  const apiVersion = (config && config.apiVersion) ? config.apiVersion : (app.config.apiVersion || '/v1')
+  const apiVersion = (config && config.apiVersion) || app.config.apiVersion || '/v1'
   const token = (config && config.token) || storageHelper.getStorage('token') || ''
-  let _data = Object.assign({}, data, {
-    token: token
-  })
   console.log('apiVersion', apiVersion)
   return new Promise((resolve, reject) => {
     wx.request({
       url: app.config.baseUrl + apiVersion + url,
-      data: _data,
+      data: data,
       method: (config && config.method) || 'POST', // 使用传入的method值，或者默认的post
       header: {
         'fromOrigin': 'miniapp',
@@ -112,14 +102,17 @@ const request = (url, data, config = {}) => {
           return
         }
         if (res.data.msg && res.data.error !== 0 && res.data.error !== '0') {
-          reject(res.data || res) // 返回错误提示信息
-          return
+          if (!config.dontToast) {
+            showErrorToast(res.data.msg)
+            reject(res.data || res) // 返回错误提示信息
+            return
+          }
         }
         resolve(res.data || res)
       },
       fail: function(res) {
         if (res && res.errMsg && res.errMsg === 'request:fail') { // 小程序请求失败，可以在这里检查是否联网，处理断网
-
+          showErrorToast('网络异常，请检查网络设置')
         }
         reject(res) // 返回错误提示信息
       },
@@ -131,9 +124,9 @@ const request = (url, data, config = {}) => {
 }
 
 module.exports = {
+  checkLogin,
   formatTime: formatTime,
   isJsonString,
   relaunchPermission,
-  redirectPermission,
   request
 }

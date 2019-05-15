@@ -2,15 +2,15 @@
 <view class='page-usuallycontacts'>
   <view class='header row ai-center jc-between'>
     <text class='header-text bold'>常用联系人</text>
-    <view class='add-btn bold' bindtap='add'>+添加</view>
+    <view class='add-btn bold' bindtap='addItem'>+添加</view>
   </view>
   <view class='column'>
-    <view wx:for="{{contacts}}" wx:for-index="idx" wx:for-item="contact" wx:key="name" class='card contact-item'>
+    <view wx:for="{{contacts}}" wx:for-index="idx" wx:for-item="contact" wx:key="id" class='card contact-item'>
       <view class='row ai-center item'>
         <view class='key'>
           <text class='xinhao'>*</text> 姓名</view>
         <view class='value flex1'>
-          <input value="{{contact.name}}" bindinput="nameInput" data-idx="{{idx}}" placeholder='请输入真实姓名'></input>
+          <input value="{{contact.name}}" disabled='{{contact.editType==0}}' bindinput="nameInput" data-idx="{{idx}}" placeholder='请输入真实姓名'></input>
         </view>
       </view>
       <view class='line-separator-h'></view>
@@ -18,7 +18,7 @@
         <view class='key'>
           <text class='xinhao'>*</text> 性别
         </view>
-        <picker range="{{genderRange}}" range-key="title" bindchange="genderChange" class='value flex1' value="{{contact.gender === '1' ? 0 : 1}}" data-type="1" data-idx="{{idx}}">
+        <picker range="{{genderRange}}" disabled='{{contact.editType==0}}' range-key="title" bindchange="genderChange" class='value flex1' value="{{contact.gender === '1' ? 0 : 1}}" data-type="1" data-idx="{{idx}}">
           <view class='row ai-center jc-between'>
             <text wx:if="{{contact.gender==0}}" class='input-placeholder'>请选择性别</text>
             <text wx:else>{{gender_text[contact.gender]}}</text>
@@ -30,14 +30,18 @@
       <view class='row ai-center item'>
         <view class='key'>身份证号</view>
         <view class='value flex1'>
-          <input value="{{contact.idcard}}" bindinput="idCardInput" data-idx="{{idx}}" placeholder='请输入身份证号'></input>
+          <input value="{{contact.idcard}}" disabled='{{contact.editType==0}}' bindinput="idCardInput" data-idx="{{idx}}" placeholder='请输入身份证号'></input>
         </view>
       </view>
       <view class='line-separator-h'></view>
-      <view class='delete-btn row center item' data-type="1" data-idx="{{idx}}" catchtap="deleteTap">
-        <text>删除</text>
+      <view class='btns item row ai-stretch jc-around item' data-type="1"  >
+        <text class='btn red' wx:if='{{contact.editType==0}}' catchtap="deleteItem" data-idx="{{idx}}">删除</text>
+        <text class='btn green' wx:if='{{contact.editType==0}}' catchtap="editItem" data-idx="{{idx}}">编辑</text>
+        <text class='btn red' wx:if='{{contact.editType==1}}' catchtap="deleteItem" data-idx="{{idx}}">删除</text>
+        <text class='btn green' wx:if='{{contact.editType==1}}' catchtap="saveItem" data-idx="{{idx}}">保存</text>
+        <text class='btn grey' wx:if='{{contact.editType==2}}' catchtap="cancelItem" data-idx="{{idx}}">取消</text>
+        <text class='btn green' wx:if='{{contact.editType==2}}' catchtap="saveItem" data-idx="{{idx}}">保存</text>
       </view>
     </view>
   </view>
-  <view class='save-btn'>保存</view>
 </view>

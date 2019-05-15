@@ -74,10 +74,15 @@
   border-radius: 36rpx;
   padding-left: 24rpx;
   font-size: 30rpx;
+  margin-top: 14rpx;
+  margin-bottom: 14rpx;
 }
 
 .reply-btn {
   font-size: 36rpx;
-  color: #ccc;
+  color: #64b631;
   margin-left: 33rpx;
+}
+.reply-btn.disable {
+  color: #ccc;
 }

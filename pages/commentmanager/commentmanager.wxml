@@ -3,18 +3,20 @@
   <view class='overview'>
     <view class="overview-context{{top_fixed ? ' fixed' : ''}}">
       <view class='overview-content'>
-        <ft-star-box score="{{everage_score}}"/>
+        <ft-star-box score="{{everage_score}}" />
         <text class='comment-amount'>{{total_comment}}人评价</text>
       </view>
       <view class='line-separator-h'></view>
     </view>
   </view>
   <view class='comment-list'>
-    <comment-box wx:for="{{comments}}" wx:for-index="idx" wx:for-item="comment" wx:key="id" comment="{{comment}}" role="business" top-border="{{idx !== 0}}" catchreply="replyTap" bottomBorder="{{true}}"/>
+    <comment-box wx:for="{{comments}}" wx:for-index="idx" wx:for-item="comment" wx:key="id" comment="{{comment}}" role="business" top-border="{{idx !== 0}}" catchreply="replyTap" bottomBorder="{{true}}" />
   </view>
-  <view class="reply-wrapper-mask{{reply_focus ? ' show' : ''}}"></view>
-  <view class="row ai-center jc-between bottom-reply-box{{reply_focus ? ' focus' : ''}}">
-    <input class='reply-input flex1' focus="{{reply_focus}}" placeholder="回复：{{current_reply}}" value="{{reply_value}}" bindinput='replyInput' bindblur="replyBlur"></input>
-    <view class='reply-btn bold' disabled="{{!reply_value}}" catchtap="replySubmit">发送</view>
-  </view>
+  <ft-mask show="{{reply_focus}}">
+    <view class="row ai-center jc-between bottom-reply-box{{reply_focus ? ' focus' : ''}}">
+      <input class='reply-input flex1' focus="{{reply_focus}}" placeholder="回复：{{current_reply}}" value="{{reply_value}}" bindinput='replyInput'></input>
+      <view class='reply-btn bold {{reply_value.length?"":"disable"}}' disabled="{{!reply_value}}" catchtap="replySubmit">发送</view>
+    </view>
+  </ft-mask>
+
 </view>

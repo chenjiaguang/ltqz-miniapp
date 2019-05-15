@@ -1,5 +1,4 @@
 /* pages/goodsdetail/goodsdetail.wxss */
-@import "../../utils/wxParse/wxParse.wxss";
 
 page{
   background: #FFFFFF;
@@ -369,7 +368,7 @@ button.join-btn.disabled{
   left: 0;
   bottom: 0;
   background: transparent;
-  transition: background 200ms;
+  transition: background 300ms;
 }
 .session-mask.show{
   background: rgba(0,0,0,0.65);
@@ -383,7 +382,7 @@ button.join-btn.disabled{
   left: 0;
   bottom: 0;
   transform: translateY(100%);
-  transition: transform 200ms;
+  transition: transform 300ms;
 }
 .session-context.show{
   transform: translateY(0);
@@ -586,11 +585,123 @@ button.next-btn.disabled{
   color: #fff;
 }
 
-.share-canvas{
+.share-box{
   position: fixed;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  bottom: 0;
+  z-index: -2;
+}
+.share-box.show{
+  z-index: 10;
+}
+
+.share-bg{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.65);
+  opacity: 0;
+  transition: opacity 300ms;
+  z-index: 11;
+}
+.share-bg.show{
+  opacity: 1;
+}
+.share-content{
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 12;
+  display: flex;
+  flex-direction: column;
+}
+.top-wrapper{
+  flex: 1;
+  width: 100%;
+  position: relative;
+  opacity: 0;
+  transition: opacity 300ms;
+}
+.top-wrapper.show{
+  opacity: 1;
+}
+.bottom-wrapper{
+  width: 100%;
+  background: #fff;
+  transform: translateY(101%);
+  transition: transform 300ms;
+}
+.bottom-wrapper.show{
+  transform: translateY(0);
+}
+.bottom-content{
+  width: 100%;
+  height: 256rpx;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 190rpx;
+  box-sizing: border-box;
+}
+.loading-image{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 28rpx;
+  color: #fff;
+}
+.share-canvas{
+  position: absolute;
   width: 526rpx;
   height: 816rpx;
-  top: 0;
+  top: 50%;
+  left: -750rpx;
+  transform: translateY(-50%);
+}
+.share-canvas.show.drawed{
+  left: 112rpx;
+}
+.share-friends, .save-image{
+  padding: 10rpx 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+.share-friend-btn{
+  position: absolute;
+  width: 100%;
+  height: 100%;
   left: 0;
-  background: rgba(0,0,0,0.65);
+  top: 0;
+  opacity: 0;
+}
+.share-friend-icon, .save-image-icon{
+  font-size: 64rpx;
+  color: #fff;
+}
+.share-item-icon{
+  width: 96rpx;
+  height: 96rpx;
+  background: #0EAC43;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+}
+.share-item-icon.disabled{
+  background: #B8B8B8;
+}
+.share-box-text{
+  font-size: 24rpx;
+  color: #666;
+  line-height: 24rpx;
+  padding-top: 20rpx;
 }

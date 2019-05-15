@@ -1,5 +1,5 @@
 // pages/goodsdetail/goodsdetail.js
-const WxParse = require('../../utils/wxParse/wxParse.js')
+import util from '../../utils/util.js'
 
 Page({
 
@@ -7,9 +7,9 @@ Page({
    * 页面的初始数据
    */
   data: {
-    userAvatar: 'http://testdimg.lutu.com/img/5f/e7/a8/d1/5fe7a8d12859397c26adcba0a4f4044a.jpg',
-    lutuLogo: 'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=232958732,1443508848&fm=26&gp=0.jpg',
-    goodsCodeUrl: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1557846509166&di=cb779e8e0db9220b8547916ae9032350&imgtype=0&src=http%3A%2F%2Fstatic-tp.fangdd.com%2Fxfwf%2FFmHIOQtJbJfJsYpdVMPBIuzuGVjJ.jpg',
+    fromUid: '',
+    uid: '',
+    uAvatar: 'http://img1.imgtn.bdimg.com/it/u=1366063848,1254383119&fm=26&gp=0.jpg',
     id: '1',
     statusText: {
       0: '活动已失效',
@@ -28,8 +28,8 @@ Page({
       5: '报名结束'
     },
     shareProfit: 3.99, // 分享赚shareProfit，如果为0或不存在，则分享按钮为普通样式，否则为分享赚xxx样式
-    cover_url: 'http://i1.bvimg.com/685753/69601cd97e8be3cb.jpg',
-    title: '【穿行艺术】城市里的博物馆，外滩历险记(银行一条街)',
+    cover_url: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2111762476,1358590461&fm=26&gp=0.jpg',
+    title: '【穿行艺术】城市里的博物馆，外滩历险记(银行一条街)四六级阿舒服了阿舒服阿',
     desc: '三大保障类别，全方位守护您的财富和家庭全方位守护您的财富和家庭',
     include_bx: '1',
     min_price: 49.9,
@@ -178,7 +178,9 @@ Page({
     currentTickets: [],
     selectedTicketLength: 0,
     totalPrice: 0,
-    showSession: false
+    showSession: false,
+    show_share_box: false,
+    localPoster: ''
   },
 
   /**
@@ -193,24 +195,14 @@ Page({
     this.setData({
       content: article
     })
-    /**
-    * WxParse.wxParse(bindName , type, data, target,imagePadding)
-    * 1.bindName绑定的数据名(必填)
-    * 2.type可以为html或者md(必填)
-    * 3.data为传入的具体数据(必填)
-    * 4.target为Page对象,一般为this(必填)
-    * 5.imagePadding为当图片自适应是左右的单一padding(默认为0,可选)
-    */
-    // let that = this
-    // WxParse.wxParse('article', 'html', article, that, 5)
-    this.initSession(this.data.session)
-    this.getPosterUserAvatar()
-    this.getPosterLutuLogo()
-    this.getPosterGoodsRqcode()
-    this.getPosterGoodsBanner()
-    setTimeout(() => {
-      this.drawPoster()
-    }, 3000)
+    if (options.uid) {
+      this.setData({
+        fromUid: options.uid
+      })
+    }
+    console.log('options.id', options.id)
+    this.fetchGoods(options.id)
+    this.fetchComment(options.id)
   },
 
   /**
@@ -259,11 +251,39 @@ Page({
    * 用户点击右上角分享
    */
   onShareAppMessage: function () {
+    const { title, id, cover_url, uid} = this.data
     return {
-      title: '活动详情页转发',
-      path: '/pages/goodsdetail/goodsdetail?id=555&uid=999',
-      imageUrl: 'http://i1.bvimg.com/685753/f356705dcb228db3.jpg'
+      title: title,
+      path: '/pages/goodsdetail/goodsdetail?id=' + id + '&uid=' + uid,
+      imageUrl: cover_url
     }
+  },
+
+  fetchGoods: function (id) {
+    let rData = {id}
+    util.request('/huodong/detail', rData).then(res => {
+      console.log('/huodong/detail_res', res)
+      if (res.error == 0 && res.data) {
+        if (res.data.session) {
+          this.initSession(res.data.session)
+        }
+        this.setData(res.data)
+      }
+    }).catch(err => {
+      
+    })
+  },
+
+  fetchComment: function (pid) {
+    let rData = { product_id: pid, type: '1', pn: 1 }
+    util.request('/rate/list', rData).then(res => {
+      console.log('/rate/list_res', res)
+      if (res.error == 0 && res.data) {
+        this.setData(res.data)
+      }
+    }).catch(err => {
+
+    })
   },
 
   changeTab: function (e) {
@@ -346,7 +366,7 @@ Page({
     }
     tickets.forEach((item, index) => {
       selectedTicketLen += index === idx ? (item.num + (type === 'minus' ? -1 : 1)) : item.num
-      total += index === idx ? ((item.num + (type === 'minus' ? -1 : 1)) * item.price) : (item.num * item.price)
+      total += index === idx ? ((item.num + (type === 'minus' ? -1 : 1)) * item.type.price) : (item.num * item.type.price)
     })
     let num = ticket.num + (type === 'minus' ? -1 : 1)
     let _obj = {}
@@ -373,14 +393,28 @@ Page({
 
   viewAllComment: function () {
     console.log('viewAllComment')
+    const {id} = this.data
+    wx.navigateTo({
+      url: '/pages/commentlist/commentlist?pid=' + id + '&type=1'
+    })
   },
 
   viewLocation: function (e) {
     console.log('viewLocation')
+    const lnglat = this.data[e.currentTarget.dataset.ele]
+    if (lnglat && lnglat[0] && lnglat[1]) {
+      wx.openLocation({
+        latitude: parseFloat(lnglat[1]),
+        longitude: parseFloat(lnglat[0])
+      })
+    }
   },
 
   viewBusinessCertification: function () { // 查看商家资质
     console.log('viewBusinessCertification')
+    wx.navigateTo({
+      url: '/pages/imagepage/imagepage?image=' + this.data.shop.type_pic_url + '&title=商家资质',
+    })
   },
 
   viewBusiness: function () { // 跳转到商家
@@ -389,130 +423,151 @@ Page({
 
   getPosterUserAvatar: function () {
     wx.getImageInfo({
-      src: this.data.userAvatar,
+      src: this.data.uAvatar,
       success: (res) => {
         this.canvas_user_avatar = res.path
+        this.drawPoster()
       }
     })
   },
 
-  getPosterLutuLogo: function () {
-    wx.getImageInfo({
-      src: this.data.lutuLogo,
-      success: (res) => {
-        this.canvas_lutu_logo = res.path
-      }
-    })
-  },
-
-  getPosterGoodsRqcode: function () {
-    wx.getImageInfo({
-      src: this.data.goodsCodeUrl,
-      success: (res) => {
-        this.canvas_goods_qrcode = res.path
-      }
-    })
+  getPosterGoodsRqcode: function () { // todo
+    // 模拟ajax获取二维码
+    if (!this.canvas_goods_qrcode && !this.code_image_fetching) {
+      this.code_image_fetching = true
+      setTimeout(res => {
+        this.code_image_fetching = false
+        wx.getImageInfo({
+          src: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1557846509166&di=cb779e8e0db9220b8547916ae9032350&imgtype=0&src=http%3A%2F%2Fstatic-tp.fangdd.com%2Fxfwf%2FFmHIOQtJbJfJsYpdVMPBIuzuGVjJ.jpg',
+          success: (res) => {
+            this.canvas_goods_qrcode = res.path
+            this.drawPoster()
+          }
+        })
+      }, 1000)
+    }
   },
 
   getPosterGoodsBanner: function () {
     wx.getImageInfo({
       src: this.data.cover_url,
       success: (res) => {
+        // 按照aspectfill的方式截取
+        const img_width = res.width
+        const img_height = res.height
+        const canvas_height = 316
+        const canvas_width = 470
+        let clip_left,clip_top,clip_width,clip_height // 左偏移值，上偏移值，截取宽度，截取高度
+        clip_height = img_width * (canvas_height / canvas_width)
+        if (clip_height > img_height) {
+          clip_height = img_height
+          clip_width = clip_height * (canvas_width / canvas_height)
+          clip_left = (img_width - clip_width) / 2
+          clip_top = 0
+        } else {
+          clip_left = 0
+          clip_top = (img_height - clip_height) / 2
+          clip_width = img_width
+        }
+        this.banner_clip = {
+          clip_left,
+          clip_top,
+          clip_width,
+          clip_height
+        }
         this.canvas_goods_banner = res.path
+        this.drawPoster()
       }
     })
   },
 
   drawPoster: function (goods) {
-    if (!this.canvas_user_avatar || !this.canvas_lutu_logo || !this.canvas_goods_qrcode || !this.canvas_goods_banner) {
+    if (!this.canvas_user_avatar || !this.canvas_goods_qrcode || !this.canvas_goods_banner || !this.banner_clip) {
+      if (!this.canvas_user_avatar) {
+        this.getPosterUserAvatar()
+      }
+      if (!this.canvas_goods_qrcode) {
+        this.getPosterGoodsRqcode()
+      }
+      if (!this.canvas_goods_banner || !this.banner_clip) {
+        this.getPosterGoodsBanner()
+      }
       return false
     }
     const systemInfo = wx.getSystemInfoSync()
-    const ctx = wx.createCanvasContext('share-image', this)
+    const ctx = wx.createCanvasContext('share-poster', this)
     const rpx = systemInfo.windowWidth / 750
+
+    ctx.drawImage('/assets/images/share_poster_bg.png', 0, 0, 526 * rpx, 816 * rpx) // 海报背景
     ctx.save()
     ctx.beginPath()
     ctx.arc(86 * rpx, 86 * rpx, 28 * rpx, 0, 2 * Math.PI)
     ctx.clip()
     ctx.drawImage(this.canvas_user_avatar, 58 * rpx, 58 * rpx, 56 * rpx, 56 * rpx)
     ctx.restore()
-    ctx.drawImage(this.canvas_goods_banner, 28 * rpx, 139 * rpx, 470 * rpx, 316 * rpx)
-    ctx.drawImage(this.canvas_goods_banner, 51 * rpx, 666 * rpx, 86 * rpx, 86 * rpx)
-    ctx.drawImage(this.canvas_goods_banner, 374 * rpx, 644 * rpx, 105 * rpx, 105 * rpx)
-    ctx.draw()
-    // const systemInfo = wx.getSystemInfoSync()
-    // const ctx = wx.createCanvasContext('share-image', this)
-    // const rpx = systemInfo.windowWidth / 750
-    // ctx.save()
-    // ctx.beginPath()
-    // ctx.arc(86 * rpx, 86 * rpx, 28 * rpx, 0, 2 * Math.PI)
-    // ctx.clip()
-    // this.setDrawImage(ctx, 'http://testdimg.lutu.com/img/5f/e7/a8/d1/5fe7a8d12859397c26adcba0a4f4044a.jpg', 58 * rpx, 58 * rpx, 56 * rpx, 56 * rpx)
-    // ctx.restore()
-    // ctx.draw()
-    // wx.getImageInfo({
-    //   src: 'http://testdimg.lutu.com/img/5f/e7/a8/d1/5fe7a8d12859397c26adcba0a4f4044a.jpg',
-    //   success: (res) => {
-    //     console.log('success', res)
-    //   },
-    //   fail: (res) => {
-    //     console.log('fail', res)
-    //   },
-    //   complete: (res) => {
-    //     console.log('complete', res)
-    //   }
-    // })
-  },
-
-  drawing: function () {
-    var rpx;
-    //获取屏幕宽度，获取自适应单位
-    wx.getSystemInfo({
-      success: function (res) {
-        rpx = res.windowWidth / 750;
-      },
-    });
-    let _this = this;
-    const ctx = wx.createCanvasContext('goodsImage', this);
-    _this.setDrawImage(ctx, _this.data.pageQRCodeData.goodsInfo.goods_img, 0, 0, 300 * rpx, 160 * rpx);
-    _this.setDrawImage(ctx, _this.data.pageQRCodeData.goodsInfo.qrcode_img_url, 195 * rpx, 180 * rpx, 80 * rpx, 80 * rpx)
-    ctx.setFillStyle('#ffffff')
-    ctx.fillRect(0, 0, 300 * rpx, 300 * rpx)
-    ctx.draw(true)
-    _this.setFillText(ctx, _this.data.pageQRCodeData.goodsInfo.text, '#333333', 210 * rpx);
-
-    ctx.draw(true)
-  },
-  setFillText: function (ctx, text, color, y) {
-    let textString;
-    if (text.length > 26) {
-      textString = text.substr(0, 23) + '...';
+    ctx.drawImage(this.canvas_goods_banner, this.banner_clip.clip_left, this.banner_clip.clip_top, this.banner_clip.clip_width, this.banner_clip.clip_height, 28 * rpx, 139 * rpx, 470 * rpx, 316 * rpx)
+    ctx.drawImage('/assets/images/lutu_logo.png', 51 * rpx, 666 * rpx, 86 * rpx, 86 * rpx)
+    ctx.drawImage(this.canvas_goods_qrcode, 374 * rpx, 644 * rpx, 105 * rpx, 105 * rpx)
+    ctx.setFontSize(20 * rpx)
+    ctx.setFillStyle('#333')
+    ctx.fillText('@ 路上看到飞机水电费', 126 * rpx, 80 * rpx, 340 * rpx)
+    ctx.setFontSize(18 * rpx)
+    ctx.setFillStyle('#999')
+    ctx.fillText('发现了一个宝贝，想要跟你分享~', 126 * rpx, 106 * rpx, 340 * rpx)
+    ctx.setFontSize(22 * rpx)
+    ctx.setFillStyle('#333')
+    const title = this.data.title
+    if (title.length > 20) {
+      ctx.fillText(title.substring(0, 19), 51 * rpx, 500 * rpx, 425 * rpx)
+      if (title.length > 37) {
+        ctx.fillText(title.substring(19, 37) + '...', 51 * rpx, 530 * rpx, 425 * rpx)
+      } else {
+        ctx.fillText(title.substring(19, 37), 51 * rpx, 530 * rpx, 425 * rpx)
+      }
     } else {
-      textString = text;
+      ctx.fillText(title, 51 * rpx, 500 * rpx, 425 * rpx)
     }
-    let textRowArr = [];
-    for (let tmp = 0; tmp < textString.length;) {
-      textRowArr.push(textString.substr(tmp, 13))
-      tmp += 13
+    let price = ''
+    const { min_price, price_num, join_num} = this.data
+    if (min_price && min_price > 0) {
+      if (price_num > 1) {
+        price = '¥' + min_price + '起'
+      } else {
+        price = '¥' + min_price
+      }
+    } else {
+      price = '免费'
     }
-    for (let item of textRowArr) {
-      ctx.setFontSize(13);
-      ctx.setFillStyle(color);
-      ctx.fillText(item, 10, y);
-      y += 20;
+    ctx.setFontSize(36 * rpx)
+    ctx.setFillStyle('#F24724')
+    ctx.fillText(price, 51 * rpx, 590 * rpx, 425 * rpx)
+    ctx.setFontSize(18 * rpx)
+    ctx.setFillStyle('#999')
+    const join_text = '累计' + (join_num || 0) + '人报名'
+    const join_left = 526 - (join_text.length * 18 + 51)
+    ctx.fillText(join_text, join_left * rpx, 585 * rpx, 425 * rpx)
+    ctx.setFontSize(15 * rpx)
+    ctx.setFillStyle('#999')
+    ctx.fillText('路途亲子，共享美好时光！', 51 * rpx, 766 * rpx)
+    ctx.fillText('长按立即购买', 382 * rpx, 766 * rpx)
+    ctx.draw(true, () => {
+      wx.canvasToTempFilePath({
+        x: 0,
+        y: 0,
+        canvasId: 'share-poster',
+        success: res => {
+          let localPoster = res.tempFilePath
+          this.setData({
+            localPoster: localPoster
+          })
+        },
+        fail: function (res) {
 
-    }
-
-    if (this.data.pageQRCodeData.goodsInfo.price) {
-      // ctx.setFontSize(14);
-      // ctx.setFillStyle('#FF3600');
-      // ctx.fillText('￥' + this.data.pageQRCodeData.goodsInfo.price, 10, y+5)
-
-    }
-    ctx.setFontSize(10);
-    ctx.setFillStyle('#69C4AA');
-    ctx.fillText('长按图片查看详情', 10, y + 20)
+        }
+      })
+    })
   },
+
   setDrawImage: function (ctx, src, x, y, w, h) {
     wx.getImageInfo({
       src: src,
@@ -522,49 +577,116 @@ Page({
       }
     })
   },
-  savePageCode: function () {
-    let _this = this;
-    wx.canvasToTempFilePath({
-      canvasId: 'goodsImage',
-      success(res) {
-        _this.pageCode(res.tempFilePath);
-      }
-    }, this)
+
+  shareBtnTap: function () {
+    console.log('shareBtnTap')
+    const { show_share_box, localPoster} = this.data
+    if (!show_share_box) {
+      this.setData({
+        show_share_box: true
+      })
+    }
+    if (!localPoster) {
+      this.drawPoster()
+    }
   },
-  pageCode: function (url) {
-    let animation = wx.createAnimation({
-      duration: 200,
-      timingFunction: "ease"
+
+  toggleShareBox: function () {
+    const { show_share_box } = this.data
+    this.setData({
+      show_share_box: !show_share_box
     })
-    this.animation = animation;
-    animation.bottom("-320rpx").step()
-    let that = this;
-    wx.showLoading({ mask: true })
-    wx.saveImageToPhotosAlbum({
-      filePath: url,
-      success: function (data) {
-        wx.showToast({
-          title: '保存成功',
-          icon: 'success',
-          duration: 4000
-        })
-        that.animation = animation;
-        that.animation.bottom("-320rpx").step();
-        that.setData({
-          "pageQRCodeData.shareDialogShow": "100%",
-          "pageQRCodeData.shareMenuShow": false,
-          "pageQRCodeData.animation": that.animation.export(),
-          "pageQRCodeShow": false
-        })
-      },
-      fail: function (res) {
-        if (res && (res.errMsg === "saveImageToPhotosAlbum:fail auth deny" || res.errMsg === "saveImageToPhotosAlbum:fail:auth denied")) {
+  },
+
+  shareFriend: function () {
+    wx.showShareMenu({
+      withShareTicket: true
+    })
+  },
+
+  savePoster: function () {
+    console.log('savePoster')
+    const { localPoster} = this.data
+    if (!localPoster) {
+      return false
+    }
+    // 获取用户是否开启用户授权相册
+    wx.getSetting({
+      success: res => {
+        // 如果没有则获取授权
+        if (!res.authSetting['scope.writePhotosAlbum'] && res.authSetting['scope.writePhotosAlbum'] !== false) { // 未授权 且 未拒绝过
+          wx.authorize({
+            scope: 'scope.writePhotosAlbum',
+            success: () => {
+              wx.saveImageToPhotosAlbum({
+                filePath: this.data.localPoster,
+                success: () => {
+                  wx.showToast({
+                    title: '保存成功',
+                    icon: 'none'
+                  })
+                },
+                fail: () => {
+                  wx.showToast({
+                    title: '保存失败',
+                    icon: 'none'
+                  })
+                }
+              })
+            },
+            fail: () => {
+
+            }
+          })
+        } else if (!res.authSetting['scope.writePhotosAlbum'] && res.authSetting['scope.writePhotosAlbum'] === false) { // 未授权且拒绝过
           wx.showModal({
-            title: '提示',
-            content: '您已经拒绝授权保存图片到您的相册，这将影响您使用小程序，您可以点击右上角的菜单按钮，选择关于。进入之后再点击右上角的菜单按钮，选择设置，然后将保存到相册按钮打开，返回之后再重试。',
-            showCancel: false,
-            confirmText: "确定",
-            success: function (res) {
+            content: '保存图片需要你授权，请授权相册', //提示的内容
+            showCancel: true,
+            confirmText: '去授权',
+            success: res => {
+              if (res.confirm) {
+                wx.openSetting({
+                  success: (res) => {
+                    const authSetting = res.authSetting
+                    if (authSetting['scope.writePhotosAlbum']) {
+                      wx.saveImageToPhotosAlbum({
+                        filePath: this.data.localPoster,
+                        success: () => {
+                          wx.showToast({
+                            title: '保存成功',
+                            icon: 'none'
+                          })
+                        },
+                        fail: () => {
+                          wx.showToast({
+                            title: '保存失败',
+                            icon: 'none'
+                          })
+                        }
+                      })
+                    }
+                  }
+                })
+              } else if (res.cancel) {
+                console.log('用户点击取消')
+              }
+            }
+          })
+        } else if (res.authSetting['scope.writePhotosAlbum']) {
+          // 有则直接保存
+          wx.saveImageToPhotosAlbum({
+            filePath: this.data.localPoster,
+            success: () => {
+              wx.showToast({
+                title: '保存成功',
+                icon: 'none'
+              })
+            },
+            fail: () => {
+              wx.showToast({
+                title: '保存失败',
+                icon: 'none'
+              })
             }
           })
         }

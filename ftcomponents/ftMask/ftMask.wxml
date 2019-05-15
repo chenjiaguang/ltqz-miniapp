@@ -1,0 +1,6 @@
+<!--ftcomponents/ftMask/ftMask.wxml-->
+<view class='mask {{render?"render":""}} {{ahead?"ahead":""}}' bindtap='hide' catchtouchmove="none">
+  <view catchtap='none'>
+    <slot hover-stop-propagation></slot>
+  </view>
+</view>

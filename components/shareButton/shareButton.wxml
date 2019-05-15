@@ -1,3 +1,3 @@
 <!--components/shareButton/shareButton.wxml-->
-<view wx:if="{{profit <= 0}}" class='wrapper1'><text class='share-icon lutufont lutu-share'></text>分享</view>
-<view wx:if="{{profit > 0}}" class='wrapper2'><view>分享赚</view><view>¥{{profit}}</view></view>
+<view catchtap="btnTap" wx:if="{{profit <= 0}}" class='wrapper1'><text class='share-icon lutufont lutu-share'></text>分享</view>
+<view catchtap="btnTap" wx:if="{{profit > 0}}" class='wrapper2'><text class='wrapper2-text'>分享赚</text><text class='wrapper2-text'>¥{{profit}}</text></view>

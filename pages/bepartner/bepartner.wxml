@@ -1,51 +1,19 @@
-<!--pages/bepartner/bepartner.wxml-->
-<view class='page-bepartner'>
-  <view class="banner"></view>
-  <button>f5f5f5</button>
-  <view class='partner-rights'>
-    合伙人权益
+<!--pages/userinfo/userinfo.wxml-->
+<view class='card'>
+  <view class='item row ai-center jc-between'>
+    <text class='title'>头像</text>
+    <image class='avatar' src="{{avatar}}" mode="aspectFill"></image>
   </view>
-  <view class='partner-rights'>合伙人权益</view>
-  <view class='partner-rights'>合伙人权益</view>
-  <view class='partner-rights'>合伙人权益</view>
-  <view class='partner-rights'>合伙人权益</view>
-  <view class='partner-rights'>合伙人权益</view>
-  <view class='partner-rights'>合伙人权益</view>
-  <view class='partner-rights'>合伙人权益</view>
-  <view class='partner-rights'>合伙人权益</view>
-  <view class='partner-rights'>合伙人权益</view>
-  <view class='partner-rights'>合伙人权益</view>
-  <view class='partner-rights'>合伙人权益</view>
-  <view class='partner-rights'>合伙人权益</view>
-  <view class='partner-rights'>合伙人权益</view>
-  <view class='partner-rights'>合伙人权益</view>
-  <view class='partner-rights'>合伙人权益</view>
-  <view class='partner-rights'>合伙人权益</view>
-  <view class='partner-rights'>合伙人权益</view>
-  <view class='partner-rights'>合伙人权益</view>
-  <view class='partner-rights'>合伙人权益</view>
-  <view class='partner-rights'>合伙人权益</view>
-  <view class='partner-rights'>合伙人权益</view>
-  <view class='partner-rights'>合伙人权益</view>
-  <view class='partner-rights'>合伙人权益</view>
-  <view class='partner-rights'>合伙人权益</view>
-  <view class='partner-rights'>合伙人权益</view>
-  <view class='partner-rights'>合伙人权益</view>
-  <view class='partner-rights'>合伙人权益</view>
-  <view class='partner-rights'>合伙人权益</view>
-  <view class='partner-rights'>合伙人权益</view>
-  <view class='partner-rights'>合伙人权益</view>
-  <view class='partner-rights'>合伙人权益</view>
-  <view class='partner-rights'>合伙人权益</view>
-  <view class='partner-rights'>合伙人权益</view>
-  <view class='partner-rights'>合伙人权益</view>
-  <view class='partner-rights'>合伙人权益</view>
-  <view class='partner-rights'>合伙人权益</view>
-  <view class='partner-rights'>合伙人权益</view>
-  <view class='bottom-btn' style="background:transparent"></view>
-  <ft-iphone-bottom-adapter />
-  <view class='bottom-btn-wrapper'>
-    <view class='bottom-btn' catchtap="goCollector">立即申请</view>
-    <ft-iphone-bottom-adapter />
+  <view class='line-separator-h'></view>
+  <view class='item row ai-center jc-between'>
+    <text class='title'>昵称</text>
+    <text class='value'>{{username}}</text>
+  </view>
+  <view class='line-separator-h'></view>
+  <view class='item row ai-center jc-between'>
+    <text class='title'>手机号</text>
+    <text class='value' wx:if="{{phone}}">{{phone}}</text>
+    <button class='getPhone'  wx:if="{{!phone}}" open-type="getPhoneNumber" bindgetphonenumber='getPhoneNumber'>去授权</button>
   </view>
 </view>
+<view class="btn {{phone?'':'disabled'}}" catchtap="">提交申请信息</view>

@@ -19,10 +19,18 @@ Page({
       2: '女'
     },
     contacts: [{
+      id: '1',
       name: '张三',
       gender: '1',
-      idcard: '460026478390987878'
-    }]
+      idcard: '460026478390987878',
+      editType: '0',
+    }, {
+      id: '2',
+      name: '李四',
+      gender: '1',
+      idcard: '460026478390987878',
+      editType: '0', //0无操作 1新建 2编辑
+    }],
   },
 
   /**
@@ -94,40 +102,48 @@ Page({
   },
 
   genderChange: function(e) {
-    console.log('genderChange', e)
-    let {
-      value
-    } = e.detail
-    value = parseInt(value)
-    const {
-      type,
-      idx
-    } = e.currentTarget.dataset
-    let contacts = ''
-    if (type === '1') {
-      contacts = 'contacts'
-    } else if (type === '2') {
-      contacts = 'new_contacts'
-    }
     let _obj = {}
-    _obj[contacts + '[' + idx + '].gender'] = this.data.genderRange[value].value
-    console.log('_obj', _obj)
+    _obj['contacts[' + e.currentTarget.dataset.idx + '].gender'] = this.data.genderRange[parseInt(e.detail.value)].value
     this.setData(_obj)
   },
-  add: function() {
+  addItem: function() {
     this.setData({
       contacts: this.data.contacts.concat({
+        id: '',
         name: '',
         gender: '',
-        idcard: ''
+        idcard: '',
+        editType: '1'
       })
     })
   },
-
-  deleteTap: function(e) {
-    this.data.contacts.splice(e.currentTarget.dataset.idx, 1)
+  editItem: function(e) {
     this.setData({
-      contacts: this.data.contacts
+      ['contacts[' + e.currentTarget.dataset.idx + '].editType']: '2'
     })
-  }
+  },
+  cancelItem: function(e) {
+    this.setData({
+      ['contacts[' + e.currentTarget.dataset.idx + '].editType']: '0'
+    })
+  },
+  deleteItem: function(e) {
+    wx.showModal({
+      title: '提示',
+      content: '确定要删除此联系人吗？',
+      success: (res) => {
+        if (res.confirm) {
+          this.data.contacts.splice(e.currentTarget.dataset.idx, 1)
+          this.setData({
+            contacts: this.data.contacts
+          })
+        }
+      }
+    })
+  },
+  saveItem: function(e) {
+    this.setData({
+      ['contacts[' + e.currentTarget.dataset.idx + '].editType']: '0'
+    })
+  },
 })

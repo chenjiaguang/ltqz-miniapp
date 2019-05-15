@@ -2,6 +2,7 @@
   "navigationBarTitleText": "订单评价",
   "usingComponents": {
     "activity-content": "../../components/activityContent/activityContent",
-    "ft-star-box": "../../ftcomponents/ftStarBox/ftStarBox"
+    "ft-star-box": "../../ftcomponents/ftStarBox/ftStarBox",
+    "ft-image-upload": "../../ftcomponents/ftImageUpload/ftImageUpload"
   }
 }

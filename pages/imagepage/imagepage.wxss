@@ -1,0 +1,13 @@
+/* pages/imagepage/imagepage.wxss */
+
+page{
+  background: #F5F5F5;
+}
+.page-imagepage{
+  background: #F5F5F5;
+}
+.image{
+  display: block;
+  border: none;
+  width: 100%;
+}

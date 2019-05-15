@@ -1,0 +1,4 @@
+<!--pages/imagepage/imagepage.wxml-->
+<view class='page-imagepage'>
+  <image wx:if="{{image}}" class='image' mode="widthFix" src="{{image}}"></image>
+</view>

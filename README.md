@@ -12,3 +12,10 @@ display: -webkit-box;
 /*! autoprefixer: off */
 -webkit-box-orient: vertical;
 /* autoprefixer: on */
+
+
+z-index
+相对固定组件(移动到某个地方后固定):80
+持续固定组件:90
+遮罩，弹窗组件:100
+绝对顶层(微信打开提示):1000
