@@ -7,7 +7,10 @@ page{
   background: #fff;
 }
 .page-top-padding{
-  height: 24rpx;
+  height: 14rpx;
+}
+.banner-wrapper{
+  padding: 10rpx 0 10rpx;
 }
 .theme-wrapper{
   font-size: 0;
@@ -19,7 +22,7 @@ page{
   font-size: 28rpx;
 }
 .theme-box, recommendation-box{
-  margin-top: 20rpx;
+  margin: 10rpx 0 10rpx;
 }
 .theme-header, .recommendation-header{
   height: 58rpx;

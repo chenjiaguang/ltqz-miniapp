@@ -13,7 +13,24 @@ const formatTime = date => {
 }
 
 const formatMoney = n => {
-  return n == 0 ? 0 : n.toFixed(2)
+  let money = 0
+  let showMoney = 0
+  switch (n) {
+    case null:
+    case 0:
+    case '0':
+    case '':
+      money = 0
+      showMoney = 0
+      break;
+    default:
+      money = parseInt(n)
+      showMoney = parseFloat((parseInt(n) / 100).toFixed(2))
+  }
+  return {
+    money,
+    showMoney
+  }
 }
 
 const formatNumber = n => {
@@ -77,11 +94,25 @@ const showErrorToast = (msg) => {
     duration: 2000
   })
 }
+const backAndToast = (msg) => {
+  wx.navigateBack({
+    delta: 1,
+    complete: () => {
+      setTimeout(() => {
+        wx.showToast({
+          title: msg,
+          icon: 'none',
+        })
+      }, 500)
+    }
+  })
+}
 
 const request = (url, data, config = {}) => {
   const app = getApp()
   const apiVersion = (config && config.apiVersion) || app.config.apiVersion || '/v1'
   const token = (config && config.token) || storageHelper.getStorage('token') || ''
+  // const token = '53876bfbe2f70458f4bdd662d8d4e695'
   console.log('apiVersion', apiVersion)
   return new Promise((resolve, reject) => {
     wx.request({
@@ -128,5 +159,7 @@ module.exports = {
   formatTime: formatTime,
   isJsonString,
   relaunchPermission,
-  request
+  request,
+  formatMoney,
+  backAndToast
 }

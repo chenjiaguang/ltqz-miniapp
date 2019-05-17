@@ -82,7 +82,7 @@
   top: 0;
 }
 
-.goods {
+.goods, .ticket {
   word-break: break-all;
   overflow: hidden;
   text-overflow: ellipsis;

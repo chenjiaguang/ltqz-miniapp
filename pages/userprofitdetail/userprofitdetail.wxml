@@ -8,7 +8,7 @@
           <text>总收益</text>
           <text class='unit'> (元)</text>
         </view>
-        <view class='money bold'>{{all}}</view>
+        <view class='money bold'>{{total}}</view>
         <view class='line-separator-h'></view>
         <view class='shortcut-box'>
           <view class='shortcut-item'>
@@ -16,14 +16,14 @@
               <text>已解冻收益</text>
               <text class='unit'> (元)</text>
             </view>
-            <view class='shortcut-amount bold'>{{cashabled}}</view>
+            <view class='shortcut-amount bold'>{{freeze_remit}}</view>
           </view>
           <view class='shortcut-item'>
             <view class='shortcut-header'>
               <text>待解冻收益</text>
               <text class='unit'> (元)</text>
             </view>
-            <view class='shortcut-amount bold'>{{tobefree}}</view>
+            <view class='shortcut-amount bold'>{{unfreeze_remit}}</view>
           </view>
         </view>
       </view>
@@ -32,13 +32,13 @@
 
   <block wx:for="{{list}}">
     <view class='card item-box column'>
-      <text class='item-title'>{{item.title}}</text>
+      <text class='item-title'>收益到账</text>
       <view class='line-separator-h'></view>
-      <text class='item-content'>{{item.content}}</text>
-      <text class='item-time'>{{item.time}}</text>
+      <text class='item-content'>{{item.desc}}</text>
+      <text class='item-time'>{{item.created_at}}</text>
     </view>
   </block>
 
-  <image class='empty-img' src='/assets/images/userprofit.png' />
-  <text class='empty-text'>你还没有收益哦~</text>
+  <image wx:if="{{list.length==0}}" class='empty-img' src='/assets/images/userprofit.png' />
+  <text wx:if="{{list.length==0}}" class='empty-text'>你还没有收益哦~</text>
 </view>

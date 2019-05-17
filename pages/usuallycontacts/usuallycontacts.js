@@ -1,4 +1,5 @@
 // pages/usuallycontacts/usuallycontacts.js
+const util = require('../../utils/util.js')
 Page({
 
   /**
@@ -18,19 +19,7 @@ Page({
       1: '男',
       2: '女'
     },
-    contacts: [{
-      id: '1',
-      name: '张三',
-      gender: '1',
-      idcard: '460026478390987878',
-      editType: '0',
-    }, {
-      id: '2',
-      name: '李四',
-      gender: '1',
-      idcard: '460026478390987878',
-      editType: '0', //0无操作 1新建 2编辑
-    }],
+    contacts: [],
   },
 
   /**
@@ -44,6 +33,14 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function() {
+    util.request('/traveler/list').then(res => {
+      res.data.forEach((item) => {
+        item.editType = '0' //0无操作 1新建 2编辑
+      })
+      this.setData({
+        contacts: res.data
+      })
+    }).catch(err => {})
 
   },
 
@@ -88,22 +85,29 @@ Page({
   onShareAppMessage: function() {
 
   },
-
   nameInput: function(e) {
     let _obj = {}
     _obj['contacts[' + e.currentTarget.dataset.idx + '].name'] = e.detail.value
     this.setData(_obj)
   },
 
+  idCardFocus: function(e) {
+    let contact = this.data.contacts[e.currentTarget.dataset.idx]
+    let _obj = {}
+    _obj['contacts[' + e.currentTarget.dataset.idx + '].id_number_back'] = contact.id_number
+    _obj['contacts[' + e.currentTarget.dataset.idx + '].id_number'] = ''
+    this.setData(_obj)
+  },
+
   idCardInput: function(e) {
     let _obj = {}
-    _obj['contacts[' + e.currentTarget.dataset.idx + '].idcard'] = e.detail.value
+    _obj['contacts[' + e.currentTarget.dataset.idx + '].id_number'] = e.detail.value
     this.setData(_obj)
   },
 
   genderChange: function(e) {
     let _obj = {}
-    _obj['contacts[' + e.currentTarget.dataset.idx + '].gender'] = this.data.genderRange[parseInt(e.detail.value)].value
+    _obj['contacts[' + e.currentTarget.dataset.idx + '].sex'] = this.data.genderRange[parseInt(e.detail.value)].value
     this.setData(_obj)
   },
   addItem: function() {
@@ -111,8 +115,8 @@ Page({
       contacts: this.data.contacts.concat({
         id: '',
         name: '',
-        gender: '',
-        idcard: '',
+        sex: '',
+        id_number: '',
         editType: '1'
       })
     })
@@ -123,7 +127,12 @@ Page({
     })
   },
   cancelItem: function(e) {
+    let contact = this.data.contacts[e.currentTarget.dataset.idx]
+    if (contact.id_number_back) {
+      contact.id_number = contact.id_number_back
+    }
     this.setData({
+      ['contacts[' + e.currentTarget.dataset.idx + '].id_number']: contact.id_number,
       ['contacts[' + e.currentTarget.dataset.idx + '].editType']: '0'
     })
   },
@@ -133,17 +142,38 @@ Page({
       content: '确定要删除此联系人吗？',
       success: (res) => {
         if (res.confirm) {
-          this.data.contacts.splice(e.currentTarget.dataset.idx, 1)
-          this.setData({
-            contacts: this.data.contacts
-          })
+          let contact = this.data.contacts[e.currentTarget.dataset.idx]
+          if (contact.id) {
+            util.request('/traveler/edit', {
+              id: contact.id,
+              status: 0
+            }).then(res => {
+              this.data.contacts.splice(e.currentTarget.dataset.idx, 1)
+              this.setData({
+                contacts: this.data.contacts
+              })
+            }).catch(err => {})
+          } else {
+            this.data.contacts.splice(e.currentTarget.dataset.idx, 1)
+            this.setData({
+              contacts: this.data.contacts
+            })
+          }
         }
       }
     })
   },
   saveItem: function(e) {
-    this.setData({
-      ['contacts[' + e.currentTarget.dataset.idx + '].editType']: '0'
-    })
+    let contact = this.data.contacts[e.currentTarget.dataset.idx]
+    util.request('/traveler/edit', {
+      id: contact.id,
+      name: contact.name,
+      sex: contact.sex,
+      id_number: contact.id_number
+    }).then(res => {
+      this.setData({
+        ['contacts[' + e.currentTarget.dataset.idx + '].editType']: '0'
+      })
+    }).catch(err => {})
   },
 })

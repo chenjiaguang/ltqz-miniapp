@@ -108,6 +108,8 @@ page{
 }
 .buy-for-view-name{
   min-width: 116rpx;
+  padding-right: 40rpx;
+  box-sizing: border-box;
 }
 .buy-for-item-text{
   font-size: 28rpx;
@@ -299,14 +301,15 @@ button.submit-btn.disabled{
   padding: 0 32rpx;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   overflow: hidden;
 }
 .buyfor-check-icon{
+  font-size: 34rpx;
   width: 32rpx;
   height: 32rpx;
-  margin-right: 10rpx;
+  margin-left: 32rpx;
   color: #D8D8D8;
-  margin-top: 16rpx;
 }
 .buyfor-check-icon.checked{
   color: #64B631;
@@ -319,7 +322,6 @@ button.submit-btn.disabled{
   line-height: 40rpx;
   color: #333;
   font-weight: bold;
-  padding-top: 12rpx;
 }
 .buyfor-idcard{
   font-size: 24rpx;
@@ -333,4 +335,5 @@ button.submit-btn.disabled{
   font-size: 34rpx;
   color: #64B631;
   align-self: center;
+  margin-right: 32rpx;
 }

@@ -1,19 +1,19 @@
 <!--pages/signupmanager/signupmanager.wxml-->
 <view class='container'>
   <view class='head row ai-center'>
-    <text class='usernum'>报名人数：{{usernum}}</text>
-    <text>预计收入：￥{{moneysum}}</text>
+    <text class='usernum'>报名人数：{{join_num}}</text>
+    <text>预计收入：￥{{js_price}}</text>
   </view>
   <block wx:for="{{list}}">
     <view class='line-separator-h'></view>
-    <view class='row box'>
-      <image src="{{item.avatar}}" class='avatar' />
+    <view class='row box' hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
+      <image src="{{item.user.avatar}}" class='avatar' />
       <view class='column flex1'>
-        <text class='username'>{{item.username}}</text>
+        <text class='username'>{{item.user.nick_name}}</text>
         <text class='content'>{{item.content}}</text>
         <view class='row'>
-          <text wx:if="{{item.state==0}}" class='state state0'>未核销</text>
-          <text wx:if="{{item.state==1}}" class='state state1'>已核销</text>
+          <text wx:if="{{item.status==2||item.status==3}}" class='state state1'>已核销</text>
+          <text wx:else class='state state0'>未核销</text>
         </view>
       </view>
       <text class='lutufont lutu-tel2' bindtap='callPhone' data-phone='{{item.phone}}'></text>

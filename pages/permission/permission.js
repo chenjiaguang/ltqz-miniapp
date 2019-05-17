@@ -211,15 +211,14 @@ Page({
         const app = getApp()
         const {
           token,
+          id,
           avatar,
           nick_name
         } = res.data
-        const userInfoJson = JSON.stringify({
-          avatar,
-          nick_name
-        })
         storageHelper.setStorage('token', token)
-        storageHelper.setStorage('userInfo', userInfoJson)
+        storageHelper.setStorage('uid', id)
+        storageHelper.setStorage('uavatar', avatar)
+        storageHelper.setStorage('unickname', nick_name)
         const permissionBack = storageHelper.getStorage('permissionBack')
         const url = permissionBack || '/pages/index/index'
         wx.reLaunch({

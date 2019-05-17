@@ -2,21 +2,22 @@
 <view class='page-goodsdetail'>
   <view class='banner-wrapper'>
     <image class='cover' src="{{cover_url}}" mode="aspectFill"></image>
-    <view class='share-wrapper'>
-      <share-button profit="{{shareProfit}}" catchtap="shareBtnTap" />
+    <!-- 获取到数据后才展示分享图片，因为分享图片的回调函数中需要用到若干活动数据 -->
+    <view wx:if="{{goodsLoaded}}" class='share-wrapper'>
+      <share-button profit="{{fenxiao_price}}" catchtap="shareBtnTap" />
     </view>
   </view>
   <view class='overview'>
     <view class='title'>{{title}}</view>
     <view class='intro'>{{desc}}</view>
     <view class='price-and-status'>
-      <view class='price'><text wx:if="{{min_price && min_price > 0}}" class='actual-price'>¥{{min_price}}{{price_num > 1 ? '起' : ''}}</text><text wx:if="{{!min_price || min_price == 0}}" class='actual-price'>免费</text></view>
+      <view class='price'><text wx:if="{{show_min_price && show_min_price > 0}}" class='actual-price'>¥{{show_min_price}}{{price_num > 1 ? '起' : ''}}</text><text wx:if="{{!show_min_price || show_min_price == 0}}" class='actual-price'>免费</text></view>
       <view class="status status{{status}}">{{statusText[status]}}</view>
     </view>
     <view style="height:34rpx"></view>
     <view wx:if="{{valid_btime && valid_etime}}" class='state-block-wrapper'>
       <view class='line-separator-h'></view>
-      <view class='state-block'><image class='left-icon' mode="aspectFit" src="/assets/images/time_jointime.png"></image><text class='state-block-text'>活动时间：{{valid_btime}}至{{valid_etime}}</text></view>
+      <view class='state-block'><image class='left-icon' mode="aspectFit" src="/assets/images/time_jointime.png"></image><text class='state-block-text'>活动时间：{{valid_btime}} 至 {{valid_etime}}</text></view>
     </view>
     <view wx:if="{{dead_line}}" class='state-block-wrapper'>
       <view class='line-separator-h'></view>
@@ -78,7 +79,7 @@
     <view class='block-separator'></view>
     <view class='detail-and-comment-header'>
       <view catchtap="changeTab" data-idx="{{0}}" class="detail-and-comment-tab{{currentTab === 0 ? ' current' : ''}}"><text>详情</text><view class="tab-indicator{{currentTab === 0 ? ' current' : ''}}"></view></view>
-      <view catchtap="changeTab" data-idx="{{1}}" class="detail-and-comment-tab{{currentTab === 1 ? ' current' : ''}}"><text>评价({{evaluation_num}})</text><view class="tab-indicator{{currentTab === 1 ? ' current' : ''}}"></view></view>
+      <view catchtap="changeTab" data-idx="{{1}}" class="detail-and-comment-tab{{currentTab === 1 ? ' current' : ''}}"><text>评价({{comment_num}})</text><view class="tab-indicator{{currentTab === 1 ? ' current' : ''}}"></view></view>
     </view>
     <view class='line-separator-h'></view>
     <view class='detail-and-comment-content'>
@@ -91,8 +92,8 @@
       <view class="goodsdetail-score{{currentTab === 1 ? ' current' : ''}}">
         <view wx:if="{{comments && comments.length}}" class='score-overview'>
           <view class='overview-content'>
-            <ft-star-box score="{{shop.rate}}" size="{{30}}" />
-            <text class='comment-amount'>{{evaluation_num}}人评价</text>
+            <ft-star-box score="{{avg_score}}" size="{{30}}" />
+            <text class='comment-amount'>{{comment_num}}人评价</text>
           </view>
           <view class='line-separator-h'></view>
         </view>
@@ -100,9 +101,9 @@
           <image class='empty-image' src="/assets/images/empty_comment.png" mode="aspectFit"></image>
           <text class='empty-text'>啊哦，暂时还没有评价哦~</text>
         </view>
-        <comment-box wx:for="{{comments}}" wx:for-index="idx" wx:for-item="comment" wx:key="id" comment="{{comment}}" top-border="{{idx !== 0}}" />
-        <view wx:if="{{evaluation_num > 10}}" class='line-separator-h'></view>
-        <view wx:if="{{evaluation_num > 10}}" class='more-comment' catchtap="viewAllComment">查看全部评价（{{evaluation_num}}）></view>
+        <comment-box wx:for="{{comments}}" wx:for-index="idx" wx:for-item="comment" wx:key="id" comment="{{comment}}" show-ticket top-border="{{idx !== 0}}" />
+        <view wx:if="{{comment_num > 10}}" class='line-separator-h'></view>
+        <view wx:if="{{comment_num > 10}}" class='more-comment' catchtap="viewAllComment">查看全部评价({{comment_num}}) ></view>
       </view>
     </view>
   </view>
@@ -125,7 +126,7 @@
           <scroll-view scroll-y class='ticket-box'>
             <view wx:for="{{currentTickets}}" wx:for-index="idx" wx:for-item="ticket" wx:key="id" class='ticket-item'>
               <view class='ticket-name'>{{ticket.type.name}}</view>
-              <view class='ticket-price'>¥{{ticket.type.price}}</view>
+              <view class='ticket-price'>¥{{ticket.type.show_price}}</view>
               <view class='ticket-buttons'>
                 <view class="minus-btn{{ticket.num <= 0 ? ' disabled' : ''}}" catchtap="countTicket" data-type="minus" data-idx="{{idx}}">
                   <text class="lutufont lutu-jian{{ticket.num <= 0 ? ' disabled' : ''}}"></text>

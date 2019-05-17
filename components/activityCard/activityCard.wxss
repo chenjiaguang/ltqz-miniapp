@@ -10,7 +10,7 @@
 .cover{
   display: block;
   width: auto;
-  height: 260rpx;
+  height: 386rpx;
   border-radius: 8rpx;
   border: none;
   margin: 0 32rpx;

@@ -1,6 +1,5 @@
 /* pages/businessassistant/businessassistant.wxss */
 
-
 .overview {
   padding-top: 40rpx;
 }
@@ -77,9 +76,8 @@
 .hexiao-btn {
   background: #fff;
   margin-right: 20rpx;
-  padding: 16rpx;
   border-radius: 6rpx;
-  line-height: 46rpx;
+  width: 78rpx;
 }
 
 .lutu-scan {
@@ -90,6 +88,7 @@
   border-radius: 6rpx;
   flex: 1;
   background: #fff;
+  overflow: hidden;
 }
 
 .other-entrance-box {

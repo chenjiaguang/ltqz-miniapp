@@ -22,7 +22,6 @@
     "pages/requestcash/requestcash",
     "pages/hexiaosetting/hexiaosetting",
     "pages/activitymanager/activitymanager",
-    "pages/commentmanager/commentmanager",
     "pages/orderComment/orderComment",
     "pages/merchantdetail/merchantdetail",
     "pages/ordersubmit/ordersubmit",
@@ -30,7 +29,8 @@
     "pages/signupmanager/signupmanager",
     "pages/selectuser/selectuser",
     "pages/imagepage/imagepage",
-    "pages/commentlist/commentlist"
+    "pages/commentlist/commentlist",
+    "pages/paysuccess/paysuccess"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -40,8 +40,8 @@
     "navigationBarTextStyle": "black"
   },
   "tabBar": {
-    "color": "#101B17",
-    "selectedColor": "#01CEB3",
+    "color": "#999999",
+    "selectedColor": "#64B631",
     "backgroundColor": "#fff",
     "borderStyle": "black",
     "position": "bottom",

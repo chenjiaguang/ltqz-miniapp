@@ -1,9 +1,11 @@
 <!--index.wxml-->
 <view class="page-index">
   <view class='page-top-padding'></view>
-  <ft-banners wx:if="{{banners && banners[0]}}" banners="{{banners}}" height="358rpx" border-radius="8rpx" indicator-color="#E8E8E8" indicator-currunt-color="#108EE9" previous-margin="{{24}}" next-margin="{{24}}" catchtap="bannerTap" />
-  <ft-cates cates="{{cates}}" padding="28rpx 26rpx 0" justify="flex-start" catchtap="cateTap" />
-  <view class='theme-box'>
+  <view class='banner-wrapper'>
+    <ft-banners wx:if="{{banners && banners[0]}}" banners="{{banners}}" height="358rpx" border-radius="8rpx" indicator-color="#E8E8E8" indicator-currunt-color="#108EE9" previous-margin="{{24}}" next-margin="{{24}}" catchtap="bannerTap" />
+  </view>
+  <ft-cates wx:if="{{cates && cates[0]}}" cates="{{cates}}" padding="14rpx 26rpx 14rpx" justify="flex-start" catchtap="cateTap" />
+  <view wx:if="{{themes && themes[0]}}" class='theme-box'>
     <view class='theme-header'><text class='theme-header-title'>热门主题</text><text class='theme-header-tip'>提前领 最高<text style="color:#F24724">省¥50</text></text></view>
     <ft-theme themes="{{themes}}" catchthemetap="themeTap" />
   </view>

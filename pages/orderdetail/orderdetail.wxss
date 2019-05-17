@@ -1,7 +1,7 @@
 /* pages/orderdetail/orderdetail.wxss */
 
 .page-orderdetail {
-  padding-bottom: 100rpx;
+  padding-bottom: 16rpx;
 }
 
 .title {
@@ -38,41 +38,28 @@
 
 .line-separator-h {
   margin-left: 30rpx;
+  width: 720rpx;
 }
 
 .left-time {
-  background-color: #64b631;
+  background-color: rgba(100,182,49,0.85);
   height: 84rpx;
+  width: 100%;
   font-size: 30rpx;
   color: #fff;
-  line-height: 84rpx;
-  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 1;
+  transform: translateY(-100%);
+  transition: transform 300ms;
 }
 
-.pay {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background-color: #ff9500;
-  height: 100rpx;
-  font-size: 36rpx;
-  color: #fff;
-  line-height: 100rpx;
-  text-align: center;
-}
-
-.ticket {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background-color: #64b631;
-  height: 100rpx;
-  font-size: 36rpx;
-  color: #fff;
-  line-height: 100rpx;
-  text-align: center;
+.left-time.show{
+  transform: translateY(0);
 }
 
 .goods {
@@ -122,7 +109,45 @@
 }
 
 .lutu-next2 {
+  margin-left: 36rpx;
   align-self: center;
   font-size: 25rpx;
   color: #999;
+}
+
+.bottom-button-height{
+  height: 100rpx;
+}
+
+.bottom-button{
+  position: fixed;
+  width: 100%;
+  left: 0;
+  bottom: 0;
+  background :#fff;
+}
+
+.pay {
+  background-color: #ff9500;
+  font-size: 36rpx;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.pay.disabled{
+  background-color: #B8B8B8;
+}
+
+.ticket {
+  background-color: #64b631;
+  font-size: 36rpx;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.bottom-button{
+  
 }

@@ -1,13 +1,12 @@
 // pages/bepartner/bepartner.js
+const util = require('../../utils/util.js')
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    username: 'hyf',
-    avatar: 'http://i1.bvimg.com/685753/b9ba96284fff562b.jpg',
-    phone: '',
+    user: null
   },
 
   /**
@@ -21,7 +20,12 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function() {
-
+    util.request('/user/detail').then(res => {
+      res.data.phone = ''
+      this.setData({
+        user: res.data
+      })
+    }).catch(err => {})
   },
 
   /**
@@ -65,9 +69,22 @@ Page({
   onShareAppMessage: function() {
 
   },
+  apply() {
+    util.request('/user/become_fenxiao', {
+      phone: this.data.user.phone,
+    }).then(res => {
+      util.backAndToast('提交成功')
+    }).catch(err => {})
+  },
+
   getPhoneNumber(e) {
-    this.setData({
-      phone: '13333333333'
-    })
+    util.request('/common/decrypt', {
+      iv: e.detail.iv,
+      encryptedData: e.detail.encryptedData,
+    }).then(res => {
+      this.setData({
+        ['user.phone']: res.data.phoneNumber
+      })
+    }).catch(err => {})
   }
 })

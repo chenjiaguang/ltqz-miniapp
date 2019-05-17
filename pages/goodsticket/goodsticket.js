@@ -1,10 +1,12 @@
 // pages/goodsticket/goodsticket.js
+const util = require('../../utils/util.js')
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
+    id: '',
     huodong: {
       title: '【穿行艺术】城市里的博物馆，外滩历险记（银行一条街）',
       valid_btime: '2019-07-13',
@@ -18,9 +20,14 @@ Page({
       2: '已核销',
       3: '已核销'
     },
-    ticket: [
-      {name: 'piao1', quantity: 2},
-      {name: 'piao2', quantity: 1}
+    ticket: [{
+        name: 'piao1',
+        quantity: 2
+      },
+      {
+        name: 'piao2',
+        quantity: 1
+      }
     ],
     ticked_num_text: '',
     qr_code_url: 'http://i1.bvimg.com/685753/bab59bb9490c8494.jpg',
@@ -33,62 +40,74 @@ Page({
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function (options) {
+  onLoad: function(options) {
+    this.setData({
+      id: options.id
+    })
     this.initTicketNumText(this.data.ticket)
   },
 
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
-  onReady: function () {
+  onReady: function() {
 
   },
 
   /**
    * 生命周期函数--监听页面显示
    */
-  onShow: function () {
-
+  onShow: function() {
+    util.request('/order/detail', {
+      id: this.data.id
+    }).then(res => {
+      this.setData({
+        qr_code_url: res.data.qr_code_url
+      })
+    }).catch(err => {})
   },
 
   /**
    * 生命周期函数--监听页面隐藏
    */
-  onHide: function () {
+  onHide: function() {
 
   },
 
   /**
    * 生命周期函数--监听页面卸载
    */
-  onUnload: function () {
+  onUnload: function() {
 
   },
 
   /**
    * 页面相关事件处理函数--监听用户下拉动作
    */
-  onPullDownRefresh: function () {
+  onPullDownRefresh: function() {
 
   },
 
   /**
    * 页面上拉触底事件的处理函数
    */
-  onReachBottom: function () {
+  onReachBottom: function() {
 
   },
 
   /**
    * 用户点击右上角分享
    */
-  onShareAppMessage: function () {
+  onShareAppMessage: function() {
 
   },
 
-  confirmCode: function (e) {
+  confirmCode: function(e) {
     console.log('confirmCode', e)
-    let { value, ctx} = e.detail
+    let {
+      value,
+      ctx
+    } = e.detail
     this.setData({
       submitting: true
     })
@@ -99,10 +118,10 @@ Page({
       ctx.close()
     }, 5000)
   },
-  goComment: function () { // 跳转去评价页面
+  goComment: function() { // 跳转去评价页面
     console.log('goComment')
   },
-  initTicketNumText: function (tickets) {
+  initTicketNumText: function(tickets) {
     let text = ''
     if (tickets && tickets[0]) {
       tickets.forEach((item, idx) => {

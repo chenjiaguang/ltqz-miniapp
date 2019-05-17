@@ -3,12 +3,12 @@
     <view class='card row jc-between ai-center'>
       <view class='column'>
         <text class='item-title'>{{item.title}}</text>
-        <text class='item-time'>{{item.time}}</text>
+        <text class='item-time'>{{item.created_at}}</text>
       </view>
-      <text class='item-money bold'>+{{item.money}}元</text>
+      <text class='item-money bold'>+{{item.amount}}元</text>
     </view>
   </block>
 
-  <image class='empty-img' src='/assets/images/withdrawrecord.png' />
-  <text class='empty-text'>你还没有提现记录哦~</text>
+  <image wx:if="{{list.length==0}}" class='empty-img' src='/assets/images/withdrawrecord.png' />
+  <text wx:if="{{list.length==0}}" class='empty-text'>你还没有提现记录哦~</text>
 </view>

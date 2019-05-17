@@ -1,3 +1,14 @@
 {
-  "usingComponents": {}
+  "backgroundColor": "#FFFFFF",
+  "backgroundColorTop": "#F5F5F5",
+  "backgroundColorBottom": "#FFFFFF",
+  "enablePullDownRefresh": true,
+  "usingComponents": {
+    "ft-star-box": "../../ftcomponents/ftStarBox/ftStarBox",
+    "ft-list-loader": "../../ftcomponents/ftListLoader/ftListLoader",
+    "ft-list-footer": "../../ftcomponents/ftListFooter/ftListFooter",
+    "comment-box": "../../components/commentBox/commentBox",
+    "ft-iphone-bottom-adapter": "../../ftcomponents/ftIphoneBottomAdapter/ftIphoneBottomAdapter",
+    "ft-mask": "../../ftcomponents/ftMask/ftMask"
+  }
 }

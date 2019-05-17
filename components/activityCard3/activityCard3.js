@@ -21,9 +21,9 @@ Component({
    * 组件的方法列表
    */
   methods: {
-    goSignUpManager() {
+    goSignUpManager(e) {
       wx.navigateTo({
-        url: "/pages/signupmanager/signupmanager"
+        url: `/pages/signupmanager/signupmanager?id=${e.currentTarget.dataset.shopid}&hd_id=${e.currentTarget.dataset.hdid}`
       })
     }
   }

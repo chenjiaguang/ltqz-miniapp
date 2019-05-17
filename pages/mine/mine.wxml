@@ -4,7 +4,7 @@
     <image class="avatar" src="{{user.avatar}}" />
     <view class='user-intro'>
       <view class='user-name-box'>
-        <text class='user-name'>{{user.name}}</text>
+        <text class='user-name'>{{user.nick_name}}</text>
       </view>
       <view class='user-tag-box row' wx:if="{{user.sex>0}}">
         <text class='user-tag' wx:if="{{user.sex==1}}">潮爸</text>
@@ -21,23 +21,23 @@
       </view>
       <view class='line-separator-h'></view>
       <view class='order-type'>
-        <view class='type-item' catchtap="goOrder" data-type='1'>
-          <text class="lutufont lutu-wallet itemfont"><text class='item-num'>2</text></text>
+        <view class='type-item' catchtap="goOrder" data-type='1' hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
+          <text class="lutufont lutu-wallet itemfont"><text class='item-num' wx:if="{{user.order.wait_pay}}">{{user.order.wait_pay}}</text></text>
 
           <view class='type-title'>待付款</view>
         </view>
-        <view class='type-item' catchtap="goOrder" data-type='2'>
-          <text class="lutufont lutu-flag itemfont"><text class='item-num'>12</text></text>
+        <view class='type-item' catchtap="goOrder" data-type='2' hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
+          <text class="lutufont lutu-unuse itemfont"><text class='item-num' wx:if="{{user.order.wait_use}}">{{user.order.wait_use}}</text></text>
 
           <view class='type-title'>待使用</view>
         </view>
-        <view class='type-item' catchtap="goOrder" data-type='3'>
-          <text class="lutufont lutu-comment itemfont"></text>
+        <view class='type-item' catchtap="goOrder" data-type='3' hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
+          <text class="lutufont lutu-comment itemfont"><text class='item-num' wx:if="{{user.order.wait_rate}}">{{user.order.wait_rate}}</text></text>
           <view class='type-title'>待评价</view>
         </view>
       </view>
     </view>
-    <view wx:if="{{is_partner}}" class='card profit-box'>
+    <view wx:if="{{user.fenxiao}}" class='card profit-box'>
       <view class='profit-header'>
         <text class='title'>推广收益<text class='unit'> (元)</text></text>
         <text catchtap="goProfit" data-type="0" class='view-detail'>查看详情<text class="lutufont lutu-next2"></text></text>
@@ -45,7 +45,7 @@
       </view>
       <view class='profit-sum bold'>
         <text>￥</text>
-        <text>{{profit.all}}</text>
+        <text>{{user.fenxiao.total}}</text>
       </view>
       <view class='line-separator-h'></view>
       <view class='profit-overview'>
@@ -54,21 +54,21 @@
             <text>今日收益</text>
             <text class='unit'> (元)</text>
           </view>
-          <view class='profit-overview-amount bold'>{{profit.today}}</view>
+          <view class='profit-overview-amount bold'>{{user.fenxiao.today_remit}}</view>
         </view>
         <view class='profit-overview-item'>
           <view class='profit-overview-title'>
             <text>可提现收益</text>
             <text class='unit'> (元)</text>
           </view>
-          <view class='profit-overview-amount bold'>{{profit.cashabled}}</view>
+          <view class='profit-overview-amount bold'>{{user.fenxiao.can_remit}}</view>
         </view>
       </view>
     </view>
     <view wx:if="{{show_be_partner }}" class='card-nopadding be-partner'>
       <ft-entrance title="{{be_partner_entrance.title}}" extra-data="{{be_partner_entrance}}" catchtap="entranceTap" />
     </view>
-    <view wx:if="{{is_business}}" class='card-nopadding business-entrance'>
+    <view wx:if="{{user.shop}}" class='card-nopadding business-entrance'>
       <ft-entrance title="{{assistant_entrance.title}}" extra-data="{{assistant_entrance}}" catchtap="entranceTap" />
     </view>
     <view class='card-nopadding other-entrances'>

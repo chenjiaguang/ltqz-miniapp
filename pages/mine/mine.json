@@ -1,7 +1,9 @@
 {
   "navigationBarBackgroundColor": "#64B631",
   "navigationBarTextStyle": "white",
-  "navigationBarTitleText": "个人中心",
+  "navigationBarTitleText": "我的",
+  "backgroundColorTop": "#64B631",
+  "backgroundColorBottom": "#f5f5f5",
   "usingComponents": {
     "ft-user-avatar": "../../ftcomponents/ftUserAvatar/ftUserAvatar",
     "ft-user-name": "../../ftcomponents/ftUserName/ftUserName",

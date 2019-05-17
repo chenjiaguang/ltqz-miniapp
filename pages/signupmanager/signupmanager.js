@@ -1,39 +1,49 @@
 // pages/signupmanager/signupmanager.js
+const util = require('../../utils/util.js')
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    usernum: 20,
-    moneysum: 20000,
-    list: [{
-      avatar: 'http://i1.bvimg.com/685753/2712acb6dc8bcd2b.jpg',
-      username: '花心萝卜腿',
-      content: '成人票×1，儿童票×2，共计￥500.36',
-      state: '0',
-      phone: '13333333333'
-    }, {
-      avatar: 'http://i1.bvimg.com/685753/2712acb6dc8bcd2b.jpg',
-      username: '花心萝卜腿',
-      content: '成人票×1，儿童票×2，共计￥500.36',
-      state: '1',
-      phone: '13333333333'
-    }]
+    id: '',
+    hd_id: '',
+    join_num: '',
+    js_price: '',
+    list: []
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
-
+    this.setData({
+      id: options.id,
+      hd_id: options.hd_id
+    })
   },
 
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function() {
-
+    util.request('/admin/huodong/detail', {
+      id: this.data.id,
+      hd_id: this.data.hd_id,
+    }).then(res => {
+      res.data.js_price = util.formatMoney(res.data.js_price).showMoney
+      res.data.list.forEach((item) => {
+        item.order.js_price = util.formatMoney(item.order.js_price).showMoney
+        item.content = item.ticket.map((ticket) => {
+          return ticket.name + 'x' + ticket.quantity
+        }).join('，') + '，共计￥' + item.order.js_price
+      })
+      this.setData({
+        join_num: res.data.join_num,
+        js_price: res.data.js_price,
+        list: res.data.list
+      })
+    }).catch(err => {})
   },
 
   /**
@@ -84,7 +94,7 @@ Page({
   },
   goDetail() {
     wx.navigateTo({
-      url: '/pages/goodsdetail/goodsdetail'
+      url: '/pages/goodsdetail/goodsdetail?id=' + this.data.hd_id
     })
   }
 })

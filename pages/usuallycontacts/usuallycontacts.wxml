@@ -18,10 +18,10 @@
         <view class='key'>
           <text class='xinhao'>*</text> 性别
         </view>
-        <picker range="{{genderRange}}" disabled='{{contact.editType==0}}' range-key="title" bindchange="genderChange" class='value flex1' value="{{contact.gender === '1' ? 0 : 1}}" data-type="1" data-idx="{{idx}}">
+        <picker range="{{genderRange}}" disabled='{{contact.editType==0}}' range-key="title" bindchange="genderChange" class='value flex1' value="{{contact.sex === '1' ? 0 : 1}}" data-type="1" data-idx="{{idx}}">
           <view class='row ai-center jc-between'>
-            <text wx:if="{{contact.gender==0}}" class='input-placeholder'>请选择性别</text>
-            <text wx:else>{{gender_text[contact.gender]}}</text>
+            <text wx:if="{{contact.sex==0}}" class='input-placeholder'>请选择性别</text>
+            <text wx:else>{{gender_text[contact.sex]}}</text>
             <text class='lutufont lutu-next2'></text>
           </view>
         </picker>
@@ -30,7 +30,7 @@
       <view class='row ai-center item'>
         <view class='key'>身份证号</view>
         <view class='value flex1'>
-          <input value="{{contact.idcard}}" disabled='{{contact.editType==0}}' bindinput="idCardInput" data-idx="{{idx}}" placeholder='请输入身份证号'></input>
+          <input value="{{contact.id_number}}" disabled='{{contact.editType==0}}' bindinput="idCardInput" bindfocus="idCardFocus" data-idx="{{idx}}" placeholder='请输入身份证号'></input>
         </view>
       </view>
       <view class='line-separator-h'></view>

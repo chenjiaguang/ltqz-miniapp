@@ -40,9 +40,9 @@
   border-width: 0;
   border-radius: 6rpx;
 }
-
-.btn.disabled {
-  background: #D8D8D8;
+.btn[disabled] {
+  color: #fff !important;
+  background-color: #D8D8D8 !important;
 }
 
 .getPhone {

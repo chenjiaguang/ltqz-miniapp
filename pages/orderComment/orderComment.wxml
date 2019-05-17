@@ -1,17 +1,17 @@
 <!--pages/orderComment/orderComment.wxml-->
 <view class='card'>
-  <activity-content data="{{data}}" />
+  <activity-content data="{{order}}" />
 </view>
 
 <view class='card column ai-stretch'>
   <view class='rate-box row ai-center'>
     <text class='rate-title'>评分</text>
-    <ft-star-box score="{{5}}" showScoreText="{{false}}" size="38" touchable="{{true}}" />
+    <ft-star-box score="{{score}}" showScoreText="{{false}}" size="38" touchable="{{true}}" catchchange='starChange'/>
   </view>
   <view class='input-box'>
     <textarea class='input' maxlength='300' bindinput="contentInput" placeholder='请输入不少于10个字的描述' />
     <text class='input-tip'>{{content.length}}/300</text>
   </view>
-  <ft-image-upload class="imageUpload"/>
+  <ft-image-upload class="imageUpload" catchchange='coverChange'/>
   <view class='btn' bindtap='submit'>提交评论</view>
 </view>

@@ -1,34 +1,41 @@
 // pages/orderComment/orderComment.js
+const util = require('../../utils/util.js')
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    data: {
-      state: 0,
-      money: '49.9',
-      cover: 'http://i1.bvimg.com/685753/b9ba96284fff562b.jpg',
-      title: '从5万到100万，给家庭投资赋 能小天才凯叔滴滴答答叽叽从5万到100万，给家庭投资赋 能小天才凯叔滴滴答答叽叽',
-      location: '北京市朝阳区马桥路甲马桥路甲马桥路',
-      time: '2019.07.13 至 2020.01.01',
-      tickets: '成人票×1，儿童票×2'
-    },
-    content: ''
+    id: '',
+    order: null,
+    content: '',
+    covers: [],
+    score: 5
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
-
+    this.setData({
+      id: options.id
+    })
   },
 
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function() {
-
+    util.request('/order/detail', {
+      id: this.data.id
+    }).then(res => {
+      res.data.ticket_text = res.data.ticket.map((item) => {
+        return item.name + '×' + item.quantity
+      }).join(',')
+      this.setData({
+        order: res.data
+      })
+    }).catch(err => {})
   },
 
   /**
@@ -72,10 +79,20 @@ Page({
   onShareAppMessage: function() {
 
   },
+  coverChange(e) {
+    this.setData({
+      covers: e.detail.ids
+    })
+  },
   contentInput(e) {
     let _obj = {}
     _obj['content'] = e.detail.value
     this.setData(_obj)
+  },
+  starChange(e) {
+    this.setData({
+      score: e.detail.score
+    })
   },
   submit() {
     if (this.data.content.length < 10) {
@@ -84,10 +101,14 @@ Page({
         icon: 'none'
       })
     } else {
-      wx.showToast({
-        title: '评价成功，感谢您的支持!',
-        icon: 'none'
-      })
+      util.request('/rate/create', {
+        order_id: this.data.id,
+        content: this.data.content,
+        img_json: this.data.covers,
+        score: this.data.score
+      }).then(res => {
+        util.backAndToast('评价成功，感谢您的支持!')
+      }).catch(err => {})
     }
   }
 })

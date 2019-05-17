@@ -31,6 +31,7 @@
   width: 120rpx;
   height: 120rpx;
   margin-right: 30rpx;
+  border-radius: 50%;
 }
 
 .user-person {
@@ -96,6 +97,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding-top:20rpx;
+  padding-bottom:20rpx;
 }
 
 .type-item {
@@ -133,14 +136,14 @@
   height: 56rpx;
   font-size: 56rpx;
   color: #64b631;
-  margin-top: 46rpx;
+  margin-top: 26rpx;
   margin-bottom: 16rpx;
 }
 
 .type-title {
   color: #666;
   font-size: 26rpx;
-  margin-bottom: 46rpx;
+  margin-bottom: 26rpx;
 }
 
 .profit-box {

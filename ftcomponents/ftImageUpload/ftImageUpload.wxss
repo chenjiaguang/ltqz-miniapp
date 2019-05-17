@@ -8,6 +8,10 @@
   justify-content: space-between;
 }
 
+.image-box {
+  position: relative;
+}
+
 .item {
   width: 192rpx;
   height: 192rpx;
@@ -15,6 +19,23 @@
 }
 
 .cover {
+  width: 192rpx;
+  height: 192rpx;
+  border-radius: 8rpx;
+  overflow: hidden;
+}
+
+.tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 192rpx;
+  height: 192rpx;
+  text-align: center;
+  line-height: 192rpx;
+  font-size: 28rpx;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.5);
 }
 
 .add {
@@ -37,6 +58,14 @@
   font-size: 24rpx;
 }
 
-.item:nth-child(1), .cover:nth-child(4) {
+.item:nth-child(1), .item:nth-child(4) {
   margin-bottom: 24rpx;
+}
+
+.c-icon-close {
+  color: #ff3b30;
+  font-size: 33rpx;
+  position: absolute;
+  top: -17rpx;
+  right: -17rpx;
 }

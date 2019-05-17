@@ -51,10 +51,6 @@ button::after {
   background: #f5f5f5;
 }
 
-.bg-touched {
-  background: #f5f5f5 !important;
-}
-
 .card {
   margin-left: 4%;
   margin-right: 4%;
@@ -63,10 +59,19 @@ button::after {
   padding-right: 30rpx;
   background-color: #fff;
   border-radius: 6rpx;
+  overflow: hidden;
+}
+
+.bg-touched {
+  background: #f5f5f5 !important;
 }
 
 .card-touched {
   background: #f5f5f5;
+}
+
+.m-color-touched {
+  background: rgba(100, 182, 49, 0.5) !important;
 }
 
 .card-nopadding {
@@ -76,6 +81,7 @@ button::after {
   margin-bottom: 16rpx;
   background-color: #fff;
   border-radius: 6rpx;
+  overflow: hidden;
 }
 
 /******************flex******************/

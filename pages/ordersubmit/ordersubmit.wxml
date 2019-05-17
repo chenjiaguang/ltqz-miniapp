@@ -10,11 +10,11 @@
     <view class='tickets-box'>
       <view class='amount'>{{selectedTicketLength}}张</view>
       <view class='ticket-info'>
-        <view wx:for="{{currentTickets}}" wx:for-index="idx" wx:for-item="ticket" wx:key="id" class='ticket-item'>{{ticket.name}}x{{ticket.num}}{{(idx + 1) === currentTickets.length ? '' : '，'}}</view>
+        <view wx:for="{{selectedTickets}}" wx:for-index="idx" wx:for-item="ticket" wx:key="id" class='ticket-item'>{{ticket.type.name}}x{{ticket.num}}{{(idx + 1) === selectedTickets.length ? '' : '，'}}</view>
       </view>
       <view class='tags-box'>
         <view wx:if="{{!refund}}" class='tag-item'><text>本次活动不支持退票</text></view>
-        <view wx:if="{{include_bx}}" class='tag-item'><text>费用中包含保险</text></view>
+        <view wx:if="{{include_bx === 1 || include_bx === '1'}}" class='tag-item'><text>费用中包含保险</text></view>
       </view>
     </view>
   </view>
@@ -26,14 +26,14 @@
         <!-- 未选中联系人 -->
         <view wx:if="{{buy_for.length === 0}}" class='buy-for-placeholder'>请选择出行人</view>
         <!-- 已选中联系人 且 包含保险 -->
-        <block wx:if="{{buy_for.length > 0 && include_bx}}">
+        <block wx:if="{{buy_for.length > 0 && (include_bx === '1' || include_bx === 1)}}">
           <view wx:for="{{buy_for}}" wx:for-index="idx" wx:for-item="buyfor" wx:key="id" class='buy-for-item-view' style="padding-top:{{idx === 0 ? 12 : 0}}rpx">
             <text class='buy-for-view-name'>{{buyfor.name}}</text>
             <text class='buy-for-view-idnumber'><text wx:if="{{buyfor.id_number}}" wx:for="{{buyfor.id_number}}" wx:key="*this">{{(index < 4 || (buyfor.id_number.length - index) <= 4) ? item : '*'}}</text></text>
           </view>
         </block>
         <!-- 已选中联系人 且 不包含保险 -->
-        <view wx:if="{{buy_for.length > 0 && !include_bx && buy_for_text}}" class='buy-for-item-text'>{{buy_for_text}}</view>
+        <view wx:if="{{buy_for.length > 0 && (include_bx === '0' || include_bx === 0) && buy_for_text}}" class='buy-for-item-text'>{{buy_for_text}}</view>
       </view>
       <text class='buy-for-icon lutufont lutu-next2'></text>
     </view>
@@ -63,20 +63,21 @@
         <view class='buyfor-box'>
           <view class='buyfor-header'><text class='cancel' catchtap="cancelChangeBuyfor">取消</text><text class='confirm' catchtap="confirmChangeBuyfor">确定</text></view>
         </view>
-        <view class='new-buyfor'><text class='new-icon lutufont lutu-add2' catchtap="editBuyfor" data-needidcard="{{include_bx}}"></text><text class='new-text' catchtap="editBuyfor" data-needidcard="{{include_bx}}">新增</text></view>
+        <view class='new-buyfor'><text class='new-icon lutufont lutu-add2' catchtap="editBuyfor" data-needidcard="{{include_bx === '1' || include_bx === 1}}"></text><text class='new-text' catchtap="editBuyfor" data-needidcard="{{include_bx === '1' || include_bx === 1}}">新增</text></view>
         <view class='block-separator'></view>
         <scroll-view scroll-y class='buyfors'>
+          <view wx:if="{{!buyfors || !buyfors[0]}}" style="height:300rpx"></view>
           <view wx:for="{{buyfors}}" wx:for-index="idx" wx:for-item="buyfor" wx:key="id" class='buyfor-item-wrapper'>
             <view class='buyfor-item' catchtap="toggleBuyforChecked" data-idx="{{idx}}" hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
-              <text class="buyfor-check-icon lutufont{{buyfor.checked ? ' lutu-checked checked' : ' lutu-uncheck'}}"></text>
+              <view class='wirte-icon lutufont lutu-write' catchtap="editBuyfor" data-needidcard="{{include_bx === '1' || include_bx === 1}}" data-id="{{buyfor.id}}" hover-stop-propagation></view>
               <view class='buyfor-center'>
                 <view class='buyfor-name'>{{buyfor.name}}</view>
                 <view wx:if="{{buyfor.tip}}" class='buyfor-idcard disabled'>{{buyfor.tip}}</view>
-                <view wx:if="{{!buyfor.tip && buyfor.id_number}}" class='buyfor-idcard'><text>身份证 </text><text wx:for="{{buyfor.id_number}}" wx:key="*this">{{(index < 4 || (buyfor.id_number.length - index) <= 4) ? item : '*'}}</text></view>
+                <view wx:if="{{!buyfor.tip && buyfor.id_number}}" class='buyfor-idcard'><text>身份证 </text><text wx:for="{{buyfor.id_number}}" wx:key="*this">{{index >= 4 && index < (buyfor.id_number.length - 4) ? '*' : item}}</text></view>
               </view>
-              <text class='wirte-icon lutufont lutu-write' catchtap="editBuyfor" data-needidcard="{{include_bx}}" data-id="{{buyfor.id}}"></text>
+              <text class="buyfor-check-icon lutufont{{buyfor.checked ? ' lutu-checked checked' : ' lutu-uncheck'}}"></text>
             </view>
-            <view class='line-separator-h' style="margin-left:74rpx;width:676rpx"></view>
+            <view class='line-separator-h' style="margin-left:98rpx;width:652rpx"></view>
           </view>
         </scroll-view>
         <ft-iphone-bottom-adapter />

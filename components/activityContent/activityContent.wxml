@@ -1,10 +1,10 @@
 
   <view class='content row'>
-    <image class='cover' src="{{data.cover}}" mode="aspectFill"></image>
+    <image class='cover' src="{{data.huodong.cover_url}}" mode="aspectFill"></image>
     <view class='flex1'>
-      <text class='title bold'>{{data.title}}</text>
-      <text class='time'>{{data.time}}</text>
-      <text class='tickets'>{{data.tickets}}</text>
-      <text class='location'>{{data.location}}</text>
+      <text class='title bold'>{{data.huodong.title}}</text>
+      <text class='time'>{{data.huodong.valid_btime}}至{{data.huodong.valid_etime}}</text>
+      <text class='tickets'>{{data.ticket_text}}</text>
+      <text class='location'>{{data.huodong.address}}</text>
     </view>
   </view>

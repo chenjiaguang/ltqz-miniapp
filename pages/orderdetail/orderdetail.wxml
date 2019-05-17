@@ -1,14 +1,13 @@
 <!--pages/orderdetail/orderdetail.wxml-->
 <view class='page-orderdetail'>
-  <view class='left-time' wx:if="{{false}}">剩余支付时间09:12</view>
-  <view class='pay'>立即支付</view>
-  <view class='ticket'>查看电子票</view>
-  <view class='row goods'>
-    <image class='goods-cover' src="{{goods_info.cover}}" mode="aspectFill"></image>
+  <view class="left-time{{(countdown > 0 && countdown_text) ? ' show' : ''}}"><text>{{countdown_text}}</text></view>
+  
+  <view class='row goods' bindtap='goGoodsDetail'>
+    <image class='goods-cover' src="{{huodong.cover_url}}" mode="aspectFill"></image>
     <view class='goods-content flex1 column'>
-      <text class='goods-title bold'>{{goods_info.name}}</text>
-      <text class='goods-time'>{{goods_info.start_time}} 至 {{goods_info.end_time}}</text>
-      <text class='goods-location'>{{(goods_info.location && goods_info.location.text) ? goods_info.location.text : ''}}</text>
+      <text class='goods-title bold'>{{huodong.title}}</text>
+      <text class='goods-time'>{{huodong.valid_btime}} 至 {{huodong.valid_etime}}</text>
+      <text class='goods-location'>{{huodong.address}}</text>
     </view>
     <text class='lutufont lutu-next2'></text>
   </view>
@@ -17,39 +16,51 @@
     <view class='title'>订单信息</view>
     <view class='line-separator-h'></view>
     <view class='item row'>
-      <span class='key'>活动名称</span>
-      <span class='value'>{{goods_info.name}}</span>
+      <text class='key'>活动名称</text>
+      <text class='value'>{{huodong.title}}</text>
     </view>
     <view class='line-separator-h'></view>
     <view class='item row'>
-      <span class='key'>活动地点</span>
-      <span class='value'>{{(goods_info.location && goods_info.location.text) ? goods_info.location.text : ''}}</span>
+      <text class='key'>活动地点</text>
+      <text class='value'>{{huodong.address}}</text>
     </view>
     <view class='line-separator-h'></view>
     <view class='item row'>
-      <span class='key'>活动场次</span>
-      <span class='value'>{{goods_info.start_time}} 至 {{goods_info.end_time}}</span>
+      <text class='key'>活动场次</text>
+      <text class='value'>{{huodong.session}}</text>
     </view>
     <view class='line-separator-h'></view>
     <view class='item row'>
-      <span class='key'>购买数量</span>
-      <span class='value'>{{goods_info.amount}}份</span>
+      <text class='key'>购买数量</text>
+      <text class='value'>{{order.ticket_text}}</text>
     </view>
     <view class='line-separator-h'></view>
     <view class='item row'>
-      <span class='key'>实付金额</span>
-      <span class='value'>¥{{goods_info.actual_price}}(费用包含保险)</span>
+      <text class='key'>实付金额</text>
+      <text class='value'>¥{{order.show_price}}</text>
     </view>
     <view class='line-separator-h'></view>
     <view class='item row'>
-      <span class='key'>订单编号</span>
-      <span class='value'>{{order_info.order_number}}</span>
+      <text class='key'>订单编号</text>
+      <text class='value'>{{order.order_id}}</text>
     </view>
     <view class='line-separator-h'></view>
     <view class='item row'>
-      <span class='key'>下单时间</span>
-      <span class='value'>{{order_info.order_time}}</span>
+      <text class='key'>下单时间</text>
+      <text class='value'>{{order.created_at}}</text>
     </view>
+  </view>
+
+  <view class='list' wx:if="traveler_infos.length">
+    <view class='title'>出行人信息</view>
+    <block wx:for="{{traveler_infos}}" wx:key="name">
+      <view class='line-separator-h'></view>
+      <view class='item row'>
+        <text class='key'>{{item.huodongTraveler.name}}</text>
+        <text class='value'><text wx:for="{{item.huodongTraveler.id_number}}" wx:key="*this" wx:for-item="str" wx:for-index="stridx">{{(stridx >= 4 && stridx < item.huodongTraveler.id_number.length - 4) ? '*' : str}}</text></text>
+      </view>
+    </block>
+
   </view>
 
   <view class='list'>
@@ -57,13 +68,25 @@
     <view class='line-separator-h'></view>
     <view class='item row'>
       <span class='key'>姓名</span>
-      <span class='value'>{{user_info.username}}</span>
+      <span class='value'>{{order.name}}</span>
     </view>
     <view class='line-separator-h'></view>
     <view class='item row'>
       <span class='key'>手机</span>
-      <span class='value'>{{user_info.phone}}</span>
+      <span class='value'>{{order.phone}}</span>
     </view>
   </view>
-
+  <view wx:if="{{order.status && (order.status === '0' || (order.status !== '0' && order.status !== '-1'))}}" class='bottom-button-wrapper'>
+    <view class='bottom-button-height'></view>
+    <ft-iphone-bottom-adapter />
+    <view class='bottom-button'>
+      <view wx:if="{{order.status === '0'}}" class="bottom-button-height pay{{repaying ? ' disabled' : ''}}" catchtap="repay">
+        <text>立即支付</text>
+      </view>
+      <view wx:if="{{order.status !== '0' && order.status !== '-1'}}" class='bottom-button-height ticket' bindtap='goGoodsTicket'>
+        <text>查看电子票</text>
+      </view>
+      <ft-iphone-bottom-adapter />
+    </view>
+  </view>
 </view>

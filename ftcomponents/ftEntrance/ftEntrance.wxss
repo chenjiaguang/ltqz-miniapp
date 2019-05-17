@@ -44,7 +44,7 @@
 .entrance-sub-title {
   font-size: 28rpx;
   color: #333;
-  max-width: 30%;
+  max-width: 50%;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

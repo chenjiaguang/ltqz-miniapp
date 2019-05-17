@@ -1,4 +1,5 @@
 // pages/orderlist/orderlist.js
+const util = require('../../utils/util.js')
 Page({
 
   /**
@@ -6,77 +7,40 @@ Page({
    */
   data: {
     index: 0,
+    states: ['', '0', '1', '2'],
     tabs: [{
       title: '全部',
       list: [],
-      page: {},
+      page: {
+        pn: 1
+      },
       loaded: false,
       loading: false
     }, {
       title: '待付款',
       list: [],
-      page: {},
+      page: {
+        pn: 1
+      },
       loaded: false,
       loading: false
     }, {
       title: '待使用',
       list: [],
-      page: {},
+      page: {
+        pn: 1
+      },
       loaded: false,
       loading: false
     }, {
       title: '待评价',
       list: [],
-      page: {},
+      page: {
+        pn: 1
+      },
       loaded: false,
       loading: false
-    }],
-    list: [{
-        state: 0,
-        money: '49.9',
-        cover: 'http://i1.bvimg.com/685753/b9ba96284fff562b.jpg',
-        title: '从5万到100万，给家庭投资赋 能小天才凯叔滴滴答答叽叽从5万到100万，给家庭投资赋 能小天才凯叔滴滴答答叽叽',
-        location: '北京市朝阳区马桥路甲马桥路甲马桥路',
-        time: '2019.07.13 至 2020.01.01',
-        tickets: '成人票×1，儿童票×2'
-      },
-      {
-        state: 1,
-        money: '49.9',
-        cover: 'http://i1.bvimg.com/685753/b9ba96284fff562b.jpg',
-        title: '从5万到100万，给家庭投资赋 能小天才凯叔滴滴答答叽叽从5万到100万，给家庭投资赋 能小天才凯叔滴滴答答叽叽',
-        location: '北京市朝阳区马桥路甲马桥路甲马桥路',
-        time: '2019.07.13 至 2020.01.01',
-        tickets: '成人票×1，儿童票×2'
-      },
-      {
-        state: 2,
-        money: '49.9',
-        cover: 'http://i1.bvimg.com/685753/b9ba96284fff562b.jpg',
-        title: '从5万到100万，给家庭投资赋 能小天才凯叔滴滴答答叽叽从5万到100万，给家庭投资赋 能小天才凯叔滴滴答答叽叽',
-        location: '北京市朝阳区马桥路甲马桥路甲马桥路',
-        time: '2019.07.13 至 2020.01.01',
-        tickets: '成人票×1，儿童票×2'
-      },
-      {
-        state: 3,
-        money: '49.9',
-        cover: 'http://i1.bvimg.com/685753/b9ba96284fff562b.jpg',
-        title: '从5万到100万，给家庭投资赋 能小天才凯叔滴滴答答叽叽从5万到100万，给家庭投资赋 能小天才凯叔滴滴答答叽叽',
-        location: '北京市朝阳区马桥路甲马桥路甲马桥路',
-        time: '2019.07.13 至 2020.01.01',
-        tickets: '成人票×1，儿童票×2'
-      },
-      {
-        state: 4,
-        money: '49.9',
-        cover: 'http://i1.bvimg.com/685753/b9ba96284fff562b.jpg',
-        title: '从5万到100万，给家庭投资赋 能小天才凯叔滴滴答答叽叽从5万到100万，给家庭投资赋 能小天才凯叔滴滴答答叽叽',
-        location: '北京市朝阳区马桥路甲马桥路甲马桥路',
-        time: '2019.07.13 至 2020.01.01',
-        tickets: '成人票×1，儿童票×2'
-      }
-    ]
+    }]
   },
 
   /**
@@ -84,17 +48,17 @@ Page({
    */
   onLoad: function(options) {
     console.log('orderlist_onload_options', options)
+    let index = parseInt(options ? options.type : 0)
+    index = isNaN(index) ? 0 : index
     this.setData({
-      index: parseInt(options.type)
+      index: index
     })
   },
 
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
-  onReady: function() {
-
-  },
+  onReady: function() {},
 
   /**
    * 生命周期函数--监听页面显示
@@ -121,7 +85,7 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function() {
-
+    console.log('11111111111')
   },
 
   /**
@@ -136,5 +100,33 @@ Page({
    */
   onShareAppMessage: function() {
 
+  },
+  fetchlist(e) {
+    this.loadList(e.detail.idx, e.detail.pn)
+  },
+
+  loadList(index, pn = 1) {
+    let data = {
+      status: this.data.states[index] != '' ? this.data.states[index] : undefined,
+      pn: pn
+    }
+
+    util.request('/order/list', data).then(res => {
+      let list = []
+      res.data.list.forEach((item) => {
+        item.price = util.formatMoney(item.price).showMoney
+      })
+      if (pn == 1) {
+        list = res.data.list
+      } else {
+        list = this.data.tabs[index].list.concat(res.data.list)
+      }
+      this.setData({
+        [`tabs[${index}].list`]: list,
+        [`tabs[${index}].page`]: res.data.page,
+        [`tabs[${index}].loaded`]: true,
+        [`tabs[${index}].loading`]: false,
+      })
+    }).catch(err => {})
   }
 })

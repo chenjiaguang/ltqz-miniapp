@@ -1,0 +1,6 @@
+<!--pages/paysuccess/paysuccess.wxml-->
+<view class='page-paysuccess'>
+  <text class="tick-icon lutufont lutu-checked"></text>
+  <view class='success-text'>恭喜您，订单支付成功啦</view>
+  <view class='view-order' catchtap="viewOrder"><text>查看订单详情</text></view>
+</view>

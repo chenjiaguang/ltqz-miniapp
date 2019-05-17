@@ -1,9 +1,13 @@
 <!--ftcomponents/ftImageUpload/ftImageUpload.wxml-->
 <view class='container'>
-  <image wx:for="{{list}}" class='item cover' src="{{item.url}}" mode="aspectFill"></image>
+  <view class='item image-box' wx:for="{{list}}">
+    <image class='cover' src="{{item.url}}" mode="aspectFill"></image>
+    <view class='tip' wx:if="{{!item.id}}">上传中</view>
+    <text class='ft-icon c-icon-close' bindtap="del" data-idx="{{index}}"></text>
+  </view>
   <view class='item add' wx:if="{{list.length<9}}" bindtap="add">
     <text class='ft-icon c-icon-jia'></text>
-    <text class='add-text'>添加图片</text>
+    <text class='add-text' bindtap='add'>添加图片</text>
   </view>
   <view class='item' wx:if="{{list.length!=2&&list.length!=5&&list.length!=8&&list.length<9}}"></view>
   <view class='item' wx:if="{{list.length==0&&list.length==3&&list.length==6}}"></view>

@@ -1,46 +1,22 @@
 // pages/activitymanager/activitymanager.js
+const util = require('../../utils/util.js')
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    list: [{
-      title: '从5万到100万，给家庭投资赋 能小天才凯叔滴滴答答叽叽从5万到100万，给家庭投资赋 能小天才凯叔滴滴答答叽叽',
-      location: '北京市朝阳区马桥路朝阳区马桥路朝北京市朝阳区马桥路朝阳区马桥路朝',
-      time: '2019.07.13 15:00 至 2019.04.30 17:00',
-      cover: 'http://i1.bvimg.com/685753/2712acb6dc8bcd2b.jpg',
-      num: 30,
-      state: '0'
-    }, {
-      title: '从5万到100万，给家庭投资赋 能小天才凯叔滴滴答答叽叽从5万到100万，给家庭投资赋 能小天才凯叔滴滴答答叽叽',
-      location: '北京市朝阳区马桥路朝阳区马桥路朝北京市朝阳区马桥路朝阳区马桥路朝',
-      time: '2019.07.13 15:00 至 2019.04.30 17:00',
-      cover: 'http://i1.bvimg.com/685753/2712acb6dc8bcd2b.jpg',
-      num: 30,
-      state: '1'
-    }, {
-      title: '从5万到100万，给家庭投资赋 能小天才凯叔滴滴答答叽叽从5万到100万，给家庭投资赋 能小天才凯叔滴滴答答叽叽',
-      location: '北京市朝阳区马桥路朝阳区马桥路朝北京市朝阳区马桥路朝阳区马桥路朝',
-      time: '2019.07.13 15:00 至 2019.04.30 17:00',
-      cover: 'http://i1.bvimg.com/685753/2712acb6dc8bcd2b.jpg',
-      num: 30,
-      state: '2'
-    }, {
-      title: '从5万到100万，给家庭投资赋 能小天才凯叔滴滴答答叽叽从5万到100万，给家庭投资赋 能小天才凯叔滴滴答答叽叽',
-      location: '北京市朝阳区马桥路朝阳区马桥路朝北京市朝阳区马桥路朝阳区马桥路朝',
-      time: '2019.07.13 15:00 至 2019.04.30 17:00',
-      cover: 'http://i1.bvimg.com/685753/2712acb6dc8bcd2b.jpg',
-      num: 30,
-      state: '3'
-    }]
+    id: '',
+    list: []
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
-
+    this.setData({
+      id: options.id
+    })
   },
 
   /**
@@ -54,7 +30,17 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function() {
+    util.request('/admin/huodong/list', {
+      id: this.data.id
+    }).then(res => {
+      res.data.list.forEach((item) => {
+        item.js_price = util.formatMoney(item.js_price).showMoney
+      })
 
+      this.setData({
+        list: res.data.list
+      })
+    }).catch(err => {})
   },
 
   /**

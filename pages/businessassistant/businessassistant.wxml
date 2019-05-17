@@ -2,28 +2,28 @@
 <view class='page-businessassistant'>
   <view class='card overview'>
     <view class='overview-top'>
-      <image class='business-avatar' mode="aspectFill" src="{{avatar}}"></image>
+      <image class='business-avatar' mode="aspectFill" src="{{data.logo_url}}"></image>
       <view class='business-shortcut column'>
-        <view class='business-name bold'>{{name}}</view>
-        <view class='business-intro'>{{intro}}</view>
+        <view class='business-name bold'>{{data.name}}</view>
+        <view class='business-intro'>{{data.introduce}}</view>
       </view>
     </view>
     <view class='line-separator-h'></view>
     <view class='overview-bottom row center'>
       <view class='overview-bottom-item'>
         <view class='overview-bottom-header'><text>活动报名总收入</text><text class='unit'>（元）</text></view>
-        <view class='overview-bottom-amount bold'>{{profit}}</view>
+        <view class='overview-bottom-amount bold'>{{data.total_income}}</view>
       </view>
       <view class='overview-bottom-item'>
         <view class='overview-bottom-header'><text>发布活动数</text></view>
-        <view class='overview-bottom-amount bold'>{{activity_amount}}</view>
+        <view class='overview-bottom-amount bold'>{{data.huodong_num}}</view>
       </view>
     </view>
   </view>
   <view class='hexiao-box row'>
-    <view class='hexiao-btn' catchtap="scanHexiaoCode"><text class='lutufont lutu-scan'></text></view>
+    <view class='hexiao-btn row center' catchtap="scanHexiaoCode" hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}"><text class='lutufont lutu-scan'></text></view>
     <view class='hexiao-set-entrance'>
-      <ft-entrance title="{{hexiao_entrance.title + hexiao_code}}" extra-data="{{hexiao_entrance}}" catchtap="entranceTap"/>
+      <ft-entrance title="{{data.hx_code?hexiao_entrance.title + data.hx_code:'去设置自助核销码'}}" extra-data="{{hexiao_entrance}}" catchtap="entranceTap"/>
     </view>
   </view>
   <view class='card-nopadding other-entrance-box'>

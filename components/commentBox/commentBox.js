@@ -8,6 +8,14 @@ Component({
       type: String,
       value: 'user'
     },
+    showGoods: {
+      type: Boolean,
+      value: false
+    },
+    showTicket: {
+      type: Boolean,
+      value: false
+    },
     comment: {
       type: Object,
       value: {}
@@ -33,19 +41,29 @@ Component({
    * 组件的方法列表
    */
   methods: {
-    viewImages: function (e) {
+    viewImages: function(e) {
       console.log('viewImages', e)
-      const {idx} = e.currentTarget.dataset
-      const {images} = this.data.comment
-      const current = images[idx]
+      const {
+        idx
+      } = e.currentTarget.dataset
+      const {
+        img_urls
+      } = this.data.comment
+      const current = img_urls[idx]
       wx.previewImage({
         current: current, // 当前显示图片的http链接
-        urls: images // 需要预览的图片http链接列表
+        urls: img_urls // 需要预览的图片http链接列表
       })
     },
-    reply: function () {
-      const { id, username} = this.data.comment
-      this.triggerEvent('reply', { id, username })
+    reply: function() {
+      const {
+        id,
+        user
+      } = this.data.comment
+      this.triggerEvent('reply', {
+        id,
+        username: user.name
+      })
     }
   }
 })

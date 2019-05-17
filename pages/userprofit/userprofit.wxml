@@ -5,20 +5,20 @@
     <view class='card overview-box'>
       <view class='all-profit column ai-center'>
         <view class='title row ai-center'><text>总收益</text><text class='unit'> (元)</text></view>
-        <view class='money bold'>{{all}}</view>
+        <view class='money bold'>{{total}}</view>
         <view class='line-separator-h'></view>
         <view class='shortcut-box'>
           <view class='shortcut-item'>
             <view class='shortcut-header'><text>已提现收益</text><text class='unit'> (元)</text></view>
-            <view class='shortcut-amount bold'>{{cashed}}</view>
+            <view class='shortcut-amount bold'>{{has_remit}}</view>
           </view>
           <view class='shortcut-item'>
             <view class='shortcut-header'><text>可提现收益</text><text class='unit'> (元)</text></view>
-            <view class='shortcut-amount bold'>{{cashabled}}</view>
+            <view class='shortcut-amount bold'>{{can_remit}}</view>
           </view>
           <view class='shortcut-item'>
             <view class='shortcut-header'><text>待解冻收益</text><text class='unit'> (元)</text></view>
-            <view class='shortcut-amount bold'>{{tobefree}}</view>
+            <view class='shortcut-amount bold'>{{unfreeze_remit}}</view>
           </view>
         </view>
       </view>
@@ -26,6 +26,6 @@
     <view class='card-nopadding entrance-box'>
       <ft-entrance wx:for="{{entrances}}" wx:for-index="idx" wx:for-item="entrance" wx:key="title" title="{{entrance.title}}" top-border="{{idx !== 0}}" extra-data="{{entrance}}" catchtap="entranceTap" />
     </view>
-    <view class="withdraw-btn" disabled="{{!withdraw}}" catchtap="requestCash">申请提现</view>
+    <view class="withdraw-btn" disabled="{{!withdraw}}" catchtap="requestCash"  hover-stop-propagation hover-class='m-color-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">申请提现</view>
   </view>
 </view>

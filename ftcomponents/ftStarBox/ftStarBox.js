@@ -6,7 +6,10 @@ Component({
   properties: {
     score: {
       type: Number,
-      value: 0
+      value: 0,
+      observer: function (newVal, oldVal) {
+        this.generateStar(newVal)
+      }
     },
     size: {
       type: Number,

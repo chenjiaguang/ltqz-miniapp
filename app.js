@@ -12,7 +12,7 @@ App({
   config: config,
   store,
   onLaunch: function(options) {
-
+    
   },
   onShow: function(options) { // 监听用户授权信息是否有变动
     let token = storageHelper.getStorage('token')

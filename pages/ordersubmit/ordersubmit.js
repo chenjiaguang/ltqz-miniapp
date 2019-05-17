@@ -1,4 +1,5 @@
 // pages/ordersubmit/ordersubmit.js
+import util from '../../utils/util.js'
 import storageHelper from '../../utils/storageHelper'
 
 Page({
@@ -7,46 +8,21 @@ Page({
    * 页面的初始数据
    */
   data: {
-    id: '1',
-    title: '【穿行艺术】城市里的博物馆，外滩历险记(银行一条街)',
-    address: '北京市朝阳区 马桥路甲40号二十一世纪大北京市朝阳区马桥路甲40号二十一世纪大一个地址这么长也是够了满两行最后省收到了饭就阿善良分 萨里看到肌肤',
-    valid_btime: '01-03 9:00',
-    valid_etime: '04-30 17:00',
-    currentTickets: [
-      { id: '5', stock: 0, name: '票种名称5', price: 0, num: 1 },
-      { id: '6', stock: 0, name: '票种名称6', price: 0.55, num: 2 }
-    ],
+    id: '', // 商品id
+    fromUid: '', // 分销员id（分享出去的人的id）
+    orderId: '', // 提交订单后生成的订单id
+    title: '',
+    address: '',
+    valid_btime: '',
+    valid_etime: '',
+    currentTickets: [],
+    selectedTickets: [],
     selectedTicketLength: 0,
     refund: false,
-    include_bx: false,
+    include_bx: '', // 不包含保险：0，包含保险：1
     buy_for: [],
     buy_for_text: '',
-    buyfors: [
-      {
-        id: '1',
-        name: '出行人1',
-        sex: '1', // 性别：0为未知 | 1为男| 2为女
-        id_number: '8327237349249429', // 身份证号
-        status: '1', // 0为无效，1为有效
-        checked: false
-      },
-      {
-        id: '2',
-        name: '出行人2',
-        sex: '2', // 性别：0为未知 | 1为男| 2为女
-        id_number: '8327237349249429', // 身份证号
-        status: '1', // 0为无效，1为有效
-        checked: false
-      },
-      {
-        id: '3',
-        name: '出行人3',
-        sex: '2', // 性别：0为未知 | 1为男| 2为女
-        id_number: '', // 身份证号
-        status: '1', // 0为无效，1为有效
-        checked: false
-      }
-    ],
+    buyfors: [],
     contact: {
       name: '',
       phone: ''
@@ -66,12 +42,16 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    const pages = getCurrentPages()
+    const page = pages[pages.length - 2]
+    const data = page.getOrderData()
     const contactJson = storageHelper.getStorage('orderContact')
     if (contactJson) {
-      this.setData({
-        contact: JSON.parse(contactJson)
-      })
+      data.contact = JSON.parse(contactJson)
     }
+    data.selectedTickets = data.currentTickets.filter(item => item.num > 0)
+    this.setData(data)
+    this.fetchBuyfors() // 获取常用联系人
   },
 
   /**
@@ -127,17 +107,127 @@ Page({
     return false
   },
 
+  fetchBuyfors: function () {
+    util.request('/traveler/list').then(res => {
+      console.log('fetchBuyfors', res)
+      if (res.error == 0 && res.data) {
+        this.setData({
+          buyfors: res.data
+        })
+      }
+    })
+  },
+
+  updateBuyfors: function (id) {
+    util.request('/traveler/list').then(res => {
+      console.log('updateBuyfors', res)
+      if (res.error == 0 && res.data) {
+        let _buyfors = res.data
+        let {buyfors} = this.data
+        let checkedIds = buyfors.filter(item => item.checked).map(item => item.id)
+        _buyfors.forEach(item => {
+          if (checkedIds.indexOf(item.id) !== -1 || item.id === id) { // 原data中已选中 或 是当前的id
+            item.checked = true
+          }
+        })
+        this.setData({
+          buyfors: _buyfors
+        })
+      }
+    })
+  },
+
+  getBuyforFromData: function (id) {
+    const {buyfors} = this.data
+    const buyfor = buyfors.filter(item => item.id == id)[0]
+    return buyfor ? JSON.parse(JSON.stringify(buyfor)) : null
+  },
+
+  pay: function (id, paydata) {
+    const { timeStamp, nonceStr, signType, paySign } = paydata
+    wx.requestPayment({
+      timeStamp,
+      nonceStr,
+      package: paydata.package,
+      signType,
+      paySign,
+      success: res => {
+        wx.redirectTo({
+          url: '/pages/paysuccess/paysuccess?id=' + id,
+        })
+      },
+      fail: res => {
+        wx.showModal({
+          title: '确定要取消支付吗？',
+          content: '您的订单在10分钟内未支付将被取消，请尽快完成支付哦~',
+          confirmText: '继续支付',
+          confirmColor: '#64B631',
+          success: res => {
+            console.log('success')
+            if (res.confirm) {
+              console.log('confirm')
+              this.pay(id, paydata)
+            } else {
+              console.log('cancel')
+              wx.redirectTo({
+                url: '/pages/orderdetail/orderdetail?id=' + id,
+              })
+            }
+          },
+          fail: res => {
+            console.log('fail')
+            wx.redirectTo({
+              url: '/pages/orderdetail/orderdetail?id=' + id,
+            })
+          }
+        })
+      }
+    })
+  },
+
   submitOrder: function () {
     console.log('submitOrder')
-    const {contact, buy_for, submitting} = this.data
+    const { id, fromUid, selectedTickets, contact, buy_for, submitting} = this.data
     if (!(contact.name && contact.phone && buy_for && buy_for.length && !submitting)) { // 如果联系人信息不完整、没有选中的出行人、正在提交，则中断操作
       return false
     }
-    if (contact.name && contact.phone) {
-      let contactJson = JSON.stringify(contact)
-      storageHelper.setStorage('orderContact', contactJson)
-    }
+    // 保存联系人信息
+    let contactJson = JSON.stringify(contact)
+    storageHelper.setStorage('orderContact', contactJson)
     // 提交支付信息
+    let ticket = selectedTickets.map(item => {
+      return {id: item.id, quantity: item.num}
+    })
+    let buy_for_ids = buy_for.map(item => item.id)
+    let rData = {
+      huodong_id: id,
+      ticket: ticket,
+      traveler_ids: buy_for_ids,
+      name: contact.name,
+      phone: contact.phone,
+      fenxiao_user_id: fromUid
+    }
+    this.setData({
+      submitting: true
+    })
+    util.request('/order/commit', rData).then(res => {
+      console.log('/order/commit', res)
+      if (res.error == 0 && res.data) { // 提交订单成功
+        this.setData({
+          orderId: res.data.id
+        })
+        if (res.data.pay) {
+          this.pay(res.data.id, res.data.pay)
+        }
+        
+      }
+    }).catch(err => {
+
+    }).finally(res => {
+      this.setData({
+        submitting: false
+      })
+    })
     // 模仿
     setTimeout(() => {
 
@@ -187,8 +277,7 @@ Page({
     const {buyfors, include_bx} = this.data
     let bfs = buyfors.filter(item => item.checked)
     let _obj = {}
-    if (!include_bx) { // 不包含保险
-      console.log('include_bx', include_bx)
+    if (include_bx === '0' || include_bx === 0) { // 不包含保险
       let text = ''
       bfs.forEach((item, idx) => {
         text += (idx === 0) ? item.name : ('，' + item.name)
@@ -206,7 +295,7 @@ Page({
     let {idx} = e.currentTarget.dataset
     let { buyfors, include_bx} = this.data
     let _obj = {}
-    if (include_bx && !buyfors[idx].id_number) {
+    if ((include_bx === '1' || include_bx === 0) && !buyfors[idx].id_number) {
       _obj['buyfors[' + idx + '].tip'] = '请填写身份证号'
     } else {
       const checked = buyfors[idx].checked

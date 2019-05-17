@@ -1,4 +1,5 @@
 // pages/userinfo/userinfo.js
+const util = require('../../utils/util.js')
 Page({
 
   /**
@@ -18,11 +19,7 @@ Page({
       1: '男',
       2: '女'
     },
-    username: 'hyf',
-    avatar: 'http://i1.bvimg.com/685753/b9ba96284fff562b.jpg',
-    phone: '13333333333',
-    sex: '0',
-    idcard: ''
+    user: null
   },
 
   /**
@@ -36,6 +33,12 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function() {
+    util.request('/user/detail').then(res => {
+      this.setData({
+        user: res.data
+      })
+    }).catch(err => {
+    })
   },
 
   /**
@@ -77,6 +80,19 @@ Page({
    * 用户点击右上角分享
    */
   onShareAppMessage: function() {
+
+  },
+  genderChange: function(e) {
+    this.setData({
+      ['user.sex']: this.data.genderRange[e.detail.value].value
+    })
+  },
+  save: function(e) {
+    util.request('/user/update', {
+      sex: this.data.user.sex
+    }).then(res => {
+      util.backAndToast('保存成功')
+    }).catch(err => {})
 
   }
 })

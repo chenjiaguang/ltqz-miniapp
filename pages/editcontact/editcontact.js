@@ -1,4 +1,6 @@
 // pages/editcontact/editcontact.js
+import util from '../../utils/util.js'
+
 Page({
 
   /**
@@ -13,7 +15,8 @@ Page({
     ],
     genderSelected: null,
     name: '',
-    idcard: ''
+    idcard: '',
+    saving: false
   },
 
   /**
@@ -24,8 +27,27 @@ Page({
     let _obj = {}
     _obj.requireIdcard = !!requireidcard
     _obj.id = id || ''
-    console.log(_obj, options)
     this.setData(_obj)
+    if (id) {
+      const pages = getCurrentPages()
+      const page = pages[pages.length - 2]
+      if (page && page.getBuyforFromData) {
+        const data = page.getBuyforFromData(id)
+        console.log('data', data)
+        if (!data) {
+          return false
+        }
+        let _obj = {}
+        _obj.idcard = data.id_number
+        _obj.name = data.name
+        this.data.genderPickerRange.forEach((item, idx) => {
+          if (item.value == data.sex) {
+            _obj.genderSelected = idx
+          }
+        })
+        this.setData(_obj)
+      }
+    }
   },
 
   /**
@@ -53,7 +75,9 @@ Page({
    * 生命周期函数--监听页面卸载
    */
   onUnload: function () {
-
+    if (this.backTimer) {
+      clearTimeout(this.backTimer)
+    }
   },
 
   /**
@@ -94,16 +118,44 @@ Page({
   },
 
   saveContact: function () {
-    const { requireIdcard, name, genderSelected, idcard, submitting} = this.data
+    const { id, requireIdcard, name, genderPickerRange, genderSelected, idcard, submitting} = this.data
     if ((requireIdcard && !idcard) || !name || (genderSelected === null) || submitting) {
       return false
     }
-    // 调用保存用户信息接口
-    // 模仿
-    setTimeout(() => {
-      wx.navigateBack({
-        delta: 1
+    let rData = {
+      id,
+      name,
+      sex: genderPickerRange[genderSelected].value,
+      id_number: idcard,
+      status: 1
+    }
+    this.setData({
+      saving: true
+    })
+    util.request('/traveler/edit', rData).then(res => {
+      if (res.error == 0) {
+        wx.showToast({
+          title: res.msg || '保存成功',
+          icon: 'none',
+          duration: 1500
+        })
+        const pages = getCurrentPages()
+        const page = pages[pages.length - 2]
+        if (page && page.updateBuyfors && res.data.id) {
+          page.updateBuyfors(res.data.id)
+        }
+        this.backTimer = setTimeout(() => {
+          wx.navigateBack({
+            delta: 1
+          })
+        }, 1500)
+      }
+    }).catch(err => {
+
+    }).finally(res => {
+      this.setData({
+        saving: false
       })
-    }, 2000)
+    })
   }
 })

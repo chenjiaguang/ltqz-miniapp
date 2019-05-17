@@ -1,16 +1,13 @@
 // pages/businessassistant/businessassistant.js
+const util = require('../../utils/util.js')
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    avatar: 'http://i1.bvimg.com/685753/2712acb6dc8bcd2b.jpg',
-    name: '路途亲子',
-    intro: '路途亲子我们带领孩子探索世界，除了游玩我们选择用更科学的方式，天文、地理、化学、生物、自然，你以为科学只在课堂里吗？',
-    profit: 899.99,
-    activity_amount: 2,
-    hexiao_code: 9909,
+    id: '',
+    data: null,
     hexiao_entrance: {
       title: '商家核销码：',
       path: '/pages/hexiaosetting/hexiaosetting'
@@ -21,7 +18,7 @@ Page({
       },
       {
         title: '评价管理',
-        path: '/pages/commentmanager/commentmanager'
+        path: '/pages/commentlist/commentlist'
       }
     ]
   },
@@ -30,21 +27,37 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
+    let hexiao_entrance = this.data.hexiao_entrance
+    hexiao_entrance.path = hexiao_entrance.path + '?id=' + options.id
 
+    let other_entrances = this.data.other_entrances
+    other_entrances[0].path = other_entrances[0].path + '?id=' + options.id
+    other_entrances[1].path = other_entrances[1].path + '?role=business&sid=' + options.id
+
+    this.setData({
+      id: options.id,
+      hexiao_entrance: hexiao_entrance,
+      other_entrances: other_entrances
+    })
   },
 
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
-  onReady: function() {
-
-  },
+  onReady: function() {},
 
   /**
    * 生命周期函数--监听页面显示
    */
   onShow: function() {
-
+    util.request('/admin/shop/detail', {
+      id: this.data.id
+    }).then(res => {
+      res.data.total_income = util.formatMoney(res.data.total_income).showMoney
+      this.setData({
+        data: res.data
+      })
+    }).catch(err => {})
   },
 
   /**
@@ -93,7 +106,15 @@ Page({
         onlyFromCamera: false,
         scanType: ['qrCode'],
         success: e => {
-          console.log('scanHexiaoCode', e)
+          util.request('/admin/hx/consume', {
+            id: this.data.id,
+            qr_code: e.result
+          }).then(res => {
+            wx.showToast({
+              title: '核销成功',
+              icon: 'none'
+            })
+          }).catch(err => {})
         },
         fail: e => {
           console.log('fail', e)

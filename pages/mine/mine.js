@@ -7,21 +7,14 @@ Page({
    */
   data: {
     user: null,
-    is_partner: true,
-    profit: {
-      all: 60,
-      today: 0,
-      cashabled: 5
-    },
-    show_be_partner: true,
-    is_business: true,
+    show_be_partner: false,
     be_partner_entrance: {
       title: '成为合伙人',
       path: '/pages/bepartner/bepartner'
     },
     assistant_entrance: {
       title: '商家助手',
-      path: '/pages/businessassistant/businessassistant'
+      path: '/pages/selectuser/selectuser'
     },
     other_entrances: [{
         title: '常用联系人',
@@ -30,7 +23,7 @@ Page({
       {
         title: '联系客服',
         path: '',
-        phone: '1234567890'
+        phone: '400-4504-2626'
       }
     ]
   },
@@ -45,23 +38,27 @@ Page({
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
-  onReady: function() {
-    util.checkLogin();
-    util.request('/user/detail').then(res => {
-      this.setData({
-        user: res.data
-      })
-      console.log('res', res)
-    }).catch(err => {
-      console.log('/login_err', err)
-    })
-  },
+  onReady: function() {},
 
   /**
    * 生命周期函数--监听页面显示
    */
   onShow: function() {
-
+    util.request('/user/detail').then(res => {
+      let assistant_entrance = this.data.assistant_entrance
+      if (res.data.shop && res.data.shop.length > 1) {
+        assistant_entrance.path = '/pages/selectuser/selectuser'
+      } else if (res.data.shop && res.data.shop.length == 1) {
+        assistant_entrance.path = '/pages/businessassistant/businessassistant?id=' + res.data.shop[0].id
+      }
+      res.data.fenxiao.total = util.formatMoney(res.data.fenxiao.total).showMoney
+      res.data.fenxiao.today_remit = util.formatMoney(res.data.fenxiao.today_remit).showMoney
+      res.data.fenxiao.can_remit = util.formatMoney(res.data.fenxiao.can_remit).showMoney
+      this.setData({
+        user: res.data,
+        assistant_entrance: assistant_entrance
+      })
+    }).catch(err => {})
   },
 
   /**

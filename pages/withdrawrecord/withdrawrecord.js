@@ -1,21 +1,12 @@
 // pages/withdrawrecord/withdrawrecord.js 提现记录
+const util = require('../../utils/util.js')
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    list: [{
-        title: '提现到微信零钱',
-        time: '2019.07.13 16:26:02',
-        money: '60.00',
-      },
-      {
-        title: '提现到微信零钱',
-        time: '2019.07.13 16:26:02',
-        money: '60.00',
-      }
-    ]
+    list: null
   },
 
   /**
@@ -29,7 +20,15 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function() {
-
+    util.request('/fenxiao/tx_record').then(res => {
+      res.data.list.forEach((item) => {
+        item.title = '提现到微信零钱'
+        item.amount = util.formatMoney(item.amount).showMoney
+      })
+      this.setData({
+        list: res.data.list
+      })
+    }).catch(err => {})
   },
 
   /**

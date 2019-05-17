@@ -1,16 +1,17 @@
 // pages/userprofit/userprofit.js
-
+const util = require('../../utils/util.js')
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    all: 60,
-    today: 0,
-    cashed: 55,
-    cashabled: 5,
-    tobefree: 0,
+    total: '',
+    can_remit: '',
+    has_remit: '',
+    freeze_remit: '',
+    unfreeze_remit: '',
+    today_remit: '',
     entrances: [{
         title: '收益明细',
         path: '/pages/userprofitdetail/userprofitdetail'
@@ -34,7 +35,23 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function() {
+    util.request('/fenxiao/earn_detail').then(res => {
 
+      res.data.total = util.formatMoney(res.data.total).showMoney
+      res.data.can_remit = util.formatMoney(res.data.can_remit).showMoney
+      res.data.has_remit = util.formatMoney(res.data.has_remit).showMoney
+      res.data.freeze_remit = util.formatMoney(res.data.freeze_remit).showMoney
+      res.data.unfreeze_remit = util.formatMoney(res.data.unfreeze_remit).showMoney
+      res.data.today_remit = util.formatMoney(res.data.today_remit).showMoney
+      this.setData({
+        total: res.data.total,
+        can_remit: res.data.can_remit,
+        has_remit: res.data.has_remit,
+        freeze_remit: res.data.freeze_remit,
+        unfreeze_remit: res.data.unfreeze_remit,
+        today_remit: res.data.today_remit
+      })
+    }).catch(err => {})
   },
 
   /**
@@ -93,15 +110,19 @@ Page({
   },
 
   requestCash: function() {
+
     wx.showModal({
       title: '提示',
       content: '可提现收益将全部提现至您的为您零钱，是否继续提现操作？',
-      success(res) {
+      success: (res) => {
         if (res.confirm) {
-          wx.showToast({
-            title: '申请提现成功啦，预计将在2小时内到账',
-            icon: 'none'
-          })
+          util.request('/fenxiao/tx').then(res => {
+            wx.showToast({
+              title: '申请提现成功啦，预计将在2小时内到账',
+              icon: 'none'
+            })
+            this.onReady()
+          }).catch(err => {})
         }
       }
     })

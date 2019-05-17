@@ -1,18 +1,22 @@
 // pages/hexiaosetting/hexiaosetting.js
+const util = require('../../utils/util.js')
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-
+    id: '',
+    code: ''
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
-
+    this.setData({
+      id: options.id
+    })
   },
 
   /**
@@ -63,10 +67,17 @@ Page({
   onShareAppMessage: function() {
 
   },
-  submit() {
-    wx.showToast({
-      title: '核销密码修改成功啦',
-      icon: 'none'
+  codeInput: function(e) {
+    this.setData({
+      code: e.detail.value
     })
+  },
+  submit() {
+    util.request('/admin/hx/change_code', {
+      id: this.data.id,
+      hx_code: this.data.code
+    }).then(res => {
+      util.backAndToast('核销密码修改成功啦')
+    }).catch(err => {})
   }
 })
