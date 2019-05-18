@@ -36,7 +36,7 @@ Page({
    */
   onReady: function() {
     util.request('/fenxiao/earn_detail').then(res => {
-
+      let withdraw = res.data.can_remit >= res.data.min_tx_amount
       res.data.total = util.formatMoney(res.data.total).showMoney
       res.data.can_remit = util.formatMoney(res.data.can_remit).showMoney
       res.data.has_remit = util.formatMoney(res.data.has_remit).showMoney
@@ -44,12 +44,13 @@ Page({
       res.data.unfreeze_remit = util.formatMoney(res.data.unfreeze_remit).showMoney
       res.data.today_remit = util.formatMoney(res.data.today_remit).showMoney
       this.setData({
+        withdraw: withdraw,
         total: res.data.total,
         can_remit: res.data.can_remit,
         has_remit: res.data.has_remit,
         freeze_remit: res.data.freeze_remit,
         unfreeze_remit: res.data.unfreeze_remit,
-        today_remit: res.data.today_remit
+        today_remit: res.data.today_remit,
       })
     }).catch(err => {})
   },
@@ -110,21 +111,23 @@ Page({
   },
 
   requestCash: function() {
-
-    wx.showModal({
-      title: '提示',
-      content: '可提现收益将全部提现至您的为您零钱，是否继续提现操作？',
-      success: (res) => {
-        if (res.confirm) {
-          util.request('/fenxiao/tx').then(res => {
-            wx.showToast({
-              title: '申请提现成功啦，预计将在2小时内到账',
-              icon: 'none'
-            })
-            this.onReady()
-          }).catch(err => {})
+    if (this.data.withdraw) {
+      wx.showModal({
+        title: '提示',
+        content: '可提现收益将全部提现至您的为您零钱，是否继续提现操作？',
+        confirmText: '继续',
+        success: (res) => {
+          if (res.confirm) {
+            util.request('/fenxiao/tx').then(res => {
+              wx.showToast({
+                title: '申请提现成功啦，预计将在2小时内到账',
+                icon: 'none'
+              })
+              this.onReady()
+            }).catch(err => {})
+          }
         }
-      }
-    })
+      })
+    }
   }
 })

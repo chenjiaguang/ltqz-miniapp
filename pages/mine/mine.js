@@ -7,7 +7,6 @@ Page({
    */
   data: {
     user: null,
-    show_be_partner: false,
     be_partner_entrance: {
       title: '成为合伙人',
       path: '/pages/bepartner/bepartner'
@@ -32,7 +31,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
-
+    // console.log('util.formatDateTime', util.formatDateTime("yyyy.MM.dd", new Date()))
   },
 
   /**

@@ -1,5 +1,6 @@
 /* components/orderContent/orderContent.wxss */
 @import "../../app.wxss";
+
 .content {
   padding-top: 30rpx;
   padding-bottom: 30rpx;
@@ -24,7 +25,6 @@
   margin-bottom: 20rpx;
 }
 
-
 .time {
   display: block;
   color: #333;
@@ -39,6 +39,9 @@
   font-size: 24rpx;
   line-height: 24rpx;
   margin-bottom: 10rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .location {
@@ -46,4 +49,7 @@
   color: #999;
   font-size: 24rpx;
   line-height: 24rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }

@@ -9,6 +9,7 @@ page{
 
 .top-overview{
   background: #fff;
+  overflow: hidden;
 }
 .banner{
   display: block;
@@ -34,7 +35,7 @@ page{
   height: 140rpx;
   border-radius: 50%;
   margin-right: 32rpx;
-  margin-top: 26rpx;
+  margin-top: 16rpx;
 }
 .merchant-right{
   flex: 1;
@@ -42,7 +43,7 @@ page{
 .merchant-title{
   font-size: 38rpx;
   line-height: 46rpx;
-  padding-top: 12rpx;
+  padding-top: 14rpx;
   color: #333;
 }
 .merchant-intro{

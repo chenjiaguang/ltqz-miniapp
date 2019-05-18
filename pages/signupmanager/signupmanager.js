@@ -10,7 +10,9 @@ Page({
     hd_id: '',
     join_num: '',
     js_price: '',
-    list: []
+    list: [],
+    page: null,
+    loading: false
   },
 
   /**
@@ -27,23 +29,7 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function() {
-    util.request('/admin/huodong/detail', {
-      id: this.data.id,
-      hd_id: this.data.hd_id,
-    }).then(res => {
-      res.data.js_price = util.formatMoney(res.data.js_price).showMoney
-      res.data.list.forEach((item) => {
-        item.order.js_price = util.formatMoney(item.order.js_price).showMoney
-        item.content = item.ticket.map((ticket) => {
-          return ticket.name + 'x' + ticket.quantity
-        }).join('，') + '，共计￥' + item.order.js_price
-      })
-      this.setData({
-        join_num: res.data.join_num,
-        js_price: res.data.js_price,
-        list: res.data.list
-      })
-    }).catch(err => {})
+    this.fetchData(1)
   },
 
   /**
@@ -78,7 +64,7 @@ Page({
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function() {
-
+    this.fetchData(parseInt(this.data.page.pn) + 1)
   },
 
   /**
@@ -86,6 +72,41 @@ Page({
    */
   onShareAppMessage: function() {
 
+  },
+  fetchData: function(pn = 1) {
+    this.setData({
+      loading: true
+    })
+    util.request('/admin/huodong/detail', {
+      id: this.data.id,
+      hd_id: this.data.hd_id,
+      pn: pn
+    }).then(res => {
+      res.data.js_price = util.formatMoney(res.data.js_price).showMoney
+      res.data.list.forEach((item) => {
+        item.order.js_price = util.formatMoney(item.order.js_price).showMoney
+        item.content = item.ticket.map((ticket) => {
+          return ticket.name + 'x' + ticket.quantity
+        }).join('，') + '，共计￥' + item.order.js_price
+      })
+      if (pn == 1) {
+        this.setData({
+          join_num: res.data.join_num,
+          js_price: res.data.js_price,
+          list: res.data.list,
+          page: res.data.page,
+          loading: false
+        })
+      } else {
+        let list = this.data.list
+        list = list.concat(res.data.list)
+        this.setData({
+          list: list,
+          page: res.data.page,
+          loading: false
+        })
+      }
+    }).catch(err => {})
   },
   callPhone(e) {
     wx.makePhoneCall({
@@ -96,5 +117,8 @@ Page({
     wx.navigateTo({
       url: '/pages/goodsdetail/goodsdetail?id=' + this.data.hd_id
     })
+  },
+  tapItem(){
+    wx.vibrateShort()
   }
 })

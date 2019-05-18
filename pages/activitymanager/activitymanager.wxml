@@ -1,4 +1,7 @@
 <!--pages/activitymanager/activitymanager.wxml-->
-<block wx:for="{{list}}">
-  <activity-card3 activity="{{item}}" />
+<ft-list-loader visible="{{!page}}" />
+<block wx:for="{{list}}" wx:key='id'>
+  <activity-card3 class="activity" activity="{{item}}" />
 </block>
+<ft-list-footer loaded="{{!!page}}" loading="{{loading}}" page="{{page}}" show-no-more />
+<ft-iphone-bottom-adapter />

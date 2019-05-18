@@ -9,7 +9,17 @@ Component({
   properties: {
     index: {
       type: Number,
-      value: 0
+      value: 0,
+      observer: function (newVal, oldVal) {
+        if (newVal != this.data.current){
+          this.currentChange({
+            detail: {
+              current: newVal,
+              source: 'touch'
+            }
+          })
+        }
+      }
     },
     headerSeparator: {
       type: Boolean,

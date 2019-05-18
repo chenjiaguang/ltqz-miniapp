@@ -34,7 +34,7 @@ Page({
     cover_url: '',
     title: '',
     desc: '',
-    include_bx: '1',
+    include_bx: '',
     min_price: 0,
     show_min_price: 0,
     price_num: 1,
@@ -143,8 +143,11 @@ Page({
       console.log('/huodong/detail_res', res)
       if (res.error == 0 && res.data) {
         // 处理展示详情内容
-        let arrEntities = { 'lt': '<', 'gt': '>', 'nbsp': ' ', 'amp': '&', 'quot': '"' }
-        res.data.content = res.data.content.replace(/<img/gi, '<img style="max-width:100%;height:auto;display:block"').replace(/<section/gi, '<div').replace(/\/section>/gi, '/div>')
+        let arrEntities = { 'lt': '<', 'gt': '>', 'nbsp': ' ', 'amp': '&', 'quot': '"', 'mdash': '——', 'ldquo': '“', 'rdquo': '”' }
+        res.data.content = res.data.content.replace(/&(lt|gt|nbsp|amp|mdash|ldquo|rdquo);/ig, function (all, t) { return arrEntities[t] }).replace(/<img/ig, '<img style="max-width:100%;height:auto;display:block"').replace(/<section/ig, '<div').replace(/\/section>/ig, '/div>')
+        // 处理时间格式
+        res.data.valid_btime = util.formatDateTimeDefault('d', res.data.valid_btime)
+        res.data.valid_etime = util.formatDateTimeDefault('d', res.data.valid_etime)
         // 价格处理(String -> Number，分润，最小价格)
         res.data.fenxiao_price = util.formatMoney(res.data.fenxiao_price).money
         res.data.min_price = util.formatMoney(res.data.min_price).money
@@ -172,6 +175,9 @@ Page({
       console.log('/rate/list_res', res)
       if (res.error == 0 && res.data) {
         let {list, page, avg_score} = res.data
+        list.forEach(item => {
+          item.created_at = util.formatDateTimeDefault('d', item.created_at)
+        })
         const total = (page && page.total) ? page.total : 0
         console.log('avg_score', avg_score)
         this.setData({

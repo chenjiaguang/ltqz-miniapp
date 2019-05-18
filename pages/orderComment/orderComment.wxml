@@ -15,3 +15,4 @@
   <ft-image-upload class="imageUpload" catchchange='coverChange'/>
   <view class='btn' bindtap='submit'>提交评论</view>
 </view>
+<ft-iphone-bottom-adapter />

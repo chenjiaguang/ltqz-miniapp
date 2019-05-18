@@ -50,7 +50,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 7,
+			"current": 24,
 			"list": [
 				{
 					"id": -1,
@@ -90,14 +90,14 @@
 					"id": 5,
 					"name": "订单-订单详情",
 					"pathName": "pages/orderdetail/orderdetail",
-					"query": "id= 155808114970964234",
+					"query": "id=155816814455641980",
 					"scene": null
 				},
 				{
-					"id": -1,
+					"id": 6,
 					"name": "订单-订单评价",
 					"pathName": "pages/orderComment/orderComment",
-					"query": "",
+					"query": "id=155808200433444458",
 					"scene": null
 				},
 				{
@@ -180,7 +180,7 @@
 					"id": 18,
 					"name": "电子票",
 					"pathName": "pages/goodsticket/goodsticket",
-					"query": "id=155806528761964907",
+					"query": "id=155773520751520299",
 					"scene": null
 				},
 				{
@@ -215,6 +215,13 @@
 					"name": "支付成功",
 					"pathName": "pages/paysuccess/paysuccess",
 					"query": "",
+					"scene": null
+				},
+				{
+					"id": 24,
+					"name": "用户须知",
+					"pathName": "pages/statement/statement",
+					"query": "type=2",
 					"scene": null
 				}
 			]

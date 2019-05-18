@@ -4,9 +4,11 @@
     <text class='usernum'>报名人数：{{join_num}}</text>
     <text>预计收入：￥{{js_price}}</text>
   </view>
-  <block wx:for="{{list}}">
+
+  <ft-list-loader visible="{{!page}}" />
+  <block wx:for="{{list}}" wx:key='order_id'>
     <view class='line-separator-h'></view>
-    <view class='row box' hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
+    <view class='row box' hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}" bindtap='tapItem'>
       <image src="{{item.user.avatar}}" class='avatar' />
       <view class='column flex1'>
         <text class='username'>{{item.user.nick_name}}</text>
@@ -16,8 +18,13 @@
           <text wx:else class='state state0'>未核销</text>
         </view>
       </view>
-      <text class='lutufont lutu-tel2' bindtap='callPhone' data-phone='{{item.phone}}'></text>
+      <view class='lutufont lutu-tel2' hover-stop-propagation catchtap='callPhone' data-phone='{{item.phone}}'></view>
     </view>
   </block>
-  <view class='btn' bindtap='goDetail'>查看活动详情</view>
+  <ft-list-footer loaded="{{!!page}}" loading="{{loading}}" page="{{page}}" show-no-more />
+  <ft-iphone-bottom-adapter />
+  <view class='fixed-box column'>
+    <view class='btn' bindtap='goDetail'>查看活动详情</view>
+    <ft-iphone-bottom-adapter class="bottom" />
+  </view>
 </view>

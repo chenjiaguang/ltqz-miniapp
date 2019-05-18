@@ -1,5 +1,6 @@
 // pages/orderlist/orderlist.js
 const util = require('../../utils/util.js')
+const storageHelper = require('../../utils/storageHelper.js')
 Page({
 
   /**
@@ -50,6 +51,7 @@ Page({
     console.log('orderlist_onload_options', options)
     let index = parseInt(options ? options.type : 0)
     index = isNaN(index) ? 0 : index
+    storageHelper.setStorage('orderListRefresh', '')
     this.setData({
       index: index
     })
@@ -64,7 +66,10 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function() {
-
+    if (storageHelper.getStorage('orderListRefresh') == '1') {
+      this.refresh()
+      storageHelper.setStorage('orderListRefresh', '')
+    }
   },
 
   /**
@@ -101,20 +106,29 @@ Page({
   onShareAppMessage: function() {
 
   },
+  tabchange(e) {
+    this.setData({
+      index: e.detail.current
+    })
+  },
   fetchlist(e) {
     this.loadList(e.detail.idx, e.detail.pn)
   },
-
   loadList(index, pn = 1) {
     let data = {
       status: this.data.states[index] != '' ? this.data.states[index] : undefined,
       pn: pn
     }
 
+    this.setData({
+      [`tabs[${index}].loading`]: true,
+    })
     util.request('/order/list', data).then(res => {
       let list = []
       res.data.list.forEach((item) => {
         item.price = util.formatMoney(item.price).showMoney
+        item.huodong.valid_btime = util.formatDateTimeDefault('d', item.huodong.valid_btime)
+        item.huodong.valid_etime = util.formatDateTimeDefault('d', item.huodong.valid_etime)
       })
       if (pn == 1) {
         list = res.data.list
@@ -128,5 +142,40 @@ Page({
         [`tabs[${index}].loading`]: false,
       })
     }).catch(err => {})
+  },
+
+  refresh() {
+    this.setData({
+      [`index`]: 0,
+      [`tabs[0].page`]: {
+        pn: 1
+      },
+      [`tabs[0].list`]: [],
+      [`tabs[0].loaded`]: false,
+      [`tabs[0].loading`]: false,
+
+      [`tabs[1].page`]: {
+        pn: 1
+      },
+      [`tabs[1].list`]: [],
+      [`tabs[1].loaded`]: false,
+      [`tabs[1].loading`]: false,
+
+      [`tabs[2].page`]: {
+        pn: 1
+      },
+      [`tabs[2].list`]: [],
+      [`tabs[2].loaded`]: false,
+      [`tabs[2].loading`]: false,
+
+      [`tabs[3].page`]: {
+        pn: 1
+      },
+      [`tabs[3].list`]: [],
+      [`tabs[3].loaded`]: false,
+      [`tabs[3].loading`]: false,
+    }, () => {
+      this.loadList(0, 1)
+    })
   }
 })

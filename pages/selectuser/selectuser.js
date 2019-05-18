@@ -6,6 +6,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    loaded: false,
     list: []
   },
 
@@ -15,7 +16,8 @@ Page({
   onLoad: function(options) {
     util.request('/admin/shop/can_login').then(res => {
       this.setData({
-        list: res.data
+        list: res.data,
+        loaded: true
       })
     }).catch(err => {})
   },

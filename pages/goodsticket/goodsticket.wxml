@@ -2,14 +2,14 @@
 <view class='page-goodsticket'>
   <view class='info-wrapper'>
     <view class='top-info'>
-      <image class="qr-code{{(status === '2' || status === '3') ? ' disabled' : ''}}" src="{{qr_code_url}}" mode="aspectFit"></image>
-      <view wx:if="{{status === '2' || status === '3'}}" class='checked-icon'><text>已核销</text></view>
+      <image class="qr-code{{(status == 2 || status == 3) ? ' disabled' : ''}}" src="{{qr_code_url}}" mode="aspectFit"></image>
+      <view wx:if="{{status == 2 || status == 3}}" class='checked-icon'><text>已核销</text></view>
       <!-- <view class='line-info'><text>过期时间：</text><text>{{deadline || ''}}</text></view> -->
-      <view class='line-info'><text>核销状态：</text><text style="color:{{(status === '2' || status === '3') ? '#333' : '#64B631'}}">{{hexiao_status_text[status]}}</text></view>
+      <view class='line-info'><text>核销状态：</text><text style="color:{{(status == 2 || status == 3) ? '#333' : '#64B631'}}">{{hexiao_status_text[status]}}</text></view>
       <view class='line-info'><text>核销时间：</text><text>{{checked_time || '—'}}</text></view>
       <!-- <view class='line-info'><text>核销人员：</text><text>{{hexiao_staff || ''}}</text></view> -->
-      <button wx:if="{{(status === '1')}}" class="hexiao-btn{{status === '1' ? '' : ' disabled'}}" disabled="{{status !== '1'}}" catchtap="openConfirmCode">自助核销</button>
-      <button wx:if="{{status === '2' || status === '3'}}" class="comment-btn{{status === '2' ? '' : ' disabled'}}" disabled="{{status !== '2'}}" catchtap="goComment">{{status === '2' ? '去评价' : '已评价'}}</button>
+      <button wx:if="{{(status == 1)}}" class="hexiao-btn{{status != 1 ? ' disabled' : ''}}" disabled="{{status != 1}}" catchtap="openConfirmCode">自助核销</button>
+      <button wx:if="{{status == 2 || status == 3}}" class="comment-btn{{status != 2 ? ' disabled' : ''}}" disabled="{{status != 2}}" catchtap="goComment">{{status == '2' ? '去评价' : '已评价'}}</button>
     </view>
     <view style="border:1px dashed #D8D8D8;width:638rpx;margin:0 auto;transform:scale(1, 0.5);transform-origin:50% 100%"></view>
     <view class='bottom-info'>
@@ -20,7 +20,7 @@
       <view class='line-separator-h'></view>
       <view class='info-item'>
         <view class="info-left">活动场次</view>
-        <view class='info-right'>{{huodong.valid_btime}} 至 {{huodong.valid_etime}}</view>
+        <view class='info-right'>{{huodong.session}}</view>
       </view>
       <view class='line-separator-h'></view>
       <view class='info-item'>
@@ -30,7 +30,7 @@
       <view class='line-separator-h'></view>
       <view class='info-item'>
         <view class="info-left">活动地点</view>
-        <view class='info-right'>{{(huodong && huodong.address) ? huodong.address : '--'}}</view>
+        <view class='info-right'>{{(huodong && huodong.address) ? huodong.address : '—'}}</view>
       </view>
       <view class='left-ball'></view>
       <view class='right-ball'></view>

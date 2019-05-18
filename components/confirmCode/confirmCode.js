@@ -47,6 +47,11 @@ Component({
         codeStr: value
       })
     },
+    clearCode: function () {
+      this.setData({
+        codeStr: ''
+      })
+    },
     onFocus: function (e) {
       let { focus, codeStr} = this.data
       console.log('onFocus', codeStr, focus)

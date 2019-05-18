@@ -7,7 +7,9 @@ Page({
    */
   data: {
     id: '',
-    list: []
+    list: [],
+    page: null,
+    loading: false
   },
 
   /**
@@ -23,25 +25,14 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function() {
+    this.fetchData(1)
 
   },
 
   /**
    * 生命周期函数--监听页面显示
    */
-  onShow: function() {
-    util.request('/admin/huodong/list', {
-      id: this.data.id
-    }).then(res => {
-      res.data.list.forEach((item) => {
-        item.js_price = util.formatMoney(item.js_price).showMoney
-      })
-
-      this.setData({
-        list: res.data.list
-      })
-    }).catch(err => {})
-  },
+  onShow: function() {},
 
   /**
    * 生命周期函数--监听页面隐藏
@@ -68,13 +59,45 @@ Page({
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function() {
-
+    this.fetchData(parseInt(this.data.page.pn) + 1)
   },
 
   /**
    * 用户点击右上角分享
    */
   onShareAppMessage: function() {
+
+  },
+
+  fetchData: function(pn = 1) {
+    this.setData({
+      loading: true
+    })
+    util.request('/admin/huodong/list', {
+      pn: pn,
+      id: this.data.id
+    }).then(res => {
+      res.data.list.forEach((item) => {
+        item.valid_btime = util.formatDateTimeDefault('m', item.valid_btime)
+        item.valid_etime = util.formatDateTimeDefault('m', item.valid_etime)
+        item.js_price = util.formatMoney(item.js_price).showMoney
+      })
+      if (pn == 1) {
+        this.setData({
+          list: res.data.list,
+          page: res.data.page,
+          loading: false
+        })
+      } else {
+        let list = this.data.list
+        list = list.concat(res.data.list)
+        this.setData({
+          list: list,
+          page: res.data.page,
+          loading: false
+        })
+      }
+    }).catch(err => {})
 
   }
 })

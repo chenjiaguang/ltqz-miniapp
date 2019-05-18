@@ -2,6 +2,6 @@
 <view class='page-goodslist'>
   <ft-banners wx:if="{{banners && banners[0]}}" banners="{{banners}}" height="320rpx" spacing="{{0}}" border-radius="0" indicator-color="#999" indicator-currunt-color="#01CEB3" previous-margin="{{0}}" next-margin="{{0}}" catchtap="bannerTap" />
   <ft-activity-card2 wx:for="{{activitys}}" wx:for-index="idx" wx:for-item="activity" wx:key="id" activity="{{activity}}" top-border="{{idx !== 0}}" catchactivitytap="activityTap" />
-  <ft-list-footer loaded="{{activityLoaded}}" loading="{{activityLoading}}" page="{{activityPage}}" show-no-more />
+  <ft-list-footer loaded="{{activityLoaded}}" loading="{{activityLoading}}" page="{{activityPage}}" show-no-more no-more-text="{{(activitys && activitys[0]) ? '没有更多了' : '暂时没有活动'}}" />
   <ft-iphone-bottom-adapter />
 </view>

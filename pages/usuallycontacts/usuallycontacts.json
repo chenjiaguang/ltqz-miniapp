@@ -1,4 +1,7 @@
 {
   "navigationBarTitleText": "常用联系人",
-  "usingComponents": {}
+  "usingComponents": {
+    "ft-list-loader": "../../ftcomponents/ftListLoader/ftListLoader",
+    "ft-iphone-bottom-adapter": "../../ftcomponents/ftIphoneBottomAdapter/ftIphoneBottomAdapter"
+  }
 }

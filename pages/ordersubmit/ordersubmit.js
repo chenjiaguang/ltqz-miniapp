@@ -28,10 +28,10 @@ Page({
       phone: ''
     },
     clauses: [
-      { name: '条款1', path: ''},
-      { name: '条款2', path: ''}
+      { name: '用户须知', path: '/pages/statement/statement?type=1'},
+      { name: '平台免责声明', path: '/pages/statement/statement?type=2'}
     ],
-    clause_checked: false,
+    clause_checked: true,
     totalPrice: 0,
     disabled_submit: false,
     submitting: false,
@@ -152,8 +152,21 @@ Page({
       signType,
       paySign,
       success: res => {
-        wx.redirectTo({
-          url: '/pages/paysuccess/paysuccess?id=' + id,
+        util.request('/order/pay_result', {id}).then(res => {
+          if (res.error == 0) { // 查询结果为已支付
+            wx.redirectTo({
+              url: '/pages/paysuccess/paysuccess?id=' + id,
+            })
+          } else {
+            if (res.msg) {
+              wx.showToast({
+                title: res.msg,
+                icon: 'none'
+              })
+            }
+          }
+        }).catch(err => {
+
         })
       },
       fail: res => {
@@ -187,8 +200,29 @@ Page({
 
   submitOrder: function () {
     console.log('submitOrder')
-    const { id, fromUid, selectedTickets, contact, buy_for, submitting} = this.data
-    if (!(contact.name && contact.phone && buy_for && buy_for.length && !submitting)) { // 如果联系人信息不完整、没有选中的出行人、正在提交，则中断操作
+    const { id, fromUid, selectedTickets, contact, buy_for, submitting, clause_checked} = this.data
+    if (!(contact.name && contact.phone && buy_for && buy_for.length && !submitting && clause_checked)) { // 如果联系人信息不完整、没有选中的出行人、正在提交，则中断操作
+      if (!contact.name) {
+        wx.showToast({
+          title: '填写联系人姓名',
+          icon: 'none'
+        })
+      } else if (!contact.phone) {
+        wx.showToast({
+          title: '填写联系人手机号',
+          icon: 'none'
+        })
+      } else if (!buy_for || !buy_for.length) {
+        wx.showToast({
+          title: '选择出行人',
+          icon: 'none'
+        })
+      } else if (!clause_checked) {
+        wx.showToast({
+          title: '请勾选同意重要条款',
+          icon: 'none'
+        })
+      }
       return false
     }
     // 保存联系人信息
@@ -219,7 +253,6 @@ Page({
         if (res.data.pay) {
           this.pay(res.data.id, res.data.pay)
         }
-        
       }
     }).catch(err => {
 
@@ -228,10 +261,6 @@ Page({
         submitting: false
       })
     })
-    // 模仿
-    setTimeout(() => {
-
-    }, 5000)
   },
 
   changeClause: function () {
@@ -315,5 +344,14 @@ Page({
     wx.navigateTo({
       url: url
     })
+  },
+
+  clauseTap: function (e) {
+    let {ele} = e.currentTarget.dataset
+    if (ele.path) {
+      wx.navigateTo({
+        url: ele.path
+      })
+    }
   }
 })

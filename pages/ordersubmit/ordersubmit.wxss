@@ -155,8 +155,7 @@ page{
   font-size: 24rpx;
   line-height: 34rpx;
   color: #666;
-  text-align: center;
-  margin-top: 175rpx;
+  margin-top: 10rpx;
 }
 .clause-icon{
   font-size: 24rpx;

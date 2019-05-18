@@ -30,7 +30,9 @@
     </view>
   </view>
 
-  <block wx:for="{{list}}">
+  <ft-list-loader visible="{{!page}}" />
+  
+  <block wx:for="{{list}}" wx:key="id">
     <view class='card item-box column'>
       <text class='item-title'>收益到账</text>
       <view class='line-separator-h'></view>
@@ -41,4 +43,8 @@
 
   <image wx:if="{{list.length==0}}" class='empty-img' src='/assets/images/userprofit.png' />
   <text wx:if="{{list.length==0}}" class='empty-text'>你还没有收益哦~</text>
+
+  <ft-list-footer wx:if="{{list.length>0}}" loaded="{{!!page}}" loading="{{loading}}" page="{{page}}" show-no-more />
+
+  <ft-iphone-bottom-adapter />
 </view>

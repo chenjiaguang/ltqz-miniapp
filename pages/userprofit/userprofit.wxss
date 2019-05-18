@@ -110,5 +110,5 @@
 }
 
 .withdraw-btn.disabled {
-  background: #999;
+  background: #D8D8D8;
 }

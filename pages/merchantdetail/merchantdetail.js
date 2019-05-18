@@ -1,4 +1,6 @@
 // pages/merchantdetail/merchantdetail.js
+const util = require('../../utils/util.js')
+
 Page({
 
   /**
@@ -9,56 +11,22 @@ Page({
     name: '路途亲子',
     introduce: '路途亲子我们带领孩子探索世界，除了游玩我们选择用更科学的方式，天文、地理、化学、生物、自然，你以为科学只在课堂里吗？',
     rate: 4.5,
-    evalution_num: 200,
+    rate_num: 200,
     type_pic_url: 'http://i1.bvimg.com/685753/69601cd97e8be3cb.jpg',
     bg_pic_url: 'http://i1.bvimg.com/685753/69601cd97e8be3cb.jpg',
     logo_url: 'http://i1.bvimg.com/685753/69601cd97e8be3cb.jpg',
-    activitys: [
-      {
-        id: '1',
-        title: '或是对佛撒的发阿善良大方',
-        desc: '活动描述',
-        tags: [
-          { type: 'class', label: '标签1' }
-        ],
-        cover_url: 'http://i1.bvimg.com/685753/69601cd97e8be3cb.jpg',
-        join_num: 200,
-        min_price: 49.9,
-        price_num: 1,
-        status: '1' // 状态：0为失效或已删除 | 1为报名中| 2为已满额未截止| 3为已截止未满额| 4为已截止且满额| 5为已结束
-      },
-      {
-        id: '2',
-        title: '或是对佛撒的发阿善良大方',
-        desc: '活动描述',
-        tags: [
-          {type: 'class', label: '标签1'},
-          {type: 'location', label: '标签2'},
-          {type: 'address', label: '标签3'}
-        ],
-        cover_url: 'http://i1.bvimg.com/685753/69601cd97e8be3cb.jpg',
-        join_num: 30,
-        min_price: 99.9,
-        price_num: 2,
-        status: '1' // 状态：0为失效或已删除 | 1为报名中| 2为已满额未截止| 3为已截止未满额| 4为已截止且满额| 5为已结束
-      }
-    ],
-    activityLoaded: true,
+    activitys: [],
+    activityLoaded: false,
     activityLoading: false,
-    activityPage: {
-      total: 2,
-      total_page: 1,
-      is_end: true,
-      limit: 10,
-      pn: 1
-    }
+    activityPage: {}
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    this.fetchMerchant(1)
+    this.fetchGoods(1, 1)
   },
 
   /**
@@ -100,7 +68,12 @@ Page({
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
-
+    const {
+      activityPage
+    } = this.data
+    if (activityPage && !activityPage.is_end) {
+      this.fetchGoods(this.options.id, parseInt(activityPage.pn) + 1)
+    }
   },
 
   /**
@@ -122,5 +95,70 @@ Page({
 
   viewComment: function () {
     console.log('viewComment')
+    if (this.data.id) {
+      wx.navigateTo({
+        url: '/pages/commentlist/commentlist?sid=' + this.data.id
+      })
+    }
+  },
+
+  fetchMerchant: function (id) {
+    util.request('/shop/detail', {id}).then(res => {
+      if (res.error == 0 && res.data) { // 成功获取数据
+        this.setData(res.data)
+      }
+    }).catch(err => {
+
+    })
+  },
+
+  fetchGoods: function (id, pn) {
+    const {
+      activityLoading,
+      activitys,
+      activityPage
+    } = this.data
+    if (activityLoading || (activityPage && activityPage.is_end && pn !== 1)) { // 正在加载 或 最后一页并且不是刷新
+      return false
+    }
+    this.setData({
+      activityLoading: true
+    })
+    let rData = {
+      shop_id: id,
+      pn: pn
+    }
+    util.request('/huodong/list', rData).then(res => {
+      console.log('/huodong/list', res)
+      if (res.error == 0 && res.data) {
+        let {
+          list,
+          page
+        } = res.data
+        list.forEach(item => {
+          item.min_price = util.formatMoney(item.min_price).showMoney
+        })
+        let _obj = {}
+        _obj.activityLoaded = true
+        _obj.activityPage = page
+        if (pn === 1) { // 刷新
+          _obj.activitys = list
+        } else {
+          let oldLen = this.data.activitys.length
+          let newLen = list.length
+          for (let i = 0; i < newLen; i++) {
+            _obj['activitys[' + (oldLen + i) + ']'] = list[i]
+          }
+        }
+        this.setData(_obj)
+      }
+    }).catch(err => {
+      console.log('catch')
+    }).finally(res => {
+      this.setData({
+        activityLoading: false
+      })
+      wx.stopPullDownRefresh()
+    })
   }
 })

@@ -25,7 +25,7 @@ const formatMoney = n => {
       break;
     default:
       money = parseInt(n)
-      showMoney = parseFloat((parseInt(n) / 100).toFixed(2))
+      showMoney = (parseInt(n) / 100).toFixed(2)
   }
   return {
     money,
@@ -37,6 +37,18 @@ const formatNumber = n => {
   n = n.toString()
   return n[1] ? n : '0' + n
 }
+
+const formatDateTimeDefault = (dfmt, dateString) => {
+  if (dfmt == 'd') {
+    return dateString.split(' ')[0]
+  } else if (dfmt == 'm') {
+    let split = dateString.split(':')
+    return split[0] + ':' + split[1]
+  } else {
+    return dateString
+  }
+}
+
 
 const getUrl = (path, query) => {
   let url = path
@@ -112,7 +124,7 @@ const request = (url, data, config = {}) => {
   const app = getApp()
   const apiVersion = (config && config.apiVersion) || app.config.apiVersion || '/v1'
   const token = (config && config.token) || storageHelper.getStorage('token') || ''
-  // const token = '53876bfbe2f70458f4bdd662d8d4e695'
+  // const token = '5aa2ba17d929a73c7057a114df4ea440'
   console.log('apiVersion', apiVersion)
   return new Promise((resolve, reject) => {
     wx.request({
@@ -126,7 +138,7 @@ const request = (url, data, config = {}) => {
         'token': token, // 使用传入的token值，或者全局的token，都没有则默认空字符串
       },
       success: function(res) {
-        if (res.data.error && (res.data.error == 401 || res.data.error == 403)) {
+        if (res.data.error && (res.data.error == 401)) {
           storageHelper.setStorage('token', '')
           checkLogin()
           reject(res.data || res) // 返回错误提示信息
@@ -139,7 +151,9 @@ const request = (url, data, config = {}) => {
             return
           }
         }
-        resolve(res.data || res)
+        setTimeout(() => {
+          resolve(res.data || res)
+        }, 0)
       },
       fail: function(res) {
         if (res && res.errMsg && res.errMsg === 'request:fail') { // 小程序请求失败，可以在这里检查是否联网，处理断网
@@ -161,5 +175,6 @@ module.exports = {
   relaunchPermission,
   request,
   formatMoney,
-  backAndToast
+  backAndToast,
+  formatDateTimeDefault
 }

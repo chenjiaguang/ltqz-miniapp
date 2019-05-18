@@ -12,7 +12,7 @@
   <view class='comment-list'>
     <ft-list-loader visible="{{!commentLoaded}}" />
     <comment-box role="{{role}}" wx:for="{{list}}" wx:for-index="idx" wx:for-item="comment" wx:key="id" comment="{{comment}}" show-goods="{{showGoods}}" show-ticket="{{showTicket}}" top-border="{{idx !== 0}}" catchreply="replyTap"/>
-    <ft-list-footer loaded="{{commentLoaded}}" loading="{{commentLoading}}" page="{{page}}" show-no-more />
+    <ft-list-footer loaded="{{commentLoaded}}" loading="{{commentLoading}}" page="{{page}}" show-no-more no-more-text="{{(list && list[0]) ? '没有更多了' : '暂时没有评价'}}" />
     <ft-iphone-bottom-adapter />
   </view>
 

@@ -88,7 +88,7 @@
 .btn:after, .btn:before{
   display: none;
 }
-button.btn.disabled{
-  background: #D8D8D8;
-  color: #fff;
+.btn.disabled{
+  background: #D8D8D8 !important;
+  color: #fff !important;
 }

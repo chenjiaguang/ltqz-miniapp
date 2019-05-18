@@ -143,6 +143,9 @@ Page({
           page,
           avg_score
         } = res.data
+        list.forEach(item => {
+          item.created_at = util.formatDateTimeDefault('d', item.created_at)
+        })
         let _obj = {}
         _obj.commentLoaded = true
         if (pn === 1) { // 刷新
@@ -207,6 +210,7 @@ Page({
       })
       this.setData({
         reply_focus: false,
+        reply_value: '',
         [`list[${i}].reply`]: this.data.reply_value
       })
     }).catch(err => {})

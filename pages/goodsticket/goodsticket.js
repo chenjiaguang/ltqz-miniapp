@@ -6,13 +6,8 @@ Page({
    * 页面的初始数据
    */
   data: {
-    id: '',
-    huodong: {
-      title: '【穿行艺术】城市里的博物馆，外滩历险记（银行一条街）',
-      valid_btime: '2019-07-13',
-      valid_etime: '2020-01-01',
-      address: '北京市朝阳区 马桥路甲40号二十一世纪大北京市朝阳区 马桥路甲40号二十一世纪大'
-    },
+    order_id: '',
+    huodong: {},
     hexiao_status_text: { // -1为失效订单|0为待付款|1为待参与|2为待评价|3已评价(当status为2或3时视为已核销)
       '-1': '未核销',
       0: '未核销',
@@ -20,18 +15,9 @@ Page({
       2: '已核销',
       3: '已核销'
     },
-    ticket: [{
-        name: 'piao1',
-        quantity: 2
-      },
-      {
-        name: 'piao2',
-        quantity: 1
-      }
-    ],
+    status: '',
     ticked_num_text: '',
-    qr_code_url: 'http://i1.bvimg.com/685753/bab59bb9490c8494.jpg',
-    status: '1',
+    qr_code_url: '',
     checked_time: '',
     hexiao_staff: '',
     submitting: false
@@ -41,10 +27,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
-    this.setData({
-      id: options.id
-    })
-    this.initTicketNumText(this.data.ticket)
+    this.options = options
   },
 
   /**
@@ -58,13 +41,9 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function() {
-    util.request('/order/detail', {
-      id: this.data.id
-    }).then(res => {
-      this.setData({
-        qr_code_url: res.data.qr_code_url
-      })
-    }).catch(err => {})
+    if (this.options && this.options.id) {
+      this.fetchOrder(this.options.id)
+    }
   },
 
   /**
@@ -103,23 +82,53 @@ Page({
   },
 
   confirmCode: function(e) {
-    console.log('confirmCode', e)
     let {
       value,
       ctx
     } = e.detail
+    let { submitting} = this.data
+    if (submitting) {
+      return false
+    }
+    let rData = {
+      id: this.options.id,
+      hx_code: value
+    }
     this.setData({
       submitting: true
     })
-    setTimeout(() => {
+    util.request('/order/consume', rData).then(res => {
+      console.log('then', rData, res)
+      if (res.error == 0 && res.data) { // 请求接口成功
+        wx.showToast({
+          title: '核销成功',
+          icon: 'none'
+        })
+        this.fetchOrder(this.options.id)
+        ctx.close()
+      } else {
+        if (res.msg) {
+          wx.showToast({
+            title: res.msg,
+            icon: 'none'
+          })
+        }
+      }
+    }).catch(err => {
+      if (err.error == 1) {
+        ctx.clearCode()
+      }
+    }).finally(res => {
       this.setData({
         submitting: false
       })
-      ctx.close()
-    }, 5000)
+    })
   },
   goComment: function() { // 跳转去评价页面
     console.log('goComment')
+    wx.navigateTo({
+      url: '/pages/orderComment/orderComment?id=' + this.data.order_id
+    })
   },
   initTicketNumText: function(tickets) {
     let text = ''
@@ -128,8 +137,29 @@ Page({
         text += (idx === 0 ? (item.name + 'x' + item.quantity) : ('，' + item.name + 'x' + item.quantity))
       })
     }
-    this.setData({
-      ticked_num_text: text
+    return text
+  },
+  fetchOrder: function (id) {
+    util.request('/order/detail', {
+      id: id
+    }).then(res => {
+      console.log('/order/detail', res)
+      if (res.error == 0 && res.data) {
+        let _obj = {}
+        _obj.order_id = res.data.order_id
+        _obj.ticked_num_text = this.initTicketNumText(res.data.ticket)
+        _obj.huodong = {
+          title: res.data.huodong.title,
+          address: res.data.huodong.address,
+          session: res.data.huodong.session
+        }
+        _obj.status = res.data.status
+        _obj.qr_code_url = res.data.qr_code_url
+        _obj.checked_time = res.data.checked_time ? util.formatDateTimeDefault('m', res.data.checked_time) : ''
+        this.setData(_obj)
+      }
+    }).catch(err => {
+      
     })
   }
 })

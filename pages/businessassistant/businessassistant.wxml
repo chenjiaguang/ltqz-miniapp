@@ -23,7 +23,7 @@
   <view class='hexiao-box row'>
     <view class='hexiao-btn row center' catchtap="scanHexiaoCode" hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}"><text class='lutufont lutu-scan'></text></view>
     <view class='hexiao-set-entrance'>
-      <ft-entrance title="{{data.hx_code?hexiao_entrance.title + data.hx_code:'去设置自助核销码'}}" extra-data="{{hexiao_entrance}}" catchtap="entranceTap"/>
+      <ft-entrance title="{{data.hx_code?hexiao_entrance.title + data.hx_code:'去设置自助核销码'}}" extra-data="{{hexiao_entrance}}" catchtap="entranceTapHx"/>
     </view>
   </view>
   <view class='card-nopadding other-entrance-box'>

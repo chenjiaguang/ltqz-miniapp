@@ -57,6 +57,14 @@ Page({
     this.fetchPageData()
     this.fetchRecommandGoods()
   },
+  onReachBottom: function () {
+    const {
+      recommendationPage
+    } = this.data
+    if (recommendationPage && !recommendationPage.is_end) {
+      this.fetchRecommandGoods(parseInt(recommendationPage.pn) + 1)
+    }
+  },
   bannerTap: function (e) {
     console.log('bannerTap', e)
     const {item} = e.detail

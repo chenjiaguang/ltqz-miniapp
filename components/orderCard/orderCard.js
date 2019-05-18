@@ -1,5 +1,6 @@
 // components/orderCard/orderCard.js
 const util = require('../../utils/util.js')
+const storageHelper = require('../../utils/storageHelper.js')
 Component({
   /**
    * 组件的属性列表
@@ -38,10 +39,24 @@ Component({
       }).then(res => {
         let data = Object.assign({}, res.data, {
           success: () => {
-            wx.showToast({
-              title: '支付成功',
-              icon: 'none'
-            })
+            util.request('/order/pay_result', {
+              id: this.data.item.order_id
+            }).then(res => {
+              if (res.error == 0) { // 查询结果为已支付
+                wx.showToast({
+                  title: '支付成功',
+                  icon: 'none'
+                })
+                this.triggerEvent('orderListRefresh')
+              } else {
+                if (res.msg) {
+                  wx.showToast({
+                    title: res.msg,
+                    icon: 'none'
+                  })
+                }
+              }
+            }).catch(err => {})
           }
         })
         wx.requestPayment(data)

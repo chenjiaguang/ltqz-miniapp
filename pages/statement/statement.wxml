@@ -1,0 +1,4 @@
+<!--pages/statement/statement.wxml-->
+<view class='page-statement'>
+  <rich-text wx:if="{{content}}" nodes="{{content}}"></rich-text>
+</view>

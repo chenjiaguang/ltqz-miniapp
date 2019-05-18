@@ -13,5 +13,5 @@
     <view class='recommendation-header'><text class='recommendation-header-title'>为您推荐</text><text class='recommendation-header-tip'>甄选线下活动<text style="color:#F24724">5折体验</text></text></view>
     <activity-card wx:for="{{recommendations}}" wx:for-item="activity" wx:for-index="aidx" wx:key="id" activity="{{activity}}" catchactivitytap="activityTap" />
   </view>
-  <ft-list-footer loaded="{{recommendationLoaded}}" loading="{{recommendationLoading}}" page="{{recommendationPage}}" show-no-more />
+  <ft-list-footer loaded="{{recommendationLoaded}}" loading="{{recommendationLoading}}" page="{{recommendationPage}}" show-no-more no-more-text="{{(recommendations && recommendations[0]) ? '没有更多了' : '暂时没有活动'}}" />
 </view>

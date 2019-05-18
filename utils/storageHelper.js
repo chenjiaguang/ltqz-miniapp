@@ -7,7 +7,8 @@ module.exports = {
     'unickname', // 当前登录用户昵称
     'permissionBack', // 记录用户跳转进入permission页面前的页面信息
     'authSetting', // 记录用户已授权信息，避免每次获取已授权信息都要调取微信接口（微信的接口是异步的）
-    'orderContact'
+    'orderContact',
+    'orderListRefresh'
   ],
   setStorage: function (key, value) {
     if (this.allowList.indexOf(key) === -1) { // allowList不存在,则会提醒开发者添加相应的说明

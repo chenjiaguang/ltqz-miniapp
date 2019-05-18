@@ -11,7 +11,7 @@
     <view class='content-box column'>
       <text class='title bold'>{{activity.title}}</text>
       <text class='location'>{{activity.address}}</text>
-      <text class='time'>{{activity.valid_btime}}至{{activity.valid_etime}}</text>
+      <text class='time'>{{activity.valid_btime}} 至 {{activity.valid_etime}}</text>
     </view>
   </view>
   <view class='line-separator-h'></view>

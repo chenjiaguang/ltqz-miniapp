@@ -1,0 +1,9 @@
+/* pages/statement/statement.wxss */
+
+page{
+  background: #FFFFFF
+}
+.page-statement{
+  padding: 16rpx 32rpx;
+  background: #FFFFFF;
+}

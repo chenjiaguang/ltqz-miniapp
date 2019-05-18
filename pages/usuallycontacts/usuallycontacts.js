@@ -20,6 +20,7 @@ Page({
       2: '女'
     },
     contacts: [],
+    loaded: false
   },
 
   /**
@@ -38,6 +39,7 @@ Page({
         item.editType = '0' //0无操作 1新建 2编辑
       })
       this.setData({
+        loaded: true,
         contacts: res.data
       })
     }).catch(err => {})
@@ -165,6 +167,19 @@ Page({
   },
   saveItem: function(e) {
     let contact = this.data.contacts[e.currentTarget.dataset.idx]
+    if (!contact.name) {
+      wx.showToast({
+        title: '请输入姓名',
+        icon: 'none'
+      })
+      return
+    } else if (!contact.sex) {
+      wx.showToast({
+        title: '请选择性别',
+        icon: 'none'
+      })
+      return
+    }
     util.request('/traveler/edit', {
       id: contact.id,
       name: contact.name,

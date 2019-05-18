@@ -17,7 +17,7 @@
     <view style="height:34rpx"></view>
     <view wx:if="{{valid_btime && valid_etime}}" class='state-block-wrapper'>
       <view class='line-separator-h'></view>
-      <view class='state-block'><image class='left-icon' mode="aspectFit" src="/assets/images/time_jointime.png"></image><text class='state-block-text'>活动时间：{{valid_btime}} 至 {{valid_etime}}</text></view>
+      <view class='state-block'><image class='left-icon' mode="aspectFit" src="/assets/images/time_jointime.png"></image><text class='state-block-text'>活动日期：{{valid_btime}} 至 {{valid_etime}}</text></view>
     </view>
     <view wx:if="{{dead_line}}" class='state-block-wrapper'>
       <view class='line-separator-h'></view>
@@ -33,15 +33,15 @@
     </view>
     <view wx:if="{{min_age}}" class='state-block-wrapper'>
       <view class='line-separator-h'></view>
-      <view class='state-block'><image class='left-icon' mode="aspectFit" src="/assets/images/nianling.png"></image><text class='state-block-text'>适合年龄段：{{min_age === '-1' ? '不限年龄' : (min_age + ' ~ ' + max_age)}}</text></view>
+      <view class='state-block'><image class='left-icon' mode="aspectFit" src="/assets/images/nianling.png"></image><text class='state-block-text'>适合年龄段：{{min_age == -1 ? '不限年龄' : (min_age + ' ~ ' + max_age)}}</text></view>
     </view>
     <view wx:if="{{limit_num}}" class='state-block-wrapper'>
       <view class='line-separator-h'></view>
       <view class='state-block'><image class='left-icon' mode="aspectFit" src="/assets/images/chengtuan.png"></image><text class='state-block-text'>{{limit_num}}</text></view>
     </view>
-    <view wx:if="{{include_bx === '1' || include_bx === 1}}" class='state-block-wrapper'>
+    <view wx:if="{{include_bx == 1}}" class='state-block-wrapper'>
       <view class='line-separator-h'></view>
-      <view class='state-block'><image class='left-icon' mode="aspectFit" src="/assets/images/baoxian.png"></image><text class='state-block-text'>本次活动费用{{(include_bx === '1' || include_bx === 1) ? '' : '不'}}包含保险</text></view>
+      <view class='state-block'><image class='left-icon' mode="aspectFit" src="/assets/images/baoxian.png"></image><text class='state-block-text'>本次活动费用{{(include_bx == 1) ? '' : '不'}}包含保险</text></view>
     </view>
     <view wx:if="{{!refund}}" class='state-block-wrapper'>
       <view class='line-separator-h'></view>
@@ -78,18 +78,16 @@
   <view class='detail-and-comment'>
     <view class='block-separator'></view>
     <view class='detail-and-comment-header'>
-      <view catchtap="changeTab" data-idx="{{0}}" class="detail-and-comment-tab{{currentTab === 0 ? ' current' : ''}}"><text>详情</text><view class="tab-indicator{{currentTab === 0 ? ' current' : ''}}"></view></view>
-      <view catchtap="changeTab" data-idx="{{1}}" class="detail-and-comment-tab{{currentTab === 1 ? ' current' : ''}}"><text>评价({{comment_num}})</text><view class="tab-indicator{{currentTab === 1 ? ' current' : ''}}"></view></view>
+      <view catchtap="changeTab" data-idx="{{0}}" class="detail-and-comment-tab{{currentTab == 0 ? ' current' : ''}}"><text>详情</text><view class="tab-indicator{{currentTab == 0 ? ' current' : ''}}"></view></view>
+      <view catchtap="changeTab" data-idx="{{1}}" class="detail-and-comment-tab{{currentTab == 1 ? ' current' : ''}}"><text>评价({{comment_num}})</text><view class="tab-indicator{{currentTab == 1 ? ' current' : ''}}"></view></view>
     </view>
     <view class='line-separator-h'></view>
     <view class='detail-and-comment-content'>
-      <view class="goodsdetail-content{{currentTab === 0 ? ' current' : ''}}">
-        <!-- <import src="../../utils/wxParse/wxParse.wxml" />
-        <template is="wxParse" data="{{wxParseData:article.nodes}}" /> -->
+      <view class="goodsdetail-content{{currentTab == 0 ? ' current' : ''}}">
         <rich-text wx:if="{{content}}" nodes="{{content}}"></rich-text>
         <view wx:if="{{!content}}" style="text-align:center;font-size:28rpx;color:#999">加载中...</view>
       </view>
-      <view class="goodsdetail-score{{currentTab === 1 ? ' current' : ''}}">
+      <view class="goodsdetail-score{{currentTab == 1 ? ' current' : ''}}">
         <view wx:if="{{comments && comments.length}}" class='score-overview'>
           <view class='overview-content'>
             <ft-star-box score="{{avg_score}}" size="{{30}}" />
@@ -101,23 +99,23 @@
           <image class='empty-image' src="/assets/images/empty_comment.png" mode="aspectFit"></image>
           <text class='empty-text'>啊哦，暂时还没有评价哦~</text>
         </view>
-        <comment-box wx:for="{{comments}}" wx:for-index="idx" wx:for-item="comment" wx:key="id" comment="{{comment}}" show-ticket top-border="{{idx !== 0}}" />
+        <comment-box wx:for="{{comments}}" wx:for-index="idx" wx:for-item="comment" wx:key="id" comment="{{comment}}" show-ticket top-border="{{idx != 0}}" />
         <view wx:if="{{comment_num > 10}}" class='line-separator-h'></view>
         <view wx:if="{{comment_num > 10}}" class='more-comment' catchtap="viewAllComment">查看全部评价({{comment_num}}) ></view>
       </view>
     </view>
   </view>
-  <view class='bottom-button-wrapper' catchtouchmove="stopPropagation">
+  <view wx:if="{{goodsLoaded}}" class='bottom-button-wrapper' catchtouchmove="stopPropagation">
     <view class="session-wrapper{{showSession ? ' show' : ''}}">
       <view class="session-mask{{showSession ? ' show' : ''}}" catchtap="toggleSession"></view>
       <view class="session-context{{showSession ? ' show' : ''}}">
         <view class='session-box'>
           <view class='session-header'>选择场次</view>
           <scroll-view scroll-x class='sessions'>
-            <view wx:for="{{session}}" wx:for-index="idx" wx:for-item="ss" wx:key="id" class="session{{idx === 0 ? ' first' : ''}}{{(idx + 1) === session.length ? ' last' : ''}}{{currentSession === idx ? ' current' : ''}}{{ss.stock == 0 ? ' disabled' : ((ss.stock === null || ss.stock > 20) ? ' ample' : ' normal')}}" catchtap="sessionTap" data-status="{{ss.stock == 0 ? 'disabled' : ((ss.stock === null || ss.stock > 20) ? 'ample' : 'normal')}}" data-idx="{{idx}}">
+            <view wx:for="{{session}}" wx:for-index="idx" wx:for-item="ss" wx:key="id" class="session{{idx == 0 ? ' first' : ''}}{{(idx + 1) == session.length ? ' last' : ''}}{{currentSession == idx ? ' current' : ''}}{{ss.stock == 0 ? ' disabled' : ((ss.stock == null || ss.stock > 20) ? ' ample' : ' normal')}}" catchtap="sessionTap" data-status="{{ss.stock == 0 ? 'disabled' : ((ss.stock == null || ss.stock > 20) ? 'ample' : 'normal')}}" data-idx="{{idx}}">
               <view class='session-content'>
                 <text>{{ss.name}}</text>
-                <view class="session-status{{ss.stock == 0 ? ' disabled' : ((ss.stock === null || ss.stock > 20) ? ' ample' : ' normal')}}">{{ss.stock == 0 ? '售罄' : ((ss.stock === null || ss.stock > 20) ? '充足' : ('余' + ss.stock))}}</view>
+                <view class="session-status{{ss.stock == 0 ? ' disabled' : ((ss.stock == null || ss.stock > 20) ? ' ample' : ' normal')}}">{{ss.stock == 0 ? '售罄' : ((ss.stock == null || ss.stock > 20) ? '充足' : ('余' + ss.stock))}}</view>
               </view>
             </view>
           </scroll-view>
@@ -132,10 +130,10 @@
                   <text class="lutufont lutu-jian{{ticket.num <= 0 ? ' disabled' : ''}}"></text>
                 </view>
                 <view class='choose-num'><text class="choose-num-text{{ticket.num <= 0 ? ' disabled' : ''}}">{{ticket.num}}</text></view>
-                <view class="add-btn{{(ticket.stock === 0 || (ticket.stock && ticket.stock <= ticket.num)) ? ' disabled' : ''}}" catchtap="countTicket" data-type="add" data-idx="{{idx}}">
-                  <text class="lutufont lutu-jia{{(ticket.stock === 0 || (ticket.stock && ticket.stock <= ticket.num)) ? ' disabled' : ''}}"></text>
+                <view class="add-btn{{(ticket.stock == 0 || (ticket.stock && ticket.stock <= ticket.num)) ? ' disabled' : ''}}" catchtap="countTicket" data-type="add" data-idx="{{idx}}">
+                  <text class="lutufont lutu-jia{{(ticket.stock == 0 || (ticket.stock && ticket.stock <= ticket.num)) ? ' disabled' : ''}}"></text>
                 </view>
-                <view class="stock-text{{ticket.stock === 0 ? ' disabled' : ''}}">({{ticket.stock === 0 ? '售罄' : ((ticket.stock === null || ticket.stock > 20) ? '充足' : ('余' + ticket.stock))}})</view>
+                <view class="stock-text{{ticket.stock == 0 ? ' disabled' : ''}}">({{ticket.stock == 0 ? '售罄' : ((ticket.stock == null || ticket.stock > 20) ? '充足' : ('余' + ticket.stock))}})</view>
               </view>
             </view>
             <view style="height:40rpx"></view>
@@ -161,7 +159,7 @@
           <text class='tel-icon lutufont lutu-tel'></text>
           <text class='tel-text'>电话咨询</text>
         </view>
-        <button class="join-btn{{status !== '1' ? ' disabled' : ''}}" disabled="{{status !== '1'}}" catchtap="toggleSession">{{buttonStatusText[status]}}</button>
+        <button class="join-btn{{status != 1 ? ' disabled' : ''}}" disabled="{{status != 1}}" catchtap="toggleSession">{{buttonStatusText[status]}}</button>
       </view>
       <ft-iphone-bottom-adapter bg="#fff" />
     </view>

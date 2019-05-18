@@ -78,11 +78,15 @@ button.comment-btn.disabled{
   padding: 24rpx 0;
 }
 .info-left{
+  min-width: 156rpx;
+  padding-right: 40rpx;
+  box-sizing: border-box;
   font-size: 28rpx;
   line-height: 32rpx;
   color: #666;
 }
 .info-right{
+  flex: 1;
   font-size: 28rpx;
   line-height: 32rpx;
   color: #333;
@@ -120,4 +124,6 @@ button.comment-btn.disabled{
   align-items: center;
   font-size: 28rpx;
   color: #FF353A;
+  font-weight: bold;
+  transform: rotate(30deg);
 }

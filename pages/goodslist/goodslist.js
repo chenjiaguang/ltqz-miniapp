@@ -1,53 +1,25 @@
 // pages/goodslist/goodslist.js
+const util = require('../../utils/util.js')
+
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    banners: [
-      { path: '/pages/goodsdetail/goodsdetail?id=1', image: 'http://i1.bvimg.com/685753/f356705dcb228db3.jpg' }
-    ],
-    activitys: [
-      {
-        id: '1',
-        title: '或是对佛撒的发阿善良大方',
-        desc: '活动描述',
-        tags: [
-          { type: 'class', label: '标签1' }
-        ],
-        cover_url: 'http://i1.bvimg.com/685753/69601cd97e8be3cb.jpg',
-        join_num: 200,
-        min_price: 49.9,
-        price_num: 1,
-        status: '1' // 状态：0为失效或已删除 | 1为报名中| 2为已满额未截止| 3为已截止未满额| 4为已截止且满额| 5为已结束
-      },
-      {
-        id: '2',
-        title: '或是对佛撒的发阿善良大方',
-        desc: '活动描述',
-        tags: [
-          { type: 'class', label: '标签1' },
-          { type: 'location', label: '标签2' },
-          { type: 'address', label: '标签3' }
-        ],
-        cover_url: 'http://i1.bvimg.com/685753/69601cd97e8be3cb.jpg',
-        join_num: 30,
-        min_price: 99.9,
-        price_num: 2,
-        status: '1' // 状态：0为失效或已删除 | 1为报名中| 2为已满额未截止| 3为已截止未满额| 4为已截止且满额| 5为已结束
-      }
-    ],
-    activityLoaded: true,
+    banners: [],
+    activitys: [],
+    activityLoaded: false,
     activityLoading: false,
-    activityPage: { pn: 1, is_end: true }
+    activityPage: {}
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    this.options = options
+    this.fetchGoods(options.id, 1)
   },
 
   /**
@@ -89,7 +61,12 @@ Page({
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
-
+    const {
+      activityPage
+    } = this.data
+    if (activityPage && !activityPage.is_end) {
+      this.fetchGoods(this.options.id, parseInt(activityPage.pn) + 1)
+    }
   },
 
   /**
@@ -112,10 +89,62 @@ Page({
   activityTap: function (e) {
     console.log('activityTap', e)
     const { id } = e.detail
+    console.log('id', id)
     if (id) {
       wx.navigateTo({
         url: '/pages/goodsdetail/goodsdetail?id=' + id
       })
     }
+  },
+
+  fetchGoods: function (id, pn) {
+    const {
+      activityLoading,
+      activitys,
+      activityPage
+    } = this.data
+    if (activityLoading || (activityPage && activityPage.is_end && pn !== 1)) { // 正在加载 或 最后一页并且不是刷新
+      return false
+    }
+    this.setData({
+      activityLoading: true
+    })
+    let rData = {
+      home_class: id,
+      pn: pn
+    }
+    util.request('/huodong/list', rData).then(res => {
+      console.log('/huodong/list', res)
+      if (res.error == 0 && res.data) {
+        let {
+          list,
+          page
+        } = res.data
+        list.forEach(item => {
+          item.min_price = util.formatMoney(item.min_price).showMoney
+        })
+        let _obj = {}
+        _obj.activityLoaded = true
+        _obj.activityPage = page
+        _obj['banners[0].image'] = res.data.home_class_banner
+        if (pn === 1) { // 刷新
+          _obj.activitys = list
+        } else {
+          let oldLen = this.data.activitys.length
+          let newLen = list.length
+          for (let i = 0; i < newLen; i++) {
+            _obj['activitys[' + (oldLen + i) + ']'] = list[i]
+          }
+        }
+        this.setData(_obj)
+      }
+    }).catch(err => {
+      console.log('catch')
+    }).finally(res => {
+      this.setData({
+        activityLoading: false
+      })
+      wx.stopPullDownRefresh()
+    })
   }
 })

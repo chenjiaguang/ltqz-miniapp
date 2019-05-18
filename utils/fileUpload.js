@@ -3,8 +3,8 @@ module.exports = {
   upload(filePath) {
     const app = getApp()
     const apiVersion = app.config.apiVersion || '/v1'
-    // const token = storageHelper.getStorage('token') || ''
-    const token = '53876bfbe2f70458f4bdd662d8d4e695'
+    const token = storageHelper.getStorage('token') || ''
+    // const token = '291faf30c66816b778717b0684da36cc'
     const url = '/upload/image'
     return new Promise((resolve, reject) => {
       wx.uploadFile({

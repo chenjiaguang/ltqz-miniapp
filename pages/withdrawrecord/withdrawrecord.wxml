@@ -1,5 +1,6 @@
 <view class='column ai-stretch'>
-  <block wx:for="{{list}}">
+  <ft-list-loader visible="{{!page}}" />
+  <block wx:for="{{list}}" wx:key="id">
     <view class='card row jc-between ai-center'>
       <view class='column'>
         <text class='item-title'>{{item.title}}</text>
@@ -11,4 +12,8 @@
 
   <image wx:if="{{list.length==0}}" class='empty-img' src='/assets/images/withdrawrecord.png' />
   <text wx:if="{{list.length==0}}" class='empty-text'>你还没有提现记录哦~</text>
+
+  <ft-list-footer wx:if="{{list.length>0}}" loaded="{{!!page}}" loading="{{loading}}" page="{{page}}" show-no-more />
+
+  <ft-iphone-bottom-adapter />
 </view>

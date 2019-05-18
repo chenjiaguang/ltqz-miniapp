@@ -6,7 +6,9 @@ Page({
    * 页面的初始数据
    */
   data: {
-    list: null
+    list: null,
+    page: null,
+    loading: false
   },
 
   /**
@@ -20,15 +22,7 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function() {
-    util.request('/fenxiao/tx_record').then(res => {
-      res.data.list.forEach((item) => {
-        item.title = '提现到微信零钱'
-        item.amount = util.formatMoney(item.amount).showMoney
-      })
-      this.setData({
-        list: res.data.list
-      })
-    }).catch(err => {})
+    this.fetchData(1)
   },
 
   /**
@@ -62,14 +56,43 @@ Page({
   /**
    * 页面上拉触底事件的处理函数
    */
-  onReachBottom: function() {
-
+  onReachBottom: function () {
+    this.fetchData(parseInt(this.data.page.pn) + 1)
   },
 
   /**
    * 用户点击右上角分享
    */
   onShareAppMessage: function() {
+
+  },
+  fetchData: function (pn = 1) {
+    this.setData({
+      loading: true
+    })
+    util.request('/fenxiao/tx_record', {
+      pn: pn
+    }).then(res => {
+      res.data.list.forEach((item) => {
+        item.title = '提现到微信零钱'
+        item.amount = util.formatMoney(item.amount).showMoney
+      })
+      if (pn == 1) {
+        this.setData({
+          list: res.data.list,
+          page: res.data.page,
+          loading: false
+        })
+      } else {
+        let list = this.data.list
+        list = list.concat(res.data.list)
+        this.setData({
+          list: list,
+          page: res.data.page,
+          loading: false
+        })
+      }
+    }).catch(err => {})
 
   }
 })

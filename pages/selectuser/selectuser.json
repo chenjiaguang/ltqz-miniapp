@@ -2,5 +2,7 @@
   "navigationBarBackgroundColor": "#64B631",
   "navigationBarTextStyle": "white",
   "navigationBarTitleText": "选择账号",
-  "usingComponents": {}
+  "usingComponents": {
+    "ft-list-loader": "../../ftcomponents/ftListLoader/ftListLoader"
+  }
 }

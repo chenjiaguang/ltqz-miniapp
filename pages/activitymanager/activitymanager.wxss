@@ -1,1 +1,8 @@
 /* pages/activitymanager/activitymanager.wxss */
+
+.activity:nth-last-of-type(1) {
+  margin-bottom: 16rpx;
+}
+.card:nth-last-of-type(1) {
+  margin-bottom: 16rpx;
+}

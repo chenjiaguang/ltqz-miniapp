@@ -96,7 +96,7 @@ Page({
   },
 
   scanHexiaoCode: function() {
-    if (false) {
+    if (this.data.data.access.indexOf('1') == -1) {
       wx.showToast({
         title: '您没有扫码核销权限哦~',
         icon: 'none'
@@ -120,6 +120,17 @@ Page({
           console.log('fail', e)
         }
       })
+    }
+  },
+
+  entranceTapHx: function(e) {
+    if (this.data.data.access.indexOf('1') == -1) {
+      wx.showToast({
+        title: '您没有扫码核销权限哦~',
+        icon: 'none'
+      })
+    } else {
+      this.entranceTap(e)
     }
   },
 

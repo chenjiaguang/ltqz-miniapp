@@ -13,7 +13,9 @@ Page({
     unfreeze_remit: '',
     today_remit: '',
     list: null,
-    withdraw: true // 是否可提现
+    page: null,
+    withdraw: true,// 是否可提现,
+    loading: false
   },
 
   /**
@@ -27,23 +29,7 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function() {
-    util.request('/fenxiao/earn_list').then(res => {
-      res.data.total.total = util.formatMoney(res.data.total.total).showMoney
-      res.data.total.can_remit = util.formatMoney(res.data.total.can_remit).showMoney
-      res.data.total.has_remit = util.formatMoney(res.data.total.has_remit).showMoney
-      res.data.total.freeze_remit = util.formatMoney(res.data.total.freeze_remit).showMoney
-      res.data.total.unfreeze_remit = util.formatMoney(res.data.total.unfreeze_remit).showMoney
-      res.data.total.today_remit = util.formatMoney(res.data.total.today_remit).showMoney
-      this.setData({
-        total: res.data.total.total,
-        can_remit: res.data.total.can_remit,
-        has_remit: res.data.total.has_remit,
-        freeze_remit: res.data.total.freeze_remit,
-        unfreeze_remit: res.data.total.unfreeze_remit,
-        today_remit: res.data.total.today_remit,
-        list: res.data.list
-      })
-    }).catch(err => {})
+    this.fetchData(1)
   },
 
   /**
@@ -78,7 +64,7 @@ Page({
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function() {
-
+    this.fetchData(parseInt(this.data.page.pn) + 1)
   },
 
   /**
@@ -86,6 +72,42 @@ Page({
    */
   onShareAppMessage: function() {
 
+  },
+  fetchData: function (pn = 1) {
+    this.setData({
+      loading: true
+    })
+    util.request('/fenxiao/earn_list', {
+      pn: pn
+    }).then(res => {
+      if (pn == 1) {
+        res.data.total.total = util.formatMoney(res.data.total.total).showMoney
+        res.data.total.can_remit = util.formatMoney(res.data.total.can_remit).showMoney
+        res.data.total.has_remit = util.formatMoney(res.data.total.has_remit).showMoney
+        res.data.total.freeze_remit = util.formatMoney(res.data.total.freeze_remit).showMoney
+        res.data.total.unfreeze_remit = util.formatMoney(res.data.total.unfreeze_remit).showMoney
+        res.data.total.today_remit = util.formatMoney(res.data.total.today_remit).showMoney
+        this.setData({
+          total: res.data.total.total,
+          can_remit: res.data.total.can_remit,
+          has_remit: res.data.total.has_remit,
+          freeze_remit: res.data.total.freeze_remit,
+          unfreeze_remit: res.data.total.unfreeze_remit,
+          today_remit: res.data.total.today_remit,
+          list: res.data.list,
+          page: res.data.page,
+          loading: false
+        })
+      } else {
+        let list = this.data.list
+        list = list.concat(res.data.list)
+        this.setData({
+          list: list,
+          page: res.data.page,
+          loading: false
+        })
+      }
+    }).catch(err => {})
   },
 
   entranceTap: function(e) {

@@ -53,7 +53,7 @@
   <view class='clause-box' catchtap="changeClause">
     <text class="clause-icon lutufont lutu-checked{{clause_checked ? '' : ' disabled'}}"></text>
     <text>我已阅读并同意</text>
-    <text wx:for="{{clauses}}" wx:for-index="idx" wx:for-item="clause" wx:key="name" class='clause-text'><text wx:if="{{idx !== 0}}">、</text>{{clause.name}}</text>
+    <text catchtap="clauseTap" data-ele="{{clause}}" wx:for="{{clauses}}" wx:for-index="idx" wx:for-item="clause" wx:key="name" class='clause-text'><text wx:if="{{idx !== 0}}">、</text>{{clause.name}}</text>
     <text>等重要条款</text>
   </view>
   <view class='bottom-button-wrapper' catchtouchmove="stopPropagation">

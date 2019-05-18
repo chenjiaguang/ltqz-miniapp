@@ -90,6 +90,11 @@ Page({
         res.data.ticket_text = res.data.ticket.map((item) => {
           return item.name + '×' + item.quantity
         }).join(',')
+        // 处理时间格式
+        res.data.huodong.valid_btime = util.formatDateTimeDefault('d', res.data.huodong.valid_btime)
+        res.data.huodong.valid_etime = util.formatDateTimeDefault('d', res.data.huodong.valid_etime)
+        res.data.created_at = util.formatDateTimeDefault('m', res.data.created_at)
+        
         res.data.show_price = util.formatMoney(res.data.price).showMoney
         res.data.status = res.data.status.toString()
         let countdown = 0
@@ -163,7 +168,24 @@ Page({
           signType,
           paySign,
           success: () => {
-            this.fetchOrder(id)
+            util.request('/order/pay_result', { id }).then(res => {
+              if (res.error == 0) { // 查询结果为已支付
+                wx.showToast({
+                  title: '支付成功',
+                  icon: 'none'
+                })
+                this.fetchOrder(id) // 重新获取数据
+              } else {
+                if (res.msg) {
+                  wx.showToast({
+                    title: res.msg,
+                    icon: 'none'
+                  })
+                }
+              }
+            }).catch(err => {
+
+            })
           }
         })
       }
@@ -178,7 +200,7 @@ Page({
 
   goGoodsDetail() {
     wx.navigateTo({
-      url: '/pages/goodsdetail/goodsdetail?id=' + this.data.order.order_id
+      url: '/pages/goodsdetail/goodsdetail?id=' + this.data.huodong.id
     })
   }
 })

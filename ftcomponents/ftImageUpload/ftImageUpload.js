@@ -19,6 +19,7 @@ Component({
   methods: {
     add() {
       wx.chooseImage({
+        count: 9 - this.data.list.length,
         success: (res) => {
           let list = this.data.list
           res.tempFiles.map((item) => {

@@ -1,6 +1,6 @@
 <!--ftcomponents/ftImageUpload/ftImageUpload.wxml-->
 <view class='container'>
-  <view class='item image-box' wx:for="{{list}}">
+  <view class='item image-box' wx:for="{{list}}" wx:key="url">
     <image class='cover' src="{{item.url}}" mode="aspectFill"></image>
     <view class='tip' wx:if="{{!item.id}}">上传中</view>
     <text class='ft-icon c-icon-close' bindtap="del" data-idx="{{index}}"></text>

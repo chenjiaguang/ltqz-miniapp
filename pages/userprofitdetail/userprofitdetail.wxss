@@ -1,4 +1,5 @@
 /* pages/userprofit/userprofit.wxss */
+
 .page-userprofit {
 }
 
@@ -11,7 +12,6 @@
 .main-box {
   margin-top: -259rpx;
 }
-
 
 .title {
   margin-top: 36rpx;
@@ -79,8 +79,6 @@
   border-left: none;
 }
 
-
-
 .item-title {
   font-size: 30rpx;
   color: #333;
@@ -118,5 +116,5 @@
   margin-top: 50rpx;
   align-self: center;
   font-size: 26rpx;
-  color: #999999;
+  color: #999;
 }

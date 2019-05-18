@@ -3,6 +3,9 @@
   "navigationBarTextStyle": "white",
   "navigationBarTitleText": "活动管理",
   "usingComponents": {
-    "activity-card3": "../../components/activityCard3/activityCard3"
+    "activity-card3": "../../components/activityCard3/activityCard3",
+    "ft-iphone-bottom-adapter": "../../ftcomponents/ftIphoneBottomAdapter/ftIphoneBottomAdapter",
+    "ft-list-loader": "../../ftcomponents/ftListLoader/ftListLoader",
+    "ft-list-footer": "../../ftcomponents/ftListFooter/ftListFooter"
   }
 }

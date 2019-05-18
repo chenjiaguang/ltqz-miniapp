@@ -1,5 +1,6 @@
 // pages/orderComment/orderComment.js
 const util = require('../../utils/util.js')
+const storageHelper = require('../../utils/storageHelper.js')
 Page({
 
   /**
@@ -29,6 +30,8 @@ Page({
     util.request('/order/detail', {
       id: this.data.id
     }).then(res => {
+      res.data.huodong.valid_btime = util.formatDateTimeDefault('d', res.data.huodong.valid_btime)
+      res.data.huodong.valid_etime = util.formatDateTimeDefault('d', res.data.huodong.valid_etime)
       res.data.ticket_text = res.data.ticket.map((item) => {
         return item.name + '×' + item.quantity
       }).join(',')
@@ -107,6 +110,7 @@ Page({
         img_json: this.data.covers,
         score: this.data.score
       }).then(res => {
+        storageHelper.setStorage('orderListRefresh', '1')
         util.backAndToast('评价成功，感谢您的支持!')
       }).catch(err => {})
     }

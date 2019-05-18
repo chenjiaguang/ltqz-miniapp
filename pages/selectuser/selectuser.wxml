@@ -1,7 +1,8 @@
 <!--pages/selectuser/selectuser.wxml-->
 <view class='column'>
   <text class='head'>请选择你要登录的商家账号</text>
-  <block wx:for="{{list}}">
+  <ft-list-loader visible="{{!loaded}}" />
+  <block wx:for="{{list}}" wx:key='id'>
     <view class='card row ai-center jc-between' data-id='{{item.id}}' bindtap='goBusiness' hover-stop-propagation hover-class='card-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
       <view class='content column'>
         <text class='username'>{{item.name}}</text>
