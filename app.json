@@ -1,7 +1,6 @@
 {
   "pages": [
     "pages/index/index",
-    "pages/logs/logs",
     "pages/permission/permission",
     "pages/mine/mine",
     "pages/goodsdetail/goodsdetail",
@@ -35,15 +34,15 @@
   ],
   "window": {
     "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#fff",
-    "backgroundColor": "#f5f5f5",
-    "navigationBarTitleText": "路途",
+    "navigationBarBackgroundColor": "#FFFFFF",
+    "backgroundColor": "#FFFFFF",
+    "navigationBarTitleText": "路途亲子",
     "navigationBarTextStyle": "black"
   },
   "tabBar": {
     "color": "#999999",
     "selectedColor": "#64B631",
-    "backgroundColor": "#fff",
+    "backgroundColor": "#FFFFFF",
     "borderStyle": "black",
     "position": "bottom",
     "list": [

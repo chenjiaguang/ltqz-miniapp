@@ -14,7 +14,7 @@ Page({
     today_remit: '',
     list: null,
     page: null,
-    withdraw: true,// 是否可提现,
+    withdraw: true, // 是否可提现,
     loading: false
   },
 
@@ -73,7 +73,7 @@ Page({
   onShareAppMessage: function() {
 
   },
-  fetchData: function (pn = 1) {
+  fetchData: function(pn = 1) {
     this.setData({
       loading: true
     })
@@ -107,7 +107,9 @@ Page({
           loading: false
         })
       }
-    }).catch(err => {})
+    }).catch(err => {
+      console.log('err', err)
+    })
   },
 
   entranceTap: function(e) {

@@ -55,7 +55,11 @@ Page({
   },
   onLoad: function () {
     this.fetchPageData()
-    this.fetchRecommandGoods()
+    this.fetchRecommandGoods(1)
+  },
+  onPullDownRefresh: function () {
+    this.fetchPageData()
+    this.fetchRecommandGoods(1)
   },
   onReachBottom: function () {
     const {
@@ -79,7 +83,7 @@ Page({
     const { item } = e.detail
     if (item && item.id) {
       wx.navigateTo({
-        url: '/pages/goodslist/goodslist?id=' + item.id
+        url: '/pages/goodslist/goodslist?id=' + item.id + '&title=' + item.name
       })
     }
   },

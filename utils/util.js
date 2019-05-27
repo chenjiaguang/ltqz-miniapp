@@ -107,17 +107,31 @@ const showErrorToast = (msg) => {
   })
 }
 const backAndToast = (msg) => {
-  wx.navigateBack({
-    delta: 1,
-    complete: () => {
-      setTimeout(() => {
-        wx.showToast({
-          title: msg,
-          icon: 'none',
-        })
-      }, 500)
-    }
-  })
+  if (getCurrentPages().length > 1) {
+    wx.navigateBack({
+      delta: 1,
+      complete: () => {
+        setTimeout(() => {
+          wx.showToast({
+            title: msg,
+            icon: 'none',
+          })
+        }, 500)
+      }
+    })
+  } else {
+    wx.reLaunch({
+      url: '/pages/index/index',
+      complete: () => {
+        setTimeout(() => {
+          wx.showToast({
+            title: msg,
+            icon: 'none',
+          })
+        }, 500)
+      }
+    })
+  }
 }
 
 const request = (url, data, config = {}) => {

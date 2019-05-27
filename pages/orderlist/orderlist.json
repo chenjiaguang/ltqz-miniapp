@@ -1,5 +1,8 @@
 {
   "navigationBarTitleText": "全部订单",
+  "enablePullDownRefresh": true,
+  "backgroundColorTop": "#ffffff",
+  "backgroundColorBottom": "#f5f5f5",
   "usingComponents": {
     "ft-tabs": "../../ftcomponents/ftTabs/ftTabs",
     "order-card": "../../components/orderCard/orderCard"

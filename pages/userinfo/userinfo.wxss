@@ -64,3 +64,21 @@
 .idcard-text {
   text-align: right;
 }
+
+.getPhone {
+  padding: 0;
+  margin: 0;
+  line-height: 80rpx;
+  height: 80rpx;
+}
+
+.input-placeholder {
+  color: #ccc;
+  margin-right: 20rpx;
+  font-size: 28rpx;
+}
+
+.lutu-next2 {
+  font-size: 25rpx;
+  color: #999;
+}

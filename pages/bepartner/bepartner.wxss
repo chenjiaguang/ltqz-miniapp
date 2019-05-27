@@ -46,9 +46,7 @@
 }
 
 .getPhone {
-  width: 120rpx;
   height: 52rpx;
-  background: #64b631;
   border-radius: 8rpx;
   font-size: 28rpx;
   color: #fff;
@@ -56,4 +54,13 @@
   margin: 0;
   text-align: center;
   line-height: 52rpx;
+}
+
+.input-placeholder{
+  color: #ccc;
+  margin-right: 20rpx;
+}
+.lutu-next2 {
+  font-size: 25rpx;
+  color: #999;
 }

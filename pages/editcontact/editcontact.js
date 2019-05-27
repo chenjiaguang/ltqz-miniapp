@@ -29,6 +29,9 @@ Page({
     _obj.id = id || ''
     this.setData(_obj)
     if (id) {
+      wx.setNavigationBarTitle({
+        title: '编辑出行人'
+      })
       const pages = getCurrentPages()
       const page = pages[pages.length - 2]
       if (page && page.getBuyforFromData) {
@@ -47,6 +50,10 @@ Page({
         })
         this.setData(_obj)
       }
+    } else {
+      wx.setNavigationBarTitle({
+        title: '新增出行人'
+      })
     }
   },
 

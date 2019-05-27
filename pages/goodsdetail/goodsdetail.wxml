@@ -3,7 +3,7 @@
   <view class='banner-wrapper'>
     <image class='cover' src="{{cover_url}}" mode="aspectFill"></image>
     <!-- 获取到数据后才展示分享图片，因为分享图片的回调函数中需要用到若干活动数据 -->
-    <view wx:if="{{goodsLoaded}}" class='share-wrapper'>
+    <view wx:if="{{goodsLoaded && uid}}" class='share-wrapper'>
       <share-button profit="{{fenxiao_price}}" catchtap="shareBtnTap" />
     </view>
   </view>
@@ -67,9 +67,9 @@
         <view class='sponsor-title'>{{shop.name}}</view>
         <view class='sponsor-intro'>{{shop.introduce}}</view>
         <view class='activity-and-score'>
-          <view class=''>活动数量<text class='green-number' style="margin-left:10rpx">{{shop.huodong_num}}</text></view>
-          <view class='line-separator-v' style="height:28rpx;background:#D8D8D8;margin:0 30rpx"></view>
-          <view class=''>商家评分<text class='green-number' style="margin-left:10rpx">{{shop.rate}}</text></view>
+          <view class='activity-num'>活动数量<text class='green-number' style="margin-left:10rpx">{{shop.huodong_num}}</text></view>
+          <view class='line-separator-v' style="height:28rpx;background:#D8D8D8;"></view>
+          <view class='activity-score'>商家评分<text class='green-number' style="margin-left:10rpx">{{shop.rate}}</text></view>
         </view>
       </view>
       <text class='next-icon lutufont lutu-next2' style="margin-left:26rpx;align-self:center"></text>
@@ -77,17 +77,22 @@
   </view>
   <view class='detail-and-comment'>
     <view class='block-separator'></view>
-    <view class='detail-and-comment-header'>
-      <view catchtap="changeTab" data-idx="{{0}}" class="detail-and-comment-tab{{currentTab == 0 ? ' current' : ''}}"><text>详情</text><view class="tab-indicator{{currentTab == 0 ? ' current' : ''}}"></view></view>
-      <view catchtap="changeTab" data-idx="{{1}}" class="detail-and-comment-tab{{currentTab == 1 ? ' current' : ''}}"><text>评价({{comment_num}})</text><view class="tab-indicator{{currentTab == 1 ? ' current' : ''}}"></view></view>
+    <view class='detail-and-comment-header-wrapper' id="tab-wrapper">
+      <view class="detail-and-comment-header-fixer{{tabFixed ? ' fixed' : ''}}">
+        <view class='detail-and-comment-header'>
+          <view catchtap="changeTab" data-idx="{{0}}" data-ele="#goods-content" class="detail-and-comment-tab{{currentTab == 0 ? ' current' : ''}}"><text>详情</text><view class="tab-indicator{{currentTab == 0 ? ' current' : ''}}"></view></view>
+          <view catchtap="changeTab" data-idx="{{1}}" data-ele="#comment-content" class="detail-and-comment-tab{{currentTab == 1 ? ' current' : ''}}"><text>评价{{(comment_num && comment_num) > 0 ? ('(' + comment_num + ')') : ''}}</text><view class="tab-indicator{{currentTab == 1 ? ' current' : ''}}"></view></view>
+        </view>
+        <view class='line-separator-h'></view>
+      </view>
     </view>
-    <view class='line-separator-h'></view>
     <view class='detail-and-comment-content'>
-      <view class="goodsdetail-content{{currentTab == 0 ? ' current' : ''}}">
-        <rich-text wx:if="{{content}}" nodes="{{content}}"></rich-text>
+      <view class="goodsdetail-content" id="goods-content">
+        <rich-text wx:if="{{content}}" nodes="{{content}}" class='rich-text'></rich-text>
         <view wx:if="{{!content}}" style="text-align:center;font-size:28rpx;color:#999">加载中...</view>
       </view>
-      <view class="goodsdetail-score{{currentTab == 1 ? ' current' : ''}}">
+      <view class="goodsdetail-score" id="comment-content">
+        <view class='block-separator'></view>
         <view wx:if="{{comments && comments.length}}" class='score-overview'>
           <view class='overview-content'>
             <ft-star-box score="{{avg_score}}" size="{{30}}" />
@@ -95,13 +100,15 @@
           </view>
           <view class='line-separator-h'></view>
         </view>
-        <view wx:if="{{!comments || !comments.length}}" class='empty-comment'>
+        <view wx:if="{{(!comments || !comments.length) && commentLoaded}}" class='empty-comment'>
           <image class='empty-image' src="/assets/images/empty_comment.png" mode="aspectFit"></image>
           <text class='empty-text'>啊哦，暂时还没有评价哦~</text>
         </view>
-        <comment-box wx:for="{{comments}}" wx:for-index="idx" wx:for-item="comment" wx:key="id" comment="{{comment}}" show-ticket top-border="{{idx != 0}}" />
-        <view wx:if="{{comment_num > 10}}" class='line-separator-h'></view>
-        <view wx:if="{{comment_num > 10}}" class='more-comment' catchtap="viewAllComment">查看全部评价({{comment_num}}) ></view>
+        <block wx:for="{{comments}}" wx:for-index="idx" wx:for-item="comment" wx:key="id">
+          <comment-box wx:if="{{idx < 3}}" comment="{{comment}}" show-ticket top-border="{{idx != 0}}" />
+        </block>
+        <view wx:if="{{comment_num > 3}}" class='line-separator-h'></view>
+        <view wx:if="{{comment_num > 3}}" class='more-comment' catchtap="viewAllComment">查看全部评价({{comment_num}}) ></view>
       </view>
     </view>
   </view>
@@ -114,8 +121,8 @@
           <scroll-view scroll-x class='sessions'>
             <view wx:for="{{session}}" wx:for-index="idx" wx:for-item="ss" wx:key="id" class="session{{idx == 0 ? ' first' : ''}}{{(idx + 1) == session.length ? ' last' : ''}}{{currentSession == idx ? ' current' : ''}}{{ss.stock == 0 ? ' disabled' : ((ss.stock == null || ss.stock > 20) ? ' ample' : ' normal')}}" catchtap="sessionTap" data-status="{{ss.stock == 0 ? 'disabled' : ((ss.stock == null || ss.stock > 20) ? 'ample' : 'normal')}}" data-idx="{{idx}}">
               <view class='session-content'>
-                <text>{{ss.name}}</text>
-                <view class="session-status{{ss.stock == 0 ? ' disabled' : ((ss.stock == null || ss.stock > 20) ? ' ample' : ' normal')}}">{{ss.stock == 0 ? '售罄' : ((ss.stock == null || ss.stock > 20) ? '充足' : ('余' + ss.stock))}}</view>
+                <view class='session-content-text'>{{ss.name}}</view>
+                <!-- <view class="session-status{{ss.stock == 0 ? ' disabled' : ((ss.stock == null || ss.stock > 20) ? ' ample' : ' normal')}}">{{ss.stock == 0 ? '售罄' : ((ss.stock == null || ss.stock > 20) ? '充足' : ('余' + ss.stock))}}</view> -->
               </view>
             </view>
           </scroll-view>
@@ -159,7 +166,10 @@
           <text class='tel-icon lutufont lutu-tel'></text>
           <text class='tel-text'>电话咨询</text>
         </view>
-        <button class="join-btn{{status != 1 ? ' disabled' : ''}}" disabled="{{status != 1}}" catchtap="toggleSession">{{buttonStatusText[status]}}</button>
+        <!-- 可报名且用户电话存在 或 不可报名 -->
+        <button wx:if="{{status != 1 || (status == 1 && orderContact)}}" class="join-btn{{status != 1 ? ' disabled' : ''}}" disabled="{{status != 1}}" catchtap="toggleSession">{{buttonStatusText[status]}}</button>
+        <!-- 可报名且用户电话不存在 -->
+        <button wx:if="{{status == 1 && !orderContact}}" class='join-btn' open-type='getPhoneNumber' bindgetphonenumber="initContact">立即报名</button>
       </view>
       <ft-iphone-bottom-adapter bg="#fff" />
     </view>
@@ -193,3 +203,5 @@
     </view>
   </view>
 </view>
+<!-- 目前的版本不需要绘制分享的banner，先注释 -->
+<!-- <canvas canvas-id="share-friend-banner" class="share-friend-banner"></canvas> -->

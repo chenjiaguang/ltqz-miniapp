@@ -15,6 +15,8 @@ Page({
     address: '',
     valid_btime: '',
     valid_etime: '',
+    session: [],
+    currentSession: null,
     currentTickets: [],
     selectedTickets: [],
     selectedTicketLength: 0,
@@ -52,6 +54,7 @@ Page({
     data.selectedTickets = data.currentTickets.filter(item => item.num > 0)
     this.setData(data)
     this.fetchBuyfors() // 获取常用联系人
+    this.setBuyforsWrapperHeight() // 设置选择联系人弹窗高度为扳平高度
   },
 
   /**
@@ -247,11 +250,16 @@ Page({
     util.request('/order/commit', rData).then(res => {
       console.log('/order/commit', res)
       if (res.error == 0 && res.data) { // 提交订单成功
+        this.updatePrePageData() // 提交订单成功则刷新页面
         this.setData({
           orderId: res.data.id
         })
         if (res.data.pay) {
           this.pay(res.data.id, res.data.pay)
+        } else {
+          wx.redirectTo({
+            url: '/pages/paysuccess/paysuccess?id=' + res.data.id,
+          })
         }
       }
     }).catch(err => {
@@ -260,6 +268,36 @@ Page({
       this.setData({
         submitting: false
       })
+    })
+  },
+
+  updatePrePageData: function () {
+    const {id} = this.data
+    const pages = getCurrentPages()
+    const prePage = pages[pages.length - 2]
+    if (prePage && prePage.name === 'goodsdetail') { // 上个页面是订单详情页，更新订单详情页的信息
+      if (prePage.fetchGoods) {
+        prePage.fetchGoods(id)
+      }
+      if (prePage.fetchComment) {
+        prePage.fetchComment(id)
+      }
+    }
+  },
+
+  setBuyforsWrapperHeight: function () {
+    const systemInfo = wx.getSystemInfoSync()
+    const rpx = systemInfo.windowWidth / 750
+    const halfHeight = systemInfo.windowHeight / 2
+    const isIos = systemInfo.system.indexOf('iOS') !== -1
+    const higher = systemInfo.screenHeight > 736
+    let extraBottom = false
+    if (isIos && higher) {
+      extraBottom = true
+    }
+    const wrapperHeight = parseInt(halfHeight - (88 + 80 + 16 + (extraBottom ? 68 : 0)) * rpx)
+    this.setData({
+      buyforsWrapperHeight: wrapperHeight + 'px'
     })
   },
 

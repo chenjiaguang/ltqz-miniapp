@@ -1,5 +1,0 @@
-<!--logs.wxml-->
-<view class="container log-list">
-  log
-</view>
-<ft-relaunch-home />

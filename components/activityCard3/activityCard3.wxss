@@ -60,14 +60,14 @@
   color: #999;
   font-size: 24rpx;
   line-height: 24rpx;
-  margin-bottom: 10rpx;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .time {
-  color: #999;
+  margin-bottom: 10rpx;
+  color: #333;
   font-size: 24rpx;
   line-height: 24rpx;
   overflow: hidden;

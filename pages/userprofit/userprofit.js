@@ -52,7 +52,9 @@ Page({
         unfreeze_remit: res.data.unfreeze_remit,
         today_remit: res.data.today_remit,
       })
-    }).catch(err => {})
+    }).catch(err => {
+      console.log('err', err)
+    })
   },
 
   /**
@@ -124,7 +126,9 @@ Page({
                 icon: 'none'
               })
               this.onReady()
-            }).catch(err => {})
+            }).catch(err => {
+              console.log('err', err)
+            })
           }
         }
       })

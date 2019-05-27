@@ -57,7 +57,9 @@ Page({
       this.setData({
         data: res.data
       })
-    }).catch(err => {})
+    }).catch(err => {
+      console.log('err', err)
+    })
   },
 
   /**
@@ -114,7 +116,9 @@ Page({
               title: '核销成功',
               icon: 'none'
             })
-          }).catch(err => {})
+          }).catch(err => {
+            console.log('err', err)
+          })
         },
         fail: e => {
           console.log('fail', e)

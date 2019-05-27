@@ -1,5 +1,5 @@
 module.exports = {
   env: 'prod',
-  baseUrl: 'https://miniapp.lutu.com/mini',
+  baseUrl: 'https://miniapp.cf.com.cn/mini',
   dynamicWebviewDomain: ''
 }

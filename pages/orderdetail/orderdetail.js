@@ -2,7 +2,7 @@
 const util = require('../../utils/util.js')
 
 Page({
-
+  name: 'orderdetail',
   /**
    * 页面的初始数据
    */
@@ -107,7 +107,14 @@ Page({
           countdown_text = '剩余支付时间' + this.secondToMinute(res.data.remain_time)
           this.countdownTimer = setInterval(this.startCountdown, 1000)
         }
+        let traveler_name_text = ''
+        console.log('traveler_name_text1', traveler_name_text)
+        if (res.data.huodong.include_bx != 1) { // 不包含保险时生成出行人名字字符串
+          traveler_name_text = res.data.traveler_infos.map(item => item.huodongTraveler.name).join('，')
+        }
+        console.log('traveler_name_text2', traveler_name_text)
         this.setData({
+          traveler_name_text: traveler_name_text,
           countdown: countdown,
           countdown_text: countdown_text,
           huodong: res.data.huodong,
@@ -131,6 +138,16 @@ Page({
         countdown_text: _countdown_text,
       })
       this.fetchOrder(this.data.order.order_id)
+      const pages = getCurrentPages()
+      for (let i = 0; i < pages.length; i++) {
+        if (pages[i].name === 'goodsdetail' && pages[i].data && pages[i].data.id && pages[i].fetchGoods) { // 刷新活动详情页信息
+          pages[i].fetchGoods(pages[i].data.id)
+        }
+      }
+      const prePage = pages[pages.length - 2]
+      if (prePage && prePage.name === 'orderlist') { // 更新订单列表页的信息
+        storageHelper.setStorage('orderListRefresh', '1')
+      }
       return false
     }
     _countdown = remain_time

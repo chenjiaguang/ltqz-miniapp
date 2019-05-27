@@ -3,12 +3,14 @@ import util from '../../utils/util.js'
 import storageHelper from '../../utils/storageHelper.js'
 
 Page({
-
+  name: 'goodsdetail',
   /**
    * 页面的初始数据
    */
   data: {
-    goodsLoaded: false,
+    tabFixed: false,
+    goodsLoaded: false, // 是否已加载数据
+    commentLoaded: false, // 是否已加载评价
     fromUid: '',
     uid: '',
     uavatar: '',
@@ -50,7 +52,7 @@ Page({
     max_age: '',
     limit_num: '',
     refund: false, // 是否支持退款
-    join_num: 23,
+    join_num: 0,
     join_users: [],
     shop: {}, // 商家信息
     currentTab: 0,
@@ -66,28 +68,46 @@ Page({
     totalPrice: 0,
     showSession: false,
     show_share_box: false,
-    localPoster: ''
+    localPoster: '',
+    orderContact: null
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    console.log('ooo', options)
-    if (options.uid) {
+    let id = ''
+    let uid = ''
+    if (options.scene) { // 扫码进来
+      const scene = decodeURIComponent(options.scene)
+      let paramsArr = scene.split('&')
+      let paramsObj = {}
+      paramsArr.forEach(item => {
+        let obj = item.split('=')
+        paramsObj[obj[0]] = obj[1]
+      })
+      id = paramsObj.id
+      uid = paramsObj.uid || ''
+    } else { // url跳转进来
+      id = options.id
+      uid = options.uid || ''
+    }
+    if (uid) {
       this.setData({
-        fromUid: options.uid
+        fromUid: uid
       })
     }
-    this.fetchGoods(options.id)
-    this.fetchComment(options.id)
+    this.fetchGoods(id)
+    this.fetchComment(id)
+    this.getOrderContact()
+    this.fetchUserInfo()
   },
 
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-
+    this.initTabScroll()
   },
 
   /**
@@ -129,27 +149,26 @@ Page({
    * 用户点击右上角分享
    */
   onShareAppMessage: function () {
-    const { title, id, cover_url, uid} = this.data
+    const { title, id, shareFriendBanner, share_cover_url, cover_url, uid} = this.data
     return {
       title: title,
       path: '/pages/goodsdetail/goodsdetail?id=' + id + '&uid=' + uid,
-      imageUrl: cover_url
+      imageUrl: shareFriendBanner || share_cover_url || cover_url
     }
   },
 
   fetchGoods: function (id) {
     let rData = {id}
     util.request('/huodong/detail', rData).then(res => {
-      console.log('/huodong/detail_res', res)
       if (res.error == 0 && res.data) {
         // 处理展示详情内容
-        let arrEntities = { 'lt': '<', 'gt': '>', 'nbsp': ' ', 'amp': '&', 'quot': '"', 'mdash': '——', 'ldquo': '“', 'rdquo': '”' }
-        res.data.content = res.data.content.replace(/&(lt|gt|nbsp|amp|mdash|ldquo|rdquo);/ig, function (all, t) { return arrEntities[t] }).replace(/<img/ig, '<img style="max-width:100%;height:auto;display:block"').replace(/<section/ig, '<div').replace(/\/section>/ig, '/div>')
+        let arrEntities = { 'lt': '<', 'gt': '>', 'nbsp': ' ', 'amp': '&', 'quot': '"', 'mdash': '——', 'ldquo': '“', 'rdquo': '”', '#39': "'" }
+        res.data.content = res.data.content.replace(/\n/ig, '').replace(/<img/ig, '<img style="max-width:100%;height:auto;display:block"').replace(/<section/ig, '<div').replace(/\/section>/ig, '/div>')
         // 处理时间格式
         res.data.valid_btime = util.formatDateTimeDefault('d', res.data.valid_btime)
         res.data.valid_etime = util.formatDateTimeDefault('d', res.data.valid_etime)
         // 价格处理(String -> Number，分润，最小价格)
-        res.data.fenxiao_price = util.formatMoney(res.data.fenxiao_price).money
+        res.data.fenxiao_price = util.formatMoney(res.data.fenxiao_price).showMoney
         res.data.min_price = util.formatMoney(res.data.min_price).money
         res.data.show_min_price = util.formatMoney(res.data.min_price).showMoney
         if (res.data.session) {
@@ -163,6 +182,7 @@ Page({
         }
         res.data.goodsLoaded = true
         this.setData(res.data)
+        // this.drawShareFriendBanner(res.data.cover_url, res.data.show_min_price, res.data.price_num) // 目前的版本不需要绘制分享的banner，先注释
       }
     }).catch(err => {
       
@@ -172,15 +192,14 @@ Page({
   fetchComment: function (pid) {
     let rData = { product_id: pid, type: '1', pn: 1 }
     util.request('/rate/list', rData).then(res => {
-      console.log('/rate/list_res', res)
       if (res.error == 0 && res.data) {
         let {list, page, avg_score} = res.data
         list.forEach(item => {
           item.created_at = util.formatDateTimeDefault('d', item.created_at)
         })
         const total = (page && page.total) ? page.total : 0
-        console.log('avg_score', avg_score)
         this.setData({
+          commentLoaded: true,
           avg_score: avg_score,
           comment_num: total,
           comments: list
@@ -192,8 +211,52 @@ Page({
   },
 
   changeTab: function (e) {
+    const { idx, ele } = e.currentTarget.dataset
+    const systemInfo = wx.getSystemInfoSync()
+    const rpx = systemInfo.windowWidth / 750
     this.setData({
-      currentTab: e.currentTarget.dataset.idx
+      currentTab: idx
+    })
+    const query = wx.createSelectorQuery()
+    query.select(ele).boundingClientRect()
+    query.selectViewport().scrollOffset()
+    query.exec(function (res) {
+      // res[0].top // #the-id节点的上边界坐标
+      // res[1].scrollTop // 显示区域的竖直滚动位置
+      let pos = res[0].top + res[1].scrollTop
+      wx.pageScrollTo({
+        scrollTop: pos - 90 * rpx,
+        duration: 0
+      })
+    })
+  },
+
+  initTabScroll: function () {
+    const systemInfo = wx.getSystemInfoSync()
+    const rpx = systemInfo.windowWidth / 750
+    wx.createIntersectionObserver().relativeToViewport({ top: -90 * rpx }).observe('#tab-wrapper', (res) => {
+      if (res.boundingClientRect.top < 300 * rpx) { // 上边界超出或上边界显示
+        if (res.intersectionRatio > 0) { // 显示
+          this.setData({
+            tabFixed: false
+          })
+        } else { // 隐藏
+          this.setData({
+            tabFixed: true
+          })
+        }
+      }
+    })
+    wx.createIntersectionObserver().relativeToViewport({ bottom: -systemInfo.windowHeight + (90 * rpx) }).observe('#comment-content', (res) => {
+      if (res.boundingClientRect.top < 90 * rpx && res.intersectionRatio > 0) { // 评价模块完全显示
+        this.setData({
+          currentTab: 1
+        })
+      } else {
+        this.setData({
+          currentTab: 0
+        })
+      }
     })
   },
 
@@ -212,8 +275,9 @@ Page({
 
   sessionTap: function (e) {
     const { status, idx} = e.currentTarget.dataset
+    const { currentSession} = this.data
     const session = JSON.parse(JSON.stringify(this.data.session))
-    if (status === 'disabled') { // 售罄
+    if (status === 'disabled' || currentSession === idx) { // 售罄 或 点击的是当前的场次
       return false
     }
     const tickets = session[idx].ticket.map(item => Object.assign({}, item, {num: 0}))
@@ -231,14 +295,12 @@ Page({
     let selected = []
     for (let i = 0; i < _session.length; i++) {
       if (_session[i].stock === 0) {
-        console.log('continue1', i, _session[i].stock, null <= 0)
         continue
       }
       let valid = false
       let tickets = _session[i].ticket
       for (let j = 0; j < tickets.length; j++) {
         if (tickets[j].stock === 0) {
-          console.log('continue2', j, tickets[j].stock)
           continue
         }
         valid = true
@@ -252,7 +314,7 @@ Page({
       selected = _session[current].ticket.map(item => Object.assign({}, item, {num: 0}))
     }
     this.setData({
-      selectedTicketLen: 0,
+      selectedTicketLength: 0,
       totalPrice: 0,
       currentSession: current,
       currentTickets: selected
@@ -288,16 +350,14 @@ Page({
     })
   },
 
-  order: function () { // todo
+  order: function () {
     this.toggleSession()
-    console.log('跳转提交订单页面')
     wx.navigateTo({
       url: '/pages/ordersubmit/ordersubmit'
     })
   },
 
   viewAllComment: function () {
-    console.log('viewAllComment')
     const {id} = this.data
     wx.navigateTo({
       url: '/pages/commentlist/commentlist?pid=' + id
@@ -305,7 +365,6 @@ Page({
   },
 
   viewLocation: function (e) {
-    console.log('viewLocation')
     const lnglat = this.data[e.currentTarget.dataset.ele]
     if (lnglat && lnglat[0] && lnglat[1]) {
       wx.openLocation({
@@ -316,7 +375,6 @@ Page({
   },
 
   viewBusinessCertification: function () { // 查看商家资质
-    console.log('viewBusinessCertification')
     wx.navigateTo({
       url: '/pages/imagepage/imagepage?image=' + this.data.shop.type_pic_url + '&title=商家资质',
     })
@@ -329,7 +387,7 @@ Page({
     })
   },
 
-  fetchUserInfo: function () {
+  fetchUserInfo: function (shouldDraw) {
     const uid = storageHelper.getStorage('uid')
     const uavatar = storageHelper.getStorage('uavatar')
     const unickname = storageHelper.getStorage('unickname')
@@ -339,13 +397,15 @@ Page({
         uavatar: uavatar,
         unickname: unickname
       })
-      wx.getImageInfo({
-        src: uavatar,
-        success: (res) => {
-          this.canvas_user_avatar = res.path
-          this.drawPoster()
-        }
-      })
+      if (shouldDraw) {
+        wx.getImageInfo({
+          src: uavatar,
+          success: (res) => {
+            this.canvas_user_avatar = res.path
+            this.drawPoster()
+          }
+        })
+      }
     } else {
       util.request('/user/detail').then(res => {
         if (res.error == 0 && res.data) { // 获取用户信息成功
@@ -354,13 +414,18 @@ Page({
             uavatar: res.data.avatar,
             unickname: res.data.nick_name
           })
-          wx.getImageInfo({
-            src: res.data.avatar,
-            success: (res) => {
-              this.canvas_user_avatar = res.path
-              this.drawPoster()
-            }
-          })
+          storageHelper.setStorage('uid', res.data.id)
+          storageHelper.setStorage('uavatar', res.data.avatar)
+          storageHelper.setStorage('unickname', res.data.nick_name)
+          if (shouldDraw) {
+            wx.getImageInfo({
+              src: res.data.avatar,
+              success: (res) => {
+                this.canvas_user_avatar = res.path
+                this.drawPoster()
+              }
+            })
+          }
         }
       })
     }
@@ -368,7 +433,7 @@ Page({
 
   getPosterUserAvatar: function () {
     if (!this.data.uavatar) {
-      this.fetchUserInfo()
+      this.fetchUserInfo(true)
       return false
     }
     wx.getImageInfo({
@@ -386,7 +451,6 @@ Page({
       this.code_image_fetching = true
       util.request('/huodong/miniqr', { id }).then(res => {
         if (res.error == 0 && res.data) { // 获取活动二维码
-          console.log('获取活动二维码', res)
           wx.getImageInfo({
             src: res.data,
             success: (res) => {
@@ -435,7 +499,6 @@ Page({
   },
 
   drawPoster: function (goods) {
-    console.log('drawPoster', this.canvas_user_avatar, this.canvas_goods_qrcode, this.canvas_goods_banner, this.banner_clip)
     if (!this.canvas_user_avatar || !this.canvas_goods_qrcode || !this.canvas_goods_banner || !this.banner_clip) {
       if (!this.canvas_user_avatar) {
         this.getPosterUserAvatar()
@@ -495,13 +558,17 @@ Page({
     ctx.setFontSize(36 * rpx)
     ctx.setFillStyle('#F24724')
     ctx.fillText(price, 51 * rpx, 590 * rpx, 425 * rpx)
-    ctx.setFontSize(18 * rpx)
-    ctx.setFillStyle('#999')
-    const join_text = '累计' + (join_num || 0) + '人报名'
-    const join_left = 526 - (join_text.length * 18 + 51)
-    ctx.fillText(join_text, join_left * rpx, 585 * rpx, 425 * rpx)
+    if (join_num && join_num > 0) {
+      ctx.setFontSize(18 * rpx)
+      ctx.setFillStyle('#999')
+      ctx.setTextAlign('right')
+      const join_text = '累计' + (join_num || 0) + '人报名'
+      const join_left = 526 - 28 - 23
+      ctx.fillText(join_text, join_left * rpx, 585 * rpx, 424 * rpx)
+    }
     ctx.setFontSize(15 * rpx)
     ctx.setFillStyle('#999')
+    ctx.setTextAlign('left')
     ctx.fillText('路途亲子，共享美好时光！', 51 * rpx, 766 * rpx)
     ctx.fillText('长按立即购买', 382 * rpx, 766 * rpx)
     ctx.draw(true, () => {
@@ -533,8 +600,7 @@ Page({
   },
 
   shareBtnTap: function () {
-    console.log('shareBtnTap')
-    const { show_share_box, localPoster} = this.data
+    const { show_share_box, localPoster, uid} = this.data
     if (!show_share_box) {
       this.setData({
         show_share_box: true
@@ -559,7 +625,6 @@ Page({
   },
 
   savePoster: function () {
-    console.log('savePoster')
     const { localPoster} = this.data
     if (!localPoster) {
       return false
@@ -649,8 +714,124 @@ Page({
   },
 
   getOrderData: function () { // 该方法提供给提交订单页面使用,返回提交订单页面需要的信息
-    let { id, fromUid, title, address, valid_btime, valid_etime, selectedTicketLength, currentTickets, refund, include_bx, totalPrice} = this.data
-    const data = JSON.parse(JSON.stringify({ id, fromUid, title, address, valid_btime, valid_etime, selectedTicketLength, currentTickets, refund, include_bx, totalPrice}))
+    let { id, fromUid, title, address, valid_btime, valid_etime, session, selectedTicketLength, currentSession, currentTickets, refund, include_bx, totalPrice} = this.data
+    const data = JSON.parse(JSON.stringify({ id, fromUid, title, address, valid_btime, valid_etime, session, selectedTicketLength, currentSession, currentTickets, refund, include_bx, totalPrice}))
     return data
+  },
+
+  getOrderContact: function () {
+    const contactJson = storageHelper.getStorage('orderContact')
+    if (contactJson) {
+      this.setData({
+        orderContact: JSON.parse(contactJson)
+      })
+    } else {
+      let phone = storageHelper.getStorage('uphone')
+      if (phone) {
+        let _obj = {
+          name: '',
+          phone: phone
+        }
+        storageHelper.setStorage('orderContact', JSON.stringify(_obj))
+        this.setData({
+          orderContact: _obj
+        })
+      } else {
+        util.request('/user/detail').then(res => {
+          if (res.error == 0 && res.data) { // 获取用户信息成功
+            if (res.data.phone) { // 有电话才设置
+              const _obj = {
+                name: '',
+                phone: res.data.phone
+              }
+              storageHelper.setStorage('orderContact', JSON.stringify(_obj))
+              this.setData({
+                orderContact: _obj
+              })
+            }
+          }
+        })
+      }
+    }
+  },
+
+  initContact: function (e) {
+    const { iv, encryptedData } = e.detail
+    if (iv && encryptedData) {
+      util.request('/common/decrypt', {
+        iv: iv,
+        encryptedData: encryptedData,
+      }).then(res => {
+        if (res.error == 0) {
+          let _obj = {
+            name: '',
+            phone: res.data.phoneNumber
+          }
+          storageHelper.setStorage('orderContact', JSON.stringify(_obj))
+          this.setData({
+            orderContact: _obj
+          }, () => {
+            console.log('感谢您的授权，继续操作报名吧')
+          })
+        }
+      }).catch(err => { })
+    }
+  },
+  
+  drawShareFriendBanner: function (banner, show_min_price, price_num) {
+    const systemInfo = wx.getSystemInfoSync()
+    const ctx = wx.createCanvasContext('share-friend-banner', this)
+    const rpx = systemInfo.windowWidth / 750
+    wx.getImageInfo({
+      src: banner,
+      success: (info_res) => {
+        // 按照aspectfill的方式截取
+        const width = info_res.width
+        const height = info_res.height
+        const c_height = 450
+        const c_width = 750
+        let clip_left, clip_top, clip_width, clip_height // 左偏移值，上偏移值，截取宽度，截取高度
+        clip_height = width * (c_height / c_width)
+        if (clip_height > height) {
+          clip_height = height
+          clip_width = clip_height * (c_width / c_height)
+          clip_left = (width - clip_width) / 2
+          clip_top = 0
+        } else {
+          clip_left = 0
+          clip_top = (height - clip_height) / 2
+          clip_width = width
+        }
+        ctx.drawImage(info_res.path, clip_left, clip_top, clip_width, clip_height, 0, 0, 750 * rpx, 450 * rpx)
+        let price = ''
+        if (show_min_price && show_min_price > 0) {
+          if (price_num > 1) {
+            price = '¥' + show_min_price + '起'
+          } else {
+            price = '¥' + show_min_price
+          }
+        } else {
+          price = '免费'
+        }
+        ctx.setFontSize(36 * rpx)
+        ctx.setFillStyle('#F24724')
+        ctx.fillText(price, 50 * rpx, 544 * rpx)
+        ctx.draw(true, () => {
+          wx.canvasToTempFilePath({
+            x: 0,
+            y: 0,
+            canvasId: 'share-friend-banner',
+            success: res => {
+              this.setData({
+                shareFriendBanner: res.tempFilePath
+              })
+            },
+            fail: function (res) {
+
+            }
+          })
+        })
+      }
+    })
   }
 })

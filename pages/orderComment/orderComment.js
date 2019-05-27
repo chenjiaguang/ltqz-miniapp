@@ -38,7 +38,9 @@ Page({
       this.setData({
         order: res.data
       })
-    }).catch(err => {})
+    }).catch(err => {
+      console.log('err', err)
+    })
   },
 
   /**
@@ -112,7 +114,9 @@ Page({
       }).then(res => {
         storageHelper.setStorage('orderListRefresh', '1')
         util.backAndToast('评价成功，感谢您的支持!')
-      }).catch(err => {})
+      }).catch(err => {
+        console.log('err', err)
+      })
     }
   }
 })

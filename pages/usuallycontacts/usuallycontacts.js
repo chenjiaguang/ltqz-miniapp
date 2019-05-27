@@ -42,7 +42,9 @@ Page({
         loaded: true,
         contacts: res.data
       })
-    }).catch(err => {})
+    }).catch(err => {
+      console.log('err', err)
+    })
 
   },
 
@@ -154,7 +156,9 @@ Page({
               this.setData({
                 contacts: this.data.contacts
               })
-            }).catch(err => {})
+            }).catch(err => {
+              console.log('err', err)
+            })
           } else {
             this.data.contacts.splice(e.currentTarget.dataset.idx, 1)
             this.setData({
@@ -189,6 +193,8 @@ Page({
       this.setData({
         ['contacts[' + e.currentTarget.dataset.idx + '].editType']: '0'
       })
-    }).catch(err => {})
+    }).catch(err => {
+      console.log('err', err)
+    })
   },
 })

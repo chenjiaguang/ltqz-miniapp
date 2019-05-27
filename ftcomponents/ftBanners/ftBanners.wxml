@@ -14,7 +14,7 @@
       </view> -->
     </block>
     <block wx:if="{{banners && banners.length === 1}}">
-      <view class='single-banner-wrapper' style="margin-left:{{previousMargin}}rpx;margin-right:{{nextMargin}}">
+      <view class='single-banner-wrapper' style="margin-left:{{previousMargin}}rpx;margin-right:{{nextMargin}}rpx">
         <view class='single-banner-content' style="margin:0 {{spacing / 2}}rpx;border-radius:{{borderRadius}}">
           <image class='single-banner' src="{{banners[0].image}}" catchtap="bannerTap" data-idx="{{0}}" data-item="{{banners[0]}}" mode="aspectFill"></image>
         </view>

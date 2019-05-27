@@ -13,7 +13,11 @@
   <view class='item row ai-center jc-between'>
     <text class='title'>手机号</text>
     <text class='value' wx:if="{{user.phone}}">{{user.phone}}</text>
-    <button class='getPhone'  wx:if="{{!user.phone}}" open-type="getPhoneNumber" bindgetphonenumber='getPhoneNumber'>去授权</button>
+
+    <button class='getPhone' hover-class="none" wx:if="{{!user.phone}}" open-type="getPhoneNumber" bindgetphonenumber='getPhoneNumber'>
+      <text class='input-placeholder'>绑定手机</text>
+      <text class='lutufont lutu-next2'></text>
+    </button>
   </view>
 </view>
-<button class="btn" disabled="{{!user.phone}}"  catchtap="apply">提交申请信息</button>
+<button class="btn" disabled="{{!user.phone}}" catchtap="apply">提交申请信息</button>

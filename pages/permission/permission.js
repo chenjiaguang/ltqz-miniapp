@@ -20,23 +20,24 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
-    const authSetting = authManager.authSettingStorage
-    if (!!authSetting['scope.userInfo'] && !!authSetting['scope.userLocation']) {
-      // token过期或不存在token时进入的该页面，则不显示授权相关信息，直接重新登录
-      this.setData({
-        showType: 'update_token'
-      })
-      this.updateToken()
-    } else { // 走授权登录流程
-      this.setData({
-        showType: 'permission'
-      })
-      this.login()
-      let _obj = {}
-      _obj.authUserInfo = !!authSetting['scope.userInfo']
-      _obj.authUserLocation = !!authSetting['scope.userLocation']
-      this.setData(_obj)
-    }
+    authManager.getAuthSetting((authSetting) => {
+      if (!!authSetting['scope.userInfo'] && !!authSetting['scope.userLocation']) {
+        // token过期或不存在token时进入的该页面，则不显示授权相关信息，直接重新登录
+        this.setData({
+          showType: 'update_token'
+        })
+        this.updateToken()
+      } else { // 走授权登录流程
+        this.setData({
+          showType: 'permission'
+        })
+        this.login()
+        let _obj = {}
+        _obj.authUserInfo = !!authSetting['scope.userInfo']
+        _obj.authUserLocation = !!authSetting['scope.userLocation']
+        this.setData(_obj)
+      }
+    })
   },
 
   /**
@@ -113,26 +114,26 @@ Page({
 
   getUserInfo: function(e) {
     console.log('getUserInfo', e)
-    const {
-      encryptedData,
-      iv
-    } = e.detail
-    const {
-      avatarUrl,
-      gender,
-      nickName
-    } = e.detail.userInfo
-    const logingInfo = {
-      encryptedData,
-      iv,
-      avatarUrl,
-      gender,
-      nickName
-    }
     if (e.detail.errMsg === 'getUserInfo:ok') {
       this.setData({
         authUserInfo: true
       })
+      const {
+        encryptedData,
+        iv
+      } = e.detail
+      const {
+        avatarUrl,
+        gender,
+        nickName
+      } = e.detail.userInfo
+      const logingInfo = {
+        encryptedData,
+        iv,
+        avatarUrl,
+        gender,
+        nickName
+      }
       const successCallback = (authSetting) => {
         if (authSetting['scope.userInfo'] && authSetting['scope.userLocation']) {
           this.userLogin(logingInfo)
@@ -213,12 +214,14 @@ Page({
           token,
           id,
           avatar,
-          nick_name
+          nick_name,
+          phone
         } = res.data
         storageHelper.setStorage('token', token)
         storageHelper.setStorage('uid', id)
-        storageHelper.setStorage('uavatar', avatar)
-        storageHelper.setStorage('unickname', nick_name)
+        storageHelper.setStorage('uavatar', avatar || '')
+        storageHelper.setStorage('unickname', nick_name || '')
+        storageHelper.setStorage('uphone', phone || '')
         const permissionBack = storageHelper.getStorage('permissionBack')
         const url = permissionBack || '/pages/index/index'
         wx.reLaunch({
@@ -237,6 +240,12 @@ Page({
       }
     }).catch(err => {
       console.log('/login_err', err)
+      if (err.error == 1 && this.data.showType === 'update_token') {
+        this.login()
+        this.setData({
+          showType: 'permission'
+        })
+      }
     })
   }
 

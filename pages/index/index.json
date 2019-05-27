@@ -1,7 +1,8 @@
 {
-  "backgroundColor": "#F5F5F5",
+  "backgroundColor": "#FFFFFF",
   "backgroundColorTop": "#F5F5F5",
   "backgroundColorBottom": "#FFFFFF",
+  "enablePullDownRefresh": true,
   "usingComponents": {
     "ft-banners": "../../ftcomponents/ftBanners/ftBanners",
     "ft-cates": "../../ftcomponents/ftCates/ftCates",

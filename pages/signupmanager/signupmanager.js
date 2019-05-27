@@ -106,7 +106,9 @@ Page({
           loading: false
         })
       }
-    }).catch(err => {})
+    }).catch(err => {
+      console.log('err', err)
+    })
   },
   callPhone(e) {
     wx.makePhoneCall({
@@ -118,7 +120,7 @@ Page({
       url: '/pages/goodsdetail/goodsdetail?id=' + this.data.hd_id
     })
   },
-  tapItem(){
+  tapItem() {
     wx.vibrateShort()
   }
 })

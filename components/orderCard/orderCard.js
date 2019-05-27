@@ -56,11 +56,15 @@ Component({
                   })
                 }
               }
-            }).catch(err => {})
+            }).catch(err => {
+              console.log('err', err)
+            })
           }
         })
         wx.requestPayment(data)
-      }).catch(err => {})
+      }).catch(err => {
+        console.log('err', err)
+      })
     },
     goTicket() {
       wx.navigateTo({

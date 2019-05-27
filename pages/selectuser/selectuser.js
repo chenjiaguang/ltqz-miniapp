@@ -19,7 +19,9 @@ Page({
         list: res.data,
         loaded: true
       })
-    }).catch(err => {})
+    }).catch(err => {
+      console.log('err', err)
+    })
   },
 
   /**

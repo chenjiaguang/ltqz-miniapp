@@ -1,1 +1,67 @@
 /* pages/permission/permission.wxss */
+
+.update-token-view {
+  font-size: 28rpx;
+  color: #999;
+  padding: 100rpx 32rpx;
+  text-align: center;
+}
+
+page {
+  background: #fff;
+}
+
+.page-permission {
+  background: #fff;
+}
+
+.bg {
+  width: 100%;
+}
+
+.tip {
+  font-size: 32rpx;
+  line-height: 45rpx;
+  margin-top: 20rpx;
+  margin-bottom: 43rpx;
+  color: #666;
+}
+
+.typerow:nth-of-type(1) {
+  margin-bottom: 34rpx;
+}
+
+.typeicon {
+  font-size: 66rpx;
+  color: #09bb07;
+  margin-right: 48rpx;
+}
+
+.typeicon.disable {
+  color: #cbcbcb;
+}
+
+.title {
+  font-size: 26rpx;
+  line-height: 37rpx;
+  color: #62b632;
+}
+
+.desc {
+  margin-top: 2rpx;
+  width: 400rpx;
+  font-size: 24rpx;
+  line-height: 33rpx;
+  color: #333;
+}
+
+.relaunch-btn {
+  font-size: 33rpx;
+  margin-top: 60rpx;
+  color: #fff;
+  background-color: #64b631;
+  width: 590rpx;
+  height: 80rpx;
+  line-height: 80rpx;
+  border-radius: 40rpx;
+}

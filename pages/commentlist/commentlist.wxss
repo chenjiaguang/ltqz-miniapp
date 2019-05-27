@@ -1,11 +1,13 @@
 /* pages/commentmanager/commentmanager.wxss */
 
-page{
-  background: #ffffff;
+page {
+  background-color: #fff !important;
 }
-.page-commentlist{
-  background: #ffffff;
+
+.page-commentlist {
+  background: #fff;
 }
+
 .overview {
   position: relative;
   width: 100%;
@@ -89,6 +91,7 @@ page{
   color: #64b631;
   margin-left: 33rpx;
 }
+
 .reply-btn.disable {
   color: #ccc;
 }

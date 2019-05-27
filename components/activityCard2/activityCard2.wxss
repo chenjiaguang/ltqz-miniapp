@@ -69,7 +69,7 @@
 .status.status1{
   background: rgba(100,182,49, 0.65);
 }
-.status.status2, .status.status3, .status.status4{
+ .status.status0, .status.status2, .status.status3, .status.status4, .status.status5{
   background: rgba(0,0,0, 0.65);
 }
 

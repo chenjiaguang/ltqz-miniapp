@@ -30,7 +30,7 @@
               <text>待解冻收益</text>
               <text class='unit'> (元)</text>
             </view>
-            <view class='shortcut-amount bold'>{{unfreeze_remit}}</view>
+            <view class='shortcut-amount bold'>{{freeze_remit}}</view>
           </view>
         </view>
       </view>

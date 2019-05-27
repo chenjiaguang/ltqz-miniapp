@@ -22,7 +22,7 @@
     <view class='line-separator-h'></view>
     <view class='item row'>
       <text class='key'>活动地点</text>
-      <text class='value'>{{huodong.address}}</text>
+      <text class='value'>{{huodong.address || '--'}}</text>
     </view>
     <view class='line-separator-h'></view>
     <view class='item row'>
@@ -37,7 +37,7 @@
     <view class='line-separator-h'></view>
     <view class='item row'>
       <text class='key'>实付金额</text>
-      <text class='value'>¥{{order.show_price}}</text>
+      <text class='value'>¥{{order.show_price}}{{(huodong.include_bx == 1) ? '（费用包含保险）' : ''}}</text>
     </view>
     <view class='line-separator-h'></view>
     <view class='item row'>
@@ -53,14 +53,21 @@
 
   <view class='list' wx:if="traveler_infos.length">
     <view class='title'>出行人信息</view>
-    <block wx:for="{{traveler_infos}}" wx:key="name">
+    <block wx:if="{{huodong.include_bx == 1}}">
+      <block wx:for="{{traveler_infos}}" wx:key="name">
+        <view class='line-separator-h'></view>
+        <view class='item row'>
+          <text class='key'>{{item.huodongTraveler.name}}</text>
+          <text class='value'><text wx:for="{{item.huodongTraveler.id_number}}" wx:key="*this" wx:for-item="str" wx:for-index="stridx">{{(stridx >= 4 && stridx < item.huodongTraveler.id_number.length - 4) ? '*' : str}}</text></text>
+        </view>
+      </block>
+    </block>
+    <block wx:if="{{huodong.include_bx != 1 && traveler_name_text}}">
       <view class='line-separator-h'></view>
       <view class='item row'>
-        <text class='key'>{{item.huodongTraveler.name}}</text>
-        <text class='value'><text wx:for="{{item.huodongTraveler.id_number}}" wx:key="*this" wx:for-item="str" wx:for-index="stridx">{{(stridx >= 4 && stridx < item.huodongTraveler.id_number.length - 4) ? '*' : str}}</text></text>
+        <text class='key'>{{traveler_name_text}}</text>
       </view>
     </block>
-
   </view>
 
   <view class='list'>

@@ -1,10 +1,10 @@
 /**index.wxss**/
 
 page{
-  background: #FFFFFF;
+  background: #FFFFFF !important;
 }
 .page-index{
-  background: #fff;
+  background: #FFFFFF;
 }
 .page-top-padding{
   height: 14rpx;

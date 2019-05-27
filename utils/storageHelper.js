@@ -5,6 +5,7 @@ module.exports = {
     'uid', // 当前登录用户id
     'uavatar', // 当前登录用户头像
     'unickname', // 当前登录用户昵称
+    'uphone', // 当前登录用户手机号
     'permissionBack', // 记录用户跳转进入permission页面前的页面信息
     'authSetting', // 记录用户已授权信息，避免每次获取已授权信息都要调取微信接口（微信的接口是异步的）
     'orderContact',

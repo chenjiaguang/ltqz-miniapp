@@ -2,16 +2,16 @@
 <view class='card column' catchtap="goSignUpManager" data-hdid="{{activity.id}}" data-shopid="{{activity.shop_id}}" hover-stop-propagation hover-class='card-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
   <view class='top-box row'>
     <view class='cover-box'>
-      <image class='cover' src="{{activity.cover_url}}" />
+      <image class='cover' src="{{activity.cover_url}}" mode="aspectFill"/>
       <text wx:if="{{activity.status==1}}" class='state state0'>报名中</text>
       <text wx:if="{{activity.status==2}}" class='state state1'>已满额</text>
-      <text wx:if="{{activity.status==3||activity.status==4}}" class='state state2'>已截至</text>
+      <text wx:if="{{activity.status==3||activity.status==4}}" class='state state2'>已截止</text>
       <text wx:if="{{activity.status==5}}" class='state state3'>已结束</text>
     </view>
     <view class='content-box column'>
       <text class='title bold'>{{activity.title}}</text>
-      <text class='location'>{{activity.address}}</text>
       <text class='time'>{{activity.valid_btime}} 至 {{activity.valid_etime}}</text>
+      <text class='location'>{{activity.address}}</text>
     </view>
   </view>
   <view class='line-separator-h'></view>

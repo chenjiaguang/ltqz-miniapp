@@ -97,7 +97,9 @@ Page({
           loading: false
         })
       }
-    }).catch(err => {})
+    }).catch(err => {
+      console.log('err', err)
+    })
 
   }
 })

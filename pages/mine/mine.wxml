@@ -65,7 +65,7 @@
         </view>
       </view>
     </view>
-    <view wx:if="{{user&&!user.fenxiao}}" class='card-nopadding be-partner'>
+    <view wx:if="{{user&&!user.fenxiao&&fx_apply_entrance}}" class='card-nopadding be-partner'>
       <ft-entrance title="{{be_partner_entrance.title}}" extra-data="{{be_partner_entrance}}" catchtap="entranceTap" />
     </view>
     <view wx:if="{{user&&user.shop&&user.shop.length}}" class='card-nopadding business-entrance'>

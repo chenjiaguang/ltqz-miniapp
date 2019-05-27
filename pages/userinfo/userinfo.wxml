@@ -12,7 +12,11 @@
   <view class='line-separator-h'></view>
   <view class='item row ai-center jc-between'>
     <text class='title'>手机号</text>
-    <text class='value'>{{user.phone}}</text>
+    <text class='value' wx:if="{{user.phone}}">{{user.phone}}</text>
+    <button class='getPhone' hover-class="none" wx:if="{{!user.phone}}" open-type="getPhoneNumber" bindgetphonenumber='getPhoneNumber'>
+      <text class='input-placeholder'>绑定手机</text>
+      <text class='lutufont lutu-next2'></text>
+    </button>
   </view>
   <view class='line-separator-h'></view>
   <view class='item row ai-center jc-between'>

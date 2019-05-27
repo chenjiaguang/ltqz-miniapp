@@ -18,6 +18,11 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    if (options.title) {
+      wx.setNavigationBarTitle({
+        title: options.title
+      })
+    }
     this.options = options
     this.fetchGoods(options.id, 1)
   },
@@ -126,7 +131,9 @@ Page({
         let _obj = {}
         _obj.activityLoaded = true
         _obj.activityPage = page
-        _obj['banners[0].image'] = res.data.home_class_banner
+        if (res.data.home_class_banner) {
+          _obj['banners[0].image'] = res.data.home_class_banner
+        }
         if (pn === 1) { // 刷新
           _obj.activitys = list
         } else {

@@ -62,7 +62,7 @@ Component({
       } = this.data.comment
       this.triggerEvent('reply', {
         id,
-        username: user.name
+        username: user.nick_name
       })
     }
   }

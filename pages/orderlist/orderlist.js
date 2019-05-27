@@ -2,7 +2,7 @@
 const util = require('../../utils/util.js')
 const storageHelper = require('../../utils/storageHelper.js')
 Page({
-
+  name: 'orderlist',
   /**
    * 页面的初始数据
    */
@@ -90,7 +90,18 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function() {
-    console.log('11111111111')
+    wx.stopPullDownRefresh()
+    let i = this.data.index
+    this.setData({
+      [`tabs[${i}].page`]: {
+        pn: 1
+      },
+      [`tabs[${i}].list`]: [],
+      [`tabs[${i}].loaded`]: false,
+      [`tabs[${i}].loading`]: false,
+    }, () => {
+      this.loadList(i, 1)
+    })
   },
 
   /**
@@ -129,7 +140,11 @@ Page({
         item.price = util.formatMoney(item.price).showMoney
         item.huodong.valid_btime = util.formatDateTimeDefault('d', item.huodong.valid_btime)
         item.huodong.valid_etime = util.formatDateTimeDefault('d', item.huodong.valid_etime)
+        item.ticket_text = item.ticket.map((item) => {
+          return item.name + '×' + item.quantity
+        }).join(',')
       })
+      
       if (pn == 1) {
         list = res.data.list
       } else {
@@ -141,10 +156,11 @@ Page({
         [`tabs[${index}].loaded`]: true,
         [`tabs[${index}].loading`]: false,
       })
-    }).catch(err => {})
+    })
   },
 
   refresh() {
+    console.log('refresh')
     this.setData({
       [`index`]: 0,
       [`tabs[0].page`]: {

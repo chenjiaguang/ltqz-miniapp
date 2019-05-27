@@ -25,8 +25,8 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    this.fetchMerchant(1)
-    this.fetchGoods(1, 1)
+    this.fetchMerchant(options.id)
+    this.fetchGoods(options.id, 1)
   },
 
   /**

@@ -12,7 +12,17 @@ App({
   config: config,
   store,
   onLaunch: function(options) {
-    
+    if (config.env === 'prod') { // 生产环境，关掉调试窗口
+      console.error('env：' + config.env + '，be careful')
+      wx.setEnableDebug({
+        enableDebug: false
+      })
+    } else { // 开发环境，打开调试窗口，主要是为了视觉上直接分辨是什么环境
+      console.log('env：' + config.env + '，fly yourself')
+      wx.setEnableDebug({
+        enableDebug: true
+      })
+    }
   },
   onShow: function(options) { // 监听用户授权信息是否有变动
     let token = storageHelper.getStorage('token')

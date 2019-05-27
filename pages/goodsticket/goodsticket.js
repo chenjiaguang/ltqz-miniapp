@@ -1,5 +1,7 @@
 // pages/goodsticket/goodsticket.js
 const util = require('../../utils/util.js')
+const storageHelper = require('../../utils/storageHelper.js')
+
 Page({
 
   /**
@@ -23,6 +25,8 @@ Page({
     submitting: false
   },
 
+  fetchTimer: null,
+
   /**
    * 生命周期函数--监听页面加载
    */
@@ -34,7 +38,7 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function() {
-
+    
   },
 
   /**
@@ -57,7 +61,9 @@ Page({
    * 生命周期函数--监听页面卸载
    */
   onUnload: function() {
-
+    if (this.fetchTimer) {
+      clearTimeout(this.fetchTimer)
+    }
   },
 
   /**
@@ -104,7 +110,14 @@ Page({
           title: '核销成功',
           icon: 'none'
         })
-        this.fetchOrder(this.options.id)
+        const pages = getCurrentPages()
+        const prePage = pages[pages.length - 2]
+        if (prePage && prePage.name === 'orderdetail' && prePage.fetchOrder) { // 上个页面是订单详情页，更新订单详情页的信息
+          prePage.fetchOrder(this.options.id)
+        } else if (prePage && prePage.name === 'orderlist') { // 更新订单详情页的信息
+          storageHelper.setStorage('orderListRefresh', '1')
+        }
+        this.updateOrder(this.options.id)
         ctx.close()
       } else {
         if (res.msg) {
@@ -145,6 +158,14 @@ Page({
     }).then(res => {
       console.log('/order/detail', res)
       if (res.error == 0 && res.data) {
+        if (res.data.status == 1) { // 如果是未核销状态，轮询更新状态信息
+          if (this.fetchTimer) {
+            clearTimeout(this.fetchTimer)
+          }
+          this.fetchTimer = setTimeout(() => {
+            this.updateOrder(id, true)
+          }, 1000)
+        }
         let _obj = {}
         _obj.order_id = res.data.order_id
         _obj.ticked_num_text = this.initTicketNumText(res.data.ticket)
@@ -160,6 +181,57 @@ Page({
       }
     }).catch(err => {
       
+    })
+  },
+  updateOrder: function (id, updateOtherPage) {
+    util.request('/order/detail', {
+      id: id
+    }).then(res => {
+      console.log('/order/detail', res)
+      if (res.error == 0 && res.data) {
+        const {status} = this.data
+        if (res.data.status == 1) { // 如果是未核销状态，轮询更新状态信息
+          if (this.fetchTimer) {
+            clearTimeout(this.fetchTimer)
+          }
+          this.fetchTimer = setTimeout(() => {
+            this.updateOrder(id, true)
+          }, 1000)
+        } else {
+          if (status == res.data.status) {
+            return false
+          }
+          if (updateOtherPage) {
+            const pages = getCurrentPages()
+            const prePage = pages[pages.length - 2]
+            if (prePage && prePage.name === 'orderdetail' && prePage.fetchOrder) { // 上个页面是订单详情页，更新订单详情页的信息
+              prePage.fetchOrder(id)
+            } else if (prePage && prePage.name === 'orderlist') { // 更新订单详情页的信息
+              storageHelper.setStorage('orderListRefresh', '1')
+            }
+          }
+          if (status == 1 && (res.data.status == 2 || res.data.status == 3)) { // 上个状态是未核销，现在是核销
+            wx.showToast({
+              title: '核销成功',
+              icon: 'none'
+            })
+          }
+          let _obj = {}
+          _obj.order_id = res.data.order_id
+          _obj.ticked_num_text = this.initTicketNumText(res.data.ticket)
+          _obj.huodong = {
+            title: res.data.huodong.title,
+            address: res.data.huodong.address,
+            session: res.data.huodong.session
+          }
+          _obj.status = res.data.status
+          _obj.qr_code_url = res.data.qr_code_url
+          _obj.checked_time = res.data.checked_time ? util.formatDateTimeDefault('m', res.data.checked_time) : ''
+          this.setData(_obj)
+        }
+      }
+    }).catch(err => {
+
     })
   }
 })

@@ -27,15 +27,28 @@ Page({
    */
   onLoad: function(options) { // options.sid(shop_id，传入商家id则请求商家的评论)、options.pid(product_id，传入商品id则请求商品的评论)、options.type(type，商品类型，活动为1)
     if (options.sid) { // 展示的是商家评价，则显示活动
+      wx.setNavigationBarTitle({
+        title: '全部评价'
+      })
       this.setData({
         showGoods: true
       })
     } else if (options.pid) { // 展示的是活动评价，则显示已购买的票
+      wx.setNavigationBarTitle({
+        title: '活动评价',
+      })
       this.setData({
         showTicket: true
       })
     }
     if (options.role) {
+      wx.setNavigationBarTitle({
+        title: '评价管理',
+      })
+      wx.setNavigationBarColor({
+        frontColor: '#ffffff',
+        backgroundColor: '#64B631'
+      })
       this.setData({
         role: options.role
       })
@@ -213,7 +226,9 @@ Page({
         reply_value: '',
         [`list[${i}].reply`]: this.data.reply_value
       })
-    }).catch(err => {})
+    }).catch(err => {
+      console.log('err', err)
+    })
 
   }
 })

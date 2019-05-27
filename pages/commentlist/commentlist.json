@@ -1,8 +1,9 @@
 {
   "backgroundColor": "#FFFFFF",
-  "backgroundColorTop": "#F5F5F5",
+  "backgroundColorTop": "#FFFFFF",
   "backgroundColorBottom": "#FFFFFF",
   "enablePullDownRefresh": true,
+  "navigationBarTitleText": "评价管理",
   "usingComponents": {
     "ft-star-box": "../../ftcomponents/ftStarBox/ftStarBox",
     "ft-list-loader": "../../ftcomponents/ftListLoader/ftListLoader",

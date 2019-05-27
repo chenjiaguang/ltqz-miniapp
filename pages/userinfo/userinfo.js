@@ -38,6 +38,7 @@ Page({
         user: res.data
       })
     }).catch(err => {
+      console.log('err', err)
     })
   },
 
@@ -89,10 +90,27 @@ Page({
   },
   save: function(e) {
     util.request('/user/update', {
-      sex: this.data.user.sex
+      sex: this.data.user.sex,
+      phone: this.data.user.phone
     }).then(res => {
       util.backAndToast('保存成功')
-    }).catch(err => {})
+    }).catch(err => {
+      console.log('err', err)
+    })
 
+  },
+  getPhoneNumber(e) {
+    if (e.detail.encryptedData) {
+      util.request('/common/decrypt', {
+        iv: e.detail.iv,
+        encryptedData: e.detail.encryptedData,
+      }).then(res => {
+        this.setData({
+          ['user.phone']: res.data.phoneNumber
+        })
+      }).catch(err => {
+        console.log('err', err)
+      })
+    }
   }
 })

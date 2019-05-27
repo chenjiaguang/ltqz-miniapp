@@ -4,7 +4,7 @@
 		"ignore": []
 	},
 	"setting": {
-		"urlCheck": false,
+		"urlCheck": true,
 		"es6": true,
 		"enhance": true,
 		"postcss": true,
@@ -23,7 +23,7 @@
 		}
 	},
 	"compileType": "miniprogram",
-	"libVersion": "2.0.4",
+	"libVersion": "2.7.0",
 	"appid": "wx1e538beb2007bee7",
 	"projectname": "%E8%B7%AF%E9%80%94%E4%BA%B2%E5%AD%90",
 	"debugOptions": {
@@ -50,7 +50,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 24,
+			"current": 19,
 			"list": [
 				{
 					"id": -1,
@@ -187,7 +187,7 @@
 					"id": 19,
 					"name": "活动详情",
 					"pathName": "pages/goodsdetail/goodsdetail",
-					"query": "id=1&uid=1",
+					"query": "scene=id%3D20%26uid%3D10",
 					"scene": null
 				},
 				{

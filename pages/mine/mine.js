@@ -7,6 +7,7 @@ Page({
    */
   data: {
     user: null,
+    fx_apply_entrance: false,
     be_partner_entrance: {
       title: '成为合伙人',
       path: '/pages/bepartner/bepartner'
@@ -50,14 +51,19 @@ Page({
       } else if (res.data.shop && res.data.shop.length == 1) {
         assistant_entrance.path = '/pages/businessassistant/businessassistant?id=' + res.data.shop[0].id
       }
-      res.data.fenxiao.total = util.formatMoney(res.data.fenxiao.total).showMoney
-      res.data.fenxiao.today_remit = util.formatMoney(res.data.fenxiao.today_remit).showMoney
-      res.data.fenxiao.can_remit = util.formatMoney(res.data.fenxiao.can_remit).showMoney
+      if (res.data.fenxiao) {
+        res.data.fenxiao.total = util.formatMoney(res.data.fenxiao.total).showMoney
+        res.data.fenxiao.today_remit = util.formatMoney(res.data.fenxiao.today_remit).showMoney
+        res.data.fenxiao.can_remit = util.formatMoney(res.data.fenxiao.can_remit).showMoney
+      }
       this.setData({
+        fx_apply_entrance: res.data.fx_apply_entrance,
         user: res.data,
         assistant_entrance: assistant_entrance
       })
-    }).catch(err => {})
+    }).catch(err => {
+      console.log('err', err)
+    })
   },
 
   /**

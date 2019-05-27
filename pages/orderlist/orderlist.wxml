@@ -2,28 +2,28 @@
 <ft-tabs class="tabs" type="2" tabs="{{tabs}}" index="{{index}}" catchfetchlist="fetchlist" showEmpty="{{false}}" catchtabchange='tabchange'>
   <view slot="tab0">
     <view class='list-box'>
-      <order-card wx:for="{{tabs[0].list}}" item="{{item}}" wx:key="order_id" catchorderListRefresh='refresh'></order-card>
+      <order-card wx:for="{{tabs[0].list}}" item="{{item}}" wx:key="order_id" catchorderListRefresh="refresh"></order-card>
     </view>
     <image wx:if="{{tabs[0].loaded&&tabs[0].list.length==0}}" class='empty-img' src='/assets/images/order.png' />
     <text wx:if="{{tabs[0].loaded&&tabs[0].list.length==0}}" class='empty-text'>还没有相关的订单哦，快去下单吧~</text>
   </view>
   <view slot="tab1">
     <view class='list-box'>
-      <order-card wx:for="{{tabs[1].list}}" item="{{item}}" wx:key="order_id"></order-card>
+      <order-card wx:for="{{tabs[1].list}}" item="{{item}}" wx:key="order_id" catchorderListRefresh="refresh">></order-card>
     </view>
     <image wx:if="{{tabs[1].loaded&&tabs[1].list.length==0}}" class='empty-img' src='/assets/images/order.png' />
     <text wx:if="{{tabs[1].loaded&&tabs[1].list.length==0}}" class='empty-text'>还没有相关的订单哦，快去下单吧~</text>
   </view>
   <view slot="tab2">
     <view class='list-box'>
-      <order-card wx:for="{{tabs[2].list}}" item="{{item}}" wx:key="order_id"></order-card>
+      <order-card wx:for="{{tabs[2].list}}" item="{{item}}" wx:key="order_id" catchorderListRefresh="refresh">></order-card>
     </view>
     <image wx:if="{{tabs[2].loaded&&tabs[2].list.length==0}}" class='empty-img' src='/assets/images/order.png' />
     <text wx:if="{{tabs[2].loaded&&tabs[2].list.length==0}}" class='empty-text'>还没有相关的订单哦，快去下单吧~</text>
   </view>
   <view slot="tab3">
     <view class='list-box'>
-      <order-card wx:for="{{tabs[3].list}}" item="{{item}}" wx:key="order_id"></order-card>
+      <order-card wx:for="{{tabs[3].list}}" item="{{item}}" wx:key="order_id" catchorderListRefresh="refresh">></order-card>
     </view>
     <image wx:if="{{tabs[3].loaded&&tabs[3].list.length==0}}" class='empty-img' src='/assets/images/order.png' />
     <text wx:if="{{tabs[3].loaded&&tabs[3].list.length==0}}" class='empty-text'>还没有相关的订单哦，快去下单吧~</text>

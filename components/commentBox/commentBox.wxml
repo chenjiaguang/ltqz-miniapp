@@ -5,7 +5,7 @@
     <image class='avatar' src="{{comment.user.avatar}}" mode="aspectFill"></image>
     <view class='overview-right'>
       <view class='username-and-score'>
-        <text class='username'>{{comment.user.name}}</text>
+        <text class='username'>{{comment.user.nick_name}}</text>
         <ft-star-box score="{{comment.score}}" showScoreText="{{false}}" />
       </view>
       <view class='time'>{{comment.created_at}}</view>

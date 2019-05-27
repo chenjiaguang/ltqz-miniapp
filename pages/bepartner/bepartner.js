@@ -21,11 +21,12 @@ Page({
    */
   onReady: function() {
     util.request('/user/detail').then(res => {
-      res.data.phone = ''
       this.setData({
         user: res.data
       })
-    }).catch(err => {})
+    }).catch(err => {
+      console.log('err', err)
+    })
   },
 
   /**
@@ -73,18 +74,24 @@ Page({
     util.request('/user/become_fenxiao', {
       phone: this.data.user.phone,
     }).then(res => {
-      util.backAndToast('提交成功')
-    }).catch(err => {})
+      util.backAndToast('申请信息已提交成功')
+    }).catch(err => {
+      console.log('err', err)
+    })
   },
 
   getPhoneNumber(e) {
-    util.request('/common/decrypt', {
-      iv: e.detail.iv,
-      encryptedData: e.detail.encryptedData,
-    }).then(res => {
-      this.setData({
-        ['user.phone']: res.data.phoneNumber
+    if (e.detail.encryptedData) {
+      util.request('/common/decrypt', {
+        iv: e.detail.iv,
+        encryptedData: e.detail.encryptedData,
+      }).then(res => {
+        this.setData({
+          ['user.phone']: res.data.phoneNumber
+        })
+      }).catch(err => {
+        console.log('err', err)
       })
-    }).catch(err => {})
+    }
   }
 })

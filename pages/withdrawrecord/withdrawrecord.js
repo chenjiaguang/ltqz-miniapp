@@ -56,7 +56,7 @@ Page({
   /**
    * 页面上拉触底事件的处理函数
    */
-  onReachBottom: function () {
+  onReachBottom: function() {
     this.fetchData(parseInt(this.data.page.pn) + 1)
   },
 
@@ -66,7 +66,7 @@ Page({
   onShareAppMessage: function() {
 
   },
-  fetchData: function (pn = 1) {
+  fetchData: function(pn = 1) {
     this.setData({
       loading: true
     })
@@ -92,7 +92,9 @@ Page({
           loading: false
         })
       }
-    }).catch(err => {})
+    }).catch(err => {
+      console.log('err', err)
+    })
 
   }
 })

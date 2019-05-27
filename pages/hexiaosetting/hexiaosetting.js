@@ -78,6 +78,8 @@ Page({
       hx_code: this.data.code
     }).then(res => {
       util.backAndToast('核销密码修改成功啦')
-    }).catch(err => {})
+    }).catch(err => {
+      console.log('err', err)
+    })
   }
 })
