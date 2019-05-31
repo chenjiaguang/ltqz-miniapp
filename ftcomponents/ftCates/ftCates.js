@@ -10,7 +10,7 @@ Component({
     },
     max: {
       type: Number,
-      value: 4
+      value: 5
     },
     padding: {
       type: String,
@@ -22,11 +22,11 @@ Component({
     },
     iconWidth: {
       type: String,
-      value: '112rpx'
+      value: '94rpx'
     },
     iconHeight: {
       type: String,
-      value: '114rpx'
+      value: '94rpx'
     },
     iconRadius: {
       type: String,
@@ -38,7 +38,7 @@ Component({
     },
     textSize: {
       type: String,
-      value: '26rpx'
+      value: '24rpx'
     },
     textColor: {
       type: String,
@@ -46,7 +46,7 @@ Component({
     },
     textLineHeight: {
       type: String,
-      value: '32rpx'
+      value: '44rpx'
     },
     extraData: {
       type: Object,

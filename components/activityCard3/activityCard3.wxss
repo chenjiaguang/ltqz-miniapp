@@ -33,11 +33,14 @@
   font-size: 24rpx;
   color: #fff;
   text-align: center;
-  background: rgba(0, 0, 0, 0.65);
 }
 
-.state0 {
+/* .state0 {
   background: rgba(100, 182, 49, 0.65);
+} */
+
+.state1, .sdtate2, .state3{
+  background-color: rgba(0, 0, 0, 0.65);
 }
 
 .content-box {

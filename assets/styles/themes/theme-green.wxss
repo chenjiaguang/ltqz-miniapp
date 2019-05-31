@@ -1,0 +1,24 @@
+.theme-bg{
+  background-color: #64B631 !important;
+}
+.theme-bg-10{
+  background-color: rgba(100,182,49, 0.1) !important;
+}
+.theme-bg-20{
+  background-color: rgba(100,182,49, 0.2) !important;
+}
+.theme-bg-65{
+  background-color: rgba(100,182,49, 0.65) !important;
+}
+.theme-color{
+  color: #64B631 !important;
+}
+.theme-border-color{
+  border-color: #64B631 !important;
+}
+.theme-linear-gradient-h{
+  background-image: linear-gradient(to right, #FFFFFF, #64B631) !important;
+}
+.theme-linear-gradient-v{
+  background-image: linear-gradient(to bottom, #FFFFFF, #64B631) !important;
+}

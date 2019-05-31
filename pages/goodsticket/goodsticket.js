@@ -3,7 +3,7 @@ const util = require('../../utils/util.js')
 const storageHelper = require('../../utils/storageHelper.js')
 
 Page({
-
+  name: 'goodsticket',
   /**
    * 页面的初始数据
    */
@@ -38,7 +38,7 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function() {
-    
+
   },
 
   /**
@@ -104,7 +104,6 @@ Page({
       submitting: true
     })
     util.request('/order/consume', rData).then(res => {
-      console.log('then', rData, res)
       if (res.error == 0 && res.data) { // 请求接口成功
         wx.showToast({
           title: '核销成功',
@@ -138,7 +137,6 @@ Page({
     })
   },
   goComment: function() { // 跳转去评价页面
-    console.log('goComment')
     wx.navigateTo({
       url: '/pages/orderComment/orderComment?id=' + this.data.order_id
     })
@@ -156,15 +154,18 @@ Page({
     util.request('/order/detail', {
       id: id
     }).then(res => {
-      console.log('/order/detail', res)
       if (res.error == 0 && res.data) {
         if (res.data.status == 1) { // 如果是未核销状态，轮询更新状态信息
           if (this.fetchTimer) {
             clearTimeout(this.fetchTimer)
           }
-          this.fetchTimer = setTimeout(() => {
-            this.updateOrder(id, true)
-          }, 1000)
+          const pages = getCurrentPages()
+          const page = pages[pages.length - 1]
+          if (page.name === 'goodsticket') {
+            this.fetchTimer = setTimeout(() => {
+              this.updateOrder(id, true)
+            }, 1000)
+          }
         }
         let _obj = {}
         _obj.order_id = res.data.order_id
@@ -187,16 +188,19 @@ Page({
     util.request('/order/detail', {
       id: id
     }).then(res => {
-      console.log('/order/detail', res)
       if (res.error == 0 && res.data) {
         const {status} = this.data
         if (res.data.status == 1) { // 如果是未核销状态，轮询更新状态信息
           if (this.fetchTimer) {
             clearTimeout(this.fetchTimer)
           }
-          this.fetchTimer = setTimeout(() => {
-            this.updateOrder(id, true)
-          }, 1000)
+          const pages = getCurrentPages()
+          const page = pages[pages.length - 1]
+          if (page.name === 'goodsticket') {
+            this.fetchTimer = setTimeout(() => {
+              this.updateOrder(id, true)
+            }, 1000)
+          }
         } else {
           if (status == res.data.status) {
             return false

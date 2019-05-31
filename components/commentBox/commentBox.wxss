@@ -129,7 +129,6 @@
   height: 50rpx;
   line-height: 50rpx;
   text-align: center;
-  background: #64b631;
   border-radius: 8rpx;
   color: #fff;
   font-size: 24rpx;

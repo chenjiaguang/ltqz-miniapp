@@ -6,6 +6,6 @@
     "ft-banners": "../../ftcomponents/ftBanners/ftBanners",
     "ft-list-footer": "../../ftcomponents/ftListFooter/ftListFooter",
     "ft-iphone-bottom-adapter": "../../ftcomponents/ftIphoneBottomAdapter/ftIphoneBottomAdapter",
-    "ft-activity-card2": "../../components/activityCard2/activityCard2"
+    "activity-card2": "../../components/activityCard2/activityCard2"
   }
 }

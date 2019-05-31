@@ -7,7 +7,7 @@
     "ft-star-box": "../../ftcomponents/ftStarBox/ftStarBox",
     "ft-list-loader": "../../ftcomponents/ftListLoader/ftListLoader",
     "ft-list-footer": "../../ftcomponents/ftListFooter/ftListFooter",
-    "ft-activity-card2": "../../components/activityCard2/activityCard2",
+    "activity-card2": "../../components/activityCard2/activityCard2",
     "ft-iphone-bottom-adapter": "../../ftcomponents/ftIphoneBottomAdapter/ftIphoneBottomAdapter"
   }
 }

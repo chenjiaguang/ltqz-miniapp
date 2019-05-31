@@ -25,7 +25,7 @@
       <text class='reply bold'>商家回复：</text>
       <text class='reply'>{{comment.reply}}</text>
     </view>
-    <view wx:if="{{!comment.reply && role === 'business'}}" class='reply-btn' bindtap='reply'>回复</view>
+    <view wx:if="{{!comment.reply && role === 'business'}}" class='reply-btn theme-bg' bindtap='reply'>回复</view>
   </view>
   <view wx:if="{{bottomBorder}}" class='line-separator-h'></view>
 </view>

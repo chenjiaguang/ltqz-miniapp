@@ -7,6 +7,7 @@ module.exports = {
     'unickname', // 当前登录用户昵称
     'uphone', // 当前登录用户手机号
     'permissionBack', // 记录用户跳转进入permission页面前的页面信息
+    'permissionTimeStamp', // 进入permission时的timeStamp，防止多个请求返回都是401时重复进入permission页面
     'authSetting', // 记录用户已授权信息，避免每次获取已授权信息都要调取微信接口（微信的接口是异步的）
     'orderContact',
     'orderListRefresh'

@@ -138,6 +138,7 @@ const request = (url, data, config = {}) => {
   const app = getApp()
   const apiVersion = (config && config.apiVersion) || app.config.apiVersion || '/v1'
   const token = (config && config.token) || storageHelper.getStorage('token') || ''
+  const timeStamp = new Date().getTime()
   // const token = '5aa2ba17d929a73c7057a114df4ea440'
   console.log('apiVersion', apiVersion)
   return new Promise((resolve, reject) => {
@@ -153,7 +154,12 @@ const request = (url, data, config = {}) => {
       },
       success: function(res) {
         if (res.data.error && (res.data.error == 401)) {
+          const permissionTimeStamp = storageHelper.getStorage('permissionTimeStamp')
+          if (permissionTimeStamp && timeStamp < permissionTimeStamp) {
+            return false
+          }
           storageHelper.setStorage('token', '')
+          storageHelper.setStorage('permissionTimeStamp', new Date().getTime())
           checkLogin()
           reject(res.data || res) // 返回错误提示信息
           return

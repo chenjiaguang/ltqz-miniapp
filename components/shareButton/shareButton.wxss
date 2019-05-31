@@ -1,37 +1,49 @@
 /* components/shareButton/shareButton.wxss */
-@import "../../assets/styles/lutu-icon.wxss";
+@import "../../app.wxss";
 
 .wrapper1{
-  height: 60rpx;
-  padding: 0 32rpx 0 28rpx;
-  border-radius: 100rpx 0 0 100rpx;
-  background: #64B631;
+  min-height: 72rpx;
+  padding: 0 32rpx;
   font-size: 28rpx;
-  line-height: 40rpx;
   color: #FFFFFF;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(0,0,0,0.45);
+}
+.notice-view{
+  padding-right: 20rpx;
+  flex: 1;
+  overflow: hidden;
+  line-height: 40rpx;
+}
+.notice-icon{
+  font-size: 32rpx;
+  color: #fff;
+  margin-right: 8rpx;
+}
+.share-btn{
+  height: 50rpx;
+  padding: 0 20rpx;
   display: flex;
   justify-content: center;
   align-items: center;
-}
-.share-icon{
-  font-size: 28rpx;
-  color: #fff;
-  margin-right: 6rpx;
+  border-radius: 25rpx;
 }
 .wrapper2{
-  height: 76rpx;
-  padding: 0 32rpx 0 38rpx;
-  border-radius: 44rpx 0 0 44rpx;
-  background: #64B631;
-  font-size: 28rpx;
-  line-height: 30rpx;
-  color: #FFFFFF;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  overflow: visible;
 }
-.wrapper2-text{
+.share-icon{
+  font-size: 40rpx;
+  color: #333;
+  margin-bottom: 12rpx;
+}
+.share-text2{
   font-size: 28rpx;
-  line-height: 30rpx;
+  line-height: 28rpx;
+  color: #333;
 }

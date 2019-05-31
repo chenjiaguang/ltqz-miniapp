@@ -27,7 +27,7 @@
     </view>
     <view class='line-separator-h'></view>
     <ft-list-loader visible="{{!activityLoaded}}" />
-    <ft-activity-card2 wx:for="{{activitys}}" wx:for-index="idx" wx:for-item="activity" wx:key="id" activity="{{activity}}" top-border="{{idx !== 0}}" catchactivitytap="activityTap" />
+    <activity-card2 wx:for="{{activitys}}" wx:for-index="idx" wx:for-item="activity" wx:key="id" activity="{{activity}}" top-border="{{idx !== 0}}" catchactivitytap="activityTap" />
     <ft-list-footer loaded="{{activityLoaded}}" loading="{{activityLoading}}" page="{{activityPage}}" show-no-more />
     <ft-iphone-bottom-adapter />
   </view>

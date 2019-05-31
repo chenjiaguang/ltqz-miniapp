@@ -13,9 +13,9 @@
   color: #666;
 }
 
-.state0 {
+/* .state0 {
   color: #64b631;
-}
+} */
 
 .state1 {
   color: #f24724;
@@ -53,7 +53,6 @@
 
 .btn-online {
   color: #fff;
-  background-color: #64b631;
 }
 
 .btn-pay {

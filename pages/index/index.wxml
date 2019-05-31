@@ -1,17 +1,23 @@
 <!--index.wxml-->
 <view class="page-index">
   <view class='page-top-padding'></view>
-  <view wx:if="{{banners && banners[0]}}" class='banner-wrapper'>
-    <ft-banners banners="{{banners}}" height="358rpx" border-radius="8rpx" indicator-color="#E8E8E8" indicator-currunt-color="#108EE9" previous-margin="{{24}}" next-margin="{{24}}" catchtap="bannerTap" />
+  <view wx:if="{{(banners && banners[0]) || (subBanners && subBanners[0])}}" class='banner-wrapper'>
+    <ft-banners wx:if="{{banners && banners[0]}}" banners="{{banners}}" height="422rpx" spacing="{{0}}" border-radius="0" indicator-color="rgba(0,0,0,0.5)" indicator-currunt-color="rgba(0,0,0,1)" previous-margin="{{0}}" next-margin="{{0}}" catchtap="bannerTap" />
+    <ft-banners wx:if="{{subBanners && subBanners[0]}}" banners="{{subBanners}}" height="180rpx" spacing="{{0}}" border-radius="0" indicator-color="rgba(0,0,0,0.5)" indicator-currunt-color="rgba(0,0,0,1)" previous-margin="{{0}}" next-margin="{{0}}" catchtap="bannerTap" />
   </view>
   <ft-cates wx:if="{{cates && cates[0]}}" cates="{{cates}}" padding="14rpx 26rpx 14rpx" justify="flex-start" catchtap="cateTap" />
   <view wx:if="{{themes && themes[0]}}" class='theme-box'>
     <view class='theme-header'><text class='theme-header-title'>热门主题</text><text class='theme-header-tip'>提前领 最高<text style="color:#F24724">省¥50</text></text></view>
     <ft-theme themes="{{themes}}" catchthemetap="themeTap" />
   </view>
+  <view wx:if="{{hots && hots[0]}}" class='hot-box'>
+    <view class='hot-header'><view class='left-line line-separator-h'></view><view class='hot-icon theme-bg'><image class='hot-icon-image' src="/assets/images/fire_white.png" mode="aspectFit"></image></view><text class='hot-header-title'>优选爆款</text><view class='right-line line-separator-h'></view></view>
+    <activity-card wx:for="{{hots}}" wx:for-item="activity" wx:for-index="aidx" wx:key="id" activity="{{activity}}" catchactivitytap="activityTap" />
+  </view>
   <view class='recommendation-box'>
-    <view class='recommendation-header'><text class='recommendation-header-title'>为您推荐</text></view>
+    <view class='recommendation-header'><view class='left-line line-separator-h'></view><view class='recommendation-icon theme-bg'><image class='recommendation-icon-image' src="/assets/images/thumb_white.png" mode="aspectFit"></image></view><text class='recommendation-header-title'>为您推荐</text><view class='right-line line-separator-h'></view></view>
     <activity-card wx:for="{{recommendations}}" wx:for-item="activity" wx:for-index="aidx" wx:key="id" activity="{{activity}}" catchactivitytap="activityTap" />
   </view>
+    <!-- <ft-bubble content="10人拼团价" /> -->
   <ft-list-footer loaded="{{recommendationLoaded}}" loading="{{recommendationLoading}}" page="{{recommendationPage}}" show-no-more no-more-text="{{(recommendations && recommendations[0]) ? '没有更多了' : '暂时没有活动'}}" />
 </view>

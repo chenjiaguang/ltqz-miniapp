@@ -1,0 +1,23 @@
+/* ftcomponents/ftBubble/ftBubble.wxss */
+@import "../../app.wxss";
+
+.wrapper{
+  position: relative;
+  padding-left: 4rpx;
+}
+.sign{
+  font-size: 32rpx;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  transform: rotate(30deg) translate(0, 18%);
+}
+.content-box{
+  font-size: 26rpx;
+  color: #fff;
+  line-height: 42rpx;
+  padding: 0 22rpx;
+  border-radius: 21rpx;
+  position: relative;
+  z-index: 1;
+}

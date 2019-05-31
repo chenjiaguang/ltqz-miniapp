@@ -4,7 +4,7 @@
   <view class='wrapper-content'>
     <view class='image-box'>
       <image class='image' src="{{activity.cover_url}}" mode="aspectFill"></image>
-      <view class="status status{{activity.status}}">{{activityStatusText[activity.status]}}</view>
+      <view class="status status{{activity.status}}{{activity.status == 1 ? ' theme-bg-65' : ''}}">{{activityStatusText[activity.status]}}</view>
     </view>
     <view class='right-box'>
       <view class='title'>{{activity.title}}</view>

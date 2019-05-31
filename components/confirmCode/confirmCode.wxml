@@ -5,7 +5,7 @@
     <view class='code-box' catchtap="onFocus">
       <view wx:for="{{codeArr}}" wx:key="*this" wx:for-index="idx" wx:for-item="code" class='code-item'><text>{{codeStr[idx]}}</text></view>
     </view>
-    <button class="btn{{confirming ? ' confirming' : ''}}{{codeStr.length !== maxLength ? ' disabled' : ''}}" disabled="{{codeStr.length !== maxLength || confirming}}" catchtap="confirm">{{confirming ? '核销中...' : btnText}}</button>
+    <button class="btn theme-bg{{confirming ? ' confirming' : ''}}{{codeStr.length !== maxLength ? ' disabled' : ''}}" disabled="{{codeStr.length !== maxLength || confirming}}" catchtap="confirm">{{confirming ? '核销中...' : btnText}}</button>
     <input class='bg-input' type="number" cursor-spacing="{{120}}" focus="{{focus}}" value="{{codeStr}}" maxlength="{{maxLength}}" bindinput="codeInput" bindfocus='onFocus' bindblur='onBlur'></input>
   </view>
 </view>

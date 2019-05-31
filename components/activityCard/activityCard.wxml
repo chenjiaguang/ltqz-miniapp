@@ -1,15 +1,17 @@
 <!--components/activityCard/activityCard.wxml-->
 <view class='wrapper' catchtap="boxTap" hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
-  <image class='cover' src="{{activity.cover_url}}" mode="aspectFill"></image>
-  <view class='price-tag'>
-    <text wx:if="{{activity.min_price && activity.min_price > 0}}" class='actual-price'>¥{{activity.min_price}}</text><text wx:if="{{activity.price_num > 1 && activity.min_price && activity.min_price > 0}}" class='actual-price-qi'>起</text><text wx:if="{{!activity.min_price || activity.min_price == 0}}" class='actual-price'>免费</text>
+  <view class='cover-box'>
+    <image class='cover' src="{{activity.cover_url}}" mode="aspectFill"></image>
+    <view class='price-tag theme-bg'>
+      <text wx:if="{{activity.min_price && activity.min_price > 0}}" class='actual-price'>¥{{activity.min_price}}</text><text wx:if="{{activity.price_num > 1 && activity.min_price && activity.min_price > 0}}" class='actual-price-qi'>起</text><text wx:if="{{!activity.min_price || activity.min_price == 0}}" class='actual-price'>免费</text>
+    </view>
   </view>
   <view style="height:8rpx;"></view>
   <view class='title'>{{activity.title}}</view>
   <view class='intro'>{{activity.desc}}</view>
   <view class='tags-and-join'>
     <view class='tags' wx:if="{{activity.tags && activity.tags[0]}}">
-      <view wx:for="{{activity.tags}}" wx:for-item="tag" wx:index="tidx" wx:key="label" class='tag-item'><text>{{tag.label}}</text></view>
+      <view wx:for="{{activity.tags}}" wx:for-item="tag" wx:index="tidx" wx:key="label" class='tag-item theme-color theme-bg-10'><text>{{tag.label}}</text></view>
     </view>
     <view class='join'><text>累计{{activity.join_num}}人报名</text></view>
   </view>

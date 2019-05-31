@@ -12,6 +12,11 @@ page{
 .banner-wrapper{
   padding: 10rpx 0 10rpx;
 }
+.sub-banner{
+  display: block;
+  width: 100%;
+  height: 180rpx;
+}
 .theme-wrapper{
   font-size: 0;
   white-space: nowrap;
@@ -24,18 +29,49 @@ page{
 .theme-box, recommendation-box{
   margin: 10rpx 0 10rpx;
 }
-.theme-header, .recommendation-header{
+.hot-box{
+  margin: 10rpx 0 0;
+}
+.theme-header, .recommendation-header, .hot-header{
   height: 58rpx;
   padding: 0 32rpx;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
-.theme-header-title, .recommendation-header-title{
+.theme-header-title, .recommendation-header-title, .hot-header-title{
   font-size: 36rpx;
   color: #333333;
 }
-.theme-header-tip, .recommendation-header-tip{
+.theme-header-tip, .recommendation-header-tip, .hot-header-tip{
   font-size: 28rpx;
   color: #999999;
+}
+.recommendation-header, .hot-header{
+  justify-content: center;
+}
+.left-line{
+  width: 115rpx;
+  margin-right: 24rpx;
+  background-color: #D8D8D8;
+}
+.right-line{
+  width: 115rpx;
+  margin-left: 24rpx;
+  background-color: #D8D8D8;
+}
+.recommendation-icon, .hot-icon{
+  width: 50rpx;
+  height: 50rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  margin-right: 10rpx;
+}
+.recommendation-icon-image, .hot-icon-image{
+  display: block;
+  width: 28rpx;
+  height: 30rpx;
+  margin-left: 2rpx;
 }

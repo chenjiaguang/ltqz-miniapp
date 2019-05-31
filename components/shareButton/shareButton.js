@@ -7,6 +7,10 @@ Component({
     profit: {
       type: Number,
       value: 0
+    },
+    showPrice: {
+      type: Boolean,
+      value: false
     }
   },
 
@@ -23,7 +27,7 @@ Component({
   methods: {
     btnTap: function () {
       console.log('btnTap')
-      this.triggerEvent('tap')
+      this.triggerEvent('share')
     }
   }
 })

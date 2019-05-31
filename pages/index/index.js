@@ -7,6 +7,7 @@ Page({
   name: 'index',
   data: {
     banners: [],
+    subBanners: [],
     cates: [],
     // themes: [
     //   { name: '主题1', id: '1', image: 'http://i1.bvimg.com/685753/b9ba96284fff562b.jpg', maskText: '14.5万人关注', tags: ['新品', '爆款'] },
@@ -19,6 +20,7 @@ Page({
     //   { name: '主题8', id: '8', image: 'http://i1.bvimg.com/685753/b9ba96284fff562b.jpg', maskText: '14.5万人关注', tags: [] }
     // ],
     themes: [],
+    hots: [],
     recommendations: [
       // {
       //   id: '1',
@@ -78,6 +80,14 @@ Page({
       })
     }
   },
+  subBannerTap: function (e) {
+    const {path} = e.currentTarget.dataset
+    if (path) {
+      wx.navigateTo({
+        url: path
+      })
+    }
+  },
   cateTap: function (e) {
     console.log('cateTap', e)
     const { item } = e.detail
@@ -110,12 +120,18 @@ Page({
         const banners = res.data.banner.map(item => {
           return {path: item.link, image: item.banner_url}
         })
+        const subBanners = res.data.banner_sub.map(item => {
+          return { path: item.link, image: item.banner_url }
+        })
         const cates = res.data.class.map(item => {
           return {id: item.id, name: item.name, image: item.icon_url}
         })
+        const hots = res.data.hots || []
         this.setData({
           banners,
-          cates
+          subBanners,
+          cates,
+          hots
         })
       }
     })
