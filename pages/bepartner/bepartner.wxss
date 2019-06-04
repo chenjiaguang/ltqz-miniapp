@@ -40,9 +40,10 @@
   border-width: 0;
   border-radius: 6rpx;
 }
+
 .btn[disabled] {
   color: #fff !important;
-  background-color: #D8D8D8 !important;
+  background-color: #d8d8d8 !important;
 }
 
 .getPhone {
@@ -56,11 +57,21 @@
   line-height: 52rpx;
 }
 
-.input-placeholder{
+.input-placeholder {
   color: #ccc;
   margin-right: 20rpx;
 }
+
 .lutu-next2 {
   font-size: 25rpx;
   color: #999;
+}
+
+.tip {
+  color: #ff3b30;
+  font-size: 24rpx;
+  margin-left: 4%;
+  margin-right: 4%;
+  margin-top: 32rpx;
+  margin-bottom: 32rpx;
 }

@@ -7,5 +7,5 @@
       <text class='tip'>须是4位数字的格式，按此方式不区分具体核销人员，只区分主办方，且各主办方核销码不一样，请根据实际使用</text>
     </view>
   </view>
-  <view class='btn' bindtap='submit'>保存修改</view>
+  <view class='btn theme-bg' bindtap='submit'>保存修改</view>
 </view>

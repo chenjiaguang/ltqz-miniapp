@@ -7,7 +7,8 @@ let store = require('/store/index.js')
 
 App({
   globalData: {
-    userInfo: null
+    userInfo: null,
+    themeColor: '#FF9500' // 设置主题色
   },
   config: config,
   store,

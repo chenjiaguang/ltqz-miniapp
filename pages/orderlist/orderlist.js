@@ -9,6 +9,7 @@ Page({
   data: {
     index: 0,
     states: ['', '0', '1', '2'],
+    tabCurrentColor: '#000000',
     tabs: [{
       title: '全部',
       list: [],
@@ -48,7 +49,12 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
-    console.log('orderlist_onload_options', options)
+    const app = getApp()
+    if (app.globalData && app.globalData.themeColor) { // 设置tab选中项颜色
+      this.setData({
+        tabCurrentColor: app.globalData.themeColor
+      })
+    }
     let index = parseInt(options ? options.type : 0)
     index = isNaN(index) ? 0 : index
     storageHelper.setStorage('orderListRefresh', '')

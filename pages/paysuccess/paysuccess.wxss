@@ -11,7 +11,6 @@ page{
 .tick-icon{
   font-size: 154rpx;
   line-height: 154rpx;
-  color: #64B631;
 }
 .success-text{
   font-size: 34rpx;
@@ -23,10 +22,10 @@ page{
 .view-order{
   width: 248rpx;
   height: 72rpx;
-  border: 1px solid #64B631;
+  border-width: 1px;
+  border-style: solid;
   border-radius: 8rpx;
   font-size: 28rpx;
-  color: #64B631;
   margin: 0 auto;
   display: flex;
   justify-content: center;

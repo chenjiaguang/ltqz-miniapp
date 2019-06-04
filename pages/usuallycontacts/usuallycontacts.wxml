@@ -1,51 +1,23 @@
-<!--pages/usuallycontacts/usuallycontacts.wxml-->
-<view class='page-usuallycontacts'>
-  <view class='header row ai-center jc-between'>
-    <text class='header-text bold'>常用联系人</text>
-    <view class='add-btn bold' bindtap='addItem'>+添加</view>
-  </view>
-  
-  <ft-list-loader visible="{{!loaded}}" />
-  <view class='column'>
-    <view wx:for="{{contacts}}" wx:for-index="idx" wx:for-item="contact" wx:key="id" class='card contact-item'>
-      <view class='row ai-center item'>
-        <view class='key'>
-          <text class='xinhao'>*</text> 姓名</view>
-        <view class='value flex1'>
-          <input value="{{contact.name}}" disabled='{{contact.editType==0}}' bindinput="nameInput" data-idx="{{idx}}" placeholder='请输入真实姓名'></input>
+<view class="add-box theme-color card column ai-center" catchtap='addItem' hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
+  <text class="lutufont lutu-add2"></text>
+  <text class="add-text">新增出行人信息</text>
+</view>
+<view class='card-nopadding'>
+  <view class='column' wx:for="{{contacts}}" wx:key="id" hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
+    <view class='item row ai-center jc-between' catchtap='editItem' data-item="{{item}}">
+      <view>
+        <view class='name'>
+          {{item.name}}
+        </view>
+        <view wx:if="{{id_number}}" class='id_number'>
+          <text>身份证</text>
+          <text>{{item.id_number}}</text>
         </view>
       </view>
-      <view class='line-separator-h'></view>
-      <view class='row ai-center item'>
-        <view class='key'>
-          <text class='xinhao'>*</text> 性别
-        </view>
-        <picker range="{{genderRange}}" disabled='{{contact.editType==0}}' range-key="title" bindchange="genderChange" class='value flex1' value="{{contact.sex == '2' ? 1: 0}}" data-type="1" data-idx="{{idx}}">
-          <view class='row ai-center jc-between'>
-            <text wx:if="{{contact.sex==0}}" class='input-placeholder'>请选择性别</text>
-            <text wx:else>{{gender_text[contact.sex]}}</text>
-            <text class='lutufont lutu-next2'></text>
-          </view>
-        </picker>
-      </view>
-      <view class='line-separator-h'></view>
-      <view class='row ai-center item'>
-        <view class='key'>身份证号</view>
-        <view class='value flex1'>
-          <input value="{{contact.id_number}}" disabled='{{contact.editType==0}}' bindinput="idCardInput" bindfocus="idCardFocus" data-idx="{{idx}}" placeholder='{{contact.editType==0?"":"请输入身份证号"}}' maxlength='18'></input>
-        </view>
-      </view>
-      <view class='line-separator-h'></view>
-      <view class='btns item row ai-stretch jc-around item' data-type="1"  >
-        <text class='btn red' wx:if='{{contact.editType==0}}' catchtap="deleteItem" data-idx="{{idx}}">删除</text>
-        <text class='btn green' wx:if='{{contact.editType==0}}' catchtap="editItem" data-idx="{{idx}}">编辑</text>
-        <text class='btn red' wx:if='{{contact.editType==1}}' catchtap="deleteItem" data-idx="{{idx}}">删除</text>
-        <text class='btn green' wx:if='{{contact.editType==1}}' catchtap="saveItem" data-idx="{{idx}}">保存</text>
-        <text class='btn grey' wx:if='{{contact.editType==2}}' catchtap="cancelItem" data-idx="{{idx}}">取消</text>
-        <text class='btn green' wx:if='{{contact.editType==2}}' catchtap="saveItem" data-idx="{{idx}}">保存</text>
-      </view>
+
+      <text class='lutufont lutu-next2'></text>
     </view>
+
+    <view class='line-separator-h' wx:if="{{index!=(contacts.length-1)}}"></view>
   </view>
 </view>
-
-<ft-iphone-bottom-adapter />

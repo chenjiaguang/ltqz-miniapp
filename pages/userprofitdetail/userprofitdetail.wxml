@@ -1,6 +1,6 @@
 <!--pages/userprofit/userprofit.wxml-->
 <view class='page-userprofit column ai-stretch'>
-  <view class='top-bg-box'></view>
+  <view class='top-bg-box theme-bg'></view>
   <view class='main-box'>
     <view class='card overview-box'>
       <view class='all-profit column ai-center'>

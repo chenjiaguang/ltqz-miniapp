@@ -1,6 +1,19 @@
 import authManager from './authManager.js'
 import storageHelper from './storageHelper.js'
 
+const secondToClock = seconds => {
+  if (seconds <= 0) {
+    return '00:00:00'
+  }
+  let hour = seconds / 3600
+  let min = (seconds % 3600) / 60
+  let second = seconds % 60
+  hour = (hour >= 10) ? parseInt(hour) : ('0' + parseInt(hour))
+  min = (min >= 10) ? parseInt(min) : ('0' + parseInt(min))
+  second = (second >= 10) ? second : ('0' + second)
+  return [hour, min, second].join(':')
+}
+
 const formatTime = date => {
   const year = date.getFullYear()
   const month = date.getMonth() + 1

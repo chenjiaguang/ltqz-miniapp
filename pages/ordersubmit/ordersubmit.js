@@ -173,11 +173,13 @@ Page({
         })
       },
       fail: res => {
+        const app = getApp()
+        const confirmColor = (app.globalData && app.globalData.themeColor) ? app.globalData.themeColor : '#000000'
         wx.showModal({
           title: '确定要取消支付吗？',
           content: '您的订单在10分钟内未支付将被取消，请尽快完成支付哦~',
           confirmText: '继续支付',
-          confirmColor: '#64B631',
+          confirmColor: confirmColor,
           success: res => {
             console.log('success')
             if (res.confirm) {

@@ -1,5 +1,5 @@
 <!--pages/orderlist/orderlist.wxml-->
-<ft-tabs class="tabs" type="2" tabs="{{tabs}}" index="{{index}}" catchfetchlist="fetchlist" showEmpty="{{false}}" catchtabchange='tabchange'>
+<ft-tabs class="tabs" type="2" tabs="{{tabs}}" current-color="{{tabCurrentColor}}" index="{{index}}" catchfetchlist="fetchlist" showEmpty="{{false}}" catchtabchange='tabchange'>
   <view slot="tab0">
     <view class='list-box'>
       <order-card wx:for="{{tabs[0].list}}" item="{{item}}" wx:key="order_id" catchorderListRefresh="refresh"></order-card>

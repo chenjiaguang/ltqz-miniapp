@@ -55,17 +55,11 @@
   color: #ccc;
 }
 
-.state0 {
-  color: #64b631;
-  border-color: #64b631;
-}
-
 .lutu-tel2 {
   padding-left: 20rpx;
   padding-top: 20rpx;
   padding-bottom: 20rpx;
   font-size: 70rpx;
-  color: #64b631;
   align-self: center;
 }
 
@@ -80,7 +74,6 @@
   font-size: 36rpx;
   color: #fff;
   height: 100rpx;
-  background-color: #64b631;
   text-align: center;
   line-height: 100rpx;
 }

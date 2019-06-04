@@ -17,7 +17,10 @@ Page({
       path: '/pages/selectuser/selectuser'
     },
     other_entrances: [{
-        title: '常用联系人',
+        title: '我的收藏',
+        path: '/pages/collection/collection'
+      }, {
+        title: '常用信息',
         path: '/pages/usuallycontacts/usuallycontacts'
       },
       {

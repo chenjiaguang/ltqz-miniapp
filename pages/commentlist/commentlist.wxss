@@ -1,6 +1,6 @@
 /* pages/commentmanager/commentmanager.wxss */
-
 page {
+  height: 100%;
   background-color: #fff !important;
 }
 
@@ -94,4 +94,21 @@ page {
 
 .reply-btn.disable {
   color: #ccc;
+}
+
+.empty-img {
+  height: 152rpx;
+  width: 125rpx;
+  margin-top: 248rpx;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+
+.empty-text {
+  margin-top: 39rpx;
+  color: #999;
+  font-size: 26rpx;
+  display: block;
+  text-align: center;
 }

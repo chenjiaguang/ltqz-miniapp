@@ -1,8 +1,8 @@
 {
-  "navigationBarBackgroundColor": "#64B631",
+  "navigationBarBackgroundColor": "#FF9500",
   "navigationBarTextStyle": "white",
   "navigationBarTitleText": "路途亲子",
-  "backgroundColorTop": "#64B631",
+  "backgroundColorTop": "#FF9500",
   "backgroundColorBottom": "#fff",
   "usingComponents": {}
 }

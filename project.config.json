@@ -50,7 +50,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 19,
+			"current": 20,
 			"list": [
 				{
 					"id": -1,
@@ -74,8 +74,22 @@
 				},
 				{
 					"id": -1,
+					"name": "我的-常用信息",
+					"pathName": "pages/editcontact/editcontact",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
 					"name": "我的-成为合伙人",
 					"pathName": "pages/bepartner/bepartner",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "我的-我的收藏",
+					"pathName": "pages/collection/collection",
 					"query": "",
 					"scene": null
 				},
@@ -184,10 +198,10 @@
 					"scene": null
 				},
 				{
-					"id": 19,
+					"id": 20,
 					"name": "活动详情",
 					"pathName": "pages/goodsdetail/goodsdetail",
-					"query": "scene=id%3D20%26uid%3D10",
+					"query": "id=20",
 					"scene": null
 				},
 				{

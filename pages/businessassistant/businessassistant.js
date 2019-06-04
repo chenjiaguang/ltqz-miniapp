@@ -54,8 +54,12 @@ Page({
       id: this.data.id
     }).then(res => {
       res.data.total_income = util.formatMoney(res.data.total_income).showMoney
+      let other_entrances = this.data.other_entrances
+      other_entrances[0].title = other_entrances[0].title.split('（')[0] + '（' + res.data.huodong_num + '）'
+      other_entrances[1].title = other_entrances[1].title.split('（')[0] + '（' + res.data.rate_num + '）'
       this.setData({
-        data: res.data
+        data: res.data,
+        other_entrances: other_entrances
       })
     }).catch(err => {
       console.log('err', err)

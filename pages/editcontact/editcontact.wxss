@@ -1,75 +1,101 @@
 /* pages/editcontact/editcontact.wxss */
 
-page{
-  background: #F5F5F5;
+page {
+  background: #f5f5f5;
 }
-.page-editcontact{
-  background: #F5F5F5;
+.red{
+  color: #FF3B30;
 }
-.info-box{
-  margin: 28rpx 14rpx 60rpx;
-  background :#fff;
-  border-radius: 8rpx;
-  overflow: hidden;
+.page-editcontact {
+  background: #f5f5f5;
 }
-.info-item{
+
+.info-box {
+  margin-bottom: 60rpx;
+}
+
+.info-item {
   height: 80rpx;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 26rpx;
   font-size: 28rpx;
 }
-.left-box{
+
+.left-box {
   width: 174rpx;
   color: #666;
   height: 100%;
   display: flex;
   align-items: center;
 }
-.right-box{
+
+.right-box {
   flex: 1;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
-.right-input{
+
+.right-input {
   height: 100%;
   width: 100%;
   color: #333;
 }
-.input-placeholder{
+
+.input-placeholder {
   font-size: 28rpx;
-  color: #D8D8D8;
+  color: #d8d8d8;
   font-weight: normal;
 }
-.gender-text{
+
+.gender-text {
   font-size: 28rpx;
   color: #333;
 }
-.gender-text.disabled{
-  color: #D8D8D8;
+
+.gender-text.disabled {
+  color: #d8d8d8;
 }
-.next-icon{
+
+.next-icon {
   font-size: 26rpx;
   color: #999;
 }
 
-.save-btn{
-  width: 669rpx;
+.btn {
+  margin-left: 4%;
+  margin-right: 4%;
+  text-align: center;
   height: 82rpx;
-  border: none;
+  line-height: 82rpx;
   border-radius: 8rpx;
+  box-sizing: border-box;
+}
+
+.save-btn {
+  border: none;
   font-size: 36rpx;
   font-weight: normal;
   color: #fff;
-  background: #64B631;
 }
-.save-btn:after, .save-btn:before{
+
+.save-btn:after, .save-btn:before {
   display: none;
 }
-button.save-btn.disabled{
-  background: #B8B8B8;
+
+.del-btn {
+  margin-top: 24rpx;
+  border: 2rpx solid;
+}
+
+.save-btn.disabled {
+  background: #D8D8D8;
   color: #fff;
+}
+
+.line-separator-h {
+  margin-right: -30rpx;
+  width: unset;
 }

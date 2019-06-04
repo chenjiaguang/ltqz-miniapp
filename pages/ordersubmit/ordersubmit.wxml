@@ -12,8 +12,8 @@
     </view>
     <view wx:if="{{address}}" class='address'>{{address}}</view>
     <view wx:if="{{!refund || include_bx === 1 || include_bx === '1'}}" class='tags-box'>
-      <view wx:if="{{!refund}}" class='tag-item'><text>本次活动不支持退票</text></view>
-      <view wx:if="{{include_bx === 1 || include_bx === '1'}}" class='tag-item'><text>费用中包含保险</text></view>
+      <view wx:if="{{!refund}}" class='tag-item theme-color theme-bg-10'><text>本次活动不支持退票</text></view>
+      <view wx:if="{{include_bx === 1 || include_bx === '1'}}" class='tag-item theme-color theme-bg-10'><text>费用中包含保险</text></view>
     </view>
     <view style="height:26rpx"></view>
   </view>
@@ -50,9 +50,9 @@
     </view>
   </view>
   <view class='clause-box' catchtap="changeClause">
-    <text class="clause-icon lutufont lutu-checked{{clause_checked ? '' : ' disabled'}}"></text>
+    <text class="clause-icon lutufont lutu-checked{{clause_checked ? ' theme-color' : ' disabled'}}"></text>
     <text>我已阅读并同意</text>
-    <text catchtap="clauseTap" data-ele="{{clause}}" wx:for="{{clauses}}" wx:for-index="idx" wx:for-item="clause" wx:key="name" class='clause-text'><text wx:if="{{idx !== 0}}">、</text>{{clause.name}}</text>
+    <text catchtap="clauseTap" data-ele="{{clause}}" wx:for="{{clauses}}" wx:for-index="idx" wx:for-item="clause" wx:key="name" class='clause-text theme-color'><text wx:if="{{idx !== 0}}">、</text>{{clause.name}}</text>
     <text>等重要条款</text>
   </view>
   <view class='bottom-button-wrapper' catchtouchmove="stopPropagation">
@@ -62,20 +62,20 @@
         <view class='buyfor-box'>
           <view class='buyfor-header'><text class='cancel' catchtap="cancelChangeBuyfor">取消</text><text class='confirm' catchtap="confirmChangeBuyfor">确定</text></view>
         </view>
-        <view class='new-buyfor'><text class='new-icon lutufont lutu-add2' catchtap="editBuyfor" data-needidcard="{{include_bx === '1' || include_bx === 1}}"></text><text class='new-text' catchtap="editBuyfor" data-needidcard="{{include_bx === '1' || include_bx === 1}}">新增</text></view>
+        <view class='new-buyfor'><text class='new-icon theme-color lutufont lutu-add2' catchtap="editBuyfor" data-needidcard="{{include_bx === '1' || include_bx === 1}}"></text><text class='new-text theme-color' catchtap="editBuyfor" data-needidcard="{{include_bx === '1' || include_bx === 1}}">新增</text></view>
         <view class='block-separator'></view>
         <scroll-view scroll-y class='buyfors' style="height:{{buyforsWrapperHeight || '408rpx'}}">
           <view wx:if="{{!buyfors || !buyfors[0]}}" style="height:300rpx"></view>
           <view wx:for="{{buyfors}}" wx:for-index="idx" wx:for-item="buyfor" wx:key="id" class='buyfor-item-wrapper'>
             <view class='buyfor-item' catchtap="toggleBuyforChecked" data-idx="{{idx}}" hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
-              <view class='wirte-icon lutufont lutu-write' catchtap="editBuyfor" data-needidcard="{{include_bx === '1' || include_bx === 1}}" data-id="{{buyfor.id}}" hover-stop-propagation></view>
+              <view class='wirte-icon theme-color lutufont lutu-write' catchtap="editBuyfor" data-needidcard="{{include_bx === '1' || include_bx === 1}}" data-id="{{buyfor.id}}" hover-stop-propagation></view>
               <view class='buyfor-center'>
                 <view class='buyfor-name'>{{buyfor.name}}</view>
                 <view wx:if="{{buyfor.tip}}" class='buyfor-idcard disabled'>{{buyfor.tip}}</view>
                 <view wx:if="{{!buyfor.tip && buyfor.id_number}}" class='buyfor-idcard'><text>身份证 </text><text wx:for="{{buyfor.id_number}}" wx:key="*this">{{index >= 4 && index < (buyfor.id_number.length - 4) ? '*' : item}}</text></view>
                 <view wx:if="{{!buyfor.tip && !buyfor.id_number}}" class='buyfor-idcard'></view>
               </view>
-              <text class="buyfor-check-icon lutufont{{buyfor.checked ? ' lutu-checked checked' : ' lutu-uncheck'}}"></text>
+              <text class="buyfor-check-icon lutufont{{buyfor.checked ? ' lutu-checked theme-color' : ' lutu-uncheck'}}"></text>
             </view>
             <view class='line-separator-h' style="margin-left:98rpx;width:652rpx"></view>
           </view>
@@ -92,7 +92,7 @@
           <text class='total-text'>需支付</text>
           <text class='total-amout'>¥{{totalPrice}}</text>
         </view>
-        <button class="submit-btn{{(disabled_submit || submitting) ? ' disabled' : ''}}" disabled="{{disabled_submit || submitting}}" catchtap="submitOrder">去支付</button>
+        <button class="submit-btn{{(disabled_submit || submitting) ? ' disabled' : ' theme-bg'}}" disabled="{{disabled_submit || submitting}}" catchtap="submitOrder">去支付</button>
       </view>
       <ft-iphone-bottom-adapter bg="#fff" />
     </view>

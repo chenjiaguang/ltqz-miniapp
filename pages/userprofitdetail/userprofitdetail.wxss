@@ -6,7 +6,6 @@
 .top-bg-box {
   align-self: stretch;
   height: 282rpx;
-  background: #64b631;
 }
 
 .main-box {

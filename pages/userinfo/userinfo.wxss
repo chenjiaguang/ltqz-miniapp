@@ -34,7 +34,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #64b631;
   margin-top: 41rpx;
   margin-left: 4%;
   margin-right: 4%;

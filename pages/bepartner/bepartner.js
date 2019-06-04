@@ -74,7 +74,7 @@ Page({
     util.request('/user/become_fenxiao', {
       phone: this.data.user.phone,
     }).then(res => {
-      util.backAndToast('申请信息已提交成功')
+      util.backAndToast('申请信息提交成功，请等待审核')
     }).catch(err => {
       console.log('err', err)
     })

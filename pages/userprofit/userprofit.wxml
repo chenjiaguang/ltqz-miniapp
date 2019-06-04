@@ -1,6 +1,6 @@
 <!--pages/userprofit/userprofit.wxml-->
 <view class='page-userprofit column ai-stretch'>
-  <view class='top-bg-box'></view>
+  <view class='top-bg-box theme-bg'></view>
   <view class='main-box'>
     <view class='card overview-box'>
       <view class='all-profit column ai-center'>
@@ -38,6 +38,6 @@
     <view class='card-nopadding entrance-box'>
       <ft-entrance wx:for="{{entrances}}" wx:for-index="idx" wx:for-item="entrance" wx:key="title" title="{{entrance.title}}" top-border="{{idx !== 0}}" extra-data="{{entrance}}" catchtap="entranceTap" />
     </view>
-    <view class="withdraw-btn {{withdraw?'':'disabled'}}" catchtap="requestCash" >申请提现</view>
+    <view class="withdraw-btn {{withdraw?'theme-bg':'disabled'}}" catchtap="requestCash" >申请提现</view>
   </view>
 </view>

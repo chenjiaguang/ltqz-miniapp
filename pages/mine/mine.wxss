@@ -14,7 +14,6 @@
   padding-right: 4%;
   padding-bottom: 125rpx;
   height: 282rpx;
-  background: #64b631;
   box-sizing: border-box;
 }
 
@@ -122,8 +121,8 @@
   line-height: 28rpx;
   padding-left: 10rpx;
   padding-right: 10rpx;
-  color: #64b631;
-  border: 2rpx solid #64b631;
+  border-width: 2rpx;
+  border-style: solid;
   background-color: #fff;
   border-radius: 16px;
 }
@@ -133,11 +132,10 @@
   height: 110rpx;
 }
 
-.order-type .lutufont {
+.itemfont {
   width: 56rpx;
   height: 56rpx;
   font-size: 56rpx;
-  color: #64b631;
   margin-top: 26rpx;
   margin-bottom: 16rpx;
 }

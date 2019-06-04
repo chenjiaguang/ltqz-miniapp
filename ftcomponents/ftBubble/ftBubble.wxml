@@ -1,5 +1,5 @@
 <!--ftcomponents/ftBubble/ftBubble.wxml-->
 <view class='wrapper'>
-  <view class='sign lutufont lutu-yueliang theme-color'></view>
-  <view class='content-box theme-bg'>{{content}}</view>
+  <view class='sign lutufont lutu-yueliang' style="color:{{bg}}"></view>
+  <view class='content-box theme-color' style="background-color:{{bg}}">{{content}}</view>
 </view>

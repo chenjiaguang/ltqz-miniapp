@@ -13,6 +13,6 @@
     <text class='input-tip'>{{content.length}}/300</text>
   </view>
   <ft-image-upload class="imageUpload" catchchange='coverChange'/>
-  <view class='btn' bindtap='submit'>提交评论</view>
+  <view class='btn theme-bg' bindtap='submit'>提交评论</view>
 </view>
 <ft-iphone-bottom-adapter />

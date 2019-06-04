@@ -15,7 +15,6 @@
 
 .item-money {
   font-size: 40rpx;
-  color: #64b631;
 }
 .empty-img {
   width: 151rpx;

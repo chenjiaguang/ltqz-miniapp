@@ -6,7 +6,7 @@
         <text class='item-title'>{{item.title}}</text>
         <text class='item-time'>{{item.created_at}}</text>
       </view>
-      <text class='item-money bold'>+{{item.amount}}元</text>
+      <text class='item-money theme-color bold'>+{{item.amount}}元</text>
     </view>
   </block>
 

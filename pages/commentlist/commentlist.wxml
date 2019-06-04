@@ -1,25 +1,26 @@
 <!--pages/commentmanager/commentmanager.wxml-->
-<view class='page-commentlist'>
-  <view class='overview'>
-    <view class="overview-context{{top_fixed ? ' fixed' : ''}}">
-      <view class='overview-content'>
-        <ft-star-box score="{{avg_score}}" />
-        <text class='comment-amount'>{{(page && page.total) ? page.total : 0}}人评价</text>
-      </view>
-      <view class='line-separator-h'></view>
+<ft-tabs class="tabs" type="2" tabs="{{tabs}}" index="{{index}}" catchfetchlist="fetchlist" showEmpty="{{false}}" catchtabchange='tabchange'>
+  <view slot="tab0">
+    <view class='list-box'>
+      <comment-box role="{{role}}" wx:for="{{tabs[0].list}}" wx:for-index="idx" wx:for-item="comment" wx:key="id" comment="{{comment}}" show-goods="{{showGoods}}" show-ticket="{{showTicket}}" top-border="{{idx !== 0}}" catchreply="replyTap" />
     </view>
-  </view>
-  <view class='comment-list'>
-    <ft-list-loader visible="{{!commentLoaded}}" />
-    <comment-box role="{{role}}" wx:for="{{list}}" wx:for-index="idx" wx:for-item="comment" wx:key="id" comment="{{comment}}" show-goods="{{showGoods}}" show-ticket="{{showTicket}}" top-border="{{idx !== 0}}" catchreply="replyTap"/>
-    <ft-list-footer loaded="{{commentLoaded}}" loading="{{commentLoading}}" page="{{page}}" show-no-more no-more-text="{{(list && list[0]) ? '没有更多了' : '暂时没有评价'}}" />
-    <ft-iphone-bottom-adapter />
-  </view>
 
-  <ft-mask show="{{reply_focus}}">
-    <view class="row ai-center jc-between bottom-reply-box{{reply_focus ? ' focus' : ''}}">
-      <input class='reply-input flex1' focus="{{reply_focus}}" placeholder="回复：{{current_reply_name}}" value="{{reply_value}}" bindinput='replyInput'></input>
-      <view class='reply-btn bold {{reply_value.length?"":"disable"}}' disabled="{{!reply_value}}" catchtap="replySubmit">发送</view>
+    <image wx:if="{{tabs[0].loaded&&tabs[0].list.length==0}}" class='empty-img' src='/assets/images/empty_comment.png' />
+    <text wx:if="{{tabs[0].loaded&&tabs[0].list.length==0}}" class='empty-text'>啊哦，暂时还没有评价哦~</text>
+  </view>
+  <view slot="tab1">
+    <view class='list-box'>
+      <comment-box role="{{role}}" wx:for="{{tabs[1].list}}" wx:for-index="idx" wx:for-item="comment" wx:key="id" comment="{{comment}}" show-goods="{{showGoods}}" show-ticket="{{showTicket}}" top-border="{{idx !== 0}}" catchreply="replyTap" />
     </view>
-  </ft-mask>
-</view>
+
+    <image wx:if="{{tabs[1].loaded&&tabs[1].list.length==0}}" class='empty-img' src='/assets/images/empty_comment.png' />
+    <text wx:if="{{tabs[1].loaded&&tabs[1].list.length==0}}" class='empty-text'>啊哦，暂时还没有评价哦~</text>
+  </view>
+</ft-tabs>
+
+<ft-mask show="{{reply_focus}}">
+  <view class="row ai-center jc-between bottom-reply-box{{reply_focus ? ' focus' : ''}}">
+    <input class='reply-input flex1' focus="{{reply_focus}}" placeholder="回复：{{current_reply_name}}" value="{{reply_value}}" bindinput='replyInput'></input>
+    <view class='reply-btn bold {{reply_value.length?"theme-color":"disable"}}' disabled="{{!reply_value}}" catchtap="replySubmit">发送</view>
+  </view>
+</ft-mask>

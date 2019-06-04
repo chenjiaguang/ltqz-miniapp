@@ -11,22 +11,32 @@
     <view class='line-separator-h'></view>
     <view class='overview-bottom row center'>
       <view class='overview-bottom-item'>
-        <view class='overview-bottom-header'><text>活动报名总收入</text><text class='unit'>（元）</text></view>
+        <view class='overview-bottom-header'>
+          <text>活动报名总收入</text>
+          <text class='unit'>（元）</text>
+        </view>
         <view class='overview-bottom-amount bold'>{{data.total_income}}</view>
       </view>
       <view class='overview-bottom-item'>
-        <view class='overview-bottom-header'><text>发布活动数</text></view>
+        <view class='overview-bottom-header'>
+          <text>发布活动数</text>
+        </view>
         <view class='overview-bottom-amount bold'>{{data.huodong_num}}</view>
       </view>
     </view>
   </view>
   <view class='hexiao-box row'>
-    <view class='hexiao-btn row center' catchtap="scanHexiaoCode" hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}"><text class='lutufont lutu-scan'></text></view>
+    <view class='hexiao-btn row center' catchtap="scanHexiaoCode" hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
+      <text class='lutufont lutu-scan'></text>
+    </view>
     <view class='hexiao-set-entrance'>
-      <ft-entrance title="{{data.hx_code?hexiao_entrance.title + data.hx_code:'去设置自助核销码'}}" extra-data="{{hexiao_entrance}}" catchtap="entranceTapHx"/>
+      <ft-entrance title="{{data.hx_code?hexiao_entrance.title + data.hx_code:'去设置自助核销码'}}" extra-data="{{hexiao_entrance}}" catchtap="entranceTapHx" />
     </view>
   </view>
   <view class='card-nopadding other-entrance-box'>
-    <ft-entrance wx:for="{{other_entrances}}" wx:for-index="idx" wx:for-item="entrance" wx:key="title" title="{{entrance.title}}" top-border="{{idx !== 0}}" extra-data="{{entrance}}" catchtap="entranceTap" />
+    <ft-entrance title="{{other_entrances[0].title}}" top-border="{{false}}" extra-data="{{other_entrances[0]}}" catchtap="entranceTap" />
+    <ft-entrance title="{{other_entrances[1].title}}" top-border="{{true}}" extra-data="{{other_entrances[1]}}" catchtap="entranceTap">
+      <ft-star-box score="{{data.rate}}"/>
+    </ft-entrance>
   </view>
 </view>

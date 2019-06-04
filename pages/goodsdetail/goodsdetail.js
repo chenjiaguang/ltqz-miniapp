@@ -32,13 +32,18 @@ Page({
       4: '报名已满',
       5: '报名结束'
     },
+    sale_type: '1',
+    is_collect: false,
+    groupList: [],
     fenxiao_price: 0, // 分享赚fenxiao_price，如果为0或不存在，则分享按钮为普通样式，否则为分享赚xxx样式
     cover_url: '',
     title: '',
     desc: '',
     include_bx: '',
     min_price: 0,
+    origin_price: 0,
     show_min_price: 0,
+    show_origin_price: 0,
     price_num: 1,
     status: '', // 0为失效或已删除|1为报名中|2为已满额未截止|3为已截止未满额|4为已截止且满额|5为已结束
     valid_btime: '',
@@ -161,6 +166,8 @@ Page({
     let rData = {id}
     util.request('/huodong/detail', rData).then(res => {
       if (res.error == 0 && res.data) {
+        // 测试原价todo
+        // res.data.origin_price = 2000
         // 处理展示详情内容
         let arrEntities = { 'lt': '<', 'gt': '>', 'nbsp': ' ', 'amp': '&', 'quot': '"', 'mdash': '——', 'ldquo': '“', 'rdquo': '”', '#39': "'" }
         res.data.content = res.data.content.replace(/\n/ig, '').replace(/<img/ig, '<img style="max-width:100%;height:auto;display:block"').replace(/<section/ig, '<div').replace(/\/section>/ig, '/div>')
@@ -171,6 +178,8 @@ Page({
         res.data.fenxiao_price = util.formatMoney(res.data.fenxiao_price).showMoney
         res.data.min_price = util.formatMoney(res.data.min_price).money
         res.data.show_min_price = util.formatMoney(res.data.min_price).showMoney
+        res.data.origin_price = util.formatMoney(res.data.origin_price).money
+        res.data.show_origin_price = util.formatMoney(res.data.origin_price).showMoney
         if (res.data.session) {
           res.data.session.forEach((item, idx) => { // 票的价格处理(String -> Number，分保留，另存一份用于展示的价格, 计算时用分，展示时用元)
             item.ticket.forEach(it => {
@@ -181,6 +190,33 @@ Page({
           this.initSession(res.data.session)
         }
         res.data.goodsLoaded = true
+        // res.data.tuan = [
+        //   {
+        //     id: 4,
+        //     tuan_master_avatar: 'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=2652953858,1039653315&fm=27&gp=0.jpg',
+        //     tuan_master_nick_name: '花心萝卜腿',
+        //     remain_spell_num: 1,
+        //     expired_timestamp: 10
+        //   },
+        //   {
+        //     id: 5,
+        //     tuan_master_avatar: 'http://img5.imgtn.bdimg.com/it/u=1414213419,839053634&fm=26&gp=0.jpg',
+        //     tuan_master_nick_name: '毛腿萝莉',
+        //     remain_spell_num: 2,
+        //     expired_timestamp: 5
+        //   }
+        // ]
+        // res.data.groupList = res.data.tuan.map(item => {
+        //   return {
+        //     id: item.id,
+        //     avatar: item.tuan_master_avatar,
+        //     username: item.tuan_master_nick_name,
+        //     need: item.remain_spell_num,
+        //     remain: item.expired_timestamp
+        //   }
+        // })
+        // res.data.sale_type = '2'
+        // res.data.spell_num = 8
         this.setData(res.data)
         // this.drawShareFriendBanner(res.data.cover_url, res.data.show_min_price, res.data.price_num) // 目前的版本不需要绘制分享的banner，先注释
       }
@@ -833,5 +869,10 @@ Page({
         })
       }
     })
+  },
+
+  groupTap: function (e) {
+    const {ele} = e.detail
+    console.log('page_groupTap', ele)
   }
 })

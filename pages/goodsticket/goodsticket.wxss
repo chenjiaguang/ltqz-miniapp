@@ -30,6 +30,9 @@ page{
   text-align: center;
   padding: 0 32rpx;
 }
+.status-text-normal{
+  color: #333333;
+}
 .hexiao-btn{
   width: 248rpx;
   height: 80rpx;
@@ -38,7 +41,6 @@ page{
   border-radius: 8rpx;
   font-size: 36rpx;
   color: #fff;
-  background: #64B631;
   margin: 46rpx auto 50rpx;
 }
 .hexiao-btn:after, .hexiao-btn:before{
@@ -56,7 +58,6 @@ button.hexiao-btn.disabled{
   border-radius: 8rpx;
   font-size: 36rpx;
   color: #fff;
-  background: #64B631;
   margin: 46rpx auto 50rpx;
 }
 .comment-btn:after, .comment-btn:before{

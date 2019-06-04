@@ -15,16 +15,16 @@
         <text class='content'>{{item.content}}</text>
         <view class='row'>
           <text wx:if="{{item.status==2||item.status==3}}" class='state state1'>已核销</text>
-          <text wx:else class='state state0'>未核销</text>
+          <text wx:else class='state theme-color theme-border-color'>未核销</text>
         </view>
       </view>
-      <view class='lutufont lutu-tel2' hover-stop-propagation catchtap='callPhone' data-phone='{{item.phone}}'></view>
+      <view class='lutufont lutu-tel2 theme-color' hover-stop-propagation catchtap='callPhone' data-phone='{{item.phone}}'></view>
     </view>
   </block>
   <ft-list-footer loaded="{{!!page}}" loading="{{loading}}" page="{{page}}" show-no-more />
   <ft-iphone-bottom-adapter />
   <view class='fixed-box column'>
-    <view class='btn' bindtap='goDetail'>查看活动详情</view>
+    <view class='btn theme-bg' bindtap='goDetail'>查看活动详情</view>
     <ft-iphone-bottom-adapter class="bottom" />
   </view>
 </view>

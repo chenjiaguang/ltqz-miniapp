@@ -30,4 +30,4 @@
     </picker>
   </view>
 </view>
-<view class="btn" catchtap="save">保存</view>
+<view class="btn theme-bg" catchtap="save">保存</view>

@@ -7,15 +7,28 @@ Page({
    * 页面的初始数据
    */
   data: {
+    index: 0,
+    tabs: [{
+      title: '全部',
+      list: [],
+      page: {
+        pn: 1
+      },
+      loaded: false,
+      loading: false
+    }, {
+      title: '待回复',
+      list: [],
+      page: {
+        pn: 1
+      },
+      loaded: false,
+      loading: false
+    }],
     role: 'user',
     showGoods: false,
     showTicket: false,
     top_fixed: false,
-    avg_score: 0,
-    commentLoaded: false,
-    commentLoading: false,
-    page: {},
-    list: [],
 
     current_reply_name: '', //回复对象的名称
     reply_focus: false, //是否在回复状态
@@ -45,16 +58,18 @@ Page({
       wx.setNavigationBarTitle({
         title: '评价管理',
       })
-      wx.setNavigationBarColor({
-        frontColor: '#ffffff',
-        backgroundColor: '#64B631'
-      })
+      const app = getApp()
+      if (app.globalData.themeColor) {
+        wx.setNavigationBarColor({
+          frontColor: '#ffffff',
+          backgroundColor: app.globalData.themeColor
+        })
+      }
       this.setData({
         role: options.role
       })
     }
     this.options = options // 把options保存下来
-    this.fetchComment(options, 1)
   },
 
   /**
@@ -88,21 +103,12 @@ Page({
   /**
    * 页面相关事件处理函数--监听用户下拉动作
    */
-  onPullDownRefresh: function() {
-    this.fetchComment(this.options, 1)
-  },
+  onPullDownRefresh: function() {},
 
   /**
    * 页面上拉触底事件的处理函数
    */
-  onReachBottom: function() {
-    const {
-      page
-    } = this.data
-    if (page && !page.is_end) {
-      this.fetchComment(this.options, parseInt(page.pn) + 1)
-    }
-  },
+  onReachBottom: function() {},
 
   /**
    * 用户点击右上角分享
@@ -129,60 +135,55 @@ Page({
     }
   },
 
-  fetchComment: function(options, pn) {
+  tabchange(e) {
+    this.setData({
+      index: e.detail.current
+    })
+  },
+  fetchlist(e) {
+    this.fetchComment(e.detail.idx, this.options, e.detail.pn)
+  },
+  fetchComment: function(index, options, pn) {
     // options.sid(shop_id，传入商家id则请求商家的评论)、options.pid(product_id，传入商品id则请求商品的评论)、options.type(type，商品类型，活动为1)
     const {
-      commentLoaded,
-      commentLoading,
       list,
       page
     } = this.data
-    if (commentLoading || (page && page.is_end && pn !== 1)) { // 正在加载 或 最后一页并且不是刷新
-      return false
-    }
-    this.setData({
-      commentLoading: true
-    })
     let rData = {
       product_id: options.pid,
       shop_id: options.sid,
       type: options.pid ? '1' : '',
-      pn: pn
+      pn: pn,
+      reply: index == 1 ? null : ''
     }
+    this.setData({
+      [`tabs[${index}].loading`]: true,
+    })
     util.request('/rate/list', rData).then(res => {
       if (res.error == 0 && res.data) {
         let {
           list,
-          page,
-          avg_score
+          page
         } = res.data
         list.forEach(item => {
           item.created_at = util.formatDateTimeDefault('d', item.created_at)
         })
-        let _obj = {}
-        _obj.commentLoaded = true
-        if (pn === 1) { // 刷新
-          _obj.avg_score = avg_score
-          _obj.page = page
-          _obj.list = list
-        } else {
-          let oldLen = this.data.list.length
-          let newLen = list.length
-          for (let i = 0; i < newLen; i++) {
-            _obj['list[' + (oldLen + i) + ']'] = list[i]
-          }
-          _obj.avg_score = avg_score
-          _obj.page = page
+
+        if (pn == 1) {} else {
+          list = this.data.tabs[index].list.concat(list)
         }
-        this.setData(_obj)
+
+        this.setData({
+          [`tabs[${index}].list`]: list,
+          [`tabs[${index}].page`]: res.data.page,
+          [`tabs[${index}].loaded`]: true,
+          [`tabs[${index}].loading`]: false,
+        })
+
+
       }
     }).catch(err => {
       console.log('catch')
-    }).finally(res => {
-      this.setData({
-        commentLoading: false
-      })
-      wx.stopPullDownRefresh()
     })
   },
 
@@ -218,13 +219,13 @@ Page({
         title: '回复成功',
         icon: 'none'
       })
-      let i = this.data.list.findIndex((item) => {
+      let i = this.data.tabs[this.data.index].list.findIndex((item) => {
         return item.id == this.data.current_reply_id
       })
       this.setData({
         reply_focus: false,
         reply_value: '',
-        [`list[${i}].reply`]: this.data.reply_value
+        [`tabs[${this.data.index}].list[${i}].reply`]: this.data.reply_value
       })
     }).catch(err => {
       console.log('err', err)

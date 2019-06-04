@@ -1,6 +1,6 @@
 <!--pages/mine/mine.wxml-->
 <view class='page-mine'>
-  <view class='user-info row center' catchtap="goUserInfo">
+  <view class='user-info theme-bg row center' catchtap="goUserInfo">
     <image class="avatar" src="{{user.avatar}}" />
     <view class='user-intro'>
       <view class='user-name-box'>
@@ -22,17 +22,17 @@
       <view class='line-separator-h'></view>
       <view class='order-type'>
         <view class='type-item' catchtap="goOrder" data-type='1' hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
-          <text class="lutufont lutu-wallet itemfont"><text class='item-num' wx:if="{{user.order.wait_pay}}">{{user.order.wait_pay}}</text></text>
+          <text class="lutufont lutu-wallet itemfont theme-color"><text class='item-num theme-color theme-border-color' wx:if="{{user.order.wait_pay}}">{{user.order.wait_pay}}</text></text>
 
           <view class='type-title'>待付款</view>
         </view>
         <view class='type-item' catchtap="goOrder" data-type='2' hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
-          <text class="lutufont lutu-unuse itemfont"><text class='item-num' wx:if="{{user.order.wait_use}}">{{user.order.wait_use}}</text></text>
+          <text class="lutufont lutu-unuse itemfont theme-color"><text class='item-num theme-color theme-border-color' wx:if="{{user.order.wait_use}}">{{user.order.wait_use}}</text></text>
 
           <view class='type-title'>待使用</view>
         </view>
         <view class='type-item' catchtap="goOrder" data-type='3' hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
-          <text class="lutufont lutu-comment itemfont"><text class='item-num' wx:if="{{user.order.wait_rate}}">{{user.order.wait_rate}}</text></text>
+          <text class="lutufont lutu-comment itemfont theme-color"><text class='item-num theme-color theme-border-color' wx:if="{{user.order.wait_rate}}">{{user.order.wait_rate}}</text></text>
           <view class='type-title'>待评价</view>
         </view>
       </view>

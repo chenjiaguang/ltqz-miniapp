@@ -4,20 +4,20 @@
   <image class='bg' src='/assets/images/login_bg.png' mode="widthFix" />
   <text class='tip'>路途亲子需要你授权以下权限</text>
   <view class='typerow row ai-center'>
-    <text class='typeicon lutufont lutu-weixin {{authUserInfo?"":"disable"}}'></text>
+    <text class='typeicon lutufont lutu-weixin {{authUserInfo?"theme-color":"disable"}}'></text>
     <view class='column'>
-      <text class='title'>微信授权</text>
+      <text class='title theme-color'>微信授权</text>
       <text class='desc'>获取您的公开信息(昵称、头像等)</text>
     </view>
   </view>
   <view class='typerow row ai-center'>
-    <text class='typeicon lutufont lutu-location {{authUserLocation?"":"disable"}}'></text>
+    <text class='typeicon lutufont lutu-location {{authUserLocation?"theme-color":"disable"}}'></text>
     <view class='column'>
-      <text class='title'>定位权限</text>
+      <text class='title theme-color'>定位权限</text>
       <text class='desc'>获取您的位置信息</text>
     </view>
   </view>
   <view class='permission-view'>
-    <button class='relaunch-btn' open-type="getUserInfo" disabled="{{disableAuth}}" bindgetuserinfo="getUserInfo">确认授权</button>
+    <button class='relaunch-btn theme-bg' open-type="getUserInfo" disabled="{{disableAuth}}" bindgetuserinfo="getUserInfo">确认授权</button>
   </view>
 </view>

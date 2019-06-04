@@ -1,70 +1,28 @@
-/* pages/usuallycontacts/usuallycontacts.wxss */
-
-.header {
-  height: 70rpx;
-  margin-left: 4%;
-  margin-right: 4%;
+.lutu-add2 {
+  font-size: 58rpx;
+  margin-top: 33rpx;
 }
 
-.header-text {
-  font-size: 30rpx;
-  color: #333;
-}
-
-.add-btn {
-  color: #64b631;
-  font-size: 30rpx;
-}
-
-.card:first-child {
-  margin-top: 0;
-}
-
-.xinhao {
-  color: red;
+.add-text {
+  margin-top: 17rpx;
+  margin-bottom: 32rpx;
 }
 
 .item {
-  height: 80rpx;
+  height: 120rpx;
+  padding-left: 30rpx;
+  padding-right: 30rpx;
 }
 
-.key {
-  font-size: 28rpx;
-  color: #666;
-  width: 174rpx;
-}
-
-.value {
-  font-size: 28rpx;
+.name {
   color: #333;
+  font-size: 28rpx;
 }
 
-.line-separator-h {
-  margin-left: -30rpx;
-  margin-right: -30rpx;
-  width: unset;
-}
-
-.btns {
-  font-size: 32rpx;
-  line-height: 80rpx;
-}
-.btn{
-  padding-left: 50rpx;
-  padding-right: 50rpx;
-}
-.red{
-  color: #FF3B30;
-}
-.green{
-  color: #64B631;
-}
-.grey{
-  color: #999999;
-}
-
-.input-placeholder {
-  color: #ccc;
+.id_number {
+  margin-top: 16rpx;
+  color: #999;
+  font-size: 28rpx;
 }
 
 .lutu-next2 {
@@ -72,15 +30,7 @@
   color: #999;
 }
 
-.save-btn {
-  margin-top: 60rpx;
-  color: #fff;
-  text-align: center;
-  height: 82rpx;
-  line-height: 82rpx;
-  border-radius: 8rpx;
-  background-color: #64b631;
-  font-size: 36rpx;
-  margin-left: 4%;
-  margin-right: 4%;
+.line-separator-h {
+  margin-left: 30rpx;
+  width: unset;
 }

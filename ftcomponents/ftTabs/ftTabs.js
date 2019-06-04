@@ -35,12 +35,12 @@ Component({
     },
     currentColor: {
       type: String,
-      value: '#64B631'
+      value: '#FF9500'
     },
     indicatorSize: {
       type: Object,
       value: {
-        width: ''
+        width: '120'
       }
     },
     contentStyle: {

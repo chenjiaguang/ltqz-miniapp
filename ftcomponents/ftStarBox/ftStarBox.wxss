@@ -1,4 +1,6 @@
 /* components/starBox/starBox.wxss */
+@import "../../app.wxss";
+
 .star-wrapper{
   display: flex;
   align-items: center;
@@ -36,7 +38,6 @@
 }
 .score-text{
   height: 100%;
-  color: #64B631;
   margin-left: 10rpx;
   display: flex;
   justify-content: center;

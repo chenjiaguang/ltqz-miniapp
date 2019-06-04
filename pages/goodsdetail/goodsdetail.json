@@ -8,6 +8,8 @@
     "share-button": "../../components/shareButton/shareButton",
     "ft-star-box": "../../ftcomponents/ftStarBox/ftStarBox",
     "comment-box": "../../components/commentBox/commentBox",
+    "ft-bubble": "../../ftcomponents/ftBubble/ftBubble",
+    "group-purchase": "../../components/groupPurchase/groupPurchase",
     "ft-iphone-bottom-adapter": "../../ftcomponents/ftIphoneBottomAdapter/ftIphoneBottomAdapter"
   }
 }

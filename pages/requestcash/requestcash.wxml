@@ -17,4 +17,4 @@
 </view>
 
 
-<view class="btn" disabled="{{!withdraw}}" catchtap="requestCash">申请提现</view>
+<view class="btn theme-bg" disabled="{{!withdraw}}" catchtap="requestCash">申请提现</view>

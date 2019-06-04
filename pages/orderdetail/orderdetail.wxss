@@ -42,7 +42,6 @@
 }
 
 .left-time {
-  background-color: rgba(100,182,49,0.85);
   height: 84rpx;
   width: 100%;
   font-size: 30rpx;
@@ -128,7 +127,6 @@
 }
 
 .pay {
-  background-color: #ff9500;
   font-size: 36rpx;
   color: #fff;
   display: flex;

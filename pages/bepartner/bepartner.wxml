@@ -1,4 +1,5 @@
 <!--pages/userinfo/userinfo.wxml-->
+<view class='tip'>想成为路途亲子的分销合伙人，获得现金奖励吗？ 现在提交您的申请信息，我们会在1-2天内进行审核：</view>
 <view class='card'>
   <view class='item row ai-center jc-between'>
     <text class='title'>头像</text>
@@ -20,4 +21,4 @@
     </button>
   </view>
 </view>
-<button class="btn" disabled="{{!user.phone}}" catchtap="apply">提交申请信息</button>
+<button class="btn theme-bg" disabled="{{!user.phone}}" catchtap="apply">提交申请信息</button>

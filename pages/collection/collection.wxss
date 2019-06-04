@@ -1,0 +1,75 @@
+/* pages/collection/collection.wxss */
+
+page {
+  background-color: #fff;
+}
+
+.overview {
+  position: relative;
+  width: 100%;
+  z-index: 1;
+  height: 89rpx;
+  overflow: visible;
+}
+
+.overview-context {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  color: #333;
+  font-size: 36rpx;
+  height: 89rpx;
+  background: #fff;
+}
+
+.overview-context.fixed {
+  position: fixed;
+}
+
+.head {
+  padding-left: 4%;
+  padding-right: 4%;
+}
+
+.radio-icon {
+  position: absolute;
+  top: 39rpx;
+  left: 172rpx;
+  height: 40rpx;
+  width: 40rpx;
+}
+
+.empty-box {
+  height: 250rpx;
+  color: #e5e5e5;
+}
+
+.empty-tip {
+  font-size: 28rpx;
+  color: #666;
+  margin-top: 58rpx;
+}
+
+.empty-btn {
+  margin-top: 37rpx;
+  width: 204rpx;
+  height: 64rpx;
+  line-height: 64rpx;
+  border-radius: 8rpx;
+  border: 1px solid;
+  text-align: center;
+  font-size: 28rpx;
+}
+
+.cancel-btn {
+  height: 100rpx;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  font-size: 36rpx;
+  color: #fff;
+  text-align: center;
+  line-height: 100rpx;
+}

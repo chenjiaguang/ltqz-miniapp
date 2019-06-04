@@ -6,21 +6,8 @@ Page({
    * 页面的初始数据
    */
   data: {
-    genderRange: [{
-        title: '男',
-        value: '1'
-      },
-      {
-        title: '女',
-        value: '2'
-      }
-    ],
-    gender_text: {
-      1: '男',
-      2: '女'
-    },
+    loaded: false,
     contacts: [],
-    loaded: false
   },
 
   /**
@@ -34,25 +21,13 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function() {
-    util.request('/traveler/list').then(res => {
-      res.data.forEach((item) => {
-        item.editType = '0' //0无操作 1新建 2编辑
-      })
-      this.setData({
-        loaded: true,
-        contacts: res.data
-      })
-    }).catch(err => {
-      console.log('err', err)
-    })
-
   },
 
   /**
    * 生命周期函数--监听页面显示
    */
-  onShow: function() {
-
+  onShow: function () {
+    this.fetch()
   },
 
   /**
@@ -89,112 +64,28 @@ Page({
   onShareAppMessage: function() {
 
   },
-  nameInput: function(e) {
-    let _obj = {}
-    _obj['contacts[' + e.currentTarget.dataset.idx + '].name'] = e.detail.value
-    this.setData(_obj)
-  },
-
-  idCardFocus: function(e) {
-    let contact = this.data.contacts[e.currentTarget.dataset.idx]
-    let _obj = {}
-    _obj['contacts[' + e.currentTarget.dataset.idx + '].id_number_back'] = contact.id_number
-    _obj['contacts[' + e.currentTarget.dataset.idx + '].id_number'] = ''
-    this.setData(_obj)
-  },
-
-  idCardInput: function(e) {
-    let _obj = {}
-    _obj['contacts[' + e.currentTarget.dataset.idx + '].id_number'] = e.detail.value
-    this.setData(_obj)
-  },
-
-  genderChange: function(e) {
-    let _obj = {}
-    _obj['contacts[' + e.currentTarget.dataset.idx + '].sex'] = this.data.genderRange[parseInt(e.detail.value)].value
-    this.setData(_obj)
-  },
-  addItem: function() {
+  fetch: function () {
     this.setData({
-      contacts: this.data.contacts.concat({
-        id: '',
-        name: '',
-        sex: '',
-        id_number: '',
-        editType: '1'
-      })
+      loaded: false
     })
-  },
-  editItem: function(e) {
-    this.setData({
-      ['contacts[' + e.currentTarget.dataset.idx + '].editType']: '2'
-    })
-  },
-  cancelItem: function(e) {
-    let contact = this.data.contacts[e.currentTarget.dataset.idx]
-    if (contact.id_number_back) {
-      contact.id_number = contact.id_number_back
-    }
-    this.setData({
-      ['contacts[' + e.currentTarget.dataset.idx + '].id_number']: contact.id_number,
-      ['contacts[' + e.currentTarget.dataset.idx + '].editType']: '0'
-    })
-  },
-  deleteItem: function(e) {
-    wx.showModal({
-      title: '提示',
-      content: '确定要删除此联系人吗？',
-      success: (res) => {
-        if (res.confirm) {
-          let contact = this.data.contacts[e.currentTarget.dataset.idx]
-          if (contact.id) {
-            util.request('/traveler/edit', {
-              id: contact.id,
-              status: 0
-            }).then(res => {
-              this.data.contacts.splice(e.currentTarget.dataset.idx, 1)
-              this.setData({
-                contacts: this.data.contacts
-              })
-            }).catch(err => {
-              console.log('err', err)
-            })
-          } else {
-            this.data.contacts.splice(e.currentTarget.dataset.idx, 1)
-            this.setData({
-              contacts: this.data.contacts
-            })
-          }
-        }
-      }
-    })
-  },
-  saveItem: function(e) {
-    let contact = this.data.contacts[e.currentTarget.dataset.idx]
-    if (!contact.name) {
-      wx.showToast({
-        title: '请输入姓名',
-        icon: 'none'
-      })
-      return
-    } else if (!contact.sex) {
-      wx.showToast({
-        title: '请选择性别',
-        icon: 'none'
-      })
-      return
-    }
-    util.request('/traveler/edit', {
-      id: contact.id,
-      name: contact.name,
-      sex: contact.sex,
-      id_number: contact.id_number
-    }).then(res => {
+    util.request('/traveler/list').then(res => {
       this.setData({
-        ['contacts[' + e.currentTarget.dataset.idx + '].editType']: '0'
+        loaded: true,
+        contacts: res.data
       })
     }).catch(err => {
       console.log('err', err)
     })
   },
+  addItem: function() {
+    wx.navigateTo({
+      url: '/pages/editcontact/editcontact'
+    })
+  },
+  editItem: function(e) {
+    let item = e.currentTarget.dataset.item
+    wx.navigateTo({
+      url: `/pages/editcontact/editcontact?id=${item.id}&name=${item.name}&id_number=${item.id_number}&sex=${item.sex}`
+    })
+  }
 })

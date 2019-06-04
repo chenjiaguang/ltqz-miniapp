@@ -1,4 +1,6 @@
 /* pages/permission/permission.wxss */
+/* 目前登录页面仍然保持绿色皮肤 */
+@import "../../assets/styles/themes/theme-green.wxss";
 
 .update-token-view {
   font-size: 28rpx;
@@ -33,7 +35,6 @@ page {
 
 .typeicon {
   font-size: 66rpx;
-  color: #09bb07;
   margin-right: 48rpx;
 }
 
@@ -44,7 +45,6 @@ page {
 .title {
   font-size: 26rpx;
   line-height: 37rpx;
-  color: #62b632;
 }
 
 .desc {
@@ -59,7 +59,6 @@ page {
   font-size: 33rpx;
   margin-top: 60rpx;
   color: #fff;
-  background-color: #64b631;
   width: 590rpx;
   height: 80rpx;
   line-height: 80rpx;

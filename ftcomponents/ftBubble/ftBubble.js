@@ -8,13 +8,9 @@ Component({
       type: String,
       value: ''
     },
-    color: {
-      type: String,
-      value: '#FFFFFF'
-    },
     bg: {
       type: String,
-      value: '#FFBC00'
+      value: '#ffffff'
     }
   },
 

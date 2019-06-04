@@ -30,10 +30,11 @@
     "pages/imagepage/imagepage",
     "pages/commentlist/commentlist",
     "pages/paysuccess/paysuccess",
-    "pages/statement/statement"
+    "pages/statement/statement",
+    "pages/collection/collection"
   ],
   "window": {
-    "backgroundTextStyle": "light",
+    "backgroundTextStyle": "dark",
     "navigationBarBackgroundColor": "#FFFFFF",
     "backgroundColor": "#FFFFFF",
     "navigationBarTitleText": "路途亲子",
@@ -41,7 +42,7 @@
   },
   "tabBar": {
     "color": "#999999",
-    "selectedColor": "#64B631",
+    "selectedColor": "#FF9500",
     "backgroundColor": "#FFFFFF",
     "borderStyle": "black",
     "position": "bottom",

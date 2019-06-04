@@ -64,9 +64,7 @@ page{
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #EFF7EB;
   font-size: 24rpx;
-  color: #64B631;
   height: 36rpx;
   padding: 0 8rpx;
   margin: 5rpx 16rpx 5rpx 0;
@@ -161,14 +159,10 @@ page{
 }
 .clause-icon{
   font-size: 24rpx;
-  color: #64B631;
   margin-right: 6rpx;
 }
 .clause-icon.disabled{
   color: #666666;
-}
-.clause-text{
-  color: #64B631;
 }
 
 /* 底部按钮 */
@@ -211,7 +205,6 @@ page{
   border-radius: 0;
   font-size: 36rpx;
   color: #fff;
-  background: #64B631;
 }
 .submit-btn:after, .submit-btn:before{
   display: none;
@@ -284,12 +277,10 @@ button.submit-btn.disabled{
 }
 .new-icon{
   font-size: 38rpx;
-  color: #64B631;
   margin-right: 10rpx;
 }
 .new-text{
   font-size: 36rpx;
-  color: #64B631;
 }
 .buyfors{
   min-height: 408rpx;
@@ -313,9 +304,6 @@ button.submit-btn.disabled{
   margin-left: 32rpx;
   color: #D8D8D8;
 }
-.buyfor-check-icon.checked{
-  color: #64B631;
-}
 .buyfor-center{
   flex: 1;
 }
@@ -336,7 +324,6 @@ button.submit-btn.disabled{
 }
 .wirte-icon{
   font-size: 34rpx;
-  color: #64B631;
   align-self: center;
   margin-right: 32rpx;
 }

@@ -3,21 +3,20 @@
 
 .wrapper{
   position: relative;
-  padding-left: 4rpx;
 }
 .sign{
   font-size: 32rpx;
   position: absolute;
   left: 0;
   bottom: 0;
-  transform: rotate(30deg) translate(0, 18%);
+  transform: rotate(20deg) translate(0, 18%);
 }
 .content-box{
-  font-size: 26rpx;
-  color: #fff;
-  line-height: 42rpx;
-  padding: 0 22rpx;
-  border-radius: 21rpx;
+  font-size: 24rpx;
+  font-weight: bold;
+  line-height: 36rpx;
+  padding: 0 18rpx;
+  border-radius: 18rpx;
   position: relative;
   z-index: 1;
 }
