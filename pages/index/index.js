@@ -120,9 +120,9 @@ Page({
         const banners = res.data.banner.map(item => {
           return {path: item.link, image: item.banner_url}
         })
-        const subBanners = res.data.banner_sub.map(item => {
+        const subBanners = res.data.banner_sub ? res.data.banner_sub.map(item => {
           return { path: item.link, image: item.banner_url }
-        })
+        }) : []
         const cates = res.data.class.map(item => {
           return {id: item.id, name: item.name, image: item.icon_url}
         })

@@ -16,4 +16,4 @@
 15.userprofitdetail.json（收益明细）的navigationBarBackgroundColor 和 backgroundColorTop
 16.withdrawrecord.json（提现记录）的navigationBarBackgroundColor */
 
-@import "./theme-yellow.wxss";
+@import "./theme-pink.wxss";

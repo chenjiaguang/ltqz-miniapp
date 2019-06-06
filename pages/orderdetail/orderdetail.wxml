@@ -1,6 +1,6 @@
 <!--pages/orderdetail/orderdetail.wxml-->
 <view class='page-orderdetail'>
-  <view class="left-time theme-bg-85{{(countdown > 0 && countdown_text) ? ' show' : ''}}"><text>{{countdown_text}}</text></view>
+  <view class="left-time theme-tag-mask{{(countdown > 0 && countdown_text) ? ' show' : ''}}"><text>{{countdown_text}}</text></view>
   
   <view class='row goods' bindtap='goGoodsDetail'>
     <image class='goods-cover' src="{{huodong.cover_url}}" mode="aspectFill"></image>

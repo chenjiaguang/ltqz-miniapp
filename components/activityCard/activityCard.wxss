@@ -19,19 +19,33 @@
   border: none;
 }
 .price-tag{
-  height: 74rpx;
-  font-size: 36rpx;
+  font-size: 32rpx;
   color: #fff;
-  display: flex;
-  align-items: center;
   position: absolute;
   left: 0;
   bottom: 40rpx;
   border-radius: 0 8rpx 8rpx 0;
-  padding: 0 32rpx;
+  overflow: hidden;
+}
+.price-content{
+  height: 64rpx;
+  padding: 0 28rpx;
+  display: flex;
+  align-items: center;
 }
 .actual-price-qi{
   font-size: 28rpx;
+}
+.actual-price-free{
+  font-size: 28rpx;
+}
+.tuan-box{
+  height: 44rpx;
+  line-height: 44rpx;
+  background-color: #ffffff;
+  padding: 0 32rpx;
+  font-size: 24rpx;
+  text-align: center;
 }
 .title{
   padding: 12rpx 32rpx 4rpx;
@@ -66,7 +80,14 @@
   padding: 0 8rpx;
   height: 36rpx;
   font-size: 24rpx;
-  border-radius: 2rpx;
+  line-height: 24rpx;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 8rpx;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .join{
   font-size: 28rpx;

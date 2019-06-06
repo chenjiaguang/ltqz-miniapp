@@ -119,10 +119,24 @@
   padding-top: 10rpx;
   box-sizing: content-box;
 }
+.tuan-box{
+  width: 90rpx;
+  height: 36rpx;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 18rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 24rpx;
+  margin-right: 14rpx;
+  box-sizing: border-box;
+}
 .price{
   font-size: 36rpx;
   font-weight: bold;
-  color: #F24724
+  color: #F24724;
+  flex: 1;
 }
 .actual-price-qi{
   padding-top: 6rpx;

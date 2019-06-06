@@ -1,0 +1,36 @@
+.theme-bg{
+  background-color: #FF5650 !important;
+}
+.theme-bg-secondary{
+  background-color: #FF8641 !important;
+}
+.theme-bg-10{
+  background-color: rgba(255,86,80, 0.1) !important;
+}
+.theme-bg-20{
+  background-color: rgba(255,86,80, 0.2) !important;
+}
+.theme-bg-65{
+  background-color: rgba(255,86,80, 0.65) !important;
+}
+.theme-bg-85{
+  background-color: rgba(255,86,80, 0.85) !important;
+}
+.theme-color{
+  color: #FF5650 !important;
+}
+.theme-star-bg{
+  background-color: #FF5650 !important;
+}
+.theme-star-color{
+  color: #FF5650 !important;
+}
+.theme-border-color{
+  border-color: #FF5650 !important;
+}
+.theme-linear-gradient-h{
+  background-image: linear-gradient(to right, #FFFFFF, #FF5650) !important;
+}
+.theme-linear-gradient-v{
+  background-image: linear-gradient(to bottom, #FFFFFF, #FF5650) !important;
+}

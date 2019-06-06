@@ -34,6 +34,7 @@ Page({
     },
     sale_type: '1',
     is_collect: false,
+    showCollectTip: false,
     groupList: [],
     fenxiao_price: 0, // 分享赚fenxiao_price，如果为0或不存在，则分享按钮为普通样式，否则为分享赚xxx样式
     cover_url: '',
@@ -41,9 +42,9 @@ Page({
     desc: '',
     include_bx: '',
     min_price: 0,
-    origin_price: 0,
+    min_origin_price: 0,
     show_min_price: 0,
-    show_origin_price: 0,
+    show_min_origin_price: 0,
     price_num: 1,
     status: '', // 0为失效或已删除|1为报名中|2为已满额未截止|3为已截止未满额|4为已截止且满额|5为已结束
     valid_btime: '',
@@ -167,7 +168,7 @@ Page({
     util.request('/huodong/detail', rData).then(res => {
       if (res.error == 0 && res.data) {
         // 测试原价todo
-        // res.data.origin_price = 2000
+        // res.data.min_origin_price = 2000
         // 处理展示详情内容
         let arrEntities = { 'lt': '<', 'gt': '>', 'nbsp': ' ', 'amp': '&', 'quot': '"', 'mdash': '——', 'ldquo': '“', 'rdquo': '”', '#39': "'" }
         res.data.content = res.data.content.replace(/\n/ig, '').replace(/<img/ig, '<img style="max-width:100%;height:auto;display:block"').replace(/<section/ig, '<div').replace(/\/section>/ig, '/div>')
@@ -178,13 +179,15 @@ Page({
         res.data.fenxiao_price = util.formatMoney(res.data.fenxiao_price).showMoney
         res.data.min_price = util.formatMoney(res.data.min_price).money
         res.data.show_min_price = util.formatMoney(res.data.min_price).showMoney
-        res.data.origin_price = util.formatMoney(res.data.origin_price).money
-        res.data.show_origin_price = util.formatMoney(res.data.origin_price).showMoney
+        res.data.min_origin_price = util.formatMoney(res.data.min_origin_price).money
+        res.data.show_min_origin_price = util.formatMoney(res.data.min_origin_price).showMoney
         if (res.data.session) {
           res.data.session.forEach((item, idx) => { // 票的价格处理(String -> Number，分保留，另存一份用于展示的价格, 计算时用分，展示时用元)
             item.ticket.forEach(it => {
               it.type.show_price = util.formatMoney(it.type.price).showMoney
               it.type.price = util.formatMoney(it.type.price).money
+              it.type.show_pt_price = util.formatMoney(it.type.pt_price).showMoney
+              it.type.pr_price = util.formatMoney(it.type.pt_price).money
             })
           })
           this.initSession(res.data.session)
@@ -217,7 +220,11 @@ Page({
         // })
         // res.data.sale_type = '2'
         // res.data.spell_num = 8
-        this.setData(res.data)
+        this.setData(res.data, () => {
+          this.setData({
+            content: this.data.content.replace(/\t\t\t/gi, '')
+          })
+        })
         // this.drawShareFriendBanner(res.data.cover_url, res.data.show_min_price, res.data.price_num) // 目前的版本不需要绘制分享的banner，先注释
       }
     }).catch(err => {
@@ -666,6 +673,7 @@ Page({
       return false
     }
     // 获取用户是否开启用户授权相册
+    const app = getApp()
     wx.getSetting({
       success: res => {
         // 如果没有则获取授权
@@ -676,10 +684,17 @@ Page({
               wx.saveImageToPhotosAlbum({
                 filePath: this.data.localPoster,
                 success: () => {
-                  wx.showToast({
+                  wx.showModal({
                     title: '保存成功',
-                    icon: 'none'
+                    content: '海报已生成并保存至你的手机相册了哦，分享到朋友圈给好友种草一下吧',
+                    showCancel: false,
+                    confirmText: '确定',
+                    confirmColor: app.globalData.themeColor || '#000000'
                   })
+                  // wx.showToast({
+                  //   title: '保存成功',
+                  //   icon: 'none'
+                  // })
                 },
                 fail: () => {
                   wx.showToast({
@@ -707,10 +722,17 @@ Page({
                       wx.saveImageToPhotosAlbum({
                         filePath: this.data.localPoster,
                         success: () => {
-                          wx.showToast({
+                          wx.showModal({
                             title: '保存成功',
-                            icon: 'none'
+                            content: '海报已生成并保存至你的手机相册了哦，分享到朋友圈给好友种草一下吧',
+                            showCancel: false,
+                            confirmText: '确定',
+                            confirmColor: app.globalData.themeColor || '#000000'
                           })
+                          // wx.showToast({
+                          //   title: '保存成功',
+                          //   icon: 'none'
+                          // })
                         },
                         fail: () => {
                           wx.showToast({
@@ -732,10 +754,17 @@ Page({
           wx.saveImageToPhotosAlbum({
             filePath: this.data.localPoster,
             success: () => {
-              wx.showToast({
+              wx.showModal({
                 title: '保存成功',
-                icon: 'none'
+                content: '海报已生成并保存至你的手机相册了哦，分享到朋友圈给好友种草一下吧',
+                showCancel: false,
+                confirmText: '确定',
+                confirmColor: app.globalData.themeColor || '#000000'
               })
+              // wx.showToast({
+              //   title: '保存成功',
+              //   icon: 'none'
+              // })
             },
             fail: () => {
               wx.showToast({
@@ -871,8 +900,55 @@ Page({
     })
   },
 
-  groupTap: function (e) {
+  groupTap: function (e) { // todo
     const {ele} = e.detail
     console.log('page_groupTap', ele)
+  },
+
+  collectTap: function () {
+    const {id, goodsLoaded, is_collect, collectting} = this.data
+    if (!goodsLoaded || collectting) { // 未获取数据成功 或 正在操作，则点击收藏无效
+      return false
+    }
+    wx.vibrateShort()
+    const url = is_collect ? '/collect/delete' : '/collect/add'
+    const rData = is_collect ? { ids: [id] } : { product_id: id}
+    this.setData({
+      collectting: true
+    })
+    util.request(url, rData).then(res => {
+      if (res.error == 0) {
+        if (!is_collect) { // 收藏成功才提示，其他情况静默
+          wx.showToast({
+            title: '收藏成功',
+            icon: 'none'
+          })
+          const goodsCollected = storageHelper.getStorage('goodsCollected')
+          if (!goodsCollected) {
+            this.setData({
+              showCollectTip: true
+            })
+            setTimeout(this.hideCollectTip, 3000)
+          }
+          storageHelper.setStorage('goodsCollected', true)
+        }
+        const collected = is_collect
+        this.setData({
+          is_collect: !collected
+        })
+      }
+    }).catch(err => {
+
+    }).finally(res => {
+      this.setData({
+        collectting: false
+      })
+    })
+  },
+
+  hideCollectTip: function () {
+    this.setData({
+      showCollectTip: false
+    })
   }
 })

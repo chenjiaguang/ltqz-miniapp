@@ -4,7 +4,7 @@
   <view class='wrapper-content'>
     <view class='image-box'>
       <image class='image' src="{{activity.cover_url}}" mode="aspectFill"></image>
-      <view class="status status{{activity.status}}{{activity.status == 1 ? ' theme-bg-65' : ''}}">{{activityStatusText[activity.status]}}</view>
+      <view class="status status{{activity.status}}{{activity.status == 1 ? ' theme-tag-mask' : ''}}">{{activityStatusText[activity.status]}}</view>
     </view>
     <view class='right-box'>
       <view class='title'>{{activity.title}}</view>
@@ -13,6 +13,7 @@
       </view>
       <view style="flex:1;"></view>
       <view class='price-and-join'>
+        <view wx:if="{{activity.sale_type == 2}}" class='tuan-box theme-border-color theme-color'><text>{{activity.spell_num}}人团</text></view>
         <view class='price'>
           <text wx:if="{{activity.min_price && activity.min_price > 0}}" class='actual-price'>¥{{activity.min_price}}</text><text wx:if="{{activity.price_num > 1 && activity.min_price && activity.min_price > 0}}" class='actual-price-qi'>起</text><text wx:if="{{!activity.min_price || activity.min_price == 0}}" class='actual-price'>免费</text>
         </view>

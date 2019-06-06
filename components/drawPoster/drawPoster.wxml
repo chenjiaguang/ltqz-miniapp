@@ -1,0 +1,17 @@
+<!--components/drawPoster/drawPoster.wxml-->
+<view class='wrapper' id="wrapper">
+  <view class='poster-body'>
+    <view class='head'>
+      <image class='header-avatar draw-image' src="{{hAvatar}}" mode="aspectFill"></image>
+      <view class='header-right'>
+        <view class='header-name'>
+          <view class='header-name-text draw-text'>{{hName}}</view>
+          <view class='header-name-shadow draw-bg'></view>
+        </view>
+        <view class="header-tip draw-text">{{hTip}}</view>
+      </view>
+    </view>
+    <image class='banner draw-image' src="{{banner}}" mode="aspectFill"></image>
+    <view class='title'>{{title}}</view>
+  </view>
+</view>

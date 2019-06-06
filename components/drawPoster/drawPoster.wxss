@@ -1,0 +1,75 @@
+/* components/drawPoster/drawPoster.wxss */
+
+.wrapper{
+  position: fixed;
+  width: 100%;
+  left: 0;
+  top: 0;
+  background-color: #ffffff;
+}
+.poster-body{
+  padding: 34rpx 32rpx 0;
+}
+.head{
+  padding: 40rpx 0;
+  display: flex;
+  align-items: center;
+}
+.header-avatar{
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+  margin-right: 15rpx;
+}
+.header-right{
+  height: 80rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+.header-name{
+  overflow: visible;
+  position: relative;
+}
+.header-name-text{
+  height: 36rpx;
+  line-height: 36rpx;
+  font-size: 36rpx;
+  color: #333333;
+  font-weight: bold;
+  position: relative;
+  z-index: 2;
+}
+.header-name-shadow{
+  position: absolute;
+  width: 100%;
+  height: 20rpx;
+  padding-right: 5rpx;
+  border-radius: 10rpx;
+  background-color: #FFC987;
+  left: 0;
+  bottom: -10rpx;
+  z-index: 1;
+}
+.header-tip{
+  height: 24rpx;
+  font-size: 24rpx;
+  line-height: 24rpx;
+  overflow: visible;
+  color: #999
+}
+.banner{
+  display: block;
+  width: 100%;
+  height: 686rpx;
+}
+.title{
+  font-size: 32rpx;
+  line-height: 44rpx;
+  margin-top: 32rpx;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}

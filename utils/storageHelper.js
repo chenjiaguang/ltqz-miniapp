@@ -10,7 +10,8 @@ module.exports = {
     'permissionTimeStamp', // 进入permission时的timeStamp，防止多个请求返回都是401时重复进入permission页面
     'authSetting', // 记录用户已授权信息，避免每次获取已授权信息都要调取微信接口（微信的接口是异步的）
     'orderContact',
-    'orderListRefresh'
+    'orderListRefresh',
+    'goodsCollected' // 是否收藏过活动，未收藏过，则在第一次收藏成功时提示其他操作
   ],
   setStorage: function (key, value) {
     if (this.allowList.indexOf(key) === -1) { // allowList不存在,则会提醒开发者添加相应的说明
