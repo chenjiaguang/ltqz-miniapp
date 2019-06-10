@@ -1,17 +1,43 @@
-<!--components/drawPoster/drawPoster.wxml-->
+<!-- components/drawPoster/drawPoster.wxml -->
 <view class='wrapper' id="wrapper">
   <view class='poster-body'>
     <view class='head'>
       <image class='header-avatar draw-image' src="{{hAvatar}}" mode="aspectFill"></image>
       <view class='header-right'>
         <view class='header-name'>
-          <view class='header-name-text draw-text'>{{hName}}</view>
-          <view class='header-name-shadow draw-bg'></view>
+          <view class='header-name-text draw-text' data-text="{{hName}}">{{hName}}</view>
+          <view class='header-name-shadow draw-fill'></view>
         </view>
-        <view class="header-tip draw-text">{{hTip}}</view>
+        <view class="header-tip draw-text" data-text="{{hTip}}">{{hTip}}</view>
       </view>
     </view>
     <image class='banner draw-image' src="{{banner}}" mode="aspectFill"></image>
-    <view class='title'>{{title}}</view>
+    <view class='title draw-text' data-text="{{title}}" data-maxline="{{2}}" data-maxlength="{{20}}">{{title}}</view>
+    <view class='price draw-text' data-text="{{'¥' + price}}">
+      <text>¥{{price}}</text>
+      <view wx:if="{{pintuan}}" class='pintuan-tag draw-fill draw-text' data-text="{{pintuan + '人拼团价'}}">{{pintuan}}人拼团价</view>
+    </view>
+    <view wx:if="{{joinNumber}}" class='join-num draw-text' data-text="{{'累计' + joinNumber + '人报名'}}">累计{{joinNumber}}人报名</view>
+    <view wx:if="{{joinUsers && joinUsers.length}}" class='join-user-box'>
+      <view wx:for="{{joinUsers}}" class='join-user-item' wx:key="id">
+        <image class='join-user-avatar draw-image' src="{{item.avatar || '/assets/images/empty_join_user.png'}}" mode="{{item.avatar ? 'aspectFill' : 'aspectFit'}}" data-islocal="{{!item.avatar}}"></image>
+        <view wx:if="{{index === 0 && item.avatar}}" class='master draw-fill draw-text' data-text="团长">团长</view>
+      </view>
+    </view>
+    <view wx:if="{{joinUsers && joinUsers.length && leftNum}}" class='left-num draw-stroke draw-text' data-text="{{'仅剩' + leftNum + '个名额'}}">仅剩{{leftNum}}个名额</view>
+    <view class='logo-and-qrcode'>
+      <image class='logo draw-image' src="/assets/images/draw_logo.png" mode="aspectFit" data-islocal="{{true}}"></image>
+      <view class='qrcode-box'>
+        <image class='qrcode draw-image' src="{{qrcode}}" mode="aspectFit"></image>
+        <view class='tip draw-text' data-text="长按图片识别二维码，立即参与拼团">长按图片识别二维码，立即参与拼团</view>
+      </view>
+    </view>
   </view>
+  <canvas canvas-id="c-draw-poster" class="c-draw-poster"></canvas>
+  <!-- <view class='mask'>
+    <view class='mask-top'></view>
+    <view class='mask-bottom'></view>
+  </view> -->
+  <view style="position:fixed;left:0;top:200rpx;z-index:999">{{localPoster}}</view>
+  <image class='poster' src="{{localPoster}}" mode="aspectFill"></image>
 </view>

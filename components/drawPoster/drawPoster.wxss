@@ -5,10 +5,10 @@
   width: 100%;
   left: 0;
   top: 0;
-  background-color: #ffffff;
 }
 .poster-body{
-  padding: 34rpx 32rpx 0;
+  padding: 34rpx 32rpx 50rpx;
+  opacity: 0;
 }
 .head{
   padding: 40rpx 0;
@@ -72,4 +72,127 @@
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
   overflow: hidden;
+}
+.price{
+  font-size: 50rpx;
+  line-height: 50rpx;
+  color: #F24724;
+  font-weight: bold;
+  margin-top: 28rpx;
+  overflow: visible;
+  display: flex;
+}
+.pintuan-tag{
+  font-size: 24rpx;
+  background-color: #FF9500;
+  height: 36rpx;
+  line-height: 36rpx;
+  border-radius: 18rpx;
+  padding: 0 20rpx;
+  margin-left: 16rpx;
+  color: #FFFFFF;
+  position: relative;
+  top: -18rpx;
+}
+.join-num{
+  font-size: 24rpx;
+  line-height: 24rpx;
+  color: #999999;
+  margin-top: 12rpx;
+}
+.join-user-box{
+  padding-top: 20rpx;
+  display: flex;
+  flex-wrap: wrap;
+}
+.join-user-item{
+  width: 92rpx;
+  height: 92rpx;
+  border-radius: 46rpx;
+  margin: 20rpx 30rpx 0 0;
+  position: relative;
+}
+.join-user-avatar{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  left: 0;
+  top: 0;
+}
+.join-empty{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  left: 0;
+  top: 0;
+}
+.master{
+  height: 32rpx;
+  padding: 0 10rpx;
+  line-height: 32rpx;
+  font-size: 24rpx;
+  color: #ffffff;
+  background-color: #FF9500;
+  position: absolute;
+  top: 0;
+  right: -30rpx;
+  border-radius: 16rpx 16rpx 16rpx 0;
+}
+.left-num{
+  font-size: 28rpx;
+  line-height: 28rpx;
+  color: #FF9500;
+  padding: 15rpx 25rpx;
+  border: 1px solid #FF9500;
+  border-radius: 12rpx;
+  box-sizing: content-box;
+  margin-top: 20rpx;
+  display: inline-block;
+}
+.logo-and-qrcode{
+  height: 200rpx;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+.logo{
+  width: 249rpx;
+  height: 80rpx;
+}
+.qrcode{
+  display: block;
+  width: 190rpx;
+  height: 190rpx;
+}
+.qrcode-box{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+.tip{
+  font-size: 24rpx;
+  line-height: 24rpx;
+  color: #999999;
+  margin-top: 20rpx;
+  text-align: center;
+}
+
+.c-draw-poster{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  /* opacity: 0; */
+}
+.poster{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  transform: scale(0.65, 0.65);
+  z-index: 99;
 }
