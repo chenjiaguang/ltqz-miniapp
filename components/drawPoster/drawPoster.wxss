@@ -1,14 +1,24 @@
 /* components/drawPoster/drawPoster.wxss */
+@import "../../app.wxss";
+.hide{
+  display: block;
+}
 
 .wrapper{
   position: fixed;
   width: 100%;
   left: 0;
   top: 0;
+  visibility: hidden;
+  overflow: visible;
+}
+.wrapper.show{
+  visibility: visible;
 }
 .poster-body{
   padding: 34rpx 32rpx 50rpx;
   opacity: 0;
+  visibility: hidden;
 }
 .head{
   padding: 40rpx 0;
@@ -176,23 +186,265 @@
   line-height: 24rpx;
   color: #999999;
   margin-top: 20rpx;
-  text-align: center;
+  text-align: right;
 }
 
-.c-draw-poster{
+.draw-poster{
   position: absolute;
   width: 100%;
   height: 100%;
-  left: 0;
-  top: 0;
-  /* opacity: 0; */
+  left: 200%;
+  top: 200%;
+  opacity: 0;
+  visibility: hidden;
 }
 .poster{
   position: absolute;
+  width: 88%;
+  height: 88%;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 102;
+}
+
+.share-box{
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  bottom: 0;
+  visibility: hidden;
+}
+.share-box.hide{
+  animation: shareBoxAnimation1 300ms;
+  animation-fill-mode: forwards;
+
+}
+.share-box.show{
+  animation: shareBoxAnimation 300ms;
+  animation-fill-mode: forwards;
+}
+
+.share-bg{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.65);
+  opacity: 0;
+  /* transition: opacity 300ms; */
+  z-index: 100;
+}
+.share-bg.hide{
+  animation: posterMaskAnimation1 300ms;
+  animation-fill-mode: forwards;
+}
+.share-bg.show{
+  animation: posterMaskAnimation 300ms;
+  animation-fill-mode: forwards;
+}
+.share-content{
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  z-index: 101;
+}
+.share-content.hide{
+  animation: posterMaskAnimation1 300ms;
+  animation-fill-mode: forwards;
+}
+.share-content.show{
+  animation: posterMaskAnimation 300ms;
+  animation-fill-mode: forwards;
+}
+.top-wrapper{
+  flex: 1;
+  width: 100%;
+  position: relative;
+  opacity: 0;
+  /* transition: opacity 300ms; */
+}
+.top-wrapper.hide{
+  animation: posterTopWrapperAnimation1 300ms;
+  animation-fill-mode: forwards;
+}
+.top-wrapper.show{
+  animation: posterTopWrapperAnimation 300ms;
+  animation-fill-mode: forwards;
+}
+.bottom-wrapper{
+  padding: 28rpx 32rpx;
+  width: 100%;
+  background: #fff;
+  transform: translateY(101%);
+  /* transition: transform 300ms; */
+}
+.bottom-wrapper.hide{
+  animation: posterBottomWrapperAnimation1 300ms;
+  animation-fill-mode: forwards;
+}
+.bottom-wrapper.show{
+  animation: posterBottomWrapperAnimation 300ms;
+  animation-fill-mode: forwards;
+}
+.share-tip{
+  font-size: 24rpx;
+  line-height: 32rpx;
+  color: #FF3B30;
+  text-align: center;
+}
+.bottom-content{
+  width: 100%;
+  height: 206rpx;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 158rpx;
+  box-sizing: border-box;
+}
+.loading-image{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 28rpx;
+  color: #fff;
+}
+.share-canvas{
+  position: absolute;
+  width: 526rpx;
+  height: 816rpx;
+  top: 50%;
+  left: -750rpx;
+  transform: translateY(-50%);
+}
+.share-canvas.show.drawed{
+  left: 112rpx;
+}
+.share-friends, .save-image{
+  padding: 10rpx 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+.share-friend-btn{
+  position: absolute;
   width: 100%;
   height: 100%;
   left: 0;
   top: 0;
-  transform: scale(0.65, 0.65);
-  z-index: 99;
+  opacity: 0;
+}
+.share-friend-icon, .save-image-icon{
+  font-size: 56rpx;
+  color: #fff;
+}
+.share-item-icon{
+  width: 96rpx;
+  height: 96rpx;
+  background: #00AF3E;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+}
+.share-item-icon.disabled{
+  background: #B8B8B8;
+}
+.share-box-text{
+  font-size: 24rpx;
+  color: #666;
+  line-height: 24rpx;
+  padding-top: 20rpx;
+}
+@keyframes shareBoxAnimation {
+  0%{
+    z-index: -2;
+    visibility: hidden;
+  }
+  0.01%{
+    z-index: 100;
+    visibility: visible;
+  }
+  100%{
+    z-index: 100;
+    visibility: visible;
+  }
+}
+@keyframes shareBoxAnimation1 {
+  0%{
+    z-index: 100;
+    visibility: visible;
+  }
+  99.99%{
+    z-index: 100;
+    visibility: visible;
+  }
+  100%{
+    z-index: -2;
+    visibility: hidden;
+  }
+}
+@keyframes posterMaskAnimation {
+  0%{
+    opacity: 0;
+  }
+  100%{
+    opacity: 1;
+  }
+}
+@keyframes posterMaskAnimation1 {
+  0%{
+    opacity: 1;
+  }
+  100%{
+    opacity: 0;
+  }
+}
+@keyframes posterTopWrapperAnimation {
+  0%{
+    opacity: 0;
+    transform: translateY(-5%);
+  }
+  100%{
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes posterTopWrapperAnimation1 {
+  0%{
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100%{
+    opacity: 0;
+    transform: translateY(-5%);
+  }
+}
+@keyframes posterBottomWrapperAnimation {
+  0%{
+    opacity: 0;
+    transform: translateY(101%);
+  }
+  100%{
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes posterBottomWrapperAnimation1 {
+  0%{
+    opacity: 0;
+    transform: translateY(0);
+  }
+  100%{
+    opacity: 1;
+    transform: translateY(101);
+  }
 }

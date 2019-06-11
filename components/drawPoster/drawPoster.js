@@ -15,11 +15,16 @@ Component({
     shareType: '1',
     id: '1',
     localPoster: '',
-    showPoster: false
+    showPoster: '',
+    fenxiao_price: false,
+    showHideClass: {
+      1: ' hide',
+      2: ' show'
+    }
   },
 
   attached: function () {
-    this.startDraw()
+    // this.startDraw()
   },
 
   /**
@@ -27,30 +32,37 @@ Component({
    */
   methods: {
     draw: function () {
-      this.createSelectorQuery().selectAll('.draw-image').fields({
-        dataset: true,
-        rect: true,
-        size: true,
-        scrollOffset: true,
-        properties: ['src'],
-        computedStyle: ['borderRadius'],
-      }, res => {
-        this.imageLen = res.length
-        res.forEach((item, idx) => {
-          item.id      // 节点的ID
-          item.dataset // 节点的dataset
-          item.left    // 节点的左边界坐标
-          item.right   // 节点的右边界坐标
-          item.top     // 节点的上边界坐标
-          item.bottom  // 节点的下边界坐标
-          item.width   // 节点的宽度
-          item.height  // 节点的高度
-          this.drawImage(item)
-        })
+      this.createSelectorQuery().select('#wrapper').boundingClientRect(rect => {
+        const ctx = wx.createCanvasContext('c-draw-poster', this)
+        ctx.setFillStyle('#FFFFFF')
+        console.log('rect', rect)
+        this.posterWidth = rect.width
+        this.posterHeight = rect.height
+        ctx.fillRect(0, 0, rect.width, rect.height)
+        this.createSelectorQuery().selectAll('.draw-image').fields({
+          dataset: true,
+          rect: true,
+          size: true,
+          scrollOffset: true,
+          properties: ['src'],
+          computedStyle: ['borderRadius'],
+        }, res => {
+          this.imageLen = res.length
+          res.forEach((item, idx) => {
+            item.id      // 节点的ID
+            item.dataset // 节点的dataset
+            item.left    // 节点的左边界坐标
+            item.right   // 节点的右边界坐标
+            item.top     // 节点的上边界坐标
+            item.bottom  // 节点的下边界坐标
+            item.width   // 节点的宽度
+            item.height  // 节点的高度
+            this.drawImage(item, ctx)
+          })
+        }).exec()
       }).exec()
     },
-    drawImage: function (imageData) {
-      const ctx = wx.createCanvasContext('c-draw-poster', this)
+    drawImage: function (imageData, ctx) {
       wx.getImageInfo({
         src: imageData.src,
         success: (res) => {
@@ -76,23 +88,29 @@ Component({
             ctx.save()
             ctx.beginPath()
             ctx.arc((imageData.left + (imageData.width / 2)), (imageData.top + (imageData.height / 2)), imageData.width / 2, 0, 2 * Math.PI)
+            ctx.closePath()
             ctx.clip()
+            // ctx.clearRect(imageData.left, imageData.top, imageData.width, imageData.height)
             ctx.drawImage(imageData.dataset.islocal ? imageData.src : res.path, banner_clip.clip_left, banner_clip.clip_top, banner_clip.clip_width, banner_clip.clip_height, imageData.left, imageData.top, imageData.width, imageData.height)
             ctx.restore()
           } else {
-            ctx.save()
             ctx.drawImage(imageData.dataset.islocal ? imageData.src : res.path, banner_clip.clip_left, banner_clip.clip_top, banner_clip.clip_width, banner_clip.clip_height, imageData.left, imageData.top, imageData.width, imageData.height)
           }
-          ctx.draw(true)
           this.imageLen -= 1
           if (this.imageLen < 1) {
-            this.drawFillFunc()
+            this.drawFillFunc(ctx)
           }
+          // ctx.draw(true)
+          // ctx.draw(true, () => {
+          //   console.log('ddd', this.imageLen)
+          //   if (this.imageLen < 1) {
+          //     this.drawFillFunc()
+          //   }
+          // })
         }
       })
     },
-    drawFill: function (fillData) {
-      const ctx = wx.createCanvasContext('c-draw-poster', this)
+    drawFill: function (fillData, ctx) {
       let radius = {
         lt: 0,
         rt: 0,
@@ -106,29 +124,48 @@ Component({
         radius.rb = parseInt(radiusArr[2] || radiusArr[0])
         radius.lb= parseInt(radiusArr[3] || radiusArr[1] || radiusArr[0])
       }
-      const x = fillData.left + radius.lt
-      const y = fillData.top + radius.rb
-      const r = Math.min(fillData.width, fillData.height) / 2
-      const sA = 0.5 * Math.PI
-      const eA = 1.5 * Math.PI
-      ctx.arc(x, y, r, sA, eA)
-      ctx.lineTo(fillData.right - r, fillData.top)
-      const _x = fillData.right - radius.lt
-      const _y = fillData.top + radius.rb
-      const _r = Math.min(fillData.width, fillData.height) / 2
-      const _sA = 1.5 * Math.PI
-      const _eA = 2.5 * Math.PI
-      ctx.arc(_x, _y, _r, _sA, _eA)
+      const x1 = fillData.left + radius.lt
+      const y1 = fillData.top + radius.lt
+      const r1 = radius.lt
+      const sA1 = Math.PI
+      const eA1 = 1.5 * Math.PI
+      ctx.save()
+      ctx.beginPath()
+      ctx.moveTo(fillData.left, fillData.top + r1)
+      ctx.arc(x1, y1, r1, sA1, eA1)
+      ctx.lineTo(fillData.right - r1, fillData.top)
+      const x2 = fillData.right - radius.rt
+      const y2 = fillData.top + radius.rt
+      const r2 = radius.rt
+      const sA2 = 1.5 * Math.PI
+      const eA2 = 2 * Math.PI
+      ctx.arc(x2, y2, r2, sA2, eA2)
+      ctx.lineTo(fillData.right, fillData.bottom - r2)
+      const x3 = fillData.right - radius.rb
+      const y3 = fillData.bottom - radius.rb
+      const r3 = radius.rb
+      const sA3 = 0
+      const eA3 = 0.5 * Math.PI
+      ctx.arc(x3, y3, r3, sA3, eA3)
+      ctx.lineTo(fillData.left + r3, fillData.bottom)
+      const x4 = fillData.left + radius.lb
+      const y4 = fillData.bottom - radius.lb
+      const r4 = radius.lb
+      const sA4 = 0.5 * Math.PI
+      const eA4 = Math.PI
+      ctx.arc(x4, y4, r4, sA4, eA4)
+      ctx.lineTo(fillData.left, fillData.top + r4)
       ctx.setFillStyle(fillData.backgroundColor)
+      ctx.closePath()
       ctx.fill()
-      ctx.draw(true)
+      ctx.restore()
       this.fillLen -= 1
       if (this.fillLen < 1) {
-        this.drawStrokeFunc()
+        this.drawStrokeFunc(ctx)
       }
+      // ctx.draw(true)
     },
-    drawStroke: function (strokeData) {
-      const ctx = wx.createCanvasContext('c-draw-poster', this)
+    drawStroke: function (strokeData, ctx) {
       let radius = {
         lt: 0,
         rt: 0,
@@ -147,6 +184,9 @@ Component({
       const r1 = radius.lt
       const sA1 = Math.PI
       const eA1 = 1.5 * Math.PI
+      ctx.save()
+      ctx.beginPath()
+      ctx.moveTo(strokeData.left, strokeData.top + r1)
       ctx.arc(x1, y1, r1, sA1, eA1)
       ctx.lineTo(strokeData.right - r1, strokeData.top)
       const x2 = strokeData.right - radius.rt
@@ -171,16 +211,18 @@ Component({
       ctx.arc(x4, y4, r4, sA4, eA4)
       ctx.lineTo(strokeData.left, strokeData.top + r4)
       ctx.setStrokeStyle(strokeData.borderColor)
+      ctx.closePath()
       ctx.stroke()
-      ctx.draw(true)
+      ctx.restore()
       this.strokeLen -= 1
       if (this.strokeLen < 1) {
-        this.drawTextFunc()
+        this.drawTextFunc(ctx)
       }
+      // ctx.draw(true)
     },
-    drawText: function (textData) {
-      const ctx = wx.createCanvasContext('c-draw-poster', this)
+    drawText: function (textData, ctx) {
       const alignObj = {start: 'left', center: 'center', end: 'right'}
+      ctx.save()
       ctx.setFontSize(parseInt(textData.fontSize))
       ctx.setTextAlign(alignObj[textData.textAlign])
       ctx.setTextBaseline('middle')
@@ -209,31 +251,48 @@ Component({
       } else {
         ctx.fillText(textData.dataset.text, textData.left + parseInt(textData.paddingLeft) + parseInt(textData.borderLeftWidth), textData.top + parseInt(textData.paddingTop) + parseInt(textData.borderTopWidth) + parseInt(textData.lineHeight) / 2, textData.width)
       }
-      // ctx.draw(true)
+      ctx.restore()
       this.textLen -= 1
-      if (this.textLen < 1) { // 最后一个
-        console.log('最后一个')
+      if (this.textLen < 1) {
         ctx.draw(true, () => {
+          console.log('dddf')
           wx.canvasToTempFilePath({
             x: 0,
             y: 0,
             canvasId: 'c-draw-poster',
             success: res => {
+              console.log('success_res', res)
+              const query = this.createSelectorQuery().select('#top-wrapper').boundingClientRect(rect => {
+                let width = 0
+                let height = 0
+                const posterRatio = this.posterWidth / this.posterHeight
+                const topWrapperRatio = rect.width / rect.height
+                if (posterRatio < topWrapperRatio) {
+                  height = rect.height * 0.88
+                  width = height * posterRatio
+                } else {
+                  width = rect.width * 0.88
+                  height = width / posterRatio
+                }
+                this.setData({
+                  posterWidth: width,
+                  posterHeight: height
+                })
+              }).exec()
               let localPoster = res.tempFilePath
               this.setData({
                 localPoster: localPoster
               })
             },
-            fail: function (res) {
-
+            fail: res => {
+              console.log('fail_res', res)
             }
-          })
+          }, this)
         })
-      } else {
-        ctx.draw(true)
       }
+      // ctx.draw(true)
     },
-    drawFillFunc: function () {
+    drawFillFunc: function (ctx) {
       this.createSelectorQuery().selectAll('.draw-fill').fields({
         rect: true,
         size: true,
@@ -250,11 +309,11 @@ Component({
           item.bottom  // 节点的下边界坐标
           item.width   // 节点的宽度
           item.height  // 节点的高度
-          this.drawFill(item)
+          this.drawFill(item, ctx)
         })
       }).exec()
     },
-    drawStrokeFunc: function () {
+    drawStrokeFunc: function (ctx) {
       this.createSelectorQuery().selectAll('.draw-stroke').fields({
         rect: true,
         size: true,
@@ -271,11 +330,11 @@ Component({
           item.bottom  // 节点的下边界坐标
           item.width   // 节点的宽度
           item.height  // 节点的高度
-          this.drawStroke(item)
+          this.drawStroke(item, ctx)
         })
       }).exec()
     },
-    drawTextFunc: function () {
+    drawTextFunc: function (ctx) {
       this.createSelectorQuery().selectAll('.draw-text').fields({
         dataset: true,
         rect: true,
@@ -293,14 +352,14 @@ Component({
           item.bottom  // 节点的下边界坐标
           item.width   // 节点的宽度
           item.height  // 节点的高度
-          this.drawText(item)
+          this.drawText(item, ctx)
         })
       }).exec()
     },
     startDraw: function (dType, sType, rId) {
+      this.showPoster()
       const { type, shareType, id, localPoster} = this.data
       if (dType == type && sType == shareType && rId == id && localPoster) { // 之前已经画过
-        this.showPoster()
         return false
       }
       this.setData({
@@ -351,14 +410,140 @@ Component({
       })
     },
     showPoster: function () {
+      // 改变所在页面的转发 todo
+      const pages = getCurrentPages()
+      const page = pages[pages.length - 1]
+      let passShareFunc = page.onShareAppMessage
+      page._onShareAppMessage = passShareFunc
+      page.onShareAppMessage = function () {
+        return {
+          title: 'test',
+          path: '/pages/goodsdetail/goodsdetail?id=19',
+          imageUrl: 'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=2652953858,1039653315&fm=27&gp=0.jpg'
+        }
+      }
       this.setData({
-        showPoster: true
+        showPoster: 2
       })
     },
     hidePoster: function () {
+      // 改变所在页面的转发 todo
+      const pages = getCurrentPages()
+      const page = pages[pages.length - 1]
+      let passShareFunc = page._onShareAppMessage
+      page.onShareAppMessage = passShareFunc
       this.setData({
-        showPoster: false
+        showPoster: 1
       })
+    },
+    savePoster: function () {
+      const { localPoster } = this.data
+      if (!localPoster) {
+        return false
+      }
+      // 获取用户是否开启用户授权相册
+      const app = getApp()
+      wx.getSetting({
+        success: res => {
+          // 如果没有则获取授权
+          if (!res.authSetting['scope.writePhotosAlbum'] && res.authSetting['scope.writePhotosAlbum'] !== false) { // 未授权 且 未拒绝过
+            wx.authorize({
+              scope: 'scope.writePhotosAlbum',
+              success: () => {
+                wx.saveImageToPhotosAlbum({
+                  filePath: this.data.localPoster,
+                  success: () => {
+                    wx.showModal({
+                      title: '保存成功',
+                      content: '海报已生成并保存至你的手机相册了哦，分享到朋友圈给好友种草一下吧',
+                      showCancel: false,
+                      confirmText: '确定',
+                      confirmColor: app.globalData.themeColor || '#000000'
+                    })
+                    // wx.showToast({
+                    //   title: '保存成功',
+                    //   icon: 'none'
+                    // })
+                  },
+                  fail: () => {
+                    wx.showToast({
+                      title: '保存失败',
+                      icon: 'none'
+                    })
+                  }
+                })
+              },
+              fail: () => {
+
+              }
+            })
+          } else if (!res.authSetting['scope.writePhotosAlbum'] && res.authSetting['scope.writePhotosAlbum'] === false) { // 未授权且拒绝过
+            wx.showModal({
+              content: '保存图片需要你授权，请授权相册', //提示的内容
+              showCancel: true,
+              confirmText: '去授权',
+              success: res => {
+                if (res.confirm) {
+                  wx.openSetting({
+                    success: (res) => {
+                      const authSetting = res.authSetting
+                      if (authSetting['scope.writePhotosAlbum']) {
+                        wx.saveImageToPhotosAlbum({
+                          filePath: this.data.localPoster,
+                          success: () => {
+                            wx.showModal({
+                              title: '保存成功',
+                              content: '海报已生成并保存至你的手机相册了哦，分享到朋友圈给好友种草一下吧',
+                              showCancel: false,
+                              confirmText: '确定',
+                              confirmColor: app.globalData.themeColor || '#000000'
+                            })
+                            // wx.showToast({
+                            //   title: '保存成功',
+                            //   icon: 'none'
+                            // })
+                          },
+                          fail: () => {
+                            wx.showToast({
+                              title: '保存失败',
+                              icon: 'none'
+                            })
+                          }
+                        })
+                      }
+                    }
+                  })
+                } else if (res.cancel) {
+                  console.log('用户点击取消')
+                }
+              }
+            })
+          } else if (res.authSetting['scope.writePhotosAlbum']) {
+            // 有则直接保存
+            wx.saveImageToPhotosAlbum({
+              filePath: this.data.localPoster,
+              success: () => {
+                wx.showModal({
+                  title: '保存成功',
+                  content: '海报已生成并保存至你的手机相册了哦，分享到朋友圈给好友种草一下吧',
+                  showCancel: false,
+                  confirmText: '确定',
+                  confirmColor: app.globalData.themeColor || '#000000'
+                })
+              },
+              fail: () => {
+                wx.showToast({
+                  title: '保存失败',
+                  icon: 'none'
+                })
+              }
+            })
+          }
+        }
+      })
+    },
+    stopPropagation: function () {
+      return false
     }
   }
 })

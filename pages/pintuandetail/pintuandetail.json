@@ -1,5 +1,4 @@
 {
-  "component": true,
   "usingComponents": {
     "draw-poster": "../../components/drawPoster/drawPoster"
   }
