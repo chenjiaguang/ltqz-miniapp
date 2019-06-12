@@ -7,18 +7,18 @@
       <share-button profit="{{fenxiao_price}}" show-price catchshare="shareBtnTap" />
     </view>
   </view>
-  <view class="price-and-status theme-bg-10">
-    <view class='shadow-box'>
+  <view class="price-and-status theme-linear-gradient-h-reverse">
+    <!-- <view class='shadow-box'>
       <view class='shadow1'></view>
       <view class='shadow2'></view>
-    </view>
+    </view> -->
     <view wx:if="{{show_min_price && show_min_price > 0}}" class='actual-price'><text style="font-size:38rpx;padding-top:10rpx;margin-right:6rpx">¥</text><text>{{show_min_price}}{{price_num > 1 ? '起' : ''}}</text></view>
     <view wx:if="{{!show_min_price || show_min_price == 0}}" class='free-price'>免费</view>
     <view wx:if="{{show_min_origin_price && show_min_origin_price > 0}}" class='origin-price'>
       <view wx:if="{{sale_type == 2 && spell_num}}" class='group-sign'><ft-bubble content="{{spell_num + '人团购价'}}" /></view>
       <text>¥{{show_min_origin_price}}</text>
     </view>
-    <view class="status theme-color{{status == 1 ? ' status-able' : ' status-other'}}">{{statusText[status]}}</view>
+    <view class="status{{status == 1 ? ' status-able' : ' status-other'}}">{{statusText[status]}}</view>
   </view>
   <view class='overview'>
     <view class='title-and-intro-box'>
@@ -70,8 +70,8 @@
     <view class='join-header'><text>累计{{join_num}}人参加</text></view>
     <view class='line-separator-h'></view>
     <view class='join-users'>
-      <image wx:for="{{join_users}}" wx:for-index="idx" wx:for-item="user" wx:key="id" class='user' src="{{user.avatar}}" mode="aspectFill"></image>
-      <view wx:if="{{join_users && join_users.length && join_users.length >= 6}}" class='more-user'><view class='dot'></view><view class='dot'></view><view class='dot'></view></view>
+      <image wx:for="{{join_users}}" wx:for-index="idx" wx:for-item="user" wx:key="id" class='user' style="position:relative;z-index:{{join_users.length - idx}}" src="{{user.avatar}}" mode="aspectFill"></image>
+      <view wx:if="{{join_users && join_users.length && join_users.length >= 6}}" class='more-user' style="position:relative;z-index:0"><view class='dot'></view><view class='dot'></view><view class='dot'></view></view>
     </view>
   </view>
   <view class='sponsor-box'>
@@ -98,7 +98,8 @@
       <view class="detail-and-comment-header-fixer{{tabFixed ? ' fixed' : ''}}">
         <view class='detail-and-comment-header'>
           <view catchtap="changeTab" data-idx="{{0}}" data-ele="#goods-content" class="detail-and-comment-tab{{currentTab == 0 ? ' theme-color' : ' black-color'}}"><text>详情</text><view class="tab-indicator{{currentTab == 0 ? ' theme-bg' : ' transparent-bg'}}"></view></view>
-          <view catchtap="changeTab" data-idx="{{1}}" data-ele="#comment-content" class="detail-and-comment-tab{{currentTab == 1 ? ' theme-color' : ' black-color'}}"><text>评价{{(comment_num && comment_num) > 0 ? ('(' + comment_num + ')') : ''}}</text><view class="tab-indicator{{currentTab == 1 ? ' theme-bg' : ' transparent-bg'}}"></view></view>
+          <view wx:if="{{notice}}" catchtap="changeTab" data-idx="{{1}}" data-ele="#goods-notice" class="detail-and-comment-tab{{currentTab == 1 ? ' theme-color' : ' black-color'}}"><text>购买须知</text><view class="tab-indicator{{currentTab == 1 ? ' theme-bg' : ' transparent-bg'}}"></view></view>
+          <view catchtap="changeTab" data-idx="{{2}}" data-ele="#comment-content" class="detail-and-comment-tab{{currentTab == 2 ? ' theme-color' : ' black-color'}}"><text>评价{{(comment_num && comment_num) > 0 ? ('(' + comment_num + ')') : ''}}</text><view class="tab-indicator{{currentTab == 2 ? ' theme-bg' : ' transparent-bg'}}"></view></view>
         </view>
         <view class='line-separator-h'></view>
       </view>
@@ -107,6 +108,13 @@
       <view class="goodsdetail-content" id="goods-content">
         <rich-text wx:if="{{content}}" nodes="{{content}}" class='rich-text'></rich-text>
         <view wx:if="{{!content}}" style="text-align:center;font-size:28rpx;color:#999">加载中...</view>
+      </view>
+      <view wx:if="{{notice}}" class='goodsdetail-notice' id="goods-notice">
+        <view class='block-separator'></view>
+        <view class='goodsdetail-notice-detail'>
+          <rich-text wx:if="{{notice}}" nodes="{{notice}}" class='rich-text'></rich-text>
+        </view>
+        <view wx:if="{{!notice}}" style="text-align:center;font-size:28rpx;color:#999">加载中...</view>
       </view>
       <view class="goodsdetail-score" id="comment-content">
         <view class='block-separator'></view>
@@ -136,7 +144,7 @@
         <view class='session-box'>
           <view class='session-header'>选择场次</view>
           <scroll-view scroll-x class='sessions'>
-            <view wx:for="{{session}}" wx:for-index="idx" wx:for-item="ss" wx:key="id" class="session{{idx == 0 ? ' first' : ''}}{{(idx + 1) == session.length ? ' last' : ''}}{{ss.stock == 0 ? ' session-disabled' : ((ss.stock == null || ss.stock > 20) ? ' session-ample' : ' session-normal')}}{{currentSession == idx ? ' theme-bg-20' : ''}}" catchtap="sessionTap" data-status="{{ss.stock == 0 ? 'disabled' : ((ss.stock == null || ss.stock > 20) ? 'ample' : 'normal')}}" data-idx="{{idx}}">
+            <view wx:for="{{session}}" wx:for-index="idx" wx:for-item="ss" wx:key="id" class="session{{idx == 0 ? ' first' : ''}}{{(idx + 1) == session.length ? ' last' : ''}}{{ss.stock == 0 ? ' session-disabled' : ((ss.stock == null || ss.stock > 20) ? ' session-ample' : ' session-normal')}}{{currentSession[saletype] == idx ? ' theme-bg-20' : ''}}" catchtap="sessionTap" data-status="{{ss.stock == 0 ? 'disabled' : ((ss.stock == null || ss.stock > 20) ? 'ample' : 'normal')}}" data-idx="{{idx}}">
               <view class='session-content'>
                 <view class='session-content-text'>{{ss.name}}</view>
                 <!-- <view class="session-status{{ss.stock == 0 ? ' disabled' : ((ss.stock == null || ss.stock > 20) ? ' theme-bg' : ' normal')}}">{{ss.stock == 0 ? '售罄' : ((ss.stock == null || ss.stock > 20) ? '充足' : ('余' + ss.stock))}}</view> -->
@@ -146,9 +154,9 @@
           <view class='line-separator-h'></view>
           <view class='ticket-header' style="padding-top:32rpx">选择数量</view>
           <scroll-view scroll-y class='ticket-box'>
-            <view wx:for="{{currentTickets}}" wx:for-index="idx" wx:for-item="ticket" wx:key="id" class='ticket-item'>
+            <view wx:for="{{currentTickets[saletype]}}" wx:for-index="idx" wx:for-item="ticket" wx:key="id" class='ticket-item'>
               <view class='ticket-name'>{{ticket.type.name}}</view>
-              <view class='ticket-price'>¥{{ticket.type.show_price}}</view>
+              <view class='ticket-price'>¥{{(saletype == 1) ? ticket.type.show_price : ''}}{{(saletype == 2) ? ticket.type.show_pt_price : ''}}</view>
               <view class='ticket-buttons'>
                 <view class="minus-btn{{ticket.num <= 0 ? ' disabled' : ''}}" catchtap="countTicket" data-type="minus" data-idx="{{idx}}">
                   <text class="lutufont lutu-jian{{ticket.num <= 0 ? ' disabled' : ''}}"></text>
@@ -167,16 +175,17 @@
         <view class='next-step-button'>
           <view class='total-price'>
             <text class='total-price-title'>总计</text>
-            <text class='total-price-text'>¥{{totalPrice}}</text>
+            <text class='total-price-text'>¥{{totalPrice[saletype]}}</text>
           </view>
-          <button class="next-btn{{!selectedTicketLength ? ' disabled' : ' theme-bg'}}" disabled="{{!selectedTicketLength}}" catchtap="order">下一步</button>
+          <button class="next-btn{{!selectedTicketLength[saletype] ? ' disabled' : ' theme-bg'}}" disabled="{{!selectedTicketLength[saletype]}}" catchtap="order">下一步</button>
         </view>
         <ft-iphone-bottom-adapter />
       </view>
     </view>
     <view class='line-separator-h' style="transform-origin:50% 100%;background:transparent"></view>
     <view style="height:100rpx"></view>
-    <view class='bottom-button'>
+    <!-- 普通活动的底部按钮 -->
+    <view wx:if="{{sale_type == 1}}" class='bottom-button'>
       <view class='line-separator-h' style="transform-origin:50% 100%;background:#D8D8D8"></view>
       <view class='bottom-button-content'>
         <view class="first-collect-tip{{showCollectTip ? ' show' : ''}}">
@@ -185,28 +194,60 @@
         </view>
         <view class='kefu-and-collect'>
           <view class='kefu' hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
-            <text class='kefu-icon theme-icon-gray-color lutufont lutu-kefu'></text>
+            <text class='kefu-icon theme-color lutufont lutu-kefu'></text>
             <text class='kefu-text'>客服</text>
           </view>
           <view class='collect' catchtap="collectTap" hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
-            <text class="collect-icon lutufont{{is_collect ? ' lutu-collected theme-color' : ' lutu-collect theme-icon-gray-color'}}"></text>
+            <text class="collect-icon theme-color lutufont{{is_collect ? ' lutu-collected' : ' lutu-collect'}}"></text>
             <text class='collect-text'>收藏</text>
           </view>
         </view>
-        <button wx:if="{{status == 1 && orderContact && sale_type == 2}}" class="join-btn single-join theme-bg-gradient-secondary" disabled="{{status != 1}}" catchtap="toggleSession">
-          <view class='join-price' wx:if="{{show_min_origin_price > 0}}">¥{{show_min_origin_price}}</view>
-          <view class='join-price' wx:if="{{show_min_origin_price <= 0}}">免费</view>
-          <view class='join-text'>单独购买</view>
-        </button>
         <!-- 可报名且用户电话存在 或 不可报名 -->
-        <button wx:if="{{status != 1 || (status == 1 && orderContact)}}" class="join-btn{{status != 1 ? ' disabled' : ' theme-bg-gradient'}}" disabled="{{status != 1}}" catchtap="toggleSession">
-          <view class='join-price' wx:if="{{sale_type == 2 && status == 1 && show_min_price > 0}}">¥{{show_min_price}}</view>
-          <view class='join-price' wx:if="{{sale_type == 2 && status == 1 && show_min_price <= 0}}">免费</view>
-          <view class='join-text' wx:if="{{sale_type == 2 && status == 1}}">{{spell_num}}人团</view>
-          <view wx:if="{{sale_type == 1 || (sale_type == 2 && status != 1)}}" class='join-text' style="font-size:36rpx;line-height:46rpx">{{buttonStatusText[status]}}</view>
-        </button>
-        <!-- 可报名且用户电话不存在 -->
-        <button wx:if="{{status == 1 && !orderContact}}" class="join-btn theme-linear-gradient-80" open-type='getPhoneNumber' bindgetphonenumber="initContact"><text class='join-text' style="font-size:36rpx;line-height:46rpx">立即报名</text></button>
+        <view class='join-btn-wrapper'>
+          <button wx:if="{{status != 1 || (status == 1 && orderContact)}}" class="join-btn{{status != 1 ? ' disabled' : ' theme-bg'}}" disabled="{{status != 1}}" catchtap="toggleSession" data-saletype="1">
+            <view class='join-text' style="font-size:34rpx;line-height:46rpx">{{buttonStatusText[status]}}</view>
+          </button>
+          <!-- 可报名且用户电话不存在 -->
+          <button wx:if="{{status == 1 && !orderContact}}" class="join-btn theme-bg" open-type='getPhoneNumber' bindgetphonenumber="initContact"><text class='join-text' style="font-size:34rpx;line-height:46rpx">立即报名</text></button>
+        </view>
+      </view>
+      <ft-iphone-bottom-adapter bg="#fff" />
+    </view>
+    <!-- 拼团商品的底部按钮 -->
+    <view wx:if="{{sale_type == 2}}" class='bottom-button'>
+      <view class='line-separator-h' style="transform-origin:50% 100%;background:#D8D8D8"></view>
+      <view class='bottom-button-content'>
+        <view class="first-collect-tip{{showCollectTip ? ' show' : ''}}">
+          <view class='tip-body'>已收藏的商品，可以在我 的-我的收藏中查看哦！</view>
+          <view class='tip-arrow'></view>
+        </view>
+        <view class='kefu-and-collect'>
+          <view class='kefu' hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
+            <text class='kefu-icon theme-color lutufont lutu-kefu'></text>
+            <text class='kefu-text'>客服</text>
+          </view>
+          <view class='collect' catchtap="collectTap" hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
+            <text class="collect-icon theme-color lutufont{{is_collect ? ' lutu-collected' : ' lutu-collect'}}"></text>
+            <text class='collect-text'>收藏</text>
+          </view>
+        </view>
+        <view class='join-btn-wrapper'>
+        <!-- 可报名且用户电话存在 或 不可报名 -->
+          <view class='join-btn-wrapper' style="padding-right:0" wx:if="{{status != 1 || (status == 1 && orderContact)}}">
+            <button wx:if="{{status == 1 && orderContact}}" class="join-btn single-join theme-bg-secondary" style="border-top-right-radius:0;border-bottom-right-radius:0" disabled="{{status != 1}}" catchtap="toggleSession" data-saletype="1">
+              <view class='join-price' wx:if="{{show_min_origin_price > 0}}">¥{{show_min_origin_price}}</view>
+              <view class='join-price' wx:if="{{show_min_origin_price <= 0}}">免费</view>
+              <view class='join-text'>单独购买</view>
+            </button>
+            <button class="join-btn{{status != 1 ? ' disabled' : ' theme-bg'}}" style="border-top-left-radius:0;border-bottom-left-radius:0" disabled="{{status != 1}}" catchtap="toggleSession" data-saletype="2">
+              <view class='join-price' wx:if="{{status == 1 && show_min_pt_price > 0}}">¥{{show_min_pt_price}}</view>
+              <view class='join-price' wx:if="{{status == 1 && show_min_pt_price <= 0}}">免费</view>
+              <view class='join-text'>发起拼团</view>
+            </button>
+          </view>
+          <!-- 可报名且用户电话不存在 -->
+          <button wx:if="{{status == 1 && !orderContact}}" class="join-btn theme-bg" open-type='getPhoneNumber' bindgetphonenumber="initContact"><text class='join-text' style="font-size:34rpx;line-height:46rpx">立即报名</text></button>
+        </view>
       </view>
       <ft-iphone-bottom-adapter bg="#fff" />
     </view>

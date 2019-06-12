@@ -197,7 +197,7 @@ page{
 .user{
   width: 80rpx;
   height: 80rpx;
-  margin-left: 21rpx;
+  margin-left: -23rpx;
   border-radius: 50%;
   flex-shrink: 0;
 }
@@ -207,7 +207,7 @@ page{
 .more-user{
   width: 80rpx;
   height: 80rpx;
-  margin-left: 21rpx;
+  margin-left: -23rpx;
   border: 1px solid #979797;
   display: flex;
   justify-content: center;
@@ -308,7 +308,7 @@ page{
   display: flex;
   position: relative;
   justify-content: center;
-  padding: 0 90rpx;
+  padding: 0 32rpx;
   height: 90rpx;
 }
 .detail-and-comment-tab{
@@ -336,13 +336,22 @@ page{
   background-color: transparent;
 }
 
-.goodsdetail-content, .goodsdetail-score{
+.goodsdetail-content, .goodsdetail-score, .goodsdetail-notice{
   display: block;
 }
-.goodsdetail-content.current, .goodsdetail-score.current{
+.goodsdetail-content.current, .goodsdetail-score.current, .goodsdetail-notice.current{
   display: block;
 }
 .goodsdetail-content{
+  padding: 44rpx 0;
+  margin: 0 32rpx;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.goodsdetail-notice{
+  
+}
+.goodsdetail-notice-detail{
   padding: 44rpx 0;
   margin: 0 32rpx;
   overflow: auto;
@@ -496,10 +505,17 @@ page{
   line-height: 32rpx;
   color: #999999;
 }
+.join-btn-wrapper{
+  padding-right: 32rpx;
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
 .join-btn{
+  height: 78rpx;
   flex: 1;
   border: none;
-  border-radius: 0;
+  border-radius: 39rpx;
   color: #fff;
   display: flex;
   flex-direction: column;
@@ -526,7 +542,7 @@ button.join-btn.disabled{
 }
 .join-text{
   font-size: 28rpx;
-  line-height: 38rpx;
+  line-height: 34rpx;
   font-weight: normal;
 }
 

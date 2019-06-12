@@ -4,7 +4,12 @@
     <image class='cover' src="{{activity.cover_url}}" mode="aspectFill"></image>
     <view class='price-tag theme-bg'>
       <view class='price-content'>
-        <text wx:if="{{activity.min_price && activity.min_price > 0}}" class='actual-price'><text style="font-size:24rpx;padding-top:2rpx;margin-right:4rpx;">¥</text>{{activity.min_price}}</text><text wx:if="{{activity.price_num > 1 && activity.min_price && activity.min_price > 0}}" class='actual-price-qi'>起</text><text wx:if="{{!activity.min_price || activity.min_price == 0}}" class='actual-price-free'>免费</text>
+        <block wx:if="{{activity.sale_type == 1}}">
+          <text wx:if="{{activity.min_price && activity.min_price > 0}}" class='actual-price'><text style="font-size:24rpx;padding-top:2rpx;margin-right:4rpx;">¥</text>{{activity.min_price}}</text><text wx:if="{{activity.price_num > 1 && activity.min_price && activity.min_price > 0}}" class='actual-price-qi'>起</text><text wx:if="{{!activity.min_price || activity.min_price == 0}}" class='actual-price-free'>免费</text>
+        </block>
+        <block wx:if="{{activity.sale_type == 2}}">
+          <text wx:if="{{activity.min_pt_price && activity.min_pt_price > 0}}" class='actual-price'><text style="font-size:24rpx;padding-top:2rpx;margin-right:4rpx;">¥</text>{{activity.min_pt_price}}</text><text wx:if="{{activity.price_num > 1 && activity.min_pt_price && activity.min_pt_price > 0}}" class='actual-price-qi'>起</text><text wx:if="{{!activity.min_pt_price || activity.min_pt_price == 0}}" class='actual-price-free'>免费</text>
+        </block>
       </view>
       <view wx:if="{{activity.sale_type == 2}}" class='tuan-box theme-color'>{{activity.spell_num}}人团</view>
     </view>
@@ -14,8 +19,8 @@
   <view class='intro'>{{activity.desc}}</view>
   <view class='tags-and-join'>
     <view class='tags' wx:if="{{activity.tags && activity.tags[0]}}">
-      <view wx:for="{{activity.tags}}" wx:for-item="tag" wx:index="tidx" wx:key="label" class='tag-item theme-color-60 theme-border-color-60'><text>{{tag.label}}</text></view>
+      <view wx:for="{{activity.tags}}" wx:for-item="tag" wx:index="tidx" wx:key="label" class='tag-item theme-bg-10 theme-color'><text>{{tag.label}}</text></view>
     </view>
-    <view class='join'><text>累计{{activity.join_num}}人报名</text></view>
+    <view wx:if="{{activity.join_num && activity.join_num > 0}}" class='join'><text>累计{{activity.join_num}}人报名</text></view>
   </view>
 </view>

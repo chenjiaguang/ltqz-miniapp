@@ -81,9 +81,7 @@
   height: 36rpx;
   font-size: 24rpx;
   line-height: 24rpx;
-  border-width: 1px;
-  border-style: solid;
-  border-radius: 8rpx;
+  border-radius: 2rpx;
   box-sizing: border-box;
   display: flex;
   justify-content: center;

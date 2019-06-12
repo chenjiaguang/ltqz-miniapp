@@ -6,9 +6,9 @@ const util = require('../../utils/util.js')
 Page({
   name: 'index',
   data: {
-    banners: [],
-    subBanners: [],
-    cates: [],
+    banners: [], // 主banner
+    subBanners: [], // 副banner
+    cates: [], // 分类
     // themes: [
     //   { name: '主题1', id: '1', image: 'http://i1.bvimg.com/685753/b9ba96284fff562b.jpg', maskText: '14.5万人关注', tags: ['新品', '爆款'] },
     //   { name: '主题2', id: '2', image: 'http://i1.bvimg.com/685753/b9ba96284fff562b.jpg', maskText: '2万人已购买', tags: ['爆款'] },
@@ -19,38 +19,16 @@ Page({
     //   { name: '主题7', id: '7', image: 'http://i1.bvimg.com/685753/b9ba96284fff562b.jpg', maskText: '14.5万人关注', tags: [] },
     //   { name: '主题8', id: '8', image: 'http://i1.bvimg.com/685753/b9ba96284fff562b.jpg', maskText: '14.5万人关注', tags: [] }
     // ],
-    themes: [],
-    hots: [],
-    recommendations: [
-      // {
-      //   id: '1',
-      //   title: '或是对佛撒的发阿善良大方',
-      //   desc: '活动描述',
-      //   tags: [
-      //     { type: 'class', label: '标签1' }
-      //   ],
-      //   cover_url: 'http://i1.bvimg.com/685753/69601cd97e8be3cb.jpg',
-      //   join_num: 200,
-      //   min_price: 49.9,
-      //   price_num: 1,
-      //   status: '1' // 状态：0为失效或已删除 | 1为报名中| 2为已满额未截止| 3为已截止未满额| 4为已截止且满额| 5为已结束
-      // },
-      // {
-      //   id: '2',
-      //   title: '或是对佛撒的发阿善良大方',
-      //   desc: '活动描述',
-      //   tags: [
-      //     { type: 'class', label: '标签1' },
-      //     { type: 'location', label: '标签2' },
-      //     { type: 'address', label: '标签3' }
-      //   ],
-      //   cover_url: 'http://i1.bvimg.com/685753/69601cd97e8be3cb.jpg',
-      //   join_num: 30,
-      //   min_price: 99.9,
-      //   price_num: 2,
-      //   status: '1' // 状态：0为失效或已删除 | 1为报名中| 2为已满额未截止| 3为已截止未满额| 4为已截止且满额| 5为已结束
-      // }
-    ],
+    themes: [], // 主题
+    // activitys: [
+    //   { title: '天天免费', content: '爆款商品0元购', link: '/pages/goodsdetail/goodsdetail?id=19', icon: 'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2229346952,2661940409&fm=27&gp=0.jpg'},
+    //   { title: '限时抢购', content: '精品好物低价抢', link: '/pages/goodsdetail/goodsdetail?id=19', icon: 'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2229346952,2661940409&fm=27&gp=0.jpg'},
+    //   { title: '体验券/优惠券', content: '热门活动超值体验', link: '', icon: 'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2229346952,2661940409&fm=27&gp=0.jpg'}
+    // ],
+    activitys: [], // 营销活动
+    hots: [], // 爆款
+    news: [], // 新品
+    recommendations: [], // 推荐
     recommendationLoaded: false,
     recommendationLoading: false,
     recommendationPage: {}
@@ -106,7 +84,15 @@ Page({
     }
   },
   activityTap: function (e) {
-    console.log('activityTap', e)
+    const { link } = e.currentTarget.dataset
+    if (link) {
+      wx.navigateTo({
+        url: link
+      })
+    }
+  },
+  goodsTap: function (e) {
+    console.log('goodsTap', e)
     const {id} = e.detail
     if (id) {
       wx.navigateTo({
@@ -127,11 +113,23 @@ Page({
           return {id: item.id, name: item.name, image: item.icon_url}
         })
         const hots = res.data.hots || []
+        const news = res.data.news || []
+        hots.forEach(item => {
+          item.min_price = util.formatMoney(item.min_price).showMoney
+          item.min_origin_price = util.formatMoney(item.min_origin_price).showMoney
+          item.min_pt_price = util.formatMoney(item.min_pt_price).showMoney
+        })
+        news.forEach(item => {
+          item.min_price = util.formatMoney(item.min_price).showMoney
+          item.min_origin_price = util.formatMoney(item.min_origin_price).showMoney
+          item.min_pt_price = util.formatMoney(item.min_pt_price).showMoney
+        })
         this.setData({
           banners,
           subBanners,
           cates,
-          hots
+          hots,
+          news
         })
       }
     })
@@ -161,12 +159,16 @@ Page({
         } = res.data
         list.forEach(item => {
           item.min_price = util.formatMoney(item.min_price).showMoney
+          item.min_origin_price = util.formatMoney(item.min_origin_price).showMoney
+          item.min_pt_price = util.formatMoney(item.min_pt_price).showMoney
         })
         let _obj = {}
         _obj.recommendationLoaded = true
         if (pn === 1) { // 刷新
           _obj.recommendationPage = page
           _obj.recommendations = list
+          // _obj.hots = [list[0], list[1]]
+          // _obj.news = [list[0]]
         } else {
           let oldLen = this.data.recommendations.length
           let newLen = list.length

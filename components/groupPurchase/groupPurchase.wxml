@@ -1,26 +1,44 @@
 <!--components/groupPurchase/groupPurchase.wxml-->
 <view class="wrapper{{alltimeout ? ' wrapper-hide' : ''}}">
   <view class='block-separator'></view>
-  <view class='header'><view class='header-title'>拼团玩法</view><view class='question-icon lutufont lutu-question'  hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}" catchtap="ruleTap"></view></view>
-  <view class='rule'>①开团/参团 > ②邀请好友参团 > ③人满成团/未成团退款</view>
-  <view class='line-separator-h'></view>
-  <view style="height:16rpx"></view>
-  <view wx:for="{{groupList}}" wx:key="id" class="group-item-wrapper{{remainTime[item.id] <= 0 ? ' disabled-group' : ''}}" hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}" catchtap="groupTap" data-ele="{{item}}">
-    <view class='group-item'>
-      <view class='left'>
-        <view class='avatar-box'>
-          <image class='avatar' mode="aspectFill" src="{{item.avatar}}"></image>
-          <image class='avatar-sign' mode="aspectFit" src="./group_icon.png"></image>
-        </view>
-        <view class='username'>{{item.username}}</view>
-        <view class='need-and-remain'>
-          <view class='need-num'>还差{{item.need}}人成团</view>
-          <view wx:if="{{remainTimeText && remainTimeText[item.id]}}" class='remain-time'>{{remainTimeText[item.id]}}</view>
-        </view>
-      </view>
-      <view class='right theme-bg theme-border-color'><text>去参团</text></view>
+  <view class='header'>
+    <view class='header-title'>拼团</view>
+    <view class='rule-btn' hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}" catchtap="ruleTap">
+      <text class='rule-text'>详细规则</text>
+      <text class='next-icon lutufont lutu-next2'></text>
     </view>
   </view>
-  <view style="height:16rpx"></view>
+  <view class='line-separator-h'></view>
+  <view class='rule'>
+    <text class='rule-separator'>①</text>
+    <text class='rule-step'>开团/参团</text>
+    <text class='rule-separator'><text style="padding:0 20rpx">></text>②</text>
+    <text class='rule-step'>邀请好友参团</text>
+    <text class='rule-separator'><text style="padding:0 20rpx">></text>③</text>
+    <text class='rule-step' style="white-space:normal">人满成团/未成团退款</text>
+  </view>
   <view class='block-separator'></view>
+  <block wx:if="{{groupList && groupList.length > 0}}">
+    <view class='group-header'>{{groupList.length}}人正在参与拼团，可直接参与</view>
+    <view class='line-separator-h'></view>
+    <view style="height:16rpx"></view>
+    <view wx:for="{{groupList}}" wx:key="id" class="group-item-wrapper{{remainTime[item.id] <= 0 ? ' disabled-group' : ''}}" hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}" catchtap="groupTap" data-ele="{{item}}">
+      <view class='group-item'>
+        <view class='left'>
+          <view class='avatar-box'>
+            <image class='avatar' mode="aspectFill" src="{{item.avatar}}"></image>
+            <!-- <image class='avatar-sign' mode="aspectFit" src="./group_icon.png"></image> -->
+          </view>
+          <view class='username'>{{item.username}}</view>
+          <view class='need-and-remain'>
+            <view class='need-num'>还差{{item.need}}人成团</view>
+            <view wx:if="{{remainTimeText && remainTimeText[item.id]}}" class='remain-time'>{{remainTimeText[item.id]}}</view>
+          </view>
+        </view>
+        <view class='right theme-linear-gradient-170-reverse theme-border-color'><text>去参团</text></view>
+      </view>
+    </view>
+    <view style="height:16rpx"></view>
+    <view class='block-separator'></view>
+  </block>
 </view>

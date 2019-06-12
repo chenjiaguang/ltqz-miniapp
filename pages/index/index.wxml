@@ -10,13 +10,24 @@
     <view class='theme-header'><text class='theme-header-title'>热门主题</text><text class='theme-header-tip'>提前领 最高<text style="color:#F24724">省¥50</text></text></view>
     <ft-theme themes="{{themes}}" catchthemetap="themeTap" />
   </view>
+  <view wx:if="{{activitys && activitys[0]}}" class="activity-box{{activitys.length > 2 ? ' mode2' : ' mode1'}}">
+    <view wx:for="{{activitys}}" wx:for-index="idx" wx:for-item="activity" wx:key="title" class="activity-item{{activitys.length > 2 ? ' mode2' : ' mode1'}}" catchtap="activityTap" data-link="{{activity.link}}">
+      <view class='activity-title'>{{activity.title}}</view>
+      <view class='activity-content'>{{activity.content}}</view>
+      <image wx:if="{{activity.link}}" class="activity-icon{{activitys.length > 2 ? ' mode2' : ' mode1'}}{{idx === 0 ? ' first-icon' : ''}}" src="{{activity.icon}}" mode="aspectFit"></image>
+    </view>
+  </view>
   <view wx:if="{{hots && hots[0]}}" class='hot-box'>
-    <view class='hot-header'><view class='left-line line-separator-h'></view><view class='hot-icon theme-bg'><image class='hot-icon-image' src="/assets/images/fire_white.png" mode="aspectFit"></image></view><text class='hot-header-title'>优选爆款</text><view class='right-line line-separator-h'></view></view>
-    <activity-card wx:for="{{hots}}" wx:for-item="activity" wx:for-index="aidx" wx:key="id" activity="{{activity}}" catchactivitytap="activityTap" />
+    <view class='hot-header'><view class='left-line line-separator-h'></view><view class='hot-icon theme-bg'><image class='hot-icon-image' src="/assets/images/fire_white.png" mode="aspectFit"></image></view><text class='hot-header-title'>热卖TOP榜</text><view class='right-line line-separator-h'></view></view>
+    <activity-card wx:for="{{hots}}" wx:for-item="activity" wx:for-index="aidx" wx:key="id" activity="{{activity}}" catchactivitytap="goodsTap" />
+  </view>
+  <view wx:if="{{news && news[0]}}" class='new-box'>
+    <view class='hot-header'><view class='left-line line-separator-h'></view><view class='new-icon theme-bg'><image class='new-icon-image' src="/assets/images/fire_white.png" mode="aspectFit"></image></view><text class='new-header-title'>当季新品</text><view class='right-line line-separator-h'></view></view>
+    <activity-card wx:for="{{news}}" wx:for-item="activity" wx:for-index="aidx" wx:key="id" activity="{{activity}}" catchactivitytap="goodsTap" />
   </view>
   <view class='recommendation-box'>
     <view class='recommendation-header'><view class='left-line line-separator-h'></view><view class='recommendation-icon theme-bg'><image class='recommendation-icon-image' src="/assets/images/thumb_white.png" mode="aspectFit"></image></view><text class='recommendation-header-title'>为您推荐</text><view class='right-line line-separator-h'></view></view>
-    <activity-card wx:for="{{recommendations}}" wx:for-item="activity" wx:for-index="aidx" wx:key="id" activity="{{activity}}" catchactivitytap="activityTap" />
+    <activity-card wx:for="{{recommendations}}" wx:for-item="activity" wx:for-index="aidx" wx:key="id" activity="{{activity}}" catchactivitytap="goodsTap" />
   </view>
     <!-- <ft-bubble content="10人拼团价" /> -->
   <ft-list-footer loaded="{{recommendationLoaded}}" loading="{{recommendationLoading}}" page="{{recommendationPage}}" show-no-more no-more-text="{{(recommendations && recommendations[0]) ? '没有更多了' : '暂时没有活动'}}" />

@@ -137,6 +137,8 @@ Page({
         } = res.data
         list.forEach(item => {
           item.min_price = util.formatMoney(item.min_price).showMoney
+          item.min_origin_price = util.formatMoney(item.min_origin_price).showMoney
+          item.min_pt_price = util.formatMoney(item.min_pt_price).showMoney
         })
         let _obj = {}
         _obj.activityLoaded = true

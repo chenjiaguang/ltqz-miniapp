@@ -2,7 +2,7 @@
   background-color: #FF9500 !important;
 }
 .theme-bg-secondary{
-  background-color: #FFBC00 !important;
+  background-color: #FFC700 !important;
 }
 .theme-bg-10{
   background-color: rgba(255,149,0, 0.1) !important;
@@ -29,8 +29,19 @@
   border-color: #FF9500 !important;
 }
 .theme-linear-gradient-h{
-  background-image: linear-gradient(to right, #FFFFFF, #FF9500) !important;
+  background-image: linear-gradient(to right, #FFC700, #FF9500) !important;
+}
+.theme-linear-gradient-h-reverse{
+  background-image: linear-gradient(to right, #FF9500, #FFC700) !important;
 }
 .theme-linear-gradient-v{
-  background-image: linear-gradient(to bottom, #FFFFFF, #FF9500) !important;
+  background-image: linear-gradient(to bottom, #FFC700, #FF9500) !important;
+}
+/* 170deg的渐变 */
+.theme-linear-gradient-170{
+  background-image: linear-gradient(170deg, #FFC700, #FF9500) !important;
+}
+/* 170deg的反向渐变 */
+.theme-linear-gradient-170-reverse{
+  background-image: linear-gradient(170deg, #FF9500, #FFC700) !important;
 }

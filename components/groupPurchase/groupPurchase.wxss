@@ -10,28 +10,56 @@
   max-height: 0;
 }
 .header{
-  padding: 24rpx 32rpx 0;
+  height: 70rpx;
+  padding: 0 32rpx;
   display: flex;
+  justify-content: space-between;
   align-items: center;
 }
 .header-title{
+  flex: 1;
   font-size: 32rpx;
-  line-height: 46rpx;
+  line-height: 44rpx;
   font-weight: bold;
   color: #333;
 }
-.question-icon{
-  font-size: 30rpx;
-  line-height: 30rpx;
-  color: #CCCCCC;
-  padding: 6rpx;
-  border-radius: 50%;
+.rule-btn{
+  padding: 6rpx 0 6rpx 6rpx;
+  border-radius: 4rpx;
+  display: flex;
+  align-items: center;
+}
+.rule-text{
+  font-size: 26rpx;
+  line-height: 26rpx;
+  color: #666;
+}
+.next-icon{
+  font-size: 28rpx;
+  line-height: 28rpx;
+  color: #979797;
+  margin-left: 16rpx;
 }
 .rule{
   font-size: 28rpx;
   line-height: 36rpx;
   color: #666;
-  padding: 12rpx 32rpx 24rpx;
+  padding: 17rpx 32rpx;
+  display: flex;
+  align-items: center;
+}
+.rule-step{
+  white-space: nowrap;
+}
+.rule-separator{
+  white-space: nowrap;
+}
+.group-header{
+  font-size: 32rpx;
+  line-height: 70rpx;
+  color: #333;
+  font-weight: bold;
+  padding: 0 32rpx;
 }
 .group-item-wrapper{
   padding: 0 32rpx;
@@ -95,6 +123,7 @@
 }
 .need-num{
   font-size: 24rpx;
+  font-weight: bold;
   color: #333;
   line-height: 32rpx;
   text-align: right;
@@ -110,7 +139,7 @@
   width: 140rpx;
   height: 100%;
   box-sizing: border-box;
-  border-width: 1px;
+  border-width: 0;
   border-style: solid;
   border-left-width: 0;
   display: flex;

@@ -15,9 +15,15 @@
       <view class='price-and-join'>
         <view wx:if="{{activity.sale_type == 2}}" class='tuan-box theme-border-color theme-color'><text>{{activity.spell_num}}人团</text></view>
         <view class='price'>
-          <text wx:if="{{activity.min_price && activity.min_price > 0}}" class='actual-price'>¥{{activity.min_price}}</text><text wx:if="{{activity.price_num > 1 && activity.min_price && activity.min_price > 0}}" class='actual-price-qi'>起</text><text wx:if="{{!activity.min_price || activity.min_price == 0}}" class='actual-price'>免费</text>
+          <block wx:if="{{activity.sale_type == 1}}">
+            <text wx:if="{{activity.min_price && activity.min_price > 0}}" class='actual-price'><text style="font-size:24rpx;margin-right:4rpx;">¥</text>{{activity.min_price}}</text><text wx:if="{{activity.price_num > 1 && activity.min_price && activity.min_price > 0}}" class='actual-price-qi'>起</text><text wx:if="{{!activity.min_price || activity.min_price == 0}}" class='actual-price-free'>免费</text>
+          </block>
+          <block wx:if="{{activity.sale_type == 2}}">
+            <text wx:if="{{activity.min_pt_price && activity.min_pt_price > 0}}" class='actual-price'><text style="font-size:24rpx;margin-right:4rpx;">¥</text>{{activity.min_pt_price}}</text><text wx:if="{{activity.price_num > 1 && activity.min_pt_price && activity.min_pt_price > 0}}" class='actual-price-qi'>起</text><text wx:if="{{!activity.min_pt_price || activity.min_pt_price == 0}}" class='actual-price-free'>免费</text>
+          </block>
+          <!-- <text wx:if="{{activity.min_price && activity.min_price > 0}}" class='actual-price'>¥{{activity.min_price}}</text><text wx:if="{{activity.price_num > 1 && activity.min_price && activity.min_price > 0}}" class='actual-price-qi'>起</text><text wx:if="{{!activity.min_price || activity.min_price == 0}}" class='actual-price'>免费</text> -->
         </view>
-        <view class='join'>累计{{activity.join_num}}人报名</view>
+        <view wx:if="{{activity.join_num && activity.join_num > 0}}" class='join'>累计{{activity.join_num}}人报名</view>
       </view>
     </view>
   </view>

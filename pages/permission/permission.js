@@ -120,7 +120,9 @@ Page({
       })
       const {
         encryptedData,
-        iv
+        iv,
+        rawData,
+        signature
       } = e.detail
       const {
         avatarUrl,
@@ -130,6 +132,8 @@ Page({
       const logingInfo = {
         encryptedData,
         iv,
+        rawData,
+        signature,
         avatarUrl,
         gender,
         nickName

@@ -163,20 +163,27 @@ Page({
     util.request('/collect/list', {
       pn: pn
     }).then(res => {
-      if (pn == 1) {
-        this.setData({
-          list: res.data.list,
-          page: res.data.page,
-          loading: false
+      if (res.error == 0 && res.data) {
+        res.data.list.forEach(item => {
+          item.data.min_price = util.formatMoney(item.data.min_price).showMoney
+          item.data.min_origin_price = util.formatMoney(item.data.min_origin_price).showMoney
+          item.data.min_pt_price = util.formatMoney(item.data.min_pt_price).showMoney
         })
-      } else {
-        let list = this.data.list
-        list = list.concat(res.data.list)
-        this.setData({
-          list: list,
-          page: res.data.page,
-          loading: false
-        })
+        if (pn == 1) {
+          this.setData({
+            list: res.data.list,
+            page: res.data.page,
+            loading: false
+          })
+        } else {
+          let list = this.data.list
+          list = list.concat(res.data.list)
+          this.setData({
+            list: list,
+            page: res.data.page,
+            loading: false
+          })
+        }
       }
     }).catch(err => {
       console.log('err', err)

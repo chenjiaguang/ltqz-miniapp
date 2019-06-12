@@ -1,7 +1,7 @@
 // pages/goodsdetail/goodsdetail.js
 import util from '../../utils/util.js'
 import storageHelper from '../../utils/storageHelper.js'
-
+// todo 添加购买须知后滚动切换tab有bug，需修复
 Page({
   name: 'goodsdetail',
   /**
@@ -32,7 +32,8 @@ Page({
       4: '报名已满',
       5: '报名结束'
     },
-    sale_type: '1',
+    sale_type: '1', // 该商品是 团购 还是 普通商品（1:普通商品，2:团购商品）
+    saletype: '1', // 当前是 普通购买 还是 发起拼团
     is_collect: false,
     showCollectTip: false,
     groupList: [],
@@ -43,8 +44,10 @@ Page({
     include_bx: '',
     min_price: 0,
     min_origin_price: 0,
+    min_pt_price: 0,
     show_min_price: 0,
     show_min_origin_price: 0,
+    show_min_pt_price: 0,
     price_num: 1,
     status: '', // 0为失效或已删除|1为报名中|2为已满额未截止|3为已截止未满额|4为已截止且满额|5为已结束
     valid_btime: '',
@@ -68,10 +71,10 @@ Page({
     comments: [],
     contact: '',
     session: [],
-    currentSession: null,
-    currentTickets: [],
-    selectedTicketLength: 0,
-    totalPrice: 0,
+    currentSession: {1: null, 2: null},
+    currentTickets: {1: [], 2: []},
+    selectedTicketLength: {1: 0, 2: 0},
+    totalPrice: {1: 0, 2: 0},
     showSession: false,
     show_share_box: false,
     localPoster: '',
@@ -181,6 +184,8 @@ Page({
         res.data.show_min_price = util.formatMoney(res.data.min_price).showMoney
         res.data.min_origin_price = util.formatMoney(res.data.min_origin_price).money
         res.data.show_min_origin_price = util.formatMoney(res.data.min_origin_price).showMoney
+        res.data.min_pt_price = util.formatMoney(res.data.min_pt_price).money
+        res.data.show_min_pt_price = util.formatMoney(res.data.min_pt_price).showMoney
         if (res.data.session) {
           res.data.session.forEach((item, idx) => { // 票的价格处理(String -> Number，分保留，另存一份用于展示的价格, 计算时用分，展示时用元)
             item.ticket.forEach(it => {
@@ -188,6 +193,8 @@ Page({
               it.type.price = util.formatMoney(it.type.price).money
               it.type.show_pt_price = util.formatMoney(it.type.pt_price).showMoney
               it.type.pr_price = util.formatMoney(it.type.pt_price).money
+              it.type.show_origin_price = util.formatMoney(it.type.origin_price).showMoney
+              it.type.origin_price = util.formatMoney(it.type.origin_price).money
             })
           })
           this.initSession(res.data.session)
@@ -209,15 +216,17 @@ Page({
         //     expired_timestamp: 5
         //   }
         // ]
-        // res.data.groupList = res.data.tuan.map(item => {
-        //   return {
-        //     id: item.id,
-        //     avatar: item.tuan_master_avatar,
-        //     username: item.tuan_master_nick_name,
-        //     need: item.remain_spell_num,
-        //     remain: item.expired_timestamp
-        //   }
-        // })
+        if (res.data.tuan && res.data.tuan.length > 0) {
+          res.data.groupList = res.data.tuan.map(item => {
+            return {
+              id: item.id,
+              avatar: item.tuan_master_avatar,
+              username: item.tuan_master_nick_name,
+              need: item.remain_spell_num,
+              remain: item.expired_timestamp
+            }
+          })
+        }
         // res.data.sale_type = '2'
         // res.data.spell_num = 8
         this.setData(res.data, () => {
@@ -290,14 +299,25 @@ Page({
         }
       }
     })
-    wx.createIntersectionObserver().relativeToViewport({ bottom: -systemInfo.windowHeight + (90 * rpx) }).observe('#comment-content', (res) => {
-      if (res.boundingClientRect.top < 90 * rpx && res.intersectionRatio > 0) { // 评价模块完全显示
+    wx.createIntersectionObserver().relativeToViewport({ bottom: -systemInfo.windowHeight + (90 * rpx) }).observe('#goodsdetail-notice', (res) => {
+      if (res.boundingClientRect.top < 90 * rpx && res.intersectionRatio > 0) { // 购买须知模块完全显示
         this.setData({
           currentTab: 1
         })
       } else {
         this.setData({
           currentTab: 0
+        })
+      }
+    })
+    wx.createIntersectionObserver().relativeToViewport({ bottom: -systemInfo.windowHeight + (90 * rpx) }).observe('#comment-content', (res) => {
+      if (res.boundingClientRect.top < 90 * rpx && res.intersectionRatio > 0) { // 评价模块完全显示
+        this.setData({
+          currentTab: 2
+        })
+      } else {
+        this.setData({
+          currentTab: 1
         })
       }
     })
@@ -318,18 +338,18 @@ Page({
 
   sessionTap: function (e) {
     const { status, idx} = e.currentTarget.dataset
-    const { currentSession} = this.data
+    const { currentSession, saletype} = this.data
     const session = JSON.parse(JSON.stringify(this.data.session))
-    if (status === 'disabled' || currentSession === idx) { // 售罄 或 点击的是当前的场次
+    if (status === 'disabled' || currentSession.saletype === idx) { // 售罄 或 点击的是当前的场次
       return false
     }
     const tickets = session[idx].ticket.map(item => Object.assign({}, item, {num: 0}))
-    this.setData({
-      selectedTicketLength: 0,
-      totalPrice: 0,
-      currentSession: idx,
-      currentTickets: tickets
-    })
+    let _obj = {}
+    _obj['selectedTicketLength.' + saletype] = 0
+    _obj['totalPrice.' + saletype] = 0
+    _obj['currentSession.' + saletype] = idx
+    _obj['currentTickets.' + saletype] = tickets
+    this.setData(_obj)
   },
 
   initSession: function (session) {
@@ -357,15 +377,16 @@ Page({
       selected = _session[current].ticket.map(item => Object.assign({}, item, {num: 0}))
     }
     this.setData({
-      selectedTicketLength: 0,
-      totalPrice: 0,
-      currentSession: current,
-      currentTickets: selected
+      selectedTicketLength: {1: 0, 2: 0},
+      totalPrice: {1: 0, 2: 0},
+      currentSession: {1: current, 2: current},
+      currentTickets: { 1: selected, 2: selected}
     })
   },
 
   countTicket: function (e) {
-    let tickets = JSON.parse(JSON.stringify(this.data.currentTickets))
+    const { saletype } = this.data
+    let tickets = JSON.parse(JSON.stringify(this.data.currentTickets[saletype]))
     let selectedTicketLen = 0
     let total = 0
     const {type, idx} = e.currentTarget.dataset
@@ -376,21 +397,35 @@ Page({
     }
     tickets.forEach((item, index) => {
       selectedTicketLen += index === idx ? (item.num + (type === 'minus' ? -1 : 1)) : item.num
-      total += index === idx ? ((item.num + (type === 'minus' ? -1 : 1)) * item.type.price) : (item.num * item.type.price)
+      const singlePrice = saletype == 1 ? item.type.price : item.type.pt_price
+      total += index === idx ? ((item.num + (type === 'minus' ? -1 : 1)) * singlePrice) : (item.num * singlePrice)
     })
     let num = ticket.num + (type === 'minus' ? -1 : 1)
     let _obj = {}
-    _obj.selectedTicketLength = selectedTicketLen
-    _obj.totalPrice = parseFloat((total / 100).toFixed(2))
-    _obj['currentTickets[' + idx + '].num'] = num
+    _obj['selectedTicketLength.' + saletype] = selectedTicketLen
+    _obj['totalPrice.' + saletype] = parseFloat((total / 100).toFixed(2))
+    _obj['currentTickets.' + saletype + '[' + idx + '].num'] = num
     this.setData(_obj)
   },
 
-  toggleSession: function () {
-    const {showSession} = this.data
-    this.setData({
-      showSession: !showSession
-    })
+  toggleSession: function (e) {
+    const { showSession, saletype} = this.data
+    let _saletype = saletype
+    if (e && e.currentTarget.dataset.saletype) { // 用于区分团购时点击的是 “单独购买” 还是 “发起拼团”
+      _saletype = e.currentTarget.dataset.saletype
+    }
+    let _obj = {}
+    if (_saletype != saletype) { // 点击的购买方式不同时，晴空原选择数据
+      const session = JSON.parse(JSON.stringify(this.data.session))
+      const tickets = session[0].ticket.map(item => Object.assign({}, item, { num: 0 }))
+      _obj['selectedTicketLength.' + _saletype] = 0
+      _obj['totalPrice.' + _saletype] = 0
+      _obj['currentSession.' + _saletype] = 0
+      _obj['currentTickets.' + _saletype] = tickets
+    }
+    _obj.showSession = !showSession
+    _obj.saletype = _saletype
+    this.setData(_obj)
   },
 
   order: function () {
@@ -779,8 +814,8 @@ Page({
   },
 
   getOrderData: function () { // 该方法提供给提交订单页面使用,返回提交订单页面需要的信息
-    let { id, fromUid, title, address, valid_btime, valid_etime, session, selectedTicketLength, currentSession, currentTickets, refund, include_bx, totalPrice} = this.data
-    const data = JSON.parse(JSON.stringify({ id, fromUid, title, address, valid_btime, valid_etime, session, selectedTicketLength, currentSession, currentTickets, refund, include_bx, totalPrice}))
+    let { id, fromUid, title, address, valid_btime, valid_etime, session, sale_type, saletype, selectedTicketLength, currentSession, currentTickets, refund, include_bx, totalPrice} = this.data
+    const data = JSON.parse(JSON.stringify({ id, fromUid, title, address, valid_btime, valid_etime, session, sale_type, saletype, selectedTicketLength: selectedTicketLength[saletype], currentSession: currentSession[saletype], currentTickets: currentTickets[saletype], refund, include_bx, totalPrice: totalPrice[saletype]}))
     return data
   },
 
@@ -805,8 +840,9 @@ Page({
         util.request('/user/detail').then(res => {
           if (res.error == 0 && res.data) { // 获取用户信息成功
             if (res.data.phone) { // 有电话才设置
+              storageHelper.setStorage('uphone', res.data.phone)
               const _obj = {
-                name: '',
+                name: res.data.nick_name,
                 phone: res.data.phone
               }
               storageHelper.setStorage('orderContact', JSON.stringify(_obj))

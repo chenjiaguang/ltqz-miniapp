@@ -94,6 +94,10 @@ Component({
     },
     ruleTap: function () { // todo
       console.log('ruleTap')
+      wx.navigateTo({
+        url: '/pages/statement/statement?type=3'
+      })
+      
     },
     groupTap: function (e) {
       const {ele} = e.currentTarget.dataset

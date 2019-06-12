@@ -205,7 +205,7 @@ Page({
 
   submitOrder: function () {
     console.log('submitOrder')
-    const { id, fromUid, selectedTickets, contact, buy_for, submitting, clause_checked} = this.data
+    const { id, fromUid, selectedTickets, contact, buy_for, submitting, clause_checked, saletype, tuan_id, totalPrice} = this.data
     if (!(contact.name && contact.phone && buy_for && buy_for.length && !submitting && clause_checked)) { // 如果联系人信息不完整、没有选中的出行人、正在提交，则中断操作
       if (!contact.name) {
         wx.showToast({
@@ -238,13 +238,16 @@ Page({
       return {id: item.id, quantity: item.num}
     })
     let buy_for_ids = buy_for.map(item => item.id)
+    const tuanid = saletype == 1 ? null : (tuan_id || 0)
     let rData = {
       huodong_id: id,
       ticket: ticket,
       traveler_ids: buy_for_ids,
       name: contact.name,
       phone: contact.phone,
-      fenxiao_user_id: fromUid
+      fenxiao_user_id: fromUid,
+      tuan_id: tuanid,
+      total_price: totalPrice
     }
     this.setData({
       submitting: true

@@ -9,7 +9,8 @@ Page({
   data: {
     typeTitle: {
       1: '用户须知',
-      2: '免责声明'
+      2: '免责声明',
+      3: '拼团规则'
     },
     content: ''
   },
@@ -77,7 +78,8 @@ Page({
   fetchStatement: function (type) {
     const urlMap = {
       1: '/article/agreement',
-      2: '/article/disclaimer'
+      2: '/article/disclaimer',
+      3: '/article/disclaimer'
     }
     const url = urlMap[type]
     util.request(url).then(res => {
