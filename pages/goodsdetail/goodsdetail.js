@@ -678,15 +678,20 @@ Page({
   },
 
   shareBtnTap: function () {
-    const { show_share_box, localPoster, uid} = this.data
-    if (!show_share_box) {
-      this.setData({
-        show_share_box: true
-      })
+    const poster = this.selectComponent('#c-draw-poster')
+    if (poster && poster.startDraw) {
+      const {id} = this.data
+      poster.startDraw(id)
     }
-    if (!localPoster) {
-      this.drawPoster()
-    }
+    // const { show_share_box, localPoster, uid} = this.data
+    // if (!show_share_box) {
+    //   this.setData({
+    //     show_share_box: true
+    //   })
+    // }
+    // if (!localPoster) {
+    //   this.drawPoster()
+    // }
   },
 
   toggleShareBox: function () {
@@ -709,6 +714,7 @@ Page({
     }
     // 获取用户是否开启用户授权相册
     const app = getApp()
+    const confirmColor = app.globalData.themeModalConfirmColor || '#576B95' // #576B95是官方颜色
     wx.getSetting({
       success: res => {
         // 如果没有则获取授权
@@ -724,7 +730,7 @@ Page({
                     content: '海报已生成并保存至你的手机相册了哦，分享到朋友圈给好友种草一下吧',
                     showCancel: false,
                     confirmText: '确定',
-                    confirmColor: app.globalData.themeColor || '#000000'
+                    confirmColor
                   })
                   // wx.showToast({
                   //   title: '保存成功',
@@ -748,6 +754,7 @@ Page({
             content: '保存图片需要你授权，请授权相册', //提示的内容
             showCancel: true,
             confirmText: '去授权',
+            confirmColor,
             success: res => {
               if (res.confirm) {
                 wx.openSetting({
@@ -762,7 +769,7 @@ Page({
                             content: '海报已生成并保存至你的手机相册了哦，分享到朋友圈给好友种草一下吧',
                             showCancel: false,
                             confirmText: '确定',
-                            confirmColor: app.globalData.themeColor || '#000000'
+                            confirmColor
                           })
                           // wx.showToast({
                           //   title: '保存成功',
@@ -794,7 +801,7 @@ Page({
                 content: '海报已生成并保存至你的手机相册了哦，分享到朋友圈给好友种草一下吧',
                 showCancel: false,
                 confirmText: '确定',
-                confirmColor: app.globalData.themeColor || '#000000'
+                confirmColor
               })
               // wx.showToast({
               //   title: '保存成功',
@@ -986,5 +993,12 @@ Page({
     this.setData({
       showCollectTip: false
     })
+  },
+
+  startDraw: function () {
+    const poster = this.selectComponent('#c-draw-poster')
+    if (poster && poster.startDraw) {
+      poster.startDraw(1, 1, 1)
+    }
   }
 })

@@ -79,7 +79,7 @@ Page({
     const urlMap = {
       1: '/article/agreement',
       2: '/article/disclaimer',
-      3: '/article/disclaimer'
+      3: '/article/pt_rule'
     }
     const url = urlMap[type]
     util.request(url).then(res => {

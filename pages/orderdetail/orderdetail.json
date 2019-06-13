@@ -3,6 +3,8 @@
   "backgroundColorTop": "#f5f5f5",
   "backgroundColorBottom": "#f5f5f5",
   "usingComponents": {
+    "group-overview": "../../components/groupOverview/groupOverview",
+    "draw-poster": "../../components/drawPoster/drawPoster",
     "ft-iphone-bottom-adapter": "../../ftcomponents/ftIphoneBottomAdapter/ftIphoneBottomAdapter"
   }
 }

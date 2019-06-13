@@ -1,6 +1,6 @@
 <!--pages/orderdetail/orderdetail.wxml-->
 <view class='page-orderdetail'>
-  <view class="left-time theme-tag-mask{{(countdown > 0 && countdown_text) ? ' show' : ''}}"><text>{{countdown_text}}</text></view>
+  <view class="left-time{{(countdown > 0 && countdown_text) ? ' show' : ''}}"><text>{{countdown_text}}</text></view>
   
   <view class='row goods' bindtap='goGoodsDetail'>
     <image class='goods-cover' src="{{huodong.cover_url}}" mode="aspectFill"></image>
@@ -10,6 +10,11 @@
       <text class='goods-location'>{{huodong.address}}</text>
     </view>
     <text class='lutufont lutu-next2'></text>
+  </view>
+
+  <view wx:if="{{order.tuan && order.tuan.id}}">
+    <view class='block-separator'></view>
+    <group-overview group="{{order.tuan}}" catchshare="shareTap" />
   </view>
 
   <view class='list'>
@@ -87,13 +92,14 @@
     <view class='bottom-button-height'></view>
     <ft-iphone-bottom-adapter />
     <view class='bottom-button'>
-      <view wx:if="{{order.status === '0'}}" class="bottom-button-height pay{{repaying ? ' disabled' : ' theme-bg'}}" catchtap="repay">
+      <view wx:if="{{order.status == 0}}" class="bottom-button-height pay{{repaying ? ' disabled' : ' theme-bg'}}" catchtap="repay">
         <text>立即支付</text>
       </view>
-      <view wx:if="{{order.status !== '0' && order.status !== '-1'}}" class='bottom-button-height ticket theme-bg' bindtap='goGoodsTicket'>
+      <view wx:if="{{order.status == 1 || order.status == 2 || order.status == 3}}" class='bottom-button-height ticket theme-bg' bindtap='goGoodsTicket'>
         <text>查看电子票</text>
       </view>
       <ft-iphone-bottom-adapter />
     </view>
   </view>
 </view>
+<draw-poster id="c-draw-poster" />

@@ -36,7 +36,7 @@
   <view class='card-nopadding other-entrance-box'>
     <ft-entrance title="{{other_entrances[0].title}}" top-border="{{false}}" extra-data="{{other_entrances[0]}}" catchtap="entranceTap" />
     <ft-entrance title="{{other_entrances[1].title}}" top-border="{{true}}" extra-data="{{other_entrances[1]}}" catchtap="entranceTap">
-      <ft-star-box score="{{data.rate}}"/>
+      <ft-star-box size="{{30}}" score="{{data.rate}}"/>
     </ft-entrance>
   </view>
 </view>

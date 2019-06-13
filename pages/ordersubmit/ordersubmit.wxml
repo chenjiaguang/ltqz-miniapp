@@ -62,20 +62,22 @@
         <view class='buyfor-box'>
           <view class='buyfor-header'><text class='cancel' catchtap="cancelChangeBuyfor">取消</text><text class='confirm' catchtap="confirmChangeBuyfor">确定</text></view>
         </view>
-        <view class='new-buyfor'><text class='new-icon theme-color lutufont lutu-add2' catchtap="editBuyfor" data-needidcard="{{include_bx === '1' || include_bx === 1}}"></text><text class='new-text theme-color' catchtap="editBuyfor" data-needidcard="{{include_bx === '1' || include_bx === 1}}">新增</text></view>
+        <view class='new-buyfor'><text class='new-icon theme-color lutufont lutu-add2' catchtap="editBuyfor" data-needidcard="{{include_bx == 1}}"></text><text class='new-text theme-color' catchtap="editBuyfor" data-needidcard="{{include_bx == 1}}">新增</text></view>
         <view class='block-separator'></view>
         <scroll-view scroll-y class='buyfors' style="height:{{buyforsWrapperHeight || '408rpx'}}">
           <view wx:if="{{!buyfors || !buyfors[0]}}" style="height:300rpx"></view>
           <view wx:for="{{buyfors}}" wx:for-index="idx" wx:for-item="buyfor" wx:key="id" class='buyfor-item-wrapper'>
             <view class='buyfor-item' catchtap="toggleBuyforChecked" data-idx="{{idx}}" hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
-              <view class='wirte-icon theme-color lutufont lutu-write' catchtap="editBuyfor" data-needidcard="{{include_bx === '1' || include_bx === 1}}" data-id="{{buyfor.id}}" hover-stop-propagation></view>
+              <view class='wirte-icon-wrapper' hover-stop-propagation>
+                <image class='wirte-icon' src="/assets/images/write_icon.png" mode="aspectFit" catchtap="editBuyfor" data-needidcard="{{include_bx == 1}}" data-buyfor="{{buyfor}}" hover-stop-propagation></image>
+              </view>
               <view class='buyfor-center'>
                 <view class='buyfor-name'>{{buyfor.name}}</view>
                 <view wx:if="{{buyfor.tip}}" class='buyfor-idcard disabled'>{{buyfor.tip}}</view>
-                <view wx:if="{{!buyfor.tip && buyfor.id_number}}" class='buyfor-idcard'><text>身份证 </text><text wx:for="{{buyfor.id_number}}" wx:key="*this">{{index >= 4 && index < (buyfor.id_number.length - 4) ? '*' : item}}</text></view>
-                <view wx:if="{{!buyfor.tip && !buyfor.id_number}}" class='buyfor-idcard'></view>
+                <view wx:if="{{!buyfor.tip && buyfor.id_number && include_bx == 1}}" class='buyfor-idcard'><text>身份证 </text><text wx:for="{{buyfor.id_number}}" wx:key="*this">{{index >= 4 && index < (buyfor.id_number.length - 4) ? '*' : item}}</text></view>
+                <view wx:if="{{!(!buyfor.tip && buyfor.id_number && include_bx == 1)}}" class='buyfor-idcard'></view>
               </view>
-              <text class="buyfor-check-icon lutufont{{buyfor.checked ? ' lutu-checked theme-color' : ' lutu-uncheck'}}"></text>
+              <text class="buyfor-check-icon lutufont{{buyfor.checked ? ' lutu-tick green-color' : ' lutu-uncheck'}}"></text>
             </view>
             <view class='line-separator-h' style="margin-left:98rpx;width:652rpx"></view>
           </view>

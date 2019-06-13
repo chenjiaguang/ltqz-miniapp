@@ -1,4 +1,6 @@
 // components/drawPoster/drawPoster.js
+import util from '../../utils/util.js'
+
 Component({
   /**
    * 组件的属性列表
@@ -11,20 +13,22 @@ Component({
    * 组件的初始数据
    */
   data: {
-    type: '1',
-    shareType: '1',
-    id: '1',
+    fetching: false,
+    huodongId: '',
+    tuanId: '',
     localPoster: '',
     showPoster: '',
-    fenxiao_price: false,
+    fenxiao_price: 0,
+    canShareFriend: false,
     showHideClass: {
       1: ' hide',
       2: ' show'
-    }
+    },
+    uid: ''
   },
 
   attached: function () {
-    // this.startDraw()
+
   },
 
   /**
@@ -35,7 +39,6 @@ Component({
       this.createSelectorQuery().select('#wrapper').boundingClientRect(rect => {
         const ctx = wx.createCanvasContext('c-draw-poster', this)
         ctx.setFillStyle('#FFFFFF')
-        console.log('rect', rect)
         this.posterWidth = rect.width
         this.posterHeight = rect.height
         ctx.fillRect(0, 0, rect.width, rect.height)
@@ -90,7 +93,6 @@ Component({
             ctx.arc((imageData.left + (imageData.width / 2)), (imageData.top + (imageData.height / 2)), imageData.width / 2, 0, 2 * Math.PI)
             ctx.closePath()
             ctx.clip()
-            // ctx.clearRect(imageData.left, imageData.top, imageData.width, imageData.height)
             ctx.drawImage(imageData.dataset.islocal ? imageData.src : res.path, banner_clip.clip_left, banner_clip.clip_top, banner_clip.clip_width, banner_clip.clip_height, imageData.left, imageData.top, imageData.width, imageData.height)
             ctx.restore()
           } else {
@@ -100,13 +102,6 @@ Component({
           if (this.imageLen < 1) {
             this.drawFillFunc(ctx)
           }
-          // ctx.draw(true)
-          // ctx.draw(true, () => {
-          //   console.log('ddd', this.imageLen)
-          //   if (this.imageLen < 1) {
-          //     this.drawFillFunc()
-          //   }
-          // })
         }
       })
     },
@@ -163,7 +158,6 @@ Component({
       if (this.fillLen < 1) {
         this.drawStrokeFunc(ctx)
       }
-      // ctx.draw(true)
     },
     drawStroke: function (strokeData, ctx) {
       let radius = {
@@ -218,7 +212,6 @@ Component({
       if (this.strokeLen < 1) {
         this.drawTextFunc(ctx)
       }
-      // ctx.draw(true)
     },
     drawText: function (textData, ctx) {
       const alignObj = {start: 'left', center: 'center', end: 'right'}
@@ -227,7 +220,6 @@ Component({
       ctx.setTextAlign(alignObj[textData.textAlign])
       ctx.setTextBaseline('middle')
       ctx.setFillStyle(textData.color)
-      console.log('textData', textData)
       if (textData.dataset.maxline && textData.dataset.maxlength) {
         const chr = textData.dataset.text.split("")
         let temp = ""
@@ -255,13 +247,11 @@ Component({
       this.textLen -= 1
       if (this.textLen < 1) {
         ctx.draw(true, () => {
-          console.log('dddf')
           wx.canvasToTempFilePath({
             x: 0,
             y: 0,
             canvasId: 'c-draw-poster',
             success: res => {
-              console.log('success_res', res)
               const query = this.createSelectorQuery().select('#top-wrapper').boundingClientRect(rect => {
                 let width = 0
                 let height = 0
@@ -290,7 +280,6 @@ Component({
           }, this)
         })
       }
-      // ctx.draw(true)
     },
     drawFillFunc: function (ctx) {
       this.createSelectorQuery().selectAll('.draw-fill').fields({
@@ -321,6 +310,10 @@ Component({
         computedStyle: ['borderRadius', 'borderColor']
       }, res => {
         this.strokeLen = res.length
+        if (!res.length) { // 不存在stroke类型，直接跳过
+          this.drawTextFunc(ctx)
+          return false
+        }
         res.forEach((item, idx) => {
           item.id      // 节点的ID
           item.dataset // 节点的dataset
@@ -356,93 +349,117 @@ Component({
         })
       }).exec()
     },
-    startDraw: function (dType, sType, rId) {
+    startDraw: function (huodong_id, tuan_id) {
       this.showPoster()
-      const { type, shareType, id, localPoster} = this.data
-      if (dType == type && sType == shareType && rId == id && localPoster) { // 之前已经画过
+      const { huodongId, tuanId, localPoster, fetching} = this.data
+      if ((huodong_id == huodongId && tuan_id == tuan_id && localPoster) || fetching) { // 之前已经画过
         return false
       }
+      let rData = {
+        id: huodong_id,
+        tuan_id: tuan_id
+      }
       this.setData({
-        hAvatar: 'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=2652953858,1039653315&fm=27&gp=0.jpg',
-        hName: '@花心萝卜腿',
-        hTip: '发起了拼团，邀请你参与拼团~',
-        banner: 'http://img1.imgtn.bdimg.com/it/u=3587751191,555161372&fm=26&gp=0.jpg',
-        title: '从5万到100万，给家庭投资赋能小天才凯叔滴滴答答叽叽喳喳从5万到100万，给家是德国法国',
-        price: 49.9,
-        pintuan: 8,
-        joinNumber: 30,
-        joinUsers: [
-          {
-            id: '1',
-            avatar: 'http://img2.imgtn.bdimg.com/it/u=43793190,3183979058&fm=26&gp=0.jpg'
-          },
-          {
-            id: '2',
-            avatar: 'http://img3.imgtn.bdimg.com/it/u=225779353,3570924800&fm=26&gp=0.jpg'
-          },
-          {
-            id: '3',
-            avatar: 'http://img3.imgtn.bdimg.com/it/u=820003925,2632485322&fm=26&gp=0.jpg'
-          },
-          {
-            id: '4',
-            avatar: 'http://img1.imgtn.bdimg.com/it/u=3049673303,4028148324&fm=26&gp=0.jpg'
-          },
-          {
-            id: '5',
-            avatar: 'http://img1.imgtn.bdimg.com/it/u=2378728387,1473135066&fm=26&gp=0.jpg'
-          },
-          {
-            id: '6',
-            avatar: 'http://img1.imgtn.bdimg.com/it/u=3677460379,2967028570&fm=26&gp=0.jpg'
-          },
-          {
-            id: '7'
-          },
-          {
-            id: '8',
+        huodongId: huodong_id || '',
+        tuanId: tuan_id || '',
+        localPoster: '',
+        canShareFriend: false,
+        fetching: true
+      })
+      util.request('/huodong/share', rData).then(res => {
+        if (res.data) {
+          let data = res.data
+          let _obj = {}
+          _obj.uid = data.user.id
+          _obj.hAvatar = data.user.avatar
+          _obj.hName = data.user.nick_name
+          _obj.hTip = '发起了拼团，邀请你参与拼团~'
+          _obj.banner = data.cover_url
+          _obj.title = data.title
+          _obj.price = util.formatMoney(data.saletype == 1 ? data.min_price : data.min_pt_price).showMoney
+          _obj.fenxiao_price = util.formatMoney(data.fenxiao_price).showMoney
+          _obj.pintuan = data.spell_num
+          _obj.joinNumber = data.join_num
+          _obj.joinUsers = []
+          if (data.tuan && data.tuan.tuanRecord && data.tuan.tuanRecord[0]) {
+            let recordArr = [].concat(data.tuan.tuanRecord)
+            let leftNum = data.spell_num - data.tuan.tuanRecord.length
+            if (leftNum > 0) {
+              for (let i = 0; i < leftNum; i++) {
+                recordArr.push({id: new Date().getTime() + i})
+              }
+            }
+            _obj.joinUsers = recordArr
+            _obj.leftNum = leftNum
           }
-        ],
-        leftNum: 16,
-        qrcode: 'http://img3.imgtn.bdimg.com/it/u=1034518203,3133056534&fm=26&gp=0.jpg'
-      }, () => {
-        this.draw()
+          _obj.qrcode = data.miniqr
+          this.setData(_obj, () => {
+            this.initShare()
+            this.draw()
+          })
+        }
+      }).catch(err => {
+
+      }).finally(res => {
+        this.setData({
+          fetching: false
+        })
       })
     },
     showPoster: function () {
-      // 改变所在页面的转发 todo
-      const pages = getCurrentPages()
-      const page = pages[pages.length - 1]
-      let passShareFunc = page.onShareAppMessage
-      page._onShareAppMessage = passShareFunc
-      page.onShareAppMessage = function () {
-        return {
-          title: 'test',
-          path: '/pages/goodsdetail/goodsdetail?id=19',
-          imageUrl: 'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=2652953858,1039653315&fm=27&gp=0.jpg'
-        }
-      }
       this.setData({
         showPoster: 2
       })
+      this.initShare()
     },
     hidePoster: function () {
-      // 改变所在页面的转发 todo
+      this.setData({
+        showPoster: 1
+      })
+      this.recoverShare()
+    },
+    initShare: function () {
+      const { title, banner, huodongId, tuanId, fenxiao_price, uid } = this.data
+      if (title && banner && huodongId) { // 存在数据
+        let path = ''
+        if (huodongId && tuanId) { // 分享团
+          path += '/pages/pintuandetail/pintuandetail?id=' + tuanId
+        } else if (huodongId && !tuanId) { // 分享商品
+          path += '/pages/goodsdetail/goodsdetail?id=' + huodongId
+        }
+        if (fenxiao_price && uid) { // 有分销红利
+          path += ('&uid=' + uid)
+        }
+        const pages = getCurrentPages()
+        const page = pages[pages.length - 1]
+        let passShareFunc = page.onShareAppMessage
+        page._onShareAppMessage = passShareFunc
+        page.onShareAppMessage = function () {
+          return {
+            title: title,
+            path: path,
+            imageUrl: banner
+          }
+        }
+        this.setData({
+          canShareFriend: true
+        })
+      }
+    },
+    recoverShare: function () {
       const pages = getCurrentPages()
       const page = pages[pages.length - 1]
       let passShareFunc = page._onShareAppMessage
       page.onShareAppMessage = passShareFunc
-      this.setData({
-        showPoster: 1
-      })
     },
     savePoster: function () {
-      const { localPoster } = this.data
+      const {localPoster } = this.data
       if (!localPoster) {
         return false
       }
       // 获取用户是否开启用户授权相册
       const app = getApp()
+      const confirmColor = app.globalData.themeModalConfirmColor || '#576B95' // #576B95是官方颜色
       wx.getSetting({
         success: res => {
           // 如果没有则获取授权
@@ -458,12 +475,8 @@ Component({
                       content: '海报已生成并保存至你的手机相册了哦，分享到朋友圈给好友种草一下吧',
                       showCancel: false,
                       confirmText: '确定',
-                      confirmColor: app.globalData.themeColor || '#000000'
+                      confirmColor: confirmColor
                     })
-                    // wx.showToast({
-                    //   title: '保存成功',
-                    //   icon: 'none'
-                    // })
                   },
                   fail: () => {
                     wx.showToast({
@@ -482,6 +495,7 @@ Component({
               content: '保存图片需要你授权，请授权相册', //提示的内容
               showCancel: true,
               confirmText: '去授权',
+              confirmColor,
               success: res => {
                 if (res.confirm) {
                   wx.openSetting({
@@ -496,12 +510,8 @@ Component({
                               content: '海报已生成并保存至你的手机相册了哦，分享到朋友圈给好友种草一下吧',
                               showCancel: false,
                               confirmText: '确定',
-                              confirmColor: app.globalData.themeColor || '#000000'
+                              confirmColor
                             })
-                            // wx.showToast({
-                            //   title: '保存成功',
-                            //   icon: 'none'
-                            // })
                           },
                           fail: () => {
                             wx.showToast({
@@ -528,7 +538,7 @@ Component({
                   content: '海报已生成并保存至你的手机相册了哦，分享到朋友圈给好友种草一下吧',
                   showCancel: false,
                   confirmText: '确定',
-                  confirmColor: app.globalData.themeColor || '#000000'
+                  confirmColor
                 })
               },
               fail: () => {

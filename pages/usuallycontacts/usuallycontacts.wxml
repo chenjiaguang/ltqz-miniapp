@@ -1,23 +1,21 @@
-<view class="add-box theme-color card column ai-center" catchtap='addItem' hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
-  <text class="lutufont lutu-add2"></text>
-  <text class="add-text">新增出行人信息</text>
+<view class="add-box card column ai-center" catchtap='addItem' hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
+  <text class="lutufont lutu-add2 theme-color"></text>
+  <text class="add-text theme-color">新增出行人信息</text>
 </view>
-<view class='card-nopadding'>
+<view class='contacts-card'>
   <view class='column' wx:for="{{contacts}}" wx:key="id" hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
     <view class='item row ai-center jc-between' catchtap='editItem' data-item="{{item}}">
       <view>
         <view class='name'>
           {{item.name}}
         </view>
-        <view wx:if="{{id_number}}" class='id_number'>
-          <text>身份证</text>
+        <view wx:if="{{item.id_number}}" class='id-number'>
+          <text class='id-number-title'>身份证</text>
           <text>{{item.id_number}}</text>
         </view>
       </view>
-
       <text class='lutufont lutu-next2'></text>
     </view>
-
     <view class='line-separator-h' wx:if="{{index!=(contacts.length-1)}}"></view>
   </view>
 </view>

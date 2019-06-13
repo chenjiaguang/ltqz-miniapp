@@ -70,6 +70,13 @@ Component({
       wx.navigateTo({
         url: '/pages/goodsticket/goodsticket?id=' + this.data.item.order_id
       })
+    },
+    shareTap: function (e) {
+      const { hd_id, tuan_id} = this.data.item
+      this.triggerEvent('share', {
+        hd_id,
+        pt_id: tuan_id
+      })
     }
   }
 })

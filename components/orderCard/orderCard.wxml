@@ -5,17 +5,19 @@
     <text class='state state1' wx:if="{{item.status==0}}">待付款</text>
     <text class='state state2' wx:if="{{item.status==2}}">待评价</text>
     <text class='state state3' wx:if="{{item.status==3}}">已完成</text>
-    <text class='state state4' wx:if="{{item.status==-1}}">已取消</text>
+    <text class='state state4' wx:if="{{item.status==-1 || item.status==-2}}">已取消</text>
+    <text class='theme-color' wx:if="{{item.status==4}}">拼团中</text>
     <text class='money bold'>¥{{item.price}}</text>
   </view>
   <view class='line-separator-h'></view>
   <activity-content data="{{item}}" />
-  <view wx:if="{{item.status==0||item.status==1||item.status==2}}">
+  <view wx:if="{{item.status==0||item.status==1||item.status==2 || item.status==4}}">
     <view class='line-separator-h'></view>
     <view class='foot row jc-end ai-center' >
       <view class='btn btn-online theme-bg' wx:if="{{item.status==1}}" catchtap='goTicket' hover-stop-propagation>电子票</view>
       <view class='btn btn-pay' wx:if="{{item.status==0}}" catchtap='goPay' hover-stop-propagation>立即支付</view>
       <view class='btn btn-comment' wx:if="{{item.status==2}}" catchtap='goComment' hover-stop-propagation>去评价</view>
+      <view class='btn btn-comment' wx:if="{{item.status==4}}" catchtap='shareTap' hover-stop-propagation>邀请好友</view>
     </view>
   </view>
 </view>

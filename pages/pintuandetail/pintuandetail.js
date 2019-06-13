@@ -1,4 +1,6 @@
 // pages/pintuandetail/pintuandetail.js
+import util from '../../utils/util.js'
+
 Page({
 
   /**
@@ -12,7 +14,10 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    this.setData({
+      id: options.id
+    })
+    this.fetchPintuan(options.id)
   },
 
   /**
@@ -56,9 +61,28 @@ Page({
   onReachBottom: function () {
 
   },
-  startDraw: function () {
-    console.log('page_startDraw')
-    const poster = this.selectComponent('#c-draw-poster')
-    poster.startDraw(1, 1, 1)
+  fetchPintuan: function (id) {
+    const rData = {
+      tuan_id: id
+    }
+    util.request('/order/tuan_detail', rData).then(res => {
+      if (res.data) {
+        console.log('/order/tuan_detail', res)
+        this.setData({
+          huodong_id: res.data.huodong.id
+        })
+      }
+    }).catch(err => {
+      
+    })
+  },
+  shareTap: function () {
+    const {huodong_id, id} = this.data
+    if (huodong_id && id) {
+      const poster = this.selectComponent('#c-draw-poster')
+      if (poster && poster.startDraw) {
+        poster.startDraw(huodong_id, id)
+      }
+    }
   }
 })

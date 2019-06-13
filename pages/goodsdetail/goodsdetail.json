@@ -9,6 +9,7 @@
     "ft-star-box": "../../ftcomponents/ftStarBox/ftStarBox",
     "comment-box": "../../components/commentBox/commentBox",
     "ft-bubble": "../../ftcomponents/ftBubble/ftBubble",
+    "draw-poster": "../../components/drawPoster/drawPoster",
     "group-purchase": "../../components/groupPurchase/groupPurchase",
     "ft-iphone-bottom-adapter": "../../ftcomponents/ftIphoneBottomAdapter/ftIphoneBottomAdapter"
   }

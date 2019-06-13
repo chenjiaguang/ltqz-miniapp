@@ -3,7 +3,7 @@ import util from '../../utils/util.js'
 import storageHelper from '../../utils/storageHelper'
 
 Page({
-
+  name: 'ordersubmit',
   /**
    * 页面的初始数据
    */
@@ -174,12 +174,12 @@ Page({
       },
       fail: res => {
         const app = getApp()
-        const confirmColor = (app.globalData && app.globalData.themeColor) ? app.globalData.themeColor : '#000000'
+        const confirmColor = app.globalData.themeModalConfirmColor || '#576B95' // #576B95是官方颜色
         wx.showModal({
           title: '确定要取消支付吗？',
           content: '您的订单在10分钟内未支付将被取消，请尽快完成支付哦~',
           confirmText: '继续支付',
-          confirmColor: confirmColor,
+          confirmColor,
           success: res => {
             console.log('success')
             if (res.confirm) {
@@ -377,10 +377,19 @@ Page({
   },
 
   editBuyfor: function (e) {
-    const { needidcard, id} = e.currentTarget.dataset // type: 1不需要填写身份证号、2需要填写身份证号
+    const { needidcard, buyfor} = e.currentTarget.dataset // type: 1不需要填写身份证号、2需要填写身份证号
     let url = ''
-    if (id) { // 如果传入id，则是之前存在的，属于编辑
-      url = '/pages/editcontact/editcontact?id=' + id + (needidcard ? '&requireidcard=true' : '')
+    if (buyfor && buyfor.id) { // 如果传入id，则是之前存在的，属于编辑
+      const { id, name, sex, id_number } = buyfor
+      const dataArr = ['id=' + id, 'name=' + name, 'sex=' + sex]
+      if (id_number) {
+        dataArr.push('id_number=' + id_number)
+      }
+      if (needidcard) {
+        dataArr.push('requireidcard=true')
+      }
+      const paramsStr = dataArr.join('&')
+      url = '/pages/editcontact/editcontact?' + paramsStr
     } else { // 属于新增
       url = '/pages/editcontact/editcontact' + (needidcard ? '?requireidcard=true' : '')
     }

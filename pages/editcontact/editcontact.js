@@ -37,6 +37,7 @@ Page({
       name: options.name || '',
       idcard: options.id_number || '',
       sex: options.sex || '',
+      requireidcard: options.requireidcard || false
     })
     if (options.id) {
       wx.setNavigationBarTitle({
@@ -124,9 +125,10 @@ Page({
       name,
       genderPickerRange,
       idcard,
-      sex
+      sex,
+      requireidcard
     } = this.data
-    if ((!idcard) || !name || !sex) {
+    if ((!idcard && requireidcard) || !name || !sex) {
       return false
     }
     let rData = {
@@ -140,6 +142,11 @@ Page({
       saving: true
     })
     util.request('/traveler/edit', rData).then(res => {
+      const pages = getCurrentPages()
+      const page = pages[pages.length - 2]
+      if (page && page.name == 'ordersubmit' && page.fetchBuyfors) { // 更新提交订单页面的常用联系人信息
+        page.fetchBuyfors()
+      }
       util.backAndToast(res.msg || '保存成功')
     }).catch(err => {}).finally(res => {
       this.setData({
@@ -149,8 +156,11 @@ Page({
   },
   delContact: function() {
     if (!this.data.deleting) {
+      const app = getApp()
+      const confirmColor = app.globalData.themeModalConfirmColor || '#576B95' // #576B95是官方颜色
       wx.showModal({
         content: '确定要删除此出行人吗？',
+        confirmColor,
         success: res => {
           if (res.confirm) {
             this.setData({
@@ -160,6 +170,11 @@ Page({
               id: this.data.id,
               status: 0
             }).then(res => {
+              const pages = getCurrentPages()
+              const page = pages[pages.length - 2]
+              if (page && page.name == 'ordersubmit' && page.fetchBuyfors) { // 更新提交订单页面的常用联系人信息
+                page.fetchBuyfors()
+              }
               util.backAndToast(res.msg || '删除成功')
             }).catch(err => {
               console.log('err', err)

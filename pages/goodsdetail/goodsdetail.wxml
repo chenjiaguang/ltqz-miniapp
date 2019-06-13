@@ -7,7 +7,7 @@
       <share-button profit="{{fenxiao_price}}" show-price catchshare="shareBtnTap" />
     </view>
   </view>
-  <view class="price-and-status theme-linear-gradient-h-reverse">
+  <view class="price-and-status theme-linear-gradient-170-reverse">
     <!-- <view class='shadow-box'>
       <view class='shadow1'></view>
       <view class='shadow2'></view>
@@ -193,10 +193,10 @@
           <view class='tip-arrow'></view>
         </view>
         <view class='kefu-and-collect'>
-          <view class='kefu' hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
+          <button open-type="contact" class='kefu' hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
             <text class='kefu-icon theme-color lutufont lutu-kefu'></text>
             <text class='kefu-text'>客服</text>
-          </view>
+          </button>
           <view class='collect' catchtap="collectTap" hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
             <text class="collect-icon theme-color lutufont{{is_collect ? ' lutu-collected' : ' lutu-collect'}}"></text>
             <text class='collect-text'>收藏</text>
@@ -282,5 +282,6 @@
     </view>
   </view>
 </view>
+<draw-poster id="c-draw-poster" />
 <!-- 目前的版本不需要绘制分享的banner，先注释 -->
 <!-- <canvas canvas-id="share-friend-banner" class="share-friend-banner"></canvas> -->

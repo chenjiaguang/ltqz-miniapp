@@ -219,5 +219,15 @@ Page({
     wx.navigateTo({
       url: '/pages/goodsdetail/goodsdetail?id=' + this.data.huodong.id
     })
+  },
+
+  shareTap: function (e) {
+    const {hd_id, pt_id} = e.detail
+    if (hd_id && pt_id) {
+      const poster = this.selectComponent('#c-draw-poster')
+      if (poster && poster.startDraw) {
+        poster.startDraw(hd_id, pt_id)
+      }
+    }
   }
 })

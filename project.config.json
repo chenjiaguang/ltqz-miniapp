@@ -50,7 +50,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 21,
+			"current": 27,
 			"list": [
 				{
 					"id": -1,
@@ -101,10 +101,10 @@
 					"scene": null
 				},
 				{
-					"id": 5,
+					"id": 7,
 					"name": "订单-订单详情",
 					"pathName": "pages/orderdetail/orderdetail",
-					"query": "id=155816814455641980",
+					"query": "id=156032420968680613",
 					"scene": null
 				},
 				{
@@ -239,10 +239,10 @@
 					"scene": null
 				},
 				{
-					"id": -1,
+					"id": 27,
 					"name": "拼团详情",
 					"pathName": "pages/pintuandetail/pintuandetail",
-					"query": "",
+					"query": "id=10",
 					"scene": null
 				}
 			]

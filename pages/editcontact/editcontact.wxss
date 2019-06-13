@@ -70,7 +70,7 @@ page {
   text-align: center;
   height: 82rpx;
   line-height: 82rpx;
-  border-radius: 8rpx;
+  border-radius: 41rpx;
   box-sizing: border-box;
 }
 

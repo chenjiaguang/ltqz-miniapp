@@ -32,13 +32,13 @@
   justify-content: center;
   align-items: center;
   background: #64b631;
-  margin-top: 41rpx;
+  margin-top: 60rpx;
   margin-left: 4%;
   margin-right: 4%;
   font-size: 36rpx;
   color: #fff;
   border-width: 0;
-  border-radius: 6rpx;
+  border-radius: 41rpx;
 }
 
 .btn[disabled] {

@@ -1,4 +1,4 @@
 <!--pages/pintuandetail/pintuandetail.wxml-->
 <text>pages/pintuandetail/pintuandetail.wxml</text>
-<view catchtap="startDraw">画图</view>
+<view catchtap="shareTap">画图</view>
 <draw-poster id="c-draw-poster" />

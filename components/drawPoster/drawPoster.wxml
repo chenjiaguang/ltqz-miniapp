@@ -13,8 +13,8 @@
     </view>
     <image class='banner draw-image' src="{{banner}}" mode="aspectFill"></image>
     <view class='title draw-text' data-text="{{title}}" data-maxline="{{2}}" data-maxlength="{{20}}">{{title}}</view>
-    <view class='price draw-text' data-text="{{'¥' + price}}">
-      <text>¥{{price}}</text>
+    <view class='price draw-text' data-text="{{price > 0 ? ('¥' + price) : '免费'}}">
+      <text>{{price > 0 ? ('¥' + price) : '免费'}}</text>
       <view wx:if="{{pintuan}}" class='pintuan-tag draw-fill draw-text' data-text="{{pintuan + '人拼团价'}}">{{pintuan}}人拼团价</view>
     </view>
     <view wx:if="{{joinNumber}}" class='join-num draw-text' data-text="{{'累计' + joinNumber + '人报名'}}">累计{{joinNumber}}人报名</view>
@@ -45,17 +45,17 @@
   <view class="share-content{{showHideClass[showPoster] || ''}}">
     <view id="top-wrapper" class="top-wrapper{{showHideClass[showPoster] || ''}}" catchtap="hidePoster">
       <view wx:if="{{!localPoster}}" class='loading-image'><text>正在生成图片...</text></view>
-      <image class='poster' src="{{localPoster}}" style="width:{{posterWidth ? (posterWidth + 'px') : '88%'}};height:{{posterHeight ? (posterHeight + 'px') : '88%'}}" mode="aspectFit" catchtap="stopPropagation"></image>
+      <image wx:if="{{localPoster}}" class='poster' src="{{localPoster}}" style="width:{{posterWidth ? (posterWidth + 'px') : '88%'}};height:{{posterHeight ? (posterHeight + 'px') : '88%'}}" mode="aspectFit" catchtap="stopPropagation"></image>
       <!-- <canvas canvas-id="share-poster" class="share-canvas{{localPoster ? ' drawed' : ''}}{{showHideClass[showPoster] || ''}}" catchtap="stopPropagation"></canvas> -->
     </view>
     <view class="bottom-wrapper{{showHideClass[showPoster] || ''}}">
       <view wx:if="{{fenxiao_price}}" class='share-tip'>好友通过你的分享购买此产品，你将获得{{fenxiao_price}}元收益</view>
       <view class='bottom-content'>
         <view class='share-friends'>
-          <view class='share-item-icon'>
+          <view class="share-item-icon{{canShareFriend ? '' : ' disabled'}}">
             <text class='share-friend-icon lutufont lutu-weixin'></text>
           </view>
-          <button open-type='share' class='share-friend-btn'></button>
+          <button open-type='share' disabled="{{!canShareFriend}}" class='share-friend-btn'></button>
           <text class='share-box-text'>发给好友</text>
         </view>
         <view class='save-image' catchtap="savePoster">

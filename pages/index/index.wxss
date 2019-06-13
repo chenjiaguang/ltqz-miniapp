@@ -134,7 +134,6 @@ page{
 }
 .recommendation-icon-image, .hot-icon-image, .new-icon-image{
   display: block;
-  width: 28rpx;
-  height: 30rpx;
-  margin-left: 2rpx;
+  width: 50rpx;
+  height: 50rpx;
 }

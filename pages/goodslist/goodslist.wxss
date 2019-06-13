@@ -3,3 +3,19 @@
 page{
   background: #FFFFFF;
 }
+.empty-box{
+  overflow: hidden;
+}
+.empty-image{
+  width: 130rpx;
+  height: 130rpx;
+  display: block;
+  margin: 350rpx auto 0;
+}
+.empty-tip{
+  font-size: 26rpx;
+  line-height: 38rpx;
+  padding-top: 48rpx;
+  color: #999;
+  text-align: center;
+}

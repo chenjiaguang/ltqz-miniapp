@@ -1,0 +1,17 @@
+<!--components/groupOverview/groupOverview.wxml-->
+<view class='wrapper'>
+  <view class='header'>
+    <view class='status'>{{statusText[group.status]}}</view>
+    <view wx:if="{{group.status == 1}}" class='next-text' hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}" catchtap="goPintuanDetail">{{timeout ? '拼团详情' : remainTimeText}}<text class='lutufont lutu-next2'></text></view>
+    <view wx:else class='next-text' hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}" catchtap="goPintuanDetail">拼团详情<text class='lutufont lutu-next2'></text></view>
+  </view>
+  <view class='line-separator-h' style="margin-left:32rpx;width:auto;"></view>
+  <view class='join-users'>
+    <view wx:for="{{users}}" wx:key="id" class='join-user-box'>
+      <image wx:if="{{item.avatar}}" class='join-user-avatar' src="{{item.avatar}}" mode="aspectFill"></image>
+      <image wx:else class='join-user-empty' src="/assets/images/empty_join_user.png" mode="aspectFit"></image>
+      <view wx:if="{{index === 0}}" class='master theme-bg'>团长</view>
+    </view>
+  </view>
+  <view wx:if="{{group.status == 1}}" class='share-btn theme-bg' catchtap="shareTap">邀请好友</view>
+</view>

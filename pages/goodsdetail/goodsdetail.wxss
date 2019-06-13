@@ -475,6 +475,8 @@ page{
   justify-content: center;
   align-items: center;
   border-radius: 6rpx;
+  background: #ffffff;
+  padding: 0;
 }
 .collect{
   width: 92rpx;

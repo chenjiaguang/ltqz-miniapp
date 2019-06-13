@@ -29,7 +29,7 @@
     <view class='info-item-wrapper'>
       <view class='info-item'>
         <view class='left-box'>
-          <text>身份证号</text>
+          <text><text wx:if="{{requireidcard}}" class='red'>* </text>身份证号</text>
         </view>
         <view class='right-box'>
           <input class='right-input' type="text" value="{{idcard}}" bindinput="infoInput" data-ele="idcard" placeholder='请输入身份证号' placeholder-class='input-placeholder'></input>
@@ -38,6 +38,6 @@
       <view class='line-separator-h'></view>
     </view>
   </view>
-  <view class="btn save-btn{{(!name || !sex) ? ' disabled' : ' theme-bg'}}" disabled="{{!name || !sex}}" catchtap="saveContact">保存</view>
+  <view class="btn save-btn{{(!name || !sex || (requireidcard && !idcard)) ? ' disabled' : ' theme-bg'}}" disabled="{{!name || !sex || (requireidcard && !idcard)}}" catchtap="saveContact">保存</view>
   <view wx:if="{{id}}" class="btn del-btn theme-border-color theme-color" catchtap="delContact">删除出行人</view>
 </view>

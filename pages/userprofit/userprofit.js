@@ -114,10 +114,13 @@ Page({
 
   requestCash: function() {
     if (this.data.withdraw) {
+      const app = getApp()
+      const confirmColor = app.globalData.themeModalConfirmColor || '#576B95' // #576B95是官方颜色
       wx.showModal({
         title: '提示',
         content: '可提现收益将全部提现至您的为您零钱，是否继续提现操作？',
         confirmText: '继续',
+        confirmColor,
         success: (res) => {
           if (res.confirm) {
             util.request('/fenxiao/tx').then(res => {

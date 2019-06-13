@@ -92,7 +92,7 @@ Component({
       second = (second >= 10) ? second : ('0' + second)
       return [hour, min, second].join(':')
     },
-    ruleTap: function () { // todo
+    ruleTap: function () {
       console.log('ruleTap')
       wx.navigateTo({
         url: '/pages/statement/statement?type=3'
@@ -102,8 +102,12 @@ Component({
     groupTap: function (e) {
       const {ele} = e.currentTarget.dataset
       const { remainTime} = this.data
-      ele.timeout = remainTime[ele.id] <= 0
-      this.triggerEvent('grouptap', {ele})
+      if (remainTime[ele.id] <= 0) { // 超时
+        return false
+      }
+      wx.navigateTo({
+        url: '/pages/pintuandetail/pintuandetail?id=' + ele.id
+      })
     }
   }
 })

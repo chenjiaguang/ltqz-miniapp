@@ -277,10 +277,13 @@ button.submit-btn.disabled{
 }
 .new-icon{
   font-size: 38rpx;
+  line-height: 38rpx;
   margin-right: 10rpx;
 }
 .new-text{
   font-size: 36rpx;
+  line-height: 36rpx;
+  font-weight: normal;
 }
 .buyfors{
   min-height: 408rpx;
@@ -298,9 +301,9 @@ button.submit-btn.disabled{
   overflow: hidden;
 }
 .buyfor-check-icon{
-  font-size: 34rpx;
-  width: 32rpx;
-  height: 32rpx;
+  font-size: 46rpx;
+  width: 46rpx;
+  height: 46rpx;
   margin-left: 32rpx;
   color: #D8D8D8;
 }
@@ -322,8 +325,17 @@ button.submit-btn.disabled{
 .buyfor-idcard.disabled{
   color: #FF3A30
 }
-.wirte-icon{
-  font-size: 34rpx;
+.wirte-icon-wrapper{
+  overflow: hidden;
   align-self: center;
+}
+.wirte-icon{
+  width: 36rpx;
+  height: 39rpx;
   margin-right: 32rpx;
+}
+
+
+.buyfor-check-icon.green-color{
+  color: #5BB63F;
 }

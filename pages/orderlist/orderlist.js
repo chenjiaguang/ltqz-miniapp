@@ -8,7 +8,7 @@ Page({
    */
   data: {
     index: 0,
-    states: ['', '0', '1', '2'],
+    states: ['', '0', '4', '1', '2'],
     tabCurrentColor: '#000000',
     tabs: [{
       title: '全部',
@@ -20,6 +20,14 @@ Page({
       loading: false
     }, {
       title: '待付款',
+      list: [],
+      page: {
+        pn: 1
+      },
+      loaded: false,
+      loading: false
+    }, {
+      title: '拼团中',
       list: [],
       page: {
         pn: 1
@@ -196,8 +204,25 @@ Page({
       [`tabs[3].list`]: [],
       [`tabs[3].loaded`]: false,
       [`tabs[3].loading`]: false,
+
+      [`tabs[4].page`]: {
+        pn: 1
+      },
+      [`tabs[4].list`]: [],
+      [`tabs[4].loaded`]: false,
+      [`tabs[4].loading`]: false
     }, () => {
       this.loadList(0, 1)
     })
+  },
+
+  shareTap: function (e) {
+    const {hd_id, pt_id} = e.detail
+    if (hd_id && pt_id) {
+      const poster = this.selectComponent('#c-draw-poster')
+      if (poster && poster.startDraw) {
+        poster.startDraw(hd_id, pt_id)
+      }
+    }
   }
 })

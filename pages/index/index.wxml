@@ -18,11 +18,11 @@
     </view>
   </view>
   <view wx:if="{{hots && hots[0]}}" class='hot-box'>
-    <view class='hot-header'><view class='left-line line-separator-h'></view><view class='hot-icon theme-bg'><image class='hot-icon-image' src="/assets/images/fire_white.png" mode="aspectFit"></image></view><text class='hot-header-title'>热卖TOP榜</text><view class='right-line line-separator-h'></view></view>
+    <view class='hot-header'><view class='left-line line-separator-h'></view><view class='hot-icon theme-bg'><image class='hot-icon-image' src="/assets/images/top_hot.png" mode="aspectFit"></image></view><text class='hot-header-title'>热卖TOP榜</text><view class='right-line line-separator-h'></view></view>
     <activity-card wx:for="{{hots}}" wx:for-item="activity" wx:for-index="aidx" wx:key="id" activity="{{activity}}" catchactivitytap="goodsTap" />
   </view>
   <view wx:if="{{news && news[0]}}" class='new-box'>
-    <view class='hot-header'><view class='left-line line-separator-h'></view><view class='new-icon theme-bg'><image class='new-icon-image' src="/assets/images/fire_white.png" mode="aspectFit"></image></view><text class='new-header-title'>当季新品</text><view class='right-line line-separator-h'></view></view>
+    <view class='hot-header'><view class='left-line line-separator-h'></view><view class='new-icon theme-bg'><image class='new-icon-image' src="/assets/images/top_new.png" mode="aspectFit"></image></view><text class='new-header-title'>当季新品</text><view class='right-line line-separator-h'></view></view>
     <activity-card wx:for="{{news}}" wx:for-item="activity" wx:for-index="aidx" wx:key="id" activity="{{activity}}" catchactivitytap="goodsTap" />
   </view>
   <view class='recommendation-box'>
