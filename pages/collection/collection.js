@@ -165,9 +165,11 @@ Page({
     }).then(res => {
       if (res.error == 0 && res.data) {
         res.data.list.forEach(item => {
-          item.data.min_price = util.formatMoney(item.data.min_price).showMoney
-          item.data.min_origin_price = util.formatMoney(item.data.min_origin_price).showMoney
-          item.data.min_pt_price = util.formatMoney(item.data.min_pt_price).showMoney
+          if (item.data) {
+            item.data.min_price = util.formatMoney(item.data.min_price).showMoney
+            item.data.min_origin_price = util.formatMoney(item.data.min_origin_price).showMoney
+            item.data.min_pt_price = util.formatMoney(item.data.min_pt_price).showMoney
+          }
         })
         if (pn == 1) {
           this.setData({

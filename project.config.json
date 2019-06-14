@@ -242,7 +242,7 @@
 					"id": 27,
 					"name": "拼团详情",
 					"pathName": "pages/pintuandetail/pintuandetail",
-					"query": "id=10",
+					"query": "id=14",
 					"scene": null
 				}
 			]

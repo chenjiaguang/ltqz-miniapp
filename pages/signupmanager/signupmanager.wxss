@@ -41,7 +41,23 @@
   font-size: 28rpx;
   line-height: 28rpx;
   color: #999;
-  margin-bottom: 16rpx;
+  padding-bottom: 10rpx;
+}
+
+.travelers-box{
+  padding-bottom: 10rpx;
+}
+.travelers{
+  font-size: 28rpx;
+  line-height: 40rpx;
+  color: #999999;
+}
+.traneler-name{
+  min-width: 84rpx;
+  margin-right: 32rpx;
+}
+.traneler-gender{
+  margin-right: 32rpx;
 }
 
 .state {

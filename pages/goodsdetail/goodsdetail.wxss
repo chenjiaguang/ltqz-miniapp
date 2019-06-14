@@ -124,6 +124,10 @@ page{
   position: relative;
   z-index: 1;
 }
+.text-qi{
+  font-size: 34rpx;
+  padding-top: 14rpx;
+}
 .origin-price{
   font-size: 36rpx;
   line-height: 36rpx;
@@ -151,7 +155,7 @@ page{
   color: #fff;
 }
 .state-block{
-  height: 60rpx;
+  min-height: 60rpx;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -477,6 +481,7 @@ page{
   border-radius: 6rpx;
   background: #ffffff;
   padding: 0;
+  margin: 0;
 }
 .collect{
   width: 92rpx;

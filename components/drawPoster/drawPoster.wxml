@@ -5,7 +5,7 @@
       <image class='header-avatar draw-image' src="{{hAvatar}}" mode="aspectFill"></image>
       <view class='header-right'>
         <view class='header-name'>
-          <view class='header-name-text draw-text' data-text="{{hName}}">{{hName}}</view>
+          <view class='header-name-text draw-text' data-text="{{'@' + hName}}">@{{hName}}</view>
           <view class='header-name-shadow draw-fill'></view>
         </view>
         <view class="header-tip draw-text" data-text="{{hTip}}">{{hTip}}</view>
@@ -15,9 +15,9 @@
     <view class='title draw-text' data-text="{{title}}" data-maxline="{{2}}" data-maxlength="{{20}}">{{title}}</view>
     <view class='price draw-text' data-text="{{price > 0 ? ('¥' + price) : '免费'}}">
       <text>{{price > 0 ? ('¥' + price) : '免费'}}</text>
-      <view wx:if="{{pintuan}}" class='pintuan-tag draw-fill draw-text' data-text="{{pintuan + '人拼团价'}}">{{pintuan}}人拼团价</view>
+      <view wx:if="{{pintuan && pintuan > 0}}" class='pintuan-tag draw-fill draw-text' data-text="{{pintuan + '人拼团价'}}">{{pintuan}}人拼团价</view>
     </view>
-    <view wx:if="{{joinNumber}}" class='join-num draw-text' data-text="{{'累计' + joinNumber + '人报名'}}">累计{{joinNumber}}人报名</view>
+    <view wx:if="{{joinNumber && joinNumber > 0}}" class='join-num draw-text' data-text="{{'累计' + joinNumber + '人报名'}}">累计{{joinNumber}}人报名</view>
     <view wx:if="{{joinUsers && joinUsers.length}}" class='join-user-box'>
       <view wx:for="{{joinUsers}}" class='join-user-item' wx:key="id">
         <image class='join-user-avatar draw-image' src="{{item.avatar || '/assets/images/empty_join_user.png'}}" mode="{{item.avatar ? 'aspectFill' : 'aspectFit'}}" data-islocal="{{!item.avatar}}"></image>
@@ -49,7 +49,7 @@
       <!-- <canvas canvas-id="share-poster" class="share-canvas{{localPoster ? ' drawed' : ''}}{{showHideClass[showPoster] || ''}}" catchtap="stopPropagation"></canvas> -->
     </view>
     <view class="bottom-wrapper{{showHideClass[showPoster] || ''}}">
-      <view wx:if="{{fenxiao_price}}" class='share-tip'>好友通过你的分享购买此产品，你将获得{{fenxiao_price}}元收益</view>
+      <view wx:if="{{fenxiao_price && fenxiao_price > 0}}" class='share-tip'>好友通过你的分享购买此产品，你将获得{{fenxiao_price}}元收益</view>
       <view class='bottom-content'>
         <view class='share-friends'>
           <view class="share-item-icon{{canShareFriend ? '' : ' disabled'}}">

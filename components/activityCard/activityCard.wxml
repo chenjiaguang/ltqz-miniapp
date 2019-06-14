@@ -19,7 +19,9 @@
   <view class='intro'>{{activity.desc}}</view>
   <view class='tags-and-join'>
     <view class='tags' wx:if="{{activity.tags && activity.tags[0]}}">
-      <view wx:for="{{activity.tags}}" wx:for-item="tag" wx:index="tidx" wx:key="label" class='tag-item theme-bg-10 theme-color'><text>{{tag.label}}</text></view>
+      <block wx:for="{{activity.tags}}" wx:for-item="tag" wx:for-index="tidx" wx:key="label">
+        <view wx:if="{{tag.type != 'address'}}" class='tag-item theme-bg-10 theme-color'><text>{{tag.label}}</text></view>
+      </block>
     </view>
     <view wx:if="{{activity.join_num && activity.join_num > 0}}" class='join'><text>累计{{activity.join_num}}人报名</text></view>
   </view>

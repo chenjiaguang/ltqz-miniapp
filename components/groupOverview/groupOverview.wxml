@@ -6,8 +6,8 @@
     <view wx:else class='next-text' hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}" catchtap="goPintuanDetail">拼团详情<text class='lutufont lutu-next2'></text></view>
   </view>
   <view class='line-separator-h' style="margin-left:32rpx;width:auto;"></view>
-  <view class='join-users'>
-    <view wx:for="{{users}}" wx:key="id" class='join-user-box'>
+  <view class='join-users' style="justify-content:{{users.length > 5 ? 'flex-start' : 'center'}}">
+    <view wx:for="{{users}}" wx:key="id" class="join-user-box{{((index + 1) % 5) == 0 ? ' margin-right-0' : ''}}">
       <image wx:if="{{item.avatar}}" class='join-user-avatar' src="{{item.avatar}}" mode="aspectFill"></image>
       <image wx:else class='join-user-empty' src="/assets/images/empty_join_user.png" mode="aspectFit"></image>
       <view wx:if="{{index === 0}}" class='master theme-bg'>团长</view>

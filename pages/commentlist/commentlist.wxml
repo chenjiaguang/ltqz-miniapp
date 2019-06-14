@@ -1,26 +1,11 @@
 <!--pages/commentmanager/commentmanager.wxml-->
-<ft-tabs class="tabs" type="2" tabs="{{tabs}}" index="{{index}}" catchfetchlist="fetchlist" showEmpty="{{false}}" catchtabchange='tabchange'>
-  <view slot="tab0">
-    <view class='list-box'>
-      <comment-box role="{{role}}" wx:for="{{tabs[0].list}}" wx:for-index="idx" wx:for-item="comment" wx:key="id" comment="{{comment}}" show-goods="{{showGoods}}" show-ticket="{{showTicket}}" top-border="{{idx !== 0}}" catchreply="replyTap" />
-    </view>
-
-    <image wx:if="{{tabs[0].loaded&&tabs[0].list.length==0}}" class='empty-img' src='/assets/images/empty_comment.png' />
-    <text wx:if="{{tabs[0].loaded&&tabs[0].list.length==0}}" class='empty-text'>啊哦，暂时还没有评价哦~</text>
+<view class='page-commentlist'>
+  <ft-list-loader visible="{{!loaded}}" />
+  <view wx:if="{{list && list[0]}}" class='list-box'>
+    <comment-box role="user" wx:for="{{list}}" wx:for-index="idx" wx:for-item="comment" wx:key="id" comment="{{comment}}" show-goods="{{showGoods}}" show-ticket="{{showTicket}}" top-border="{{idx !== 0}}" />
   </view>
-  <view slot="tab1">
-    <view class='list-box'>
-      <comment-box role="{{role}}" wx:for="{{tabs[1].list}}" wx:for-index="idx" wx:for-item="comment" wx:key="id" comment="{{comment}}" show-goods="{{showGoods}}" show-ticket="{{showTicket}}" top-border="{{idx !== 0}}" catchreply="replyTap" />
-    </view>
-
-    <image wx:if="{{tabs[1].loaded&&tabs[1].list.length==0}}" class='empty-img' src='/assets/images/empty_comment.png' />
-    <text wx:if="{{tabs[1].loaded&&tabs[1].list.length==0}}" class='empty-text'>啊哦，暂时还没有评价哦~</text>
-  </view>
-</ft-tabs>
-
-<ft-mask show="{{reply_focus}}">
-  <view class="row ai-center jc-between bottom-reply-box{{reply_focus ? ' focus' : ''}}">
-    <input class='reply-input flex1' focus="{{reply_focus}}" placeholder="回复：{{current_reply_name}}" value="{{reply_value}}" bindinput='replyInput'></input>
-    <view class='reply-btn bold {{reply_value.length?"theme-color":"disable"}}' disabled="{{!reply_value}}" catchtap="replySubmit">发送</view>
-  </view>
-</ft-mask>
+  <ft-list-footer loaded="{{loaded}}" loading="{{loading}}" page="{{page}}" show-no-more="{{loaded && list && list[0]}}" />
+  <image wx:if="{{loaded && list.length == 0}}" class='empty-img' src='/assets/images/empty_comment.png' />
+  <text wx:if="{{loaded && list.length == 0}}" class='empty-text'>啊哦，暂时还没有评价哦~</text>
+  <ft-iphone-bottom-adapter />
+</view>

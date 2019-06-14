@@ -18,7 +18,7 @@ Page({
       },
       {
         title: '评价管理',
-        path: '/pages/commentlist/commentlist'
+        path: '/pages/commentmanager/commentmanager'
       }
     ]
   },

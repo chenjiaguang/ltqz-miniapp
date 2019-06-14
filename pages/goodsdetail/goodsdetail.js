@@ -30,7 +30,7 @@ Page({
       2: '报名已满',
       3: '报名截止',
       4: '报名已满',
-      5: '报名结束'
+      5: '活动结束'
     },
     sale_type: '1', // 该商品是 团购 还是 普通商品（1:普通商品，2:团购商品）
     saletype: '1', // 当前是 普通购买 还是 发起拼团
@@ -961,17 +961,18 @@ Page({
     })
     util.request(url, rData).then(res => {
       if (res.error == 0) {
-        if (!is_collect) { // 收藏成功才提示，其他情况静默
-          wx.showToast({
-            title: '收藏成功',
-            icon: 'none'
-          })
+        if (!is_collect) { // 收藏成功 且 是第一次收藏 才提示，其他情况静默
           const goodsCollected = storageHelper.getStorage('goodsCollected')
           if (!goodsCollected) {
             this.setData({
               showCollectTip: true
             })
             setTimeout(this.hideCollectTip, 3000)
+          } else {
+            wx.showToast({
+              title: '收藏成功',
+              icon: 'none'
+            })
           }
           storageHelper.setStorage('goodsCollected', true)
         }

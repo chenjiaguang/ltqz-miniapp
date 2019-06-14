@@ -1,0 +1,15 @@
+{
+  "backgroundColor": "#FFFFFF",
+  "backgroundColorTop": "#FFFFFF",
+  "backgroundColorBottom": "#FFFFFF",
+  "navigationBarTitleText": "评价管理",
+  "usingComponents": {
+    "ft-tabs": "../../ftcomponents/ftTabs/ftTabs",
+    "ft-star-box": "../../ftcomponents/ftStarBox/ftStarBox",
+    "ft-list-loader": "../../ftcomponents/ftListLoader/ftListLoader",
+    "ft-list-footer": "../../ftcomponents/ftListFooter/ftListFooter",
+    "comment-box": "../../components/commentBox/commentBox",
+    "ft-iphone-bottom-adapter": "../../ftcomponents/ftIphoneBottomAdapter/ftIphoneBottomAdapter",
+    "ft-mask": "../../ftcomponents/ftMask/ftMask"
+  }
+}

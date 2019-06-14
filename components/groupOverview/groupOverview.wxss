@@ -32,16 +32,20 @@
 .join-users{
   display: flex;
   flex-wrap: wrap;
-  padding-left: 89rpx;
+  margin: 0 89rpx;
   overflow: hidden;
 }
 .join-user-box{
   display: block;
-  width: 92rpx;
+  width: 16.0839%;
   height: 92rpx;
   position: relative;
   margin-top: 28rpx;
-  margin-right: 28rpx;
+  margin-right: 4.895125%;
+  overflow: visible;
+}
+.join-user-box.margin-right-0{
+  margin-right: 0;
 }
 .join-user-avatar{
   position: absolute;

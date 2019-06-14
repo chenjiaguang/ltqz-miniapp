@@ -6,6 +6,11 @@ Page({
    * 页面的初始数据
    */
   data: {
+    genderText: {
+      0: '保密',
+      1: '男',
+      2: '女'
+    },
     id: '',
     hd_id: '',
     join_num: '',

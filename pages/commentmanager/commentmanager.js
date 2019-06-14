@@ -1,4 +1,4 @@
-// pages/commentlist/commentlist.js
+// pages/commentmanager/commentmanager.js
 import util from '../../utils/util.js'
 
 Page({
@@ -7,98 +7,133 @@ Page({
    * 页面的初始数据
    */
   data: {
-    role: 'user',
+    index: 0,
+    tabs: [{
+      title: '全部',
+      list: [],
+      page: {
+        pn: 1
+      },
+      loaded: false,
+      loading: false
+    }, {
+      title: '待回复',
+      list: [],
+      page: {
+        pn: 1
+      },
+      loaded: false,
+      loading: false
+    }],
     showGoods: false,
     showTicket: false,
-    loaded: false,
-    list: [],
-    page: {},
-    loading: false
+    top_fixed: false,
+
+    current_reply_name: '', //回复对象的名称
+    reply_focus: false, //是否在回复状态
+    reply_value: '' //回复的内容
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function(options) { // options.sid(shop_id，传入商家id则请求商家的评论)、options.pid(product_id，传入商品id则请求商品的评论)、options.type(type，商品类型，活动为1)
-    if (options.sid) { // 展示的是商家评价，则显示活动
-      wx.setNavigationBarTitle({
-        title: '全部评价'
-      })
-      this.setData({
-        showGoods: true
-      })
-    } else if (options.pid) { // 展示的是活动评价，则显示已购买的票
-      wx.setNavigationBarTitle({
-        title: '活动评价',
-      })
-      this.setData({
-        showTicket: true
+  onLoad: function (options) { // options.sid(shop_id，传入商家id则请求商家的评论)、options.pid(product_id，传入商品id则请求商品的评论)、options.type(type，商品类型，活动为1)
+    const app = getApp()
+    if (app.globalData.themeColor) {
+      wx.setNavigationBarColor({
+        frontColor: '#ffffff',
+        backgroundColor: app.globalData.themeColor
       })
     }
     this.options = options // 把options保存下来
-    this.fetchComment(this.options, 1)
   },
 
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
-  onReady: function() {
+  onReady: function () {
 
   },
 
   /**
    * 生命周期函数--监听页面显示
    */
-  onShow: function() {
+  onShow: function () {
 
   },
 
   /**
    * 生命周期函数--监听页面隐藏
    */
-  onHide: function() {
+  onHide: function () {
 
   },
 
   /**
    * 生命周期函数--监听页面卸载
    */
-  onUnload: function() {
+  onUnload: function () {
 
   },
 
   /**
    * 页面相关事件处理函数--监听用户下拉动作
    */
-  onPullDownRefresh: function() {},
+  onPullDownRefresh: function () { },
 
   /**
    * 页面上拉触底事件的处理函数
    */
-  onReachBottom: function() {
-    const {page, loading} = this.data
-    if (loading || page.is_end) {
-      return false
-    }
-    this.fetchComment(this.options, page.pn)
-  },
+  onReachBottom: function () { },
 
   /**
    * 用户点击右上角分享
    */
-  onShareAppMessage: function() {
+  onShareAppMessage: function () {
 
   },
-  fetchComment: function(options, pn) {
+
+  onPageScroll: function (e) {
+    // console.log('onPageScroll', e.scrollTop)
+    const {
+      top_fixed
+    } = this.data
+    if (e.scrollTop <= 0 && top_fixed) {
+      console.log('ddd')
+      this.setData({
+        top_fixed: false
+      })
+    } else if (e.scrollTop > 0 && !top_fixed) {
+      console.log('eee')
+      this.setData({
+        top_fixed: true
+      })
+    }
+  },
+
+  tabchange(e) {
+    this.setData({
+      index: e.detail.current
+    })
+  },
+  fetchlist(e) {
+    this.fetchComment(e.detail.idx, this.options, e.detail.pn)
+  },
+  fetchComment: function (index, options, pn) {
     // options.sid(shop_id，传入商家id则请求商家的评论)、options.pid(product_id，传入商品id则请求商品的评论)、options.type(type，商品类型，活动为1)
+    const {
+      list,
+      page
+    } = this.data
     let rData = {
       product_id: options.pid,
       shop_id: options.sid,
       type: options.pid ? '1' : '',
-      pn: pn
+      pn: pn,
+      reply: index == 1 ? null : ''
     }
     this.setData({
-      loading: true
+      [`tabs[${index}].loading`]: true,
     })
     util.request('/rate/list', rData).then(res => {
       if (res.error == 0 && res.data) {
@@ -109,26 +144,26 @@ Page({
         list.forEach(item => {
           item.created_at = util.formatDateTimeDefault('d', item.created_at)
         })
-        if (pn == 1) {} else {
-          list = this.data.list.concat(list)
+
+        if (pn == 1) { } else {
+          list = this.data.tabs[index].list.concat(list)
         }
+
         this.setData({
-          list: list,
-          page: res.data.page,
-          loaded: true,
-          loading: false
+          [`tabs[${index}].list`]: list,
+          [`tabs[${index}].page`]: res.data.page,
+          [`tabs[${index}].loaded`]: true,
+          [`tabs[${index}].loading`]: false,
         })
+
+
       }
     }).catch(err => {
       console.log('catch')
-    }).finally(res => {
-      this.setData({
-        loading: false
-      })
     })
   },
 
-  replyTap: function(e) {
+  replyTap: function (e) {
     const {
       id,
       username
@@ -140,7 +175,7 @@ Page({
     })
   },
 
-  replyInput: function(e) {
+  replyInput: function (e) {
     const {
       value,
       cursor
@@ -150,7 +185,7 @@ Page({
       reply_cursor: cursor
     })
   },
-  replySubmit: function() {
+  replySubmit: function () {
     util.request('/admin/rate/reply', {
       id: this.options.sid,
       rate_id: this.data.current_reply_id,

@@ -92,10 +92,10 @@
     <view class='bottom-button-height'></view>
     <ft-iphone-bottom-adapter />
     <view class='bottom-button'>
-      <view wx:if="{{order.status == 0}}" class="bottom-button-height pay{{repaying ? ' disabled' : ' theme-bg'}}" catchtap="repay">
+      <view wx:if="{{order.status == 0}}" class="bottom-button-inner-height pay{{repaying ? ' disabled' : ' theme-bg'}}" catchtap="repay">
         <text>立即支付</text>
       </view>
-      <view wx:if="{{order.status == 1 || order.status == 2 || order.status == 3}}" class='bottom-button-height ticket theme-bg' bindtap='goGoodsTicket'>
+      <view wx:if="{{order.status == 1 || order.status == 2 || order.status == 3}}" class='bottom-button-inner-height ticket theme-bg' bindtap='goGoodsTicket'>
         <text>查看电子票</text>
       </view>
       <ft-iphone-bottom-adapter />

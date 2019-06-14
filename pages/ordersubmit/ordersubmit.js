@@ -177,7 +177,7 @@ Page({
         const confirmColor = app.globalData.themeModalConfirmColor || '#576B95' // #576B95是官方颜色
         wx.showModal({
           title: '确定要取消支付吗？',
-          content: '您的订单在10分钟内未支付将被取消，请尽快完成支付哦~',
+          content: '您的订单在30分钟内未支付将被取消，请尽快完成支付哦~',
           confirmText: '继续支付',
           confirmColor,
           success: res => {

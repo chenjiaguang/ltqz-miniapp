@@ -32,7 +32,8 @@
     "pages/paysuccess/paysuccess",
     "pages/statement/statement",
     "pages/collection/collection",
-    "pages/pintuandetail/pintuandetail"
+    "pages/pintuandetail/pintuandetail",
+    "pages/commentmanager/commentmanager"
   ],
   "window": {
     "backgroundTextStyle": "dark",

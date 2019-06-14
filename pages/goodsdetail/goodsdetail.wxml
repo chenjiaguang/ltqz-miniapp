@@ -12,10 +12,10 @@
       <view class='shadow1'></view>
       <view class='shadow2'></view>
     </view> -->
-    <view wx:if="{{show_min_price && show_min_price > 0}}" class='actual-price'><text style="font-size:38rpx;padding-top:10rpx;margin-right:6rpx">¥</text><text>{{show_min_price}}{{price_num > 1 ? '起' : ''}}</text></view>
+    <view wx:if="{{show_min_price && show_min_price > 0}}" class='actual-price'><text style="font-size:38rpx;padding-top:10rpx;margin-right:6rpx">¥</text><text>{{sale_type == 2 ? show_min_pt_price : show_min_price}}</text><text wx:if="{{price_num > 1}}" class='text-qi'>起</text></view>
     <view wx:if="{{!show_min_price || show_min_price == 0}}" class='free-price'>免费</view>
     <view wx:if="{{show_min_origin_price && show_min_origin_price > 0}}" class='origin-price'>
-      <view wx:if="{{sale_type == 2 && spell_num}}" class='group-sign'><ft-bubble content="{{spell_num + '人团购价'}}" /></view>
+      <view wx:if="{{sale_type == 2 && spell_num}}" class='group-sign'><ft-bubble content="{{spell_num + '人拼团价'}}" /></view>
       <text>¥{{show_min_origin_price}}</text>
     </view>
     <view class="status{{status == 1 ? ' status-able' : ' status-other'}}">{{statusText[status]}}</view>
@@ -50,12 +50,18 @@
     </view>
     <view wx:if="{{min_age}}" class='state-block-wrapper'>
       <view class='line-separator-h'></view>
-      <view class='state-block'><image class='left-icon' mode="aspectFit" src="/assets/images/nianling.png"></image><text class='state-block-text'>适合年龄段：{{min_age == -1 ? '不限年龄' : (min_age + ' ~ ' + max_age)}}</text></view>
+      <view class='state-block'><image class='left-icon' mode="aspectFit" src="/assets/images/nianling.png"></image><text class='state-block-text'>适合年龄段：{{min_age == -1 ? '不限年龄' : (min_age + ' ~ ' + max_age + '岁')}}</text></view>
     </view>
     <view wx:if="{{limit_num}}" class='state-block-wrapper'>
       <view class='line-separator-h'></view>
-      <view class='state-block'><image class='left-icon' mode="aspectFit" src="/assets/images/chengtuan.png"></image><text class='state-block-text'>{{limit_num}}组开始成团</text></view>
+      <view class='state-block'><image class='left-icon' mode="aspectFit" src="/assets/images/chengtuan.png"></image><text class='state-block-text'>{{limit_num}}</text></view>
     </view>
+    <block wx:if="{{note && note[0]}}">
+      <view wx:for="{{note}}" wx:key="*this" class='note-box'>
+        <view class='line-separator-h'></view>
+        <view class='state-block'><image class='left-icon' mode="aspectFit" src="/assets/images/beizhu.png"></image><text class='state-block-text' style="white-space:normal">{{item}}</text></view>
+      </view>
+    </block>
     <view wx:if="{{include_bx == 1}}" class='state-block-wrapper'>
       <view class='line-separator-h'></view>
       <view class='state-block'><image class='left-icon' mode="aspectFit" src="/assets/images/baoxian.png"></image><text class='state-block-text'>本次活动费用{{(include_bx == 1) ? '' : '不'}}包含保险</text></view>
@@ -199,7 +205,7 @@
           </button>
           <view class='collect' catchtap="collectTap" hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
             <text class="collect-icon theme-color lutufont{{is_collect ? ' lutu-collected' : ' lutu-collect'}}"></text>
-            <text class='collect-text'>收藏</text>
+            <text class='collect-text'>{{is_collect ? '已收藏' : '收藏'}}</text>
           </view>
         </view>
         <!-- 可报名且用户电话存在 或 不可报名 -->
@@ -235,7 +241,7 @@
         <!-- 可报名且用户电话存在 或 不可报名 -->
           <view class='join-btn-wrapper' style="padding-right:0" wx:if="{{status != 1 || (status == 1 && orderContact)}}">
             <button wx:if="{{status == 1 && orderContact}}" class="join-btn single-join theme-bg-secondary" style="border-top-right-radius:0;border-bottom-right-radius:0" disabled="{{status != 1}}" catchtap="toggleSession" data-saletype="1">
-              <view class='join-price' wx:if="{{show_min_origin_price > 0}}">¥{{show_min_origin_price}}</view>
+              <view class='join-price' wx:if="{{show_min_origin_price > 0}}">¥{{show_min_price}}</view>
               <view class='join-price' wx:if="{{show_min_origin_price <= 0}}">免费</view>
               <view class='join-text'>单独购买</view>
             </button>

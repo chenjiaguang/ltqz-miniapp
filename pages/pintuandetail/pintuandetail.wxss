@@ -1,1 +1,208 @@
 /* pages/pintuandetail/pintuandetail.wxss */
+
+.goods {
+  padding: 30rpx;
+  background-color: #fff;
+}
+
+.goods-cover {
+  width: 190rpx;
+  height: 190rpx;
+  border-radius: 8rpx;
+  margin-right: 24rpx;
+}
+
+.goods-content {
+  min-width: 0;
+}
+
+.goods-title {
+  font-size: 32rpx;
+  color: #333;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  margin-bottom: 20rpx;
+}
+
+.goods-time {
+  font-size: 24rpx;
+  line-height: 24rpx;
+  color: #333;
+  margin-bottom: 10rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.goods-location {
+  font-size: 24rpx;
+  line-height: 24rpx;
+  color: #999;
+  margin-bottom: 10rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.lutu-next2 {
+  margin-left: 36rpx;
+  align-self: center;
+  font-size: 25rpx;
+  color: #999;
+}
+
+.tuan-wrapper{
+  position: relative;
+}
+.tuan-header{
+  min-height: 72rpx;
+  background-color: #fff;
+}
+
+.tuan-body{
+  background-color: #fff;
+  padding-bottom: 30rpx;
+  overflow: hidden;
+}
+.clock{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 12rpx;
+}
+.clock-line-box{
+  width: 186rpx;
+  height: 30rpx;
+  border-left-width: 1px;
+  border-right-width: 1px;
+  border-top-width: 0;
+  border-bottom-width: 0;
+  border-style: solid;
+}
+.clock-body{
+  width: 294rpx;
+  height: 58rpx;
+  font-size: 28rpx;
+  line-height: 28rpx;
+  text-align: center;
+  box-sizing: border-box;
+  border-radius: 12rpx;
+  border-width: 1px;
+  border-style: solid;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.join-users{
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 89rpx;
+  overflow: hidden;
+}
+.join-user-box{
+  display: block;
+  width: 16.0839%;
+  height: 92rpx;
+  position: relative;
+  margin-top: 28rpx;
+  margin-right: 4.895125%;
+  overflow: visible;
+}
+.join-user-box.margin-right-0{
+  margin-right: 0;
+}
+.join-user-avatar{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  border-radius: 50%;
+}
+.join-user-empty{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+}
+.master{
+  width: 64rpx;
+  height: 32rpx;
+  border-radius: 32rpx 32rpx 32rpx 0;
+  font-size: 24rpx;
+  line-height: 32rpx;
+  color: #fff;
+  text-align: center;
+  position: absolute;
+  top: 0;
+  right: -30rpx;
+}
+.need-user{
+  font-size: 28rpx;
+  line-height: 28rpx;
+  color: #666;
+  overflow: visible;
+  margin-top: 30rpx;
+  text-align: center;
+}
+.button-box{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 30rpx 0 20rpx;
+}
+.share-pentyouquan, .share-weixinhaoyou{
+  width: 334rpx;
+  height: 82rpx;
+  border-radius: 41rpx;
+  color: #fff;
+  background-color: #64B631;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 32rpx;
+  font-weight: normal;
+  padding: 0;
+  margin: 0;
+  border: 0;
+}
+.share-weixinhaoyou{
+  margin-left: 20rpx;
+}
+.lutu-pengyouquan, .lutu-weixin{
+  font-size: 40rpx;
+  margin-right: 22rpx;
+}
+.share-tip{
+  font-size: 24rpx;
+  line-height: 34rpx;
+  color: #999999;
+  padding: 5rpx 32rpx 15rpx;
+  text-align: center;
+}
+.join-btn{
+  width: 580rpx;
+  height: 82rpx;
+  border-radius: 41rpx;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 32rpx;
+  font-weight: normal;
+  padding: 0;
+  margin: 0;
+  border: 0;
+}
+
+.success-icon, .fail-icon{
+  width: 140rpx;
+  height: 140rpx;
+  position: absolute;
+  top: 20rpx;
+  right: 32rpx;
+  z-index: 1;
+}

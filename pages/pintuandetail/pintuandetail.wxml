@@ -1,4 +1,100 @@
 <!--pages/pintuandetail/pintuandetail.wxml-->
-<text>pages/pintuandetail/pintuandetail.wxml</text>
+<view class='page-pintuandetail'>
+  <view class='row goods' bindtap='goGoodsDetail'>
+    <image class='goods-cover' src="{{huodong.cover_url}}" mode="aspectFill"></image>
+    <view class='goods-content flex1 column'>
+      <text class='goods-title bold'>{{huodong.title}}</text>
+      <text class='goods-time'>{{huodong.valid_btime}} 至 {{huodong.valid_etime}}</text>
+      <text class='goods-location'>{{huodong.address}}</text>
+    </view>
+    <text class='lutufont lutu-next2'></text>
+  </view>
+
+  <view class='tuan-wrapper'>
+    <view class='tuan-header'>
+      <view class='line-separator-h'></view>
+      <!-- 正在拼团中，提示剩余时间 -->
+      <view wx:if="{{status == 1 && remainTimeText}}" class='clock'>
+        <view class='clock-line-box theme-border-color'></view>
+        <view class='clock-body theme-color theme-border-color'>
+          <text>{{remainTimeText}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class='tuan-body'>
+      <view class='join-users' style="justify-content:{{users.length > 5 ? 'flex-start' : 'center'}}">
+        <view wx:for="{{users}}" wx:key="id" class="join-user-box{{((index + 1) % 5) == 0 ? ' margin-right-0' : ''}}">
+          <image wx:if="{{item.avatar}}" class='join-user-avatar' src="{{item.avatar}}" mode="aspectFill"></image>
+          <image wx:else class='join-user-empty' src="/assets/images/empty_join_user.png" mode="aspectFit"></image>
+          <view wx:if="{{index === 0}}" class='master theme-bg'>团长</view>
+        </view>
+      </view>
+      <view style="height:20rpx"></view>
+      <!-- 正在拼团中，提示差多少人 -->
+      <view wx:if="{{status == 1 && needUsers && needUsers > 0}}" class='need-user'>还差{{needUsers}}人就成团啦，快来拼团吧~</view>
+      <!-- 已加入团 且 正在拼团中 -->
+      <view wx:if="{{is_join && status == 1}}" class='button-box'>
+        <view class='share-pentyouquan'>
+          <text class='lutufont lutu-pengyouquan'></text>
+          <text>分享到朋友圈</text>
+        </view>
+        <button open-type='share' class='share-weixinhaoyou'>
+          <text class='lutufont lutu-weixin'></text>
+          <text>分享给微信好友</text>
+        </button>
+      </view>
+      <!-- 未加入 且 正在拼团中 -->
+      <view wx:elif="{{!is_join && status == 1}}" class='button-box'>
+        <view class='join-btn theme-bg'>
+          <text>参加Ta的拼团</text>
+        </view>
+      </view>
+      <!-- 活动可购买 且 拼团失败 且 是团长 -->
+      <view wx:elif="{{(status === 0 || status === '0') && huodong && huodong.status == 1 && is_master}}" class='button-box'>
+        <view class='join-btn theme-bg'>
+          <text>重新开这个团</text>
+        </view>
+      </view>
+      <!-- 活动可购买 且 拼团失败 且 不是团长 -->
+      <view wx:elif="{{(status === 0 || status === '0') && huodong && huodong.status == 1 && !is_master}}" class='button-box'>
+        <view class='join-btn theme-bg'>
+          <text>我来开这个团</text>
+        </view>
+      </view>
+      <!-- 活动不可购买 且 拼团失败 -->
+      <view wx:elif="{{(status === 0 || status === '0') && huodong && huodong.status != 1}}" class='button-box'>
+        <view class='join-btn theme-bg'>
+          <text>查看更多拼团活动</text>
+        </view>
+      </view>
+      <!-- 活动可购买 且 拼团成功 且 是团长 -->
+      <view wx:elif="{{status == 2 && huodong && huodong.status == 1 && is_master}}" class='button-box'>
+        <view class='join-btn theme-bg'>
+          <text>再开一团</text>
+        </view>
+      </view>
+      <!-- 活动可购买 且 拼团成功 且 不是团长 -->
+      <view wx:elif="{{status == 2 && huodong && huodong.status == 1 && !is_master}}" class='button-box'>
+        <view class='join-btn theme-bg'>
+          <text>再开一团</text>
+        </view>
+      </view>
+      <!-- 活动不可购买 且 拼团成功 -->
+      <view wx:elif="{{status == 2 && huodong && huodong.status != 1}}" class='button-box'>
+        <view class='join-btn theme-bg'>
+          <text>查看更多拼团活动</text>
+        </view>
+      </view>
+
+      <!-- 已加入团 且 正在拼团中 -->
+      <view wx:if="{{is_join && status == 1}}" class='share-tip'>分享好友越多，成团越快哦～</view>
+    </view>
+
+    <image wx:if="{{status == 2}}" class='success-icon' src="/assets/images/pintuan_success.png" mode="aspectFit"></image>
+    <image wx:if="{{status === 0 || status === '0'}}" class='fail-icon' src="/assets/images/pintuan_fail.png" mode="aspectFit"></image>
+  </view>
+</view>
+<view class='line-separator-h'></view>
 <view catchtap="shareTap">画图</view>
 <draw-poster id="c-draw-poster" />

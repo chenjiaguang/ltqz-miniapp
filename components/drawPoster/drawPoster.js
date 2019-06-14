@@ -370,13 +370,14 @@ Component({
         if (res.data) {
           let data = res.data
           let _obj = {}
+          _obj.saleType = data.sale_type
           _obj.uid = data.user.id
           _obj.hAvatar = data.user.avatar
           _obj.hName = data.user.nick_name
-          _obj.hTip = '发起了拼团，邀请你参与拼团~'
+          _obj.hTip = data.sale_type == 2 ? '发起了拼团，邀请你参与拼团~' : '发现了一个宝贝，想要跟你分享~'
           _obj.banner = data.cover_url
           _obj.title = data.title
-          _obj.price = util.formatMoney(data.saletype == 1 ? data.min_price : data.min_pt_price).showMoney
+          _obj.price = util.formatMoney(data.sale_type == 1 ? data.min_price : data.min_pt_price).showMoney
           _obj.fenxiao_price = util.formatMoney(data.fenxiao_price).showMoney
           _obj.pintuan = data.spell_num
           _obj.joinNumber = data.join_num
@@ -419,7 +420,7 @@ Component({
       this.recoverShare()
     },
     initShare: function () {
-      const { title, banner, huodongId, tuanId, fenxiao_price, uid } = this.data
+      const { title, banner, huodongId, tuanId, fenxiao_price, uid, saleType, hName } = this.data
       if (title && banner && huodongId) { // 存在数据
         let path = ''
         if (huodongId && tuanId) { // 分享团
@@ -436,7 +437,7 @@ Component({
         page._onShareAppMessage = passShareFunc
         page.onShareAppMessage = function () {
           return {
-            title: title,
+            title: (saleType == 2 && hName) ? (hName + '邀请你参与拼团') : title,
             path: path,
             imageUrl: banner
           }
