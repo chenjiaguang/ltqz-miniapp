@@ -31,7 +31,7 @@
       </view>
     </view>
   </view>
-  <group-purchase wx:if="{{groupList && groupList.length > 0}}" group-list="{{groupList}}" catchgrouptap="groupTap" />
+  <group-purchase wx:if="{{groupList && groupList.length > 0}}" group-list="{{groupList}}" catchpintuan="groupTap" />
   <view class='sub-overview'>
     <view wx:if="{{valid_btime && valid_etime}}" class='state-block-wrapper'>
       <view class='state-block'><image class='left-icon' mode="aspectFit" src="/assets/images/time_jointime.png"></image><text class='state-block-text'>活动日期：{{valid_btime}} 至 {{valid_etime}}</text></view>
@@ -100,29 +100,29 @@
   </view>
   <view class='detail-and-comment'>
     <view class='block-separator'></view>
-    <view class='detail-and-comment-header-wrapper' id="tab-wrapper">
+    <view class='scrollpoint detail-and-comment-header-wrapper' data-tabheader="{{true}}" id="tab-wrapper">
       <view class="detail-and-comment-header-fixer{{tabFixed ? ' fixed' : ''}}">
         <view class='detail-and-comment-header'>
-          <view catchtap="changeTab" data-idx="{{0}}" data-ele="#goods-content" class="detail-and-comment-tab{{currentTab == 0 ? ' theme-color' : ' black-color'}}"><text>详情</text><view class="tab-indicator{{currentTab == 0 ? ' theme-bg' : ' transparent-bg'}}"></view></view>
-          <view wx:if="{{notice}}" catchtap="changeTab" data-idx="{{1}}" data-ele="#goods-notice" class="detail-and-comment-tab{{currentTab == 1 ? ' theme-color' : ' black-color'}}"><text>购买须知</text><view class="tab-indicator{{currentTab == 1 ? ' theme-bg' : ' transparent-bg'}}"></view></view>
-          <view catchtap="changeTab" data-idx="{{2}}" data-ele="#comment-content" class="detail-and-comment-tab{{currentTab == 2 ? ' theme-color' : ' black-color'}}"><text>评价{{(comment_num && comment_num) > 0 ? ('(' + comment_num + ')') : ''}}</text><view class="tab-indicator{{currentTab == 2 ? ' theme-bg' : ' transparent-bg'}}"></view></view>
+          <view catchtap="changeTab" data-idx="{{0}}" class="detail-and-comment-tab{{currentTab == 0 ? ' theme-color' : ' black-color'}}"><text>详情</text><view class="tab-indicator{{currentTab == 0 ? ' theme-bg' : ' transparent-bg'}}"></view></view>
+          <view wx:if="{{notice}}" catchtap="changeTab" data-idx="{{1}}" class="detail-and-comment-tab{{currentTab == 1 ? ' theme-color' : ' black-color'}}"><text>购买须知</text><view class="tab-indicator{{currentTab == 1 ? ' theme-bg' : ' transparent-bg'}}"></view></view>
+          <view catchtap="changeTab" data-idx="{{notice ? 2 : 1}}" class="detail-and-comment-tab{{currentTab == 2 ? ' theme-color' : ' black-color'}}"><text>评价{{(comment_num && comment_num) > 0 ? ('(' + comment_num + ')') : ''}}</text><view class="tab-indicator{{currentTab == 2 ? ' theme-bg' : ' transparent-bg'}}"></view></view>
         </view>
         <view class='line-separator-h'></view>
       </view>
     </view>
     <view class='detail-and-comment-content'>
-      <view class="goodsdetail-content" id="goods-content">
+      <view class="scrollpoint goodsdetail-content" data-tabindex="{{0}}" id="goods-content">
         <rich-text wx:if="{{content}}" nodes="{{content}}" class='rich-text'></rich-text>
         <view wx:if="{{!content}}" style="text-align:center;font-size:28rpx;color:#999">加载中...</view>
       </view>
-      <view wx:if="{{notice}}" class='goodsdetail-notice' id="goods-notice">
+      <view wx:if="{{notice}}" class='scrollpoint goodsdetail-notice' data-tabindex="{{1}}" id="goods-notice">
         <view class='block-separator'></view>
         <view class='goodsdetail-notice-detail'>
           <rich-text wx:if="{{notice}}" nodes="{{notice}}" class='rich-text'></rich-text>
         </view>
         <view wx:if="{{!notice}}" style="text-align:center;font-size:28rpx;color:#999">加载中...</view>
       </view>
-      <view class="goodsdetail-score" id="comment-content">
+      <view class="scrollpoint goodsdetail-score" data-tabindex="{{notice ? 2 : 1}}" id="comment-content">
         <view class='block-separator'></view>
         <view wx:if="{{comments && comments.length}}" class='score-overview'>
           <view class='overview-content'>
@@ -144,7 +144,7 @@
     </view>
   </view>
   <view wx:if="{{goodsLoaded}}" class='bottom-button-wrapper' catchtouchmove="stopPropagation">
-    <view class="session-wrapper{{showSession ? ' show' : ''}}">
+    <!-- <view class="session-wrapper{{showSession ? ' show' : ''}}">
       <view class="session-mask{{showSession ? ' show' : ''}}" catchtap="toggleSession"></view>
       <view class="session-context{{showSession ? ' show' : ''}}">
         <view class='session-box'>
@@ -153,7 +153,6 @@
             <view wx:for="{{session}}" wx:for-index="idx" wx:for-item="ss" wx:key="id" class="session{{idx == 0 ? ' first' : ''}}{{(idx + 1) == session.length ? ' last' : ''}}{{ss.stock == 0 ? ' session-disabled' : ((ss.stock == null || ss.stock > 20) ? ' session-ample' : ' session-normal')}}{{currentSession[saletype] == idx ? ' theme-bg-20' : ''}}" catchtap="sessionTap" data-status="{{ss.stock == 0 ? 'disabled' : ((ss.stock == null || ss.stock > 20) ? 'ample' : 'normal')}}" data-idx="{{idx}}">
               <view class='session-content'>
                 <view class='session-content-text'>{{ss.name}}</view>
-                <!-- <view class="session-status{{ss.stock == 0 ? ' disabled' : ((ss.stock == null || ss.stock > 20) ? ' theme-bg' : ' normal')}}">{{ss.stock == 0 ? '售罄' : ((ss.stock == null || ss.stock > 20) ? '充足' : ('余' + ss.stock))}}</view> -->
               </view>
             </view>
           </scroll-view>
@@ -187,7 +186,7 @@
         </view>
         <ft-iphone-bottom-adapter />
       </view>
-    </view>
+    </view> -->
     <view class='line-separator-h' style="transform-origin:50% 100%;background:transparent"></view>
     <view style="height:100rpx"></view>
     <!-- 普通活动的底部按钮 -->
@@ -210,7 +209,7 @@
         </view>
         <!-- 可报名且用户电话存在 或 不可报名 -->
         <view class='join-btn-wrapper'>
-          <button wx:if="{{status != 1 || (status == 1 && orderContact)}}" class="join-btn{{status != 1 ? ' disabled' : ' theme-bg'}}" disabled="{{status != 1}}" catchtap="toggleSession" data-saletype="1">
+          <button wx:if="{{status != 1 || (status == 1 && orderContact)}}" class="join-btn{{status != 1 ? ' disabled' : ' theme-bg'}}" disabled="{{status != 1}}" catchtap="showShoppingView" data-saletype="1">
             <view class='join-text' style="font-size:34rpx;line-height:46rpx">{{buttonStatusText[status]}}</view>
           </button>
           <!-- 可报名且用户电话不存在 -->
@@ -240,12 +239,12 @@
         <view class='join-btn-wrapper'>
         <!-- 可报名且用户电话存在 或 不可报名 -->
           <view class='join-btn-wrapper' style="padding-right:0" wx:if="{{status != 1 || (status == 1 && orderContact)}}">
-            <button wx:if="{{status == 1 && orderContact}}" class="join-btn single-join theme-bg-secondary" style="border-top-right-radius:0;border-bottom-right-radius:0" disabled="{{status != 1}}" catchtap="toggleSession" data-saletype="1">
+            <button wx:if="{{status == 1 && orderContact}}" class="join-btn single-join theme-bg-secondary" style="border-top-right-radius:0;border-bottom-right-radius:0" disabled="{{status != 1}}" catchtap="showShoppingView" data-saletype="1">
               <view class='join-price' wx:if="{{show_min_origin_price > 0}}">¥{{show_min_price}}</view>
               <view class='join-price' wx:if="{{show_min_origin_price <= 0}}">免费</view>
               <view class='join-text'>单独购买</view>
             </button>
-            <button class="join-btn{{status != 1 ? ' disabled' : ' theme-bg'}}" style="border-top-left-radius:0;border-bottom-left-radius:0" disabled="{{status != 1}}" catchtap="toggleSession" data-saletype="2">
+            <button class="join-btn{{status != 1 ? ' disabled' : ' theme-bg'}}" style="border-top-left-radius:0;border-bottom-left-radius:0" disabled="{{status != 1}}" catchtap="showShoppingView" data-saletype="2">
               <view class='join-price' wx:if="{{status == 1 && show_min_pt_price > 0}}">¥{{show_min_pt_price}}</view>
               <view class='join-price' wx:if="{{status == 1 && show_min_pt_price <= 0}}">免费</view>
               <view class='join-text'>发起拼团</view>
@@ -259,7 +258,7 @@
     </view>
     <ft-iphone-bottom-adapter />
   </view>
-  <view class="share-box{{show_share_box ? ' show' : ''}}" catchtouchmove='stopPropagation'>
+  <!-- <view class="share-box{{show_share_box ? ' show' : ''}}" catchtouchmove='stopPropagation'>
     <view class="share-bg{{show_share_box ? ' show' : ''}}"></view>
     <view class='share-content'>
       <view class="top-wrapper{{show_share_box ? ' show' : ''}}" catchtap="toggleShareBox">
@@ -286,8 +285,9 @@
         <ft-iphone-bottom-adapter />
       </view>
     </view>
-  </view>
+  </view> -->
 </view>
 <draw-poster id="c-draw-poster" />
+<shopping-view wx:if="{{status == 1 && session && session.length > 0}}" id="c-shopping-view" session="{{session}}" catchnextstep="nextTap" />
 <!-- 目前的版本不需要绘制分享的banner，先注释 -->
 <!-- <canvas canvas-id="share-friend-banner" class="share-friend-banner"></canvas> -->

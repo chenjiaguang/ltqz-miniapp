@@ -10,6 +10,7 @@ module.exports = {
     'permissionTimeStamp', // 进入permission时的timeStamp，防止多个请求返回都是401时重复进入permission页面
     'authSetting', // 记录用户已授权信息，避免每次获取已授权信息都要调取微信接口（微信的接口是异步的）
     'orderContact',
+    'orderSubmitJson', // 提交订单页面，所需要的数据json串
     'orderListRefresh',
     'goodsCollected' // 是否收藏过活动，未收藏过，则在第一次收藏成功时提示其他操作
   ],

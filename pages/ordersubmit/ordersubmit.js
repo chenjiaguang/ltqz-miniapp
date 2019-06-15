@@ -44,9 +44,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    const pages = getCurrentPages()
-    const page = pages[pages.length - 2]
-    const data = page.getOrderData()
+    let data = storageHelper.getStorage('orderSubmitJson') ? JSON.parse(storageHelper.getStorage('orderSubmitJson')) : {}
     const contactJson = storageHelper.getStorage('orderContact')
     if (contactJson) {
       data.contact = JSON.parse(contactJson)

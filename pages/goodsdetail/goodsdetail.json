@@ -10,6 +10,7 @@
     "comment-box": "../../components/commentBox/commentBox",
     "ft-bubble": "../../ftcomponents/ftBubble/ftBubble",
     "draw-poster": "../../components/drawPoster/drawPoster",
+    "shopping-view": "../../components/shoppingView/shoppingView",
     "group-purchase": "../../components/groupPurchase/groupPurchase",
     "ft-iphone-bottom-adapter": "../../ftcomponents/ftIphoneBottomAdapter/ftIphoneBottomAdapter"
   }

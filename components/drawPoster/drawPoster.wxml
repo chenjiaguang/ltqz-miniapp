@@ -33,14 +33,9 @@
       </view>
     </view>
   </view>
-  <canvas canvas-id="c-draw-poster" class="draw-poster"></canvas>
-  <view class='mask'>
-    <view class='mask-top'></view>
-    <view class='mask-bottom'></view>
-  </view>
-  <!-- <image class='poster' src="{{localPoster}}" mode="aspectFill"></image> -->
+  <canvas canvas-id="c-draw-poster" class="draw-poster" catcherror="canvasError"></canvas>
 </view>
-<view class="share-box{{showHideClass[showPoster] || ''}}" catchtouchmove='stopPropagation'>
+<view wx:if="{{!hideComponent}}" class="share-box{{showHideClass[showPoster] || ''}}" catchtouchmove='stopPropagation'>
   <view class="share-bg{{showHideClass[showPoster] || ''}}"></view>
   <view class="share-content{{showHideClass[showPoster] || ''}}">
     <view id="top-wrapper" class="top-wrapper{{showHideClass[showPoster] || ''}}" catchtap="hidePoster">

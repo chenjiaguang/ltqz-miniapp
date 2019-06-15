@@ -105,9 +105,7 @@ Component({
       if (remainTime[ele.id] <= 0) { // 超时
         return false
       }
-      wx.navigateTo({
-        url: '/pages/pintuandetail/pintuandetail?id=' + ele.id
-      })
+      this.triggerEvent('pintuan', { tuanId: ele.id})
     }
   }
 })

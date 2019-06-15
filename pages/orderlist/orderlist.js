@@ -8,8 +8,8 @@ Page({
    */
   data: {
     index: 0,
-    states: ['', '0', '1', '2'],
-    // states: ['', '0', '4', '1', '2'],
+    // states: ['', '0', '1', '2'],
+    states: ['', '0', '4', '1', '2'],
     tabCurrentColor: '#000000',
     tabs: [{
       title: '全部',
@@ -27,14 +27,14 @@ Page({
       },
       loaded: false,
       loading: false
-    // }, {
-    //   title: '拼团中',
-    //   list: [],
-    //   page: {
-    //     pn: 1
-    //   },
-    //   loaded: false,
-    //   loading: false
+    }, {
+      title: '拼团中',
+      list: [],
+      page: {
+        pn: 1
+      },
+      loaded: false,
+      loading: false
     }, {
       title: '待使用',
       list: [],
@@ -206,12 +206,12 @@ Page({
       [`tabs[3].loaded`]: false,
       [`tabs[3].loading`]: false,
 
-      // [`tabs[4].page`]: {
-      //   pn: 1
-      // },
-      // [`tabs[4].list`]: [],
-      // [`tabs[4].loaded`]: false,
-      // [`tabs[4].loading`]: false
+      [`tabs[4].page`]: {
+        pn: 1
+      },
+      [`tabs[4].list`]: [],
+      [`tabs[4].loaded`]: false,
+      [`tabs[4].loading`]: false
     }, () => {
       this.loadList(0, 1)
     })

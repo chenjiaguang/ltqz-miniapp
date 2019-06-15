@@ -1,0 +1,244 @@
+/* components/shoppingView/shoppingView.wxss */
+@import "../../app.wxss";
+
+/* 场次、票种选择框 */
+.session-wrapper{
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  bottom: 0;
+  z-index: -1;
+  visibility: hidden;
+}
+.session-wrapper.show{
+  z-index: 3;
+  visibility: visible;
+}
+.session-mask{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  bottom: 0;
+  background: transparent;
+  transition: background 300ms;
+}
+.session-mask.show{
+  background: rgba(0,0,0,0.65);
+}
+.session-context{
+  border-radius: 12rpx 12rpx 0 0;
+  background: #fff;
+  padding: 62rpx 0 0;
+  position: absolute;
+  width: 100%;
+  left: 0;
+  bottom: 0;
+  transform: translateY(100%);
+  transition: transform 300ms;
+}
+.session-context.show{
+  transform: translateY(0);
+}
+.sessions{
+  width: 100%;
+  font-size: 0;
+  white-space: nowrap;
+}
+.session{
+  display: inline-block;
+  font-size: 26rpx;
+  width: 220rpx;
+  height: 140rpx;
+  border-radius: 8rpx;
+  margin: 22rpx 0 40rpx 13rpx;
+  color: #333;
+}
+.session.first{
+  margin-left: 32rpx;
+}
+.session.last{
+  margin-right: 32rpx;
+}
+.session-ample{
+  background: #F8F8F8;
+  color: #333;
+}
+.session-normal{
+  background: #F8F8F8;
+  color: #333;
+}
+.session-disabled{
+  background: #F8F8F8;
+  color: #999;
+}
+.session-status{
+  height: 40rpx;
+  padding: 0 16rpx;
+  font-size: 24rpx;
+  line-height: 40rpx;
+  border-radius: 8rpx 0 20rpx 0;
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform: scale(0.833, 0.833);
+  transform-origin: 0 0;
+}
+.session-status.ample{
+  color: #fff;
+}
+.session-status.normal{
+  background: #F24724;
+  color: #fff;
+}
+.session-status.disabled{
+  background: #E6E6E6;
+  color: #333;
+}
+.session-header, .ticket-header{
+  height: 66rpx;
+  line-height: 66rpx;
+  font-size: 30rpx;
+  font-weight: bold;
+  padding: 0 32rpx;
+}
+.session-content{
+  font-size: 28rpx;
+  line-height: 32rpx;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.session-content-text{
+  max-width: 100%;
+  white-space: normal;
+  word-break: break-all;
+  box-sizing: border-box;
+  padding: 0 16rpx;
+  text-align: center;
+}
+
+.ticket-box{
+  max-height: 400rpx;
+}
+.ticket-item{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  overflow: hidden;
+  padding: 0 32rpx;
+  height: 76rpx;
+}
+.ticket-name{
+  width: 260rpx;
+  padding-right: 12rpx;
+  flex-shrink: 0;
+  font-size: 30rpx;
+  color: #333;
+}
+.ticket-price{
+  flex: 1;
+  font-size: 30rpx;
+  color: #333;
+  font-weight: bold;
+}
+.ticket-buttons{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.minus-btn, .add-btn{
+  width: 44rpx;
+  height: 44rpx;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.minus-btn{
+  border-color: #D8D8D8;
+  color: #888888;
+  background: #fff;
+}
+.minus-btn.disabled{
+  border-color: #D8D8D8;
+  color: #D8D8D8;
+  background: #fff;
+}
+.add-btn{
+  color: #fff;
+}
+.add-btn.disabled{
+  border-color: #D8D8D8;
+  color: #D8D8D8;
+  background: #fff;
+}
+.choose-num{
+  min-width: 60rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 30rpx;
+  font-weight: bold;
+  box-sizing: border-box;
+}
+.choose-num-text.disabled{
+  color: #D8D8D8;
+}
+.stock-text{
+  width: 90rpx;
+  text-align: right;
+  font-size: 30rpx;
+  color: #333;
+  margin-left: 16rpx;
+}
+.stock-text.disabled{
+  color: #999999;
+}
+
+.next-step-button{
+  display: flex;
+  height: 100rpx;
+  background: #fff;
+}
+.total-price{
+  width: 450rpx;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  padding-left: 32rpx;
+}
+.total-price-title{
+  font-size: 24rpx;
+  color: #333;
+  margin-right: 20rpx;
+  padding-top: 12rpx;
+}
+.total-price-text{
+  font-size: 46rpx;
+  color: #F24724;
+  margin-right: 20rpx;
+  font-weight: bold;
+}
+.next-btn{
+  flex: 1;
+  border: none;
+  border-radius: 0;
+  font-size: 36rpx;
+  color: #fff;
+}
+.next-btn:after, .next-btn:before{
+  display: none;
+}
+button.next-btn.disabled{
+  background: #B8B8B8;
+  color: #fff;
+}

@@ -6,14 +6,18 @@ Component({
    * 组件的属性列表
    */
   properties: {
-
+    hideComponent: { // 是否在分享时显示相应的界面
+      type: Boolean,
+      value: false
+    }
   },
 
   /**
    * 组件的初始数据
    */
   data: {
-    fetching: false,
+    fetching: false, // 是否正在拉取数据
+    drawing: false, // 是否正在画图
     huodongId: '',
     tuanId: '',
     localPoster: '',
@@ -35,7 +39,12 @@ Component({
    * 组件的方法列表
    */
   methods: {
-    draw: function () {
+    draw: function (drawSuccess) { // drawSuccess在生成图片成功时会回调，并传入图片临时地址
+      this.setData({
+        drawing: true
+      }, () => {
+        this.triggerEvent('statuschange', { fetching: this.data.fetching, drawing: this.data.drawing })
+      })
       this.createSelectorQuery().select('#wrapper').boundingClientRect(rect => {
         const ctx = wx.createCanvasContext('c-draw-poster', this)
         ctx.setFillStyle('#FFFFFF')
@@ -60,12 +69,20 @@ Component({
             item.bottom  // 节点的下边界坐标
             item.width   // 节点的宽度
             item.height  // 节点的高度
-            this.drawImage(item, ctx)
+            this.drawImage(item, ctx, drawSuccess)
           })
         }).exec()
       }).exec()
     },
-    drawImage: function (imageData, ctx) {
+    canvasError: function () {
+      console.log('canvasError')
+      this.setData({
+        drawing: false
+      }, () => {
+        this.triggerEvent('statuschange', { fetching: this.data.fetching, drawing: this.data.drawing })
+      })
+    },
+    drawImage: function (imageData, ctx, drawSuccess) {
       wx.getImageInfo({
         src: imageData.src,
         success: (res) => {
@@ -100,12 +117,12 @@ Component({
           }
           this.imageLen -= 1
           if (this.imageLen < 1) {
-            this.drawFillFunc(ctx)
+            this.drawFillFunc(ctx, drawSuccess)
           }
         }
       })
     },
-    drawFill: function (fillData, ctx) {
+    drawFill: function (fillData, ctx, drawSuccess) {
       let radius = {
         lt: 0,
         rt: 0,
@@ -156,10 +173,10 @@ Component({
       ctx.restore()
       this.fillLen -= 1
       if (this.fillLen < 1) {
-        this.drawStrokeFunc(ctx)
+        this.drawStrokeFunc(ctx, drawSuccess)
       }
     },
-    drawStroke: function (strokeData, ctx) {
+    drawStroke: function (strokeData, ctx, drawSuccess) {
       let radius = {
         lt: 0,
         rt: 0,
@@ -210,10 +227,10 @@ Component({
       ctx.restore()
       this.strokeLen -= 1
       if (this.strokeLen < 1) {
-        this.drawTextFunc(ctx)
+        this.drawTextFunc(ctx, drawSuccess)
       }
     },
-    drawText: function (textData, ctx) {
+    drawText: function (textData, ctx, drawSuccess) {
       const alignObj = {start: 'left', center: 'center', end: 'right'}
       ctx.save()
       ctx.setFontSize(parseInt(textData.fontSize))
@@ -253,35 +270,46 @@ Component({
             canvasId: 'c-draw-poster',
             success: res => {
               const query = this.createSelectorQuery().select('#top-wrapper').boundingClientRect(rect => {
-                let width = 0
-                let height = 0
-                const posterRatio = this.posterWidth / this.posterHeight
-                const topWrapperRatio = rect.width / rect.height
-                if (posterRatio < topWrapperRatio) {
-                  height = rect.height * 0.88
-                  width = height * posterRatio
-                } else {
-                  width = rect.width * 0.88
-                  height = width / posterRatio
+                if (rect) { // #top-wrapper有可能时隐藏状态的，所以做此判断
+                  let width = 0
+                  let height = 0
+                  const posterRatio = this.posterWidth / this.posterHeight
+                  const topWrapperRatio = rect.width / rect.height
+                  if (posterRatio < topWrapperRatio) {
+                    height = rect.height * 0.88
+                    width = height * posterRatio
+                  } else {
+                    width = rect.width * 0.88
+                    height = width / posterRatio
+                  }
+                  this.setData({
+                    posterWidth: width,
+                    posterHeight: height
+                  })
                 }
-                this.setData({
-                  posterWidth: width,
-                  posterHeight: height
-                })
               }).exec()
               let localPoster = res.tempFilePath
               this.setData({
-                localPoster: localPoster
+                localPoster: localPoster,
+                drawing: false
+              }, () => {
+                this.triggerEvent('statuschange', { fetching: this.data.fetching, drawing: this.data.drawing })
+                drawSuccess && drawSuccess(localPoster)
               })
             },
             fail: res => {
               console.log('fail_res', res)
+              this.setData({
+                drawing: false
+              }, () => {
+                this.triggerEvent('statuschange', { fetching: this.data.fetching, drawing: this.data.drawing })
+              })
             }
           }, this)
         })
       }
     },
-    drawFillFunc: function (ctx) {
+    drawFillFunc: function (ctx, drawSuccess) {
       this.createSelectorQuery().selectAll('.draw-fill').fields({
         rect: true,
         size: true,
@@ -298,11 +326,11 @@ Component({
           item.bottom  // 节点的下边界坐标
           item.width   // 节点的宽度
           item.height  // 节点的高度
-          this.drawFill(item, ctx)
+          this.drawFill(item, ctx, drawSuccess)
         })
       }).exec()
     },
-    drawStrokeFunc: function (ctx) {
+    drawStrokeFunc: function (ctx, drawSuccess) {
       this.createSelectorQuery().selectAll('.draw-stroke').fields({
         rect: true,
         size: true,
@@ -310,8 +338,8 @@ Component({
         computedStyle: ['borderRadius', 'borderColor']
       }, res => {
         this.strokeLen = res.length
-        if (!res.length) { // 不存在stroke类型，直接跳过
-          this.drawTextFunc(ctx)
+        if (!res.length) { // 不存在stroke类型时，直接跳过
+          this.drawTextFunc(ctx, drawSuccess)
           return false
         }
         res.forEach((item, idx) => {
@@ -323,11 +351,11 @@ Component({
           item.bottom  // 节点的下边界坐标
           item.width   // 节点的宽度
           item.height  // 节点的高度
-          this.drawStroke(item, ctx)
+          this.drawStroke(item, ctx, drawSuccess)
         })
       }).exec()
     },
-    drawTextFunc: function (ctx) {
+    drawTextFunc: function (ctx, drawSuccess) {
       this.createSelectorQuery().selectAll('.draw-text').fields({
         dataset: true,
         rect: true,
@@ -345,14 +373,13 @@ Component({
           item.bottom  // 节点的下边界坐标
           item.width   // 节点的宽度
           item.height  // 节点的高度
-          this.drawText(item, ctx)
+          this.drawText(item, ctx, drawSuccess)
         })
       }).exec()
     },
-    startDraw: function (huodong_id, tuan_id) {
-      this.showPoster()
-      const { huodongId, tuanId, localPoster, fetching} = this.data
-      if ((huodong_id == huodongId && tuan_id == tuan_id && localPoster) || fetching) { // 之前已经画过
+    getPosterData: function (huodong_id, tuan_id, dataSuccess) { // dataSuccess在成功获取后执行
+      const { fetching } = this.data
+      if (fetching) { // 正在拉取数据
         return false
       }
       let rData = {
@@ -365,6 +392,8 @@ Component({
         localPoster: '',
         canShareFriend: false,
         fetching: true
+      }, () => {
+        this.triggerEvent('statuschange', { fetching: this.data.fetching, drawing: this.data.drawing })
       })
       util.request('/huodong/share', rData).then(res => {
         if (res.data) {
@@ -387,25 +416,51 @@ Component({
             let leftNum = data.spell_num - data.tuan.tuanRecord.length
             if (leftNum > 0) {
               for (let i = 0; i < leftNum; i++) {
-                recordArr.push({id: new Date().getTime() + i})
+                recordArr.push({ id: new Date().getTime() + i })
               }
             }
             _obj.joinUsers = recordArr
             _obj.leftNum = leftNum
           }
           _obj.qrcode = data.miniqr
-          this.setData(_obj, () => {
-            this.initShare()
-            this.draw()
-          })
+          this.setData(_obj, dataSuccess)
         }
       }).catch(err => {
 
       }).finally(res => {
         this.setData({
           fetching: false
+        }, () => {
+          this.triggerEvent('statuschange', { fetching: this.data.fetching, drawing: this.data.drawing })
         })
       })
+    },
+    startDraw: function (huodong_id, tuan_id) {
+      this.showPoster()
+      const { huodongId, tuanId, localPoster } = this.data
+      console.log('startDraw', huodong_id, tuan_id, huodongId, tuanId, localPoster)
+      if (huodong_id == huodongId && ((!tuan_id && !tuanId) || tuan_id == tuanId) && localPoster) { // 之前已经画过
+        return false
+      }
+      const dataSuccess = () => {
+        this.initShare()
+        this.draw()
+      }
+      this.getPosterData(huodong_id, tuan_id, dataSuccess)
+    },
+    startDrawAndSavePoster: function (huodong_id, tuan_id) {
+      const { huodongId, tuanId, localPoster } = this.data
+      console.log(huodong_id, tuan_id, huodongId, tuanId, localPoster)
+      if (huodong_id == huodongId && ((!tuan_id && !tuanId) || tuan_id == tuanId) && localPoster) { // 之前已经画过
+        this.savePoster()
+        return false
+      }
+      const dataSuccess = () => {
+        this.draw(() => {
+          this.savePoster()
+        })
+      }
+      this.getPosterData(huodong_id, tuan_id, dataSuccess)
     },
     showPoster: function () {
       this.setData({

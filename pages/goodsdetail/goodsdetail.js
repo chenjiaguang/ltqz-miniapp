@@ -81,6 +81,8 @@ Page({
     orderContact: null
   },
 
+  scrollpoint: {},
+
   /**
    * 生命周期函数--监听页面加载
    */
@@ -116,7 +118,7 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-    this.initTabScroll()
+    // this.initTabScroll()
   },
 
   /**
@@ -157,21 +159,19 @@ Page({
   /**
    * 用户点击右上角分享
    */
-  onShareAppMessage: function () {
-    const { title, id, shareFriendBanner, share_cover_url, cover_url, uid} = this.data
-    return {
-      title: title,
-      path: '/pages/goodsdetail/goodsdetail?id=' + id + '&uid=' + uid,
-      imageUrl: shareFriendBanner || share_cover_url || cover_url
-    }
-  },
+  // onShareAppMessage: function () {
+  //   const { title, id, shareFriendBanner, share_cover_url, cover_url, uid} = this.data
+  //   return {
+  //     title: title,
+  //     path: '/pages/goodsdetail/goodsdetail?id=' + id + '&uid=' + uid,
+  //     imageUrl: shareFriendBanner || share_cover_url || cover_url
+  //   }
+  // },
 
   fetchGoods: function (id) {
     let rData = {id}
     util.request('/huodong/detail', rData).then(res => {
       if (res.error == 0 && res.data) {
-        // 测试原价todo
-        // res.data.min_origin_price = 2000
         // 处理展示详情内容
         let arrEntities = { 'lt': '<', 'gt': '>', 'nbsp': ' ', 'amp': '&', 'quot': '"', 'mdash': '——', 'ldquo': '“', 'rdquo': '”', '#39': "'" }
         res.data.content = res.data.content.replace(/\n/ig, '').replace(/<img/ig, '<img style="max-width:100%;height:auto;display:block"').replace(/<section/ig, '<div').replace(/\/section>/ig, '/div>')
@@ -186,19 +186,19 @@ Page({
         res.data.show_min_origin_price = util.formatMoney(res.data.min_origin_price).showMoney
         res.data.min_pt_price = util.formatMoney(res.data.min_pt_price).money
         res.data.show_min_pt_price = util.formatMoney(res.data.min_pt_price).showMoney
-        if (res.data.session) {
-          res.data.session.forEach((item, idx) => { // 票的价格处理(String -> Number，分保留，另存一份用于展示的价格, 计算时用分，展示时用元)
-            item.ticket.forEach(it => {
-              it.type.show_price = util.formatMoney(it.type.price).showMoney
-              it.type.price = util.formatMoney(it.type.price).money
-              it.type.show_pt_price = util.formatMoney(it.type.pt_price).showMoney
-              it.type.pr_price = util.formatMoney(it.type.pt_price).money
-              it.type.show_origin_price = util.formatMoney(it.type.origin_price).showMoney
-              it.type.origin_price = util.formatMoney(it.type.origin_price).money
-            })
-          })
-          this.initSession(res.data.session)
-        }
+        // if (res.data.session) {
+        //   res.data.session.forEach((item, idx) => { // 票的价格处理(String -> Number，分保留，另存一份用于展示的价格, 计算时用分，展示时用元)
+        //     item.ticket.forEach(it => {
+        //       it.type.show_price = util.formatMoney(it.type.price).showMoney
+        //       it.type.price = util.formatMoney(it.type.price).money
+        //       it.type.show_pt_price = util.formatMoney(it.type.pt_price).showMoney
+        //       it.type.pr_price = util.formatMoney(it.type.pt_price).money
+        //       it.type.show_origin_price = util.formatMoney(it.type.origin_price).showMoney
+        //       it.type.origin_price = util.formatMoney(it.type.origin_price).money
+        //     })
+        //   })
+        //   this.initSession(res.data.session)
+        // }
         res.data.goodsLoaded = true
         // res.data.tuan = [
         //   {
@@ -232,6 +232,9 @@ Page({
         this.setData(res.data, () => {
           this.setData({
             content: this.data.content.replace(/\t\t\t/gi, '')
+          }, () => {
+            setTimeout(this.getScrollPoint, 5000)
+            // this.getScrollPoint()
           })
         })
         // this.drawShareFriendBanner(res.data.cover_url, res.data.show_min_price, res.data.price_num) // 目前的版本不需要绘制分享的banner，先注释
@@ -255,6 +258,9 @@ Page({
           avg_score: avg_score,
           comment_num: total,
           comments: list
+        }, () => {
+          setTimeout(this.getScrollPoint, 5000)
+          // this.getScrollPoint()
         })
       }
     }).catch(err => {
@@ -269,18 +275,27 @@ Page({
     this.setData({
       currentTab: idx
     })
-    const query = wx.createSelectorQuery()
-    query.select(ele).boundingClientRect()
-    query.selectViewport().scrollOffset()
-    query.exec(function (res) {
-      // res[0].top // #the-id节点的上边界坐标
-      // res[1].scrollTop // 显示区域的竖直滚动位置
-      let pos = res[0].top + res[1].scrollTop
-      wx.pageScrollTo({
-        scrollTop: pos - 90 * rpx,
-        duration: 0
-      })
-    })
+    if (this.scrollpoint) {
+      let key = 'tabindex' + idx
+      if (this.scrollpoint[key]) {
+        wx.pageScrollTo({
+          scrollTop: this.scrollpoint[key] - 90 * rpx,
+          duration: 0
+        })
+      }
+    }
+    // const query = wx.createSelectorQuery()
+    // query.select(ele).boundingClientRect()
+    // query.selectViewport().scrollOffset()
+    // query.exec(function (res) {
+    //   // res[0].top // #the-id节点的上边界坐标
+    //   // res[1].scrollTop // 显示区域的竖直滚动位置
+    //   let pos = res[0].top + res[1].scrollTop
+    //   wx.pageScrollTo({
+    //     scrollTop: pos - 90 * rpx,
+    //     duration: 0
+    //   })
+    // })
   },
 
   initTabScroll: function () {
@@ -323,116 +338,100 @@ Page({
     })
   },
 
-  call: function (e) {
-    const { phone } = e.currentTarget.dataset
-    if (phone) {
-      wx.makePhoneCall({
-        phoneNumber: phone.toString()
-      })
-    }
-  },
+  // call: function (e) {
+  //   const { phone } = e.currentTarget.dataset
+  //   if (phone) {
+  //     wx.makePhoneCall({
+  //       phoneNumber: phone.toString()
+  //     })
+  //   }
+  // },
 
   stopPropagation: function () {
     return false
   },
 
-  sessionTap: function (e) {
-    const { status, idx} = e.currentTarget.dataset
-    const { currentSession, saletype} = this.data
-    const session = JSON.parse(JSON.stringify(this.data.session))
-    if (status === 'disabled' || currentSession.saletype === idx) { // 售罄 或 点击的是当前的场次
-      return false
-    }
-    const tickets = session[idx].ticket.map(item => Object.assign({}, item, {num: 0}))
-    let _obj = {}
-    _obj['selectedTicketLength.' + saletype] = 0
-    _obj['totalPrice.' + saletype] = 0
-    _obj['currentSession.' + saletype] = idx
-    _obj['currentTickets.' + saletype] = tickets
-    this.setData(_obj)
-  },
+  // sessionTap: function (e) {
+  //   const { status, idx} = e.currentTarget.dataset
+  //   const { currentSession, saletype} = this.data
+  //   const session = JSON.parse(JSON.stringify(this.data.session))
+  //   if (status === 'disabled' || currentSession.saletype === idx) { // 售罄 或 点击的是当前的场次
+  //     return false
+  //   }
+  //   const tickets = session[idx].ticket.map(item => Object.assign({}, item, {num: 0}))
+  //   let _obj = {}
+  //   _obj['selectedTicketLength.' + saletype] = 0
+  //   _obj['totalPrice.' + saletype] = 0
+  //   _obj['currentSession.' + saletype] = idx
+  //   _obj['currentTickets.' + saletype] = tickets
+  //   this.setData(_obj)
+  // },
 
-  initSession: function (session) {
-    let _session = JSON.parse(JSON.stringify(session))
-    let current = null
-    let selected = []
-    for (let i = 0; i < _session.length; i++) {
-      if (_session[i].stock === 0) {
-        continue
-      }
-      let valid = false
-      let tickets = _session[i].ticket
-      for (let j = 0; j < tickets.length; j++) {
-        if (tickets[j].stock === 0) {
-          continue
-        }
-        valid = true
-      }
-      if (valid) {
-        current = i
-        break
-      }
-    }
-    if (current !== null) {
-      selected = _session[current].ticket.map(item => Object.assign({}, item, {num: 0}))
-    }
+  // initSession: function (session) {
+  //   let _session = JSON.parse(JSON.stringify(session))
+  //   let current = null
+  //   let selected = []
+  //   for (let i = 0; i < _session.length; i++) {
+  //     if (_session[i].stock === 0) {
+  //       continue
+  //     }
+  //     let valid = false
+  //     let tickets = _session[i].ticket
+  //     for (let j = 0; j < tickets.length; j++) {
+  //       if (tickets[j].stock === 0) {
+  //         continue
+  //       }
+  //       valid = true
+  //     }
+  //     if (valid) {
+  //       current = i
+  //       break
+  //     }
+  //   }
+  //   if (current !== null) {
+  //     selected = _session[current].ticket.map(item => Object.assign({}, item, {num: 0}))
+  //   }
+  //   this.setData({
+  //     selectedTicketLength: {1: 0, 2: 0},
+  //     totalPrice: {1: 0, 2: 0},
+  //     currentSession: {1: current, 2: current},
+  //     currentTickets: { 1: selected, 2: selected}
+  //   })
+  // },
+
+  // countTicket: function (e) {
+  //   const { saletype } = this.data
+  //   let tickets = JSON.parse(JSON.stringify(this.data.currentTickets[saletype]))
+  //   let selectedTicketLen = 0
+  //   let total = 0
+  //   const {type, idx} = e.currentTarget.dataset
+  //   let ticket = tickets[idx]
+  //   let disabled = ticket.stock === 0 || (ticket.num <= 0 && type === 'minus') || (ticket.stock && ticket.num >= ticket.stock && type === 'add')
+  //   if (disabled) {
+  //     return false
+  //   }
+  //   tickets.forEach((item, index) => {
+  //     selectedTicketLen += index === idx ? (item.num + (type === 'minus' ? -1 : 1)) : item.num
+  //     const singlePrice = saletype == 1 ? item.type.price : item.type.pt_price
+  //     total += index === idx ? ((item.num + (type === 'minus' ? -1 : 1)) * singlePrice) : (item.num * singlePrice)
+  //   })
+  //   let num = ticket.num + (type === 'minus' ? -1 : 1)
+  //   let _obj = {}
+  //   _obj['selectedTicketLength.' + saletype] = selectedTicketLen
+  //   _obj['totalPrice.' + saletype] = parseFloat((total / 100).toFixed(2))
+  //   _obj['currentTickets.' + saletype + '[' + idx + '].num'] = num
+  //   this.setData(_obj)
+  // },
+
+  showShoppingView: function (e) {
+    console.log('showShoppingView')
     this.setData({
-      selectedTicketLength: {1: 0, 2: 0},
-      totalPrice: {1: 0, 2: 0},
-      currentSession: {1: current, 2: current},
-      currentTickets: { 1: selected, 2: selected}
+      tuanId: e.currentTarget.dataset.saletype == 2 ? 0 : null
     })
-  },
-
-  countTicket: function (e) {
-    const { saletype } = this.data
-    let tickets = JSON.parse(JSON.stringify(this.data.currentTickets[saletype]))
-    let selectedTicketLen = 0
-    let total = 0
-    const {type, idx} = e.currentTarget.dataset
-    let ticket = tickets[idx]
-    let disabled = ticket.stock === 0 || (ticket.num <= 0 && type === 'minus') || (ticket.stock && ticket.num >= ticket.stock && type === 'add')
-    if (disabled) {
-      return false
+    const shoppingView = this.selectComponent('#c-shopping-view')
+    if (shoppingView && shoppingView.toggleSession) {
+      shoppingView.toggleSession(e)
     }
-    tickets.forEach((item, index) => {
-      selectedTicketLen += index === idx ? (item.num + (type === 'minus' ? -1 : 1)) : item.num
-      const singlePrice = saletype == 1 ? item.type.price : item.type.pt_price
-      total += index === idx ? ((item.num + (type === 'minus' ? -1 : 1)) * singlePrice) : (item.num * singlePrice)
-    })
-    let num = ticket.num + (type === 'minus' ? -1 : 1)
-    let _obj = {}
-    _obj['selectedTicketLength.' + saletype] = selectedTicketLen
-    _obj['totalPrice.' + saletype] = parseFloat((total / 100).toFixed(2))
-    _obj['currentTickets.' + saletype + '[' + idx + '].num'] = num
-    this.setData(_obj)
-  },
-
-  toggleSession: function (e) {
-    const { showSession, saletype} = this.data
-    let _saletype = saletype
-    if (e && e.currentTarget.dataset.saletype) { // 用于区分团购时点击的是 “单独购买” 还是 “发起拼团”
-      _saletype = e.currentTarget.dataset.saletype
-    }
-    let _obj = {}
-    if (_saletype != saletype) { // 点击的购买方式不同时，晴空原选择数据
-      const session = JSON.parse(JSON.stringify(this.data.session))
-      const tickets = session[0].ticket.map(item => Object.assign({}, item, { num: 0 }))
-      _obj['selectedTicketLength.' + _saletype] = 0
-      _obj['totalPrice.' + _saletype] = 0
-      _obj['currentSession.' + _saletype] = 0
-      _obj['currentTickets.' + _saletype] = tickets
-    }
-    _obj.showSession = !showSession
-    _obj.saletype = _saletype
-    this.setData(_obj)
-  },
-
-  order: function () {
-    this.toggleSession()
-    wx.navigateTo({
-      url: '/pages/ordersubmit/ordersubmit'
-    })
   },
 
   viewAllComment: function () {
@@ -509,173 +508,173 @@ Page({
     }
   },
 
-  getPosterUserAvatar: function () {
-    if (!this.data.uavatar) {
-      this.fetchUserInfo(true)
-      return false
-    }
-    wx.getImageInfo({
-      src: this.data.uavatar,
-      success: (res) => {
-        this.canvas_user_avatar = res.path
-        this.drawPoster()
-      }
-    })
-  },
+  // getPosterUserAvatar: function () {
+  //   if (!this.data.uavatar) {
+  //     this.fetchUserInfo(true)
+  //     return false
+  //   }
+  //   wx.getImageInfo({
+  //     src: this.data.uavatar,
+  //     success: (res) => {
+  //       this.canvas_user_avatar = res.path
+  //       this.drawPoster()
+  //     }
+  //   })
+  // },
 
-  getPosterGoodsRqcode: function () {
-    let { id } = this.data
-    if (!this.canvas_goods_qrcode && !this.code_image_fetching) {
-      this.code_image_fetching = true
-      util.request('/huodong/miniqr', { id }).then(res => {
-        if (res.error == 0 && res.data) { // 获取活动二维码
-          wx.getImageInfo({
-            src: res.data,
-            success: (res) => {
-              this.canvas_goods_qrcode = res.path
-              this.drawPoster()
-            }
-          })
-        }
-      }).finally(res => {
-        this.code_image_fetching = false
-      })
-    }
-  },
+  // getPosterGoodsRqcode: function () {
+  //   let { id } = this.data
+  //   if (!this.canvas_goods_qrcode && !this.code_image_fetching) {
+  //     this.code_image_fetching = true
+  //     util.request('/huodong/miniqr', { id }).then(res => {
+  //       if (res.error == 0 && res.data) { // 获取活动二维码
+  //         wx.getImageInfo({
+  //           src: res.data,
+  //           success: (res) => {
+  //             this.canvas_goods_qrcode = res.path
+  //             this.drawPoster()
+  //           }
+  //         })
+  //       }
+  //     }).finally(res => {
+  //       this.code_image_fetching = false
+  //     })
+  //   }
+  // },
 
-  getPosterGoodsBanner: function () {
-    wx.getImageInfo({
-      src: this.data.cover_url,
-      success: (res) => {
-        // 按照aspectfill的方式截取
-        const img_width = res.width
-        const img_height = res.height
-        const canvas_height = 316
-        const canvas_width = 470
-        let clip_left,clip_top,clip_width,clip_height // 左偏移值，上偏移值，截取宽度，截取高度
-        clip_height = img_width * (canvas_height / canvas_width)
-        if (clip_height > img_height) {
-          clip_height = img_height
-          clip_width = clip_height * (canvas_width / canvas_height)
-          clip_left = (img_width - clip_width) / 2
-          clip_top = 0
-        } else {
-          clip_left = 0
-          clip_top = (img_height - clip_height) / 2
-          clip_width = img_width
-        }
-        this.banner_clip = {
-          clip_left,
-          clip_top,
-          clip_width,
-          clip_height
-        }
-        this.canvas_goods_banner = res.path
-        this.drawPoster()
-      }
-    })
-  },
+  // getPosterGoodsBanner: function () {
+  //   wx.getImageInfo({
+  //     src: this.data.cover_url,
+  //     success: (res) => {
+  //       // 按照aspectfill的方式截取
+  //       const img_width = res.width
+  //       const img_height = res.height
+  //       const canvas_height = 316
+  //       const canvas_width = 470
+  //       let clip_left,clip_top,clip_width,clip_height // 左偏移值，上偏移值，截取宽度，截取高度
+  //       clip_height = img_width * (canvas_height / canvas_width)
+  //       if (clip_height > img_height) {
+  //         clip_height = img_height
+  //         clip_width = clip_height * (canvas_width / canvas_height)
+  //         clip_left = (img_width - clip_width) / 2
+  //         clip_top = 0
+  //       } else {
+  //         clip_left = 0
+  //         clip_top = (img_height - clip_height) / 2
+  //         clip_width = img_width
+  //       }
+  //       this.banner_clip = {
+  //         clip_left,
+  //         clip_top,
+  //         clip_width,
+  //         clip_height
+  //       }
+  //       this.canvas_goods_banner = res.path
+  //       this.drawPoster()
+  //     }
+  //   })
+  // },
 
-  drawPoster: function (goods) {
-    if (!this.canvas_user_avatar || !this.canvas_goods_qrcode || !this.canvas_goods_banner || !this.banner_clip) {
-      if (!this.canvas_user_avatar) {
-        this.getPosterUserAvatar()
-      }
-      if (!this.canvas_goods_qrcode) {
-        this.getPosterGoodsRqcode()
-      }
-      if (!this.canvas_goods_banner || !this.banner_clip) {
-        this.getPosterGoodsBanner()
-      }
-      return false
-    }
-    const systemInfo = wx.getSystemInfoSync()
-    const ctx = wx.createCanvasContext('share-poster', this)
-    const rpx = systemInfo.windowWidth / 750
+  // drawPoster: function (goods) {
+  //   if (!this.canvas_user_avatar || !this.canvas_goods_qrcode || !this.canvas_goods_banner || !this.banner_clip) {
+  //     if (!this.canvas_user_avatar) {
+  //       this.getPosterUserAvatar()
+  //     }
+  //     if (!this.canvas_goods_qrcode) {
+  //       this.getPosterGoodsRqcode()
+  //     }
+  //     if (!this.canvas_goods_banner || !this.banner_clip) {
+  //       this.getPosterGoodsBanner()
+  //     }
+  //     return false
+  //   }
+  //   const systemInfo = wx.getSystemInfoSync()
+  //   const ctx = wx.createCanvasContext('share-poster', this)
+  //   const rpx = systemInfo.windowWidth / 750
 
-    ctx.drawImage('/assets/images/share_poster_bg.png', 0, 0, 526 * rpx, 816 * rpx) // 海报背景
-    ctx.save()
-    ctx.beginPath()
-    ctx.arc(86 * rpx, 86 * rpx, 28 * rpx, 0, 2 * Math.PI)
-    ctx.clip()
-    ctx.drawImage(this.canvas_user_avatar, 58 * rpx, 58 * rpx, 56 * rpx, 56 * rpx)
-    ctx.restore()
-    ctx.drawImage(this.canvas_goods_banner, this.banner_clip.clip_left, this.banner_clip.clip_top, this.banner_clip.clip_width, this.banner_clip.clip_height, 32 * rpx, 139 * rpx, 462 * rpx, 316 * rpx)
-    ctx.drawImage('/assets/images/lutu_logo.png', 51 * rpx, 666 * rpx, 86 * rpx, 86 * rpx)
-    ctx.drawImage(this.canvas_goods_qrcode, 374 * rpx, 644 * rpx, 105 * rpx, 105 * rpx)
-    ctx.setFontSize(20 * rpx)
-    ctx.setFillStyle('#333')
-    ctx.fillText('@ ' + this.data.unickname, 126 * rpx, 80 * rpx, 340 * rpx)
-    ctx.setFontSize(18 * rpx)
-    ctx.setFillStyle('#999')
-    ctx.fillText('发现了一个宝贝，想要跟你分享~', 126 * rpx, 106 * rpx, 340 * rpx)
-    ctx.setFontSize(22 * rpx)
-    ctx.setFillStyle('#333')
-    const title = this.data.title
-    if (title.length > 20) {
-      ctx.fillText(title.substring(0, 19), 51 * rpx, 500 * rpx, 425 * rpx)
-      if (title.length > 37) {
-        ctx.fillText(title.substring(19, 37) + '...', 51 * rpx, 530 * rpx, 425 * rpx)
-      } else {
-        ctx.fillText(title.substring(19, 37), 51 * rpx, 530 * rpx, 425 * rpx)
-      }
-    } else {
-      ctx.fillText(title, 51 * rpx, 500 * rpx, 425 * rpx)
-    }
-    let price = ''
-    const { show_min_price, price_num, join_num} = this.data
-    if (show_min_price && show_min_price > 0) {
-      if (price_num > 1) {
-        price = '¥' + show_min_price + '起'
-      } else {
-        price = '¥' + show_min_price
-      }
-    } else {
-      price = '免费'
-    }
-    ctx.setFontSize(36 * rpx)
-    ctx.setFillStyle('#F24724')
-    ctx.fillText(price, 51 * rpx, 590 * rpx, 425 * rpx)
-    if (join_num && join_num > 0) {
-      ctx.setFontSize(18 * rpx)
-      ctx.setFillStyle('#999')
-      ctx.setTextAlign('right')
-      const join_text = '累计' + (join_num || 0) + '人报名'
-      const join_left = 526 - 28 - 23
-      ctx.fillText(join_text, join_left * rpx, 585 * rpx, 424 * rpx)
-    }
-    ctx.setFontSize(15 * rpx)
-    ctx.setFillStyle('#999')
-    ctx.setTextAlign('left')
-    ctx.fillText('路途亲子，共享美好时光！', 51 * rpx, 766 * rpx)
-    ctx.fillText('长按立即购买', 382 * rpx, 766 * rpx)
-    ctx.draw(true, () => {
-      wx.canvasToTempFilePath({
-        x: 0,
-        y: 0,
-        canvasId: 'share-poster',
-        success: res => {
-          let localPoster = res.tempFilePath
-          this.setData({
-            localPoster: localPoster
-          })
-        },
-        fail: function (res) {
+  //   ctx.drawImage('/assets/images/share_poster_bg.png', 0, 0, 526 * rpx, 816 * rpx) // 海报背景
+  //   ctx.save()
+  //   ctx.beginPath()
+  //   ctx.arc(86 * rpx, 86 * rpx, 28 * rpx, 0, 2 * Math.PI)
+  //   ctx.clip()
+  //   ctx.drawImage(this.canvas_user_avatar, 58 * rpx, 58 * rpx, 56 * rpx, 56 * rpx)
+  //   ctx.restore()
+  //   ctx.drawImage(this.canvas_goods_banner, this.banner_clip.clip_left, this.banner_clip.clip_top, this.banner_clip.clip_width, this.banner_clip.clip_height, 32 * rpx, 139 * rpx, 462 * rpx, 316 * rpx)
+  //   ctx.drawImage('/assets/images/lutu_logo.png', 51 * rpx, 666 * rpx, 86 * rpx, 86 * rpx)
+  //   ctx.drawImage(this.canvas_goods_qrcode, 374 * rpx, 644 * rpx, 105 * rpx, 105 * rpx)
+  //   ctx.setFontSize(20 * rpx)
+  //   ctx.setFillStyle('#333')
+  //   ctx.fillText('@ ' + this.data.unickname, 126 * rpx, 80 * rpx, 340 * rpx)
+  //   ctx.setFontSize(18 * rpx)
+  //   ctx.setFillStyle('#999')
+  //   ctx.fillText('发现了一个宝贝，想要跟你分享~', 126 * rpx, 106 * rpx, 340 * rpx)
+  //   ctx.setFontSize(22 * rpx)
+  //   ctx.setFillStyle('#333')
+  //   const title = this.data.title
+  //   if (title.length > 20) {
+  //     ctx.fillText(title.substring(0, 19), 51 * rpx, 500 * rpx, 425 * rpx)
+  //     if (title.length > 37) {
+  //       ctx.fillText(title.substring(19, 37) + '...', 51 * rpx, 530 * rpx, 425 * rpx)
+  //     } else {
+  //       ctx.fillText(title.substring(19, 37), 51 * rpx, 530 * rpx, 425 * rpx)
+  //     }
+  //   } else {
+  //     ctx.fillText(title, 51 * rpx, 500 * rpx, 425 * rpx)
+  //   }
+  //   let price = ''
+  //   const { show_min_price, price_num, join_num} = this.data
+  //   if (show_min_price && show_min_price > 0) {
+  //     if (price_num > 1) {
+  //       price = '¥' + show_min_price + '起'
+  //     } else {
+  //       price = '¥' + show_min_price
+  //     }
+  //   } else {
+  //     price = '免费'
+  //   }
+  //   ctx.setFontSize(36 * rpx)
+  //   ctx.setFillStyle('#F24724')
+  //   ctx.fillText(price, 51 * rpx, 590 * rpx, 425 * rpx)
+  //   if (join_num && join_num > 0) {
+  //     ctx.setFontSize(18 * rpx)
+  //     ctx.setFillStyle('#999')
+  //     ctx.setTextAlign('right')
+  //     const join_text = '累计' + (join_num || 0) + '人报名'
+  //     const join_left = 526 - 28 - 23
+  //     ctx.fillText(join_text, join_left * rpx, 585 * rpx, 424 * rpx)
+  //   }
+  //   ctx.setFontSize(15 * rpx)
+  //   ctx.setFillStyle('#999')
+  //   ctx.setTextAlign('left')
+  //   ctx.fillText('路途亲子，共享美好时光！', 51 * rpx, 766 * rpx)
+  //   ctx.fillText('长按立即购买', 382 * rpx, 766 * rpx)
+  //   ctx.draw(true, () => {
+  //     wx.canvasToTempFilePath({
+  //       x: 0,
+  //       y: 0,
+  //       canvasId: 'share-poster',
+  //       success: res => {
+  //         let localPoster = res.tempFilePath
+  //         this.setData({
+  //           localPoster: localPoster
+  //         })
+  //       },
+  //       fail: function (res) {
 
-        }
-      })
-    })
-  },
+  //       }
+  //     })
+  //   })
+  // },
 
-  setDrawImage: function (ctx, src, x, y, w, h) {
-    wx.getImageInfo({
-      src: src,
-      success: function (res) {
-        ctx.drawImage(res.path, x, y, w, h)
-        ctx.draw(true)
-      }
-    })
-  },
+  // setDrawImage: function (ctx, src, x, y, w, h) {
+  //   wx.getImageInfo({
+  //     src: src,
+  //     success: function (res) {
+  //       ctx.drawImage(res.path, x, y, w, h)
+  //       ctx.draw(true)
+  //     }
+  //   })
+  // },
 
   shareBtnTap: function () {
     const poster = this.selectComponent('#c-draw-poster')
@@ -683,148 +682,139 @@ Page({
       const {id} = this.data
       poster.startDraw(id)
     }
-    // const { show_share_box, localPoster, uid} = this.data
-    // if (!show_share_box) {
-    //   this.setData({
-    //     show_share_box: true
-    //   })
-    // }
-    // if (!localPoster) {
-    //   this.drawPoster()
-    // }
   },
 
-  toggleShareBox: function () {
-    const { show_share_box } = this.data
-    this.setData({
-      show_share_box: !show_share_box
-    })
-  },
+  // toggleShareBox: function () {
+  //   const { show_share_box } = this.data
+  //   this.setData({
+  //     show_share_box: !show_share_box
+  //   })
+  // },
 
-  shareFriend: function () {
-    wx.showShareMenu({
-      withShareTicket: true
-    })
-  },
+  // shareFriend: function () {
+  //   wx.showShareMenu({
+  //     withShareTicket: true
+  //   })
+  // },
 
-  savePoster: function () {
-    const { localPoster} = this.data
-    if (!localPoster) {
-      return false
-    }
-    // 获取用户是否开启用户授权相册
-    const app = getApp()
-    const confirmColor = app.globalData.themeModalConfirmColor || '#576B95' // #576B95是官方颜色
-    wx.getSetting({
-      success: res => {
-        // 如果没有则获取授权
-        if (!res.authSetting['scope.writePhotosAlbum'] && res.authSetting['scope.writePhotosAlbum'] !== false) { // 未授权 且 未拒绝过
-          wx.authorize({
-            scope: 'scope.writePhotosAlbum',
-            success: () => {
-              wx.saveImageToPhotosAlbum({
-                filePath: this.data.localPoster,
-                success: () => {
-                  wx.showModal({
-                    title: '保存成功',
-                    content: '海报已生成并保存至你的手机相册了哦，分享到朋友圈给好友种草一下吧',
-                    showCancel: false,
-                    confirmText: '确定',
-                    confirmColor
-                  })
-                  // wx.showToast({
-                  //   title: '保存成功',
-                  //   icon: 'none'
-                  // })
-                },
-                fail: () => {
-                  wx.showToast({
-                    title: '保存失败',
-                    icon: 'none'
-                  })
-                }
-              })
-            },
-            fail: () => {
+  // savePoster: function () {
+  //   const { localPoster} = this.data
+  //   if (!localPoster) {
+  //     return false
+  //   }
+  //   // 获取用户是否开启用户授权相册
+  //   const app = getApp()
+  //   const confirmColor = app.globalData.themeModalConfirmColor || '#576B95' // #576B95是官方颜色
+  //   wx.getSetting({
+  //     success: res => {
+  //       // 如果没有则获取授权
+  //       if (!res.authSetting['scope.writePhotosAlbum'] && res.authSetting['scope.writePhotosAlbum'] !== false) { // 未授权 且 未拒绝过
+  //         wx.authorize({
+  //           scope: 'scope.writePhotosAlbum',
+  //           success: () => {
+  //             wx.saveImageToPhotosAlbum({
+  //               filePath: this.data.localPoster,
+  //               success: () => {
+  //                 wx.showModal({
+  //                   title: '保存成功',
+  //                   content: '海报已生成并保存至你的手机相册了哦，分享到朋友圈给好友种草一下吧',
+  //                   showCancel: false,
+  //                   confirmText: '确定',
+  //                   confirmColor
+  //                 })
+  //                 // wx.showToast({
+  //                 //   title: '保存成功',
+  //                 //   icon: 'none'
+  //                 // })
+  //               },
+  //               fail: () => {
+  //                 wx.showToast({
+  //                   title: '保存失败',
+  //                   icon: 'none'
+  //                 })
+  //               }
+  //             })
+  //           },
+  //           fail: () => {
 
-            }
-          })
-        } else if (!res.authSetting['scope.writePhotosAlbum'] && res.authSetting['scope.writePhotosAlbum'] === false) { // 未授权且拒绝过
-          wx.showModal({
-            content: '保存图片需要你授权，请授权相册', //提示的内容
-            showCancel: true,
-            confirmText: '去授权',
-            confirmColor,
-            success: res => {
-              if (res.confirm) {
-                wx.openSetting({
-                  success: (res) => {
-                    const authSetting = res.authSetting
-                    if (authSetting['scope.writePhotosAlbum']) {
-                      wx.saveImageToPhotosAlbum({
-                        filePath: this.data.localPoster,
-                        success: () => {
-                          wx.showModal({
-                            title: '保存成功',
-                            content: '海报已生成并保存至你的手机相册了哦，分享到朋友圈给好友种草一下吧',
-                            showCancel: false,
-                            confirmText: '确定',
-                            confirmColor
-                          })
-                          // wx.showToast({
-                          //   title: '保存成功',
-                          //   icon: 'none'
-                          // })
-                        },
-                        fail: () => {
-                          wx.showToast({
-                            title: '保存失败',
-                            icon: 'none'
-                          })
-                        }
-                      })
-                    }
-                  }
-                })
-              } else if (res.cancel) {
-                console.log('用户点击取消')
-              }
-            }
-          })
-        } else if (res.authSetting['scope.writePhotosAlbum']) {
-          // 有则直接保存
-          wx.saveImageToPhotosAlbum({
-            filePath: this.data.localPoster,
-            success: () => {
-              wx.showModal({
-                title: '保存成功',
-                content: '海报已生成并保存至你的手机相册了哦，分享到朋友圈给好友种草一下吧',
-                showCancel: false,
-                confirmText: '确定',
-                confirmColor
-              })
-              // wx.showToast({
-              //   title: '保存成功',
-              //   icon: 'none'
-              // })
-            },
-            fail: () => {
-              wx.showToast({
-                title: '保存失败',
-                icon: 'none'
-              })
-            }
-          })
-        }
-      }
-    })
-  },
+  //           }
+  //         })
+  //       } else if (!res.authSetting['scope.writePhotosAlbum'] && res.authSetting['scope.writePhotosAlbum'] === false) { // 未授权且拒绝过
+  //         wx.showModal({
+  //           content: '保存图片需要你授权，请授权相册', //提示的内容
+  //           showCancel: true,
+  //           confirmText: '去授权',
+  //           confirmColor,
+  //           success: res => {
+  //             if (res.confirm) {
+  //               wx.openSetting({
+  //                 success: (res) => {
+  //                   const authSetting = res.authSetting
+  //                   if (authSetting['scope.writePhotosAlbum']) {
+  //                     wx.saveImageToPhotosAlbum({
+  //                       filePath: this.data.localPoster,
+  //                       success: () => {
+  //                         wx.showModal({
+  //                           title: '保存成功',
+  //                           content: '海报已生成并保存至你的手机相册了哦，分享到朋友圈给好友种草一下吧',
+  //                           showCancel: false,
+  //                           confirmText: '确定',
+  //                           confirmColor
+  //                         })
+  //                         // wx.showToast({
+  //                         //   title: '保存成功',
+  //                         //   icon: 'none'
+  //                         // })
+  //                       },
+  //                       fail: () => {
+  //                         wx.showToast({
+  //                           title: '保存失败',
+  //                           icon: 'none'
+  //                         })
+  //                       }
+  //                     })
+  //                   }
+  //                 }
+  //               })
+  //             } else if (res.cancel) {
+  //               console.log('用户点击取消')
+  //             }
+  //           }
+  //         })
+  //       } else if (res.authSetting['scope.writePhotosAlbum']) {
+  //         // 有则直接保存
+  //         wx.saveImageToPhotosAlbum({
+  //           filePath: this.data.localPoster,
+  //           success: () => {
+  //             wx.showModal({
+  //               title: '保存成功',
+  //               content: '海报已生成并保存至你的手机相册了哦，分享到朋友圈给好友种草一下吧',
+  //               showCancel: false,
+  //               confirmText: '确定',
+  //               confirmColor
+  //             })
+  //             // wx.showToast({
+  //             //   title: '保存成功',
+  //             //   icon: 'none'
+  //             // })
+  //           },
+  //           fail: () => {
+  //             wx.showToast({
+  //               title: '保存失败',
+  //               icon: 'none'
+  //             })
+  //           }
+  //         })
+  //       }
+  //     }
+  //   })
+  // },
 
-  getOrderData: function () { // 该方法提供给提交订单页面使用,返回提交订单页面需要的信息
-    let { id, fromUid, title, address, valid_btime, valid_etime, session, sale_type, saletype, selectedTicketLength, currentSession, currentTickets, refund, include_bx, totalPrice} = this.data
-    const data = JSON.parse(JSON.stringify({ id, fromUid, title, address, valid_btime, valid_etime, session, sale_type, saletype, selectedTicketLength: selectedTicketLength[saletype], currentSession: currentSession[saletype], currentTickets: currentTickets[saletype], refund, include_bx, totalPrice: totalPrice[saletype]}))
-    return data
-  },
+  // getOrderData: function () { // 该方法提供给提交订单页面使用,返回提交订单页面需要的信息
+  //   let { id, fromUid, title, address, valid_btime, valid_etime, session, sale_type, saletype, selectedTicketLength, currentSession, currentTickets, refund, include_bx, totalPrice} = this.data
+  //   const data = JSON.parse(JSON.stringify({ id, fromUid, title, address, valid_btime, valid_etime, session, sale_type, saletype, selectedTicketLength: selectedTicketLength[saletype], currentSession: currentSession[saletype], currentTickets: currentTickets[saletype], refund, include_bx, totalPrice: totalPrice[saletype]}))
+  //   return data
+  // },
 
   getOrderContact: function () {
     const contactJson = storageHelper.getStorage('orderContact')
@@ -886,66 +876,72 @@ Page({
     }
   },
   
-  drawShareFriendBanner: function (banner, show_min_price, price_num) {
-    const systemInfo = wx.getSystemInfoSync()
-    const ctx = wx.createCanvasContext('share-friend-banner', this)
-    const rpx = systemInfo.windowWidth / 750
-    wx.getImageInfo({
-      src: banner,
-      success: (info_res) => {
-        // 按照aspectfill的方式截取
-        const width = info_res.width
-        const height = info_res.height
-        const c_height = 450
-        const c_width = 750
-        let clip_left, clip_top, clip_width, clip_height // 左偏移值，上偏移值，截取宽度，截取高度
-        clip_height = width * (c_height / c_width)
-        if (clip_height > height) {
-          clip_height = height
-          clip_width = clip_height * (c_width / c_height)
-          clip_left = (width - clip_width) / 2
-          clip_top = 0
-        } else {
-          clip_left = 0
-          clip_top = (height - clip_height) / 2
-          clip_width = width
-        }
-        ctx.drawImage(info_res.path, clip_left, clip_top, clip_width, clip_height, 0, 0, 750 * rpx, 450 * rpx)
-        let price = ''
-        if (show_min_price && show_min_price > 0) {
-          if (price_num > 1) {
-            price = '¥' + show_min_price + '起'
-          } else {
-            price = '¥' + show_min_price
-          }
-        } else {
-          price = '免费'
-        }
-        ctx.setFontSize(36 * rpx)
-        ctx.setFillStyle('#F24724')
-        ctx.fillText(price, 50 * rpx, 544 * rpx)
-        ctx.draw(true, () => {
-          wx.canvasToTempFilePath({
-            x: 0,
-            y: 0,
-            canvasId: 'share-friend-banner',
-            success: res => {
-              this.setData({
-                shareFriendBanner: res.tempFilePath
-              })
-            },
-            fail: function (res) {
+  // drawShareFriendBanner: function (banner, show_min_price, price_num) {
+  //   const systemInfo = wx.getSystemInfoSync()
+  //   const ctx = wx.createCanvasContext('share-friend-banner', this)
+  //   const rpx = systemInfo.windowWidth / 750
+  //   wx.getImageInfo({
+  //     src: banner,
+  //     success: (info_res) => {
+  //       // 按照aspectfill的方式截取
+  //       const width = info_res.width
+  //       const height = info_res.height
+  //       const c_height = 450
+  //       const c_width = 750
+  //       let clip_left, clip_top, clip_width, clip_height // 左偏移值，上偏移值，截取宽度，截取高度
+  //       clip_height = width * (c_height / c_width)
+  //       if (clip_height > height) {
+  //         clip_height = height
+  //         clip_width = clip_height * (c_width / c_height)
+  //         clip_left = (width - clip_width) / 2
+  //         clip_top = 0
+  //       } else {
+  //         clip_left = 0
+  //         clip_top = (height - clip_height) / 2
+  //         clip_width = width
+  //       }
+  //       ctx.drawImage(info_res.path, clip_left, clip_top, clip_width, clip_height, 0, 0, 750 * rpx, 450 * rpx)
+  //       let price = ''
+  //       if (show_min_price && show_min_price > 0) {
+  //         if (price_num > 1) {
+  //           price = '¥' + show_min_price + '起'
+  //         } else {
+  //           price = '¥' + show_min_price
+  //         }
+  //       } else {
+  //         price = '免费'
+  //       }
+  //       ctx.setFontSize(36 * rpx)
+  //       ctx.setFillStyle('#F24724')
+  //       ctx.fillText(price, 50 * rpx, 544 * rpx)
+  //       ctx.draw(true, () => {
+  //         wx.canvasToTempFilePath({
+  //           x: 0,
+  //           y: 0,
+  //           canvasId: 'share-friend-banner',
+  //           success: res => {
+  //             this.setData({
+  //               shareFriendBanner: res.tempFilePath
+  //             })
+  //           },
+  //           fail: function (res) {
 
-            }
-          })
-        })
-      }
+  //           }
+  //         })
+  //       })
+  //     }
+  //   })
+  // },
+
+  groupTap: function (e) {
+    console.log('groupTap')
+    const shoppingView = this.selectComponent('#c-shopping-view')
+    this.setData({
+      tuanId: e.detail.tuanId
     })
-  },
-
-  groupTap: function (e) { // todo
-    const {ele} = e.detail
-    console.log('page_groupTap', ele)
+    if (shoppingView && shoppingView.toggleSession) {
+      shoppingView.toggleSession({currentTarget: {dataset: {saletype: '2'}}})
+    }
   },
 
   collectTap: function () {
@@ -990,16 +986,76 @@ Page({
     })
   },
 
+  getScrollPoint: function () {
+    const query = wx.createSelectorQuery()
+    query.selectAll('.scrollpoint').boundingClientRect()
+    query.selectViewport().scrollOffset()
+    query.exec(rects => {
+      rects.forEach(rect => {
+        console.log('getScrollPoint', rect)
+        if (rect[0].dataset.tabheader) { // （详情-购买须知-评价）tab的头部
+          this.scrollpoint.tabheader = rect.top
+        } else if (rect.dataset.tabindex === 0) { // 第一个tab
+          this.scrollpoint.tabindex0 = rect.top
+        } else if (rect.dataset.tabindex === 1) { // 第二个tab
+          this.scrollpoint.tabindex1 = rect.top
+        } else if (rect.dataset.tabindex === 2) { // 第三个tab
+          this.scrollpoint.tabindex2 = rect.top
+        }
+        // rect.id      // 节点的ID
+        // rect.dataset // 节点的dataset
+        // rect.left    // 节点的左边界坐标
+        // rect.right   // 节点的右边界坐标
+        // rect.top     // 节点的上边界坐标
+        // rect.bottom  // 节点的下边界坐标
+        // rect.width   // 节点的宽度
+        // rect.height  // 节点的高度
+      })
+      // res[0].top       // #the-id节点的上边界坐标
+      // res[1].scrollTop // 显示区域的竖直滚动位置
+    })
+  },
+
+  onPageScroll: function (e) {
+    const { currentTab, tabFixed} = this.data
+    if (this.scrollpoint.tabheader && e.scrollTop > this.scrollpoint.tabheader && !tabFixed) { // 上滑超过tab头部
+      this.setData({ tabFixed: true})
+    } else if (this.scrollpoint.tabheader && e.scrollTop <= this.scrollpoint.tabheader && tabFixed) { // 下滑超过tab头部
+      this.setData({ tabFixed: false })
+    }
+    
+    if (this.scrollpoint.tabindex0 && this.scrollpoint.tabindex1 && e.scrollTop > this.scrollpoint.tabindex0 && e.scrollTop <= this.scrollpoint.tabindex1 && currentTab != 0) { // 第一第二个tab之间
+      this.setData({
+        currentTab: 0
+      })
+    } else if (this.scrollpoint.tabindex1 && this.scrollpoint.tabindex2 && e.scrollTop > this.scrollpoint.tabindex1 && e.scrollTop <= this.scrollpoint.tabindex2 && currentTab != 1) { //  // 第二第三个tab之间
+      this.setData({
+        currentTab: 1
+      })
+    } else if (this.scrollpoint.tabindex2 && e.scrollTop > this.scrollpoint.tabindex2 && currentTab != 2) { //  // 第二第三个tab之间
+      this.setData({
+        currentTab: 2
+      })
+    } else if (this.scrollpoint.tabindex1 && !this.scrollpoint.tabindex2 && e.scrollTop > this.scrollpoint.tabindex1 && currentTab != 1) {
+      this.setData({
+        currentTab: 1
+      })
+    }
+  },
+
   hideCollectTip: function () {
     this.setData({
       showCollectTip: false
     })
   },
 
-  startDraw: function () {
-    const poster = this.selectComponent('#c-draw-poster')
-    if (poster && poster.startDraw) {
-      poster.startDraw(1, 1, 1)
-    }
+  nextTap: function (e) {
+    const { saletype, currentSession, currentTickets, selectedTicketLength, totalPrice } = e.detail
+    const { id, tuanId: tuan_id, fromUid, title, valid_btime, valid_etime, address, session, sale_type, refund = false, include_bx } = this.data
+    let data = JSON.parse(JSON.stringify({ id, fromUid, title, address, valid_btime, valid_etime, session, sale_type, saletype, selectedTicketLength: selectedTicketLength[saletype], currentSession: currentSession[saletype], currentTickets: currentTickets[saletype], refund, include_bx, totalPrice: totalPrice[saletype], tuan_id }))
+    storageHelper.setStorage('orderSubmitJson', JSON.stringify(data))
+    wx.navigateTo({
+      url: '/pages/ordersubmit/ordersubmit'
+    })
   }
 })

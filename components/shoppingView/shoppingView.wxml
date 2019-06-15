@@ -1,0 +1,45 @@
+<!--components/shoppingView/shoppingView.wxml-->
+<view class="session-wrapper{{showSession ? ' show' : ''}}">
+  <view class="session-mask{{showSession ? ' show' : ''}}" catchtap="toggleSession"></view>
+  <view class="session-context{{showSession ? ' show' : ''}}">
+    <view class='session-box'>
+      <view class='session-header'>选择场次</view>
+      <scroll-view scroll-x class='sessions'>
+        <view wx:for="{{session}}" wx:for-index="idx" wx:for-item="ss" wx:key="id" class="session{{idx == 0 ? ' first' : ''}}{{(idx + 1) == session.length ? ' last' : ''}}{{ss.stock == 0 ? ' session-disabled' : ((ss.stock == null || ss.stock > 20) ? ' session-ample' : ' session-normal')}}{{currentSession[saletype] == idx ? ' theme-bg-20' : ''}}" catchtap="sessionTap" data-status="{{ss.stock == 0 ? 'disabled' : ((ss.stock == null || ss.stock > 20) ? 'ample' : 'normal')}}" data-idx="{{idx}}">
+          <view class='session-content'>
+            <view class='session-content-text'>{{ss.name}}</view>
+            <!-- <view class="session-status{{ss.stock == 0 ? ' disabled' : ((ss.stock == null || ss.stock > 20) ? ' theme-bg' : ' normal')}}">{{ss.stock == 0 ? '售罄' : ((ss.stock == null || ss.stock > 20) ? '充足' : ('余' + ss.stock))}}</view> -->
+          </view>
+        </view>
+      </scroll-view>
+      <view class='line-separator-h'></view>
+      <view class='ticket-header' style="padding-top:32rpx">选择数量</view>
+      <scroll-view scroll-y class='ticket-box'>
+        <view wx:for="{{currentTickets[saletype]}}" wx:for-index="idx" wx:for-item="ticket" wx:key="id" class='ticket-item'>
+          <view class='ticket-name'>{{ticket.type.name}}</view>
+          <view class='ticket-price'>¥{{(saletype == 1) ? ticket.type.show_price : ''}}{{(saletype == 2) ? ticket.type.show_pt_price : ''}}</view>
+          <view class='ticket-buttons'>
+            <view class="minus-btn{{ticket.num <= 0 ? ' disabled' : ''}}" catchtap="countTicket" data-type="minus" data-idx="{{idx}}">
+              <text class="lutufont lutu-jian{{ticket.num <= 0 ? ' disabled' : ''}}"></text>
+            </view>
+            <view class='choose-num'><text class="choose-num-text{{ticket.num <= 0 ? ' disabled' : ''}}">{{ticket.num}}</text></view>
+            <view class="add-btn{{(ticket.stock == 0 || (ticket.stock && ticket.stock <= ticket.num)) ? ' disabled' : ' theme-bg theme-border-color'}}" catchtap="countTicket" data-type="add" data-idx="{{idx}}">
+              <text class="lutufont lutu-jia{{(ticket.stock == 0 || (ticket.stock && ticket.stock <= ticket.num)) ? ' disabled' : ''}}"></text>
+            </view>
+            <view class="stock-text{{ticket.stock == 0 ? ' disabled' : ''}}">({{ticket.stock == 0 ? '售罄' : ((ticket.stock == null || ticket.stock > 20) ? '充足' : ('余' + ticket.stock))}})</view>
+          </view>
+        </view>
+        <view style="height:40rpx"></view>
+      </scroll-view>
+    </view>
+    <view class='line-separator-h' style="transform-origin:50% 100%"></view>
+    <view class='next-step-button'>
+      <view class='total-price'>
+        <text class='total-price-title'>总计</text>
+        <text class='total-price-text'>¥{{totalPrice[saletype]}}</text>
+      </view>
+      <button class="next-btn{{!selectedTicketLength[saletype] ? ' disabled' : ' theme-bg'}}" disabled="{{!selectedTicketLength[saletype]}}" catchtap="order">下一步</button>
+    </view>
+    <ft-iphone-bottom-adapter />
+  </view>
+</view>

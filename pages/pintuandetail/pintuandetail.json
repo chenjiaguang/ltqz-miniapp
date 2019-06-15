@@ -1,5 +1,6 @@
 {
   "usingComponents": {
-    "draw-poster": "../../components/drawPoster/drawPoster"
+    "draw-poster": "../../components/drawPoster/drawPoster",
+    "shopping-view": "../../components/shoppingView/shoppingView"
   }
 }

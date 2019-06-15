@@ -28,13 +28,13 @@
     <image wx:if="{{tabs[3].loaded&&tabs[3].list.length==0}}" class='empty-img' src='/assets/images/order.png' />
     <text wx:if="{{tabs[3].loaded&&tabs[3].list.length==0}}" class='empty-text'>还没有相关的订单哦，快去下单吧~</text>
   </view>
-  <!-- <view slot="tab4">
+  <view slot="tab4">
     <view class='list-box'>
       <order-card wx:for="{{tabs[4].list}}" item="{{item}}" wx:key="order_id" catchorderListRefresh="refresh" catchshare="shareTap"></order-card>
     </view>
     <image wx:if="{{tabs[4].loaded&&tabs[4].list.length==0}}" class='empty-img' src='/assets/images/order.png' />
     <text wx:if="{{tabs[4].loaded&&tabs[4].list.length==0}}" class='empty-text'>还没有相关的订单哦，快去下单吧~</text>
-  </view> -->
+  </view>
 </ft-tabs>
 <draw-poster id="c-draw-poster" />
 
