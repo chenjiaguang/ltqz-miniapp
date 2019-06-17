@@ -281,6 +281,14 @@ Page({
       }).catch(err => { })
     }
   },
+  goGoodsDetail: function (e) {
+    console.log('goGoodsDetail', e)
+    if (e.currentTarget.dataset.goodsid) {
+      wx.navigateTo({
+        url: '/pages/goodsdetail/goodsdetail?id=' + e.currentTarget.dataset.goodsid
+      })
+    }
+  },
   nextTap: function (e) {
     const { saletype, currentSession, currentTickets, selectedTicketLength, totalPrice} = e.detail
     const { product_id: id, id: tuan_id, fromUid, huodong: { title, valid_btime, valid_etime, address, session, sale_type, refund = false, include_bx }, } = this.data

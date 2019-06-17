@@ -98,14 +98,14 @@
       <text class='next-icon lutufont lutu-next2' style="margin-left:26rpx;align-self:center"></text>
     </view>
   </view>
-  <view class='detail-and-comment'>
-    <view class='block-separator'></view>
-    <view class='scrollpoint detail-and-comment-header-wrapper' data-tabheader="{{true}}" id="tab-wrapper">
+  <view class='block-separator'></view>
+  <view class='detail-and-comment' id="tab-wrapper">
+    <view class='scrollpoint detail-and-comment-header-wrapper' data-tabheader="{{true}}">
       <view class="detail-and-comment-header-fixer{{tabFixed ? ' fixed' : ''}}">
         <view class='detail-and-comment-header'>
-          <view catchtap="changeTab" data-idx="{{0}}" class="detail-and-comment-tab{{currentTab == 0 ? ' theme-color' : ' black-color'}}"><text>详情</text><view class="tab-indicator{{currentTab == 0 ? ' theme-bg' : ' transparent-bg'}}"></view></view>
-          <view wx:if="{{notice}}" catchtap="changeTab" data-idx="{{1}}" class="detail-and-comment-tab{{currentTab == 1 ? ' theme-color' : ' black-color'}}"><text>购买须知</text><view class="tab-indicator{{currentTab == 1 ? ' theme-bg' : ' transparent-bg'}}"></view></view>
-          <view catchtap="changeTab" data-idx="{{notice ? 2 : 1}}" class="detail-and-comment-tab{{currentTab == 2 ? ' theme-color' : ' black-color'}}"><text>评价{{(comment_num && comment_num) > 0 ? ('(' + comment_num + ')') : ''}}</text><view class="tab-indicator{{currentTab == 2 ? ' theme-bg' : ' transparent-bg'}}"></view></view>
+          <view catchtap="changeTab" data-idx="{{0}}" data-scrollid="#goods-content" class="detail-and-comment-tab{{currentTab == 0 ? ' theme-color' : ' black-color'}}"><text>详情</text><view class="tab-indicator{{currentTab == 0 ? ' theme-bg' : ' transparent-bg'}}"></view></view>
+          <view wx:if="{{notice}}" catchtap="changeTab" data-idx="{{1}}" data-scrollid="#goods-notice" class="detail-and-comment-tab{{currentTab == 1 ? ' theme-color' : ' black-color'}}"><text>购买须知</text><view class="tab-indicator{{currentTab == 1 ? ' theme-bg' : ' transparent-bg'}}"></view></view>
+          <view catchtap="changeTab" data-idx="{{notice ? 2 : 1}}" data-scrollid="#comment-content" class="detail-and-comment-tab{{currentTab == 2 ? ' theme-color' : ' black-color'}}"><text>评价{{(comment_num && comment_num) > 0 ? ('(' + comment_num + ')') : ''}}</text><view class="tab-indicator{{currentTab == 2 ? ' theme-bg' : ' transparent-bg'}}"></view></view>
         </view>
         <view class='line-separator-h'></view>
       </view>
@@ -115,12 +115,13 @@
         <rich-text wx:if="{{content}}" nodes="{{content}}" class='rich-text'></rich-text>
         <view wx:if="{{!content}}" style="text-align:center;font-size:28rpx;color:#999">加载中...</view>
       </view>
-      <view wx:if="{{notice}}" class='scrollpoint goodsdetail-notice' data-tabindex="{{1}}" id="goods-notice">
-        <view class='block-separator'></view>
-        <view class='goodsdetail-notice-detail'>
-          <rich-text wx:if="{{notice}}" nodes="{{notice}}" class='rich-text'></rich-text>
+      <view class='scrollpoint goodsdetail-notice' data-tabindex="{{1}}" id="goods-notice">
+        <view wx:if="{{notice}}">
+          <view class='block-separator'></view>
+          <view class='goodsdetail-notice-detail'>
+            <rich-text wx:if="{{notice}}" nodes="{{notice}}" class='rich-text'></rich-text>
+          </view>
         </view>
-        <view wx:if="{{!notice}}" style="text-align:center;font-size:28rpx;color:#999">加载中...</view>
       </view>
       <view class="scrollpoint goodsdetail-score" data-tabindex="{{notice ? 2 : 1}}" id="comment-content">
         <view class='block-separator'></view>

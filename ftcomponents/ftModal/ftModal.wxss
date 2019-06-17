@@ -1,0 +1,206 @@
+/* ftcomponents/ftModalBottom/ftModalBottom.wxss */
+
+.iphone-extra-bottom{
+  width: 100%;
+  height: 68rpx;
+  background: transparent;
+  flex-grow: 0;
+  flex-shrink: 0;
+  align-self: stretch;
+}
+.iphone-extra-bottom1{
+  background: #FFFFFF;
+}
+.wrapper{
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  z-index: 1000;
+}
+.wrapper-hide{
+  animation: modalWrapperHide 200ms;
+  animation-fill-mode: forwards;
+}
+.wrapper-show{
+  animation: modalWrapperShow 200ms;
+  animation-fill-mode: forwards;
+}
+.wrapper-hidden{
+  display: none;
+  visibility: hidden;
+}
+.mask{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  z-index: 1001;
+  background: rgba(0,0,0,0.65);
+}
+.mask-hide{
+  animation: modalMaskHide 200ms;
+  animation-fill-mode: forwards;
+}
+.mask-show{
+  animation: modalMaskShow 200ms;
+  animation-fill-mode: forwards;
+}
+.content{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  z-index: 1002;
+  display: flex;
+  flex-direction: column;
+  justify-content: stretch;
+}
+.top{
+  flex: 1;
+}
+.top1{
+
+}
+.top2{
+  margin: 0 32rpx;
+}
+.top-hide{
+  animation: modalTopHide 200ms;
+  animation-fill-mode: forwards;
+}
+.top-show{
+  animation: modalTopShow 200ms;
+  animation-fill-mode: forwards;
+}
+.bottom{
+  
+}
+.bottom-hide{
+  animation: modalBottomHide 200ms;
+  animation-fill-mode: forwards;
+}
+.bottom-show{
+  animation: modalBottomShow 200ms;
+  animation-fill-mode: forwards;
+}
+.bottom-content{
+
+}
+.bottom-content1{
+
+}
+.bottom-content2{
+  margin: 0 32rpx;
+}
+.separator{
+  height: 16rpx;
+}
+.separator1{
+  background-color: #F5F5F5;
+}
+.separator2{
+  background-color: transparent;
+}
+.cancel-btn{
+  height: 80rpx;
+  background-color: #FFFFFF;
+  font-size: 32rpx;
+  color: #333333;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.cancel-btn1{
+  margin: 0;
+}
+.cancel-btn2{
+  margin: 0 32rpx;
+  border-radius: 20rpx;
+}
+.touched{
+  background-color: #F5F5F5;
+}
+@keyframes modalWrapperHide{
+  0%{
+    display: block;
+    visibility: visible;
+  }
+  99.99%{
+    display: block;
+    visibility: visible;
+  }
+  100%{
+    display: none;
+    visibility: hidden;
+  }
+}
+@keyframes modalWrapperShow{
+  0%{
+    display: none;
+    visibility: hidden;
+  }
+  0.01%{
+    display: block;
+    visibility: visible;
+  }
+  100%{
+    display: block;
+    visibility: visible;
+  }
+}
+@keyframes modalMaskHide{
+  0%{
+    opacity: 1;
+  }
+  100%{
+    opacity: 0;
+  }
+}
+@keyframes modalMaskShow{
+  0%{
+    opacity: 0;
+  }
+  100%{
+    opacity: 1;
+  }
+}
+@keyframes modalTopHide{
+  0%{
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100%{
+    opacity: 0;
+    transform: translateY(-5%);
+  }
+}
+@keyframes modalTopShow{
+  0%{
+    opacity: 0;
+    transform: translateY(-5%);
+  }
+  100%{
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes modalBottomHide{
+  0%{
+    transform: translateY(0);
+  }
+  100%{
+    transform: translateY(101%);
+  }
+}
+@keyframes modalBottomShow{
+  0%{
+    transform: translateY(101%);
+  }
+  100%{
+    transform: translateY(0);
+  }
+}

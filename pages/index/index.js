@@ -187,5 +187,10 @@ Page({
       })
       wx.stopPullDownRefresh()
     })
+  },
+  testTap: function (e) {
+    console.log('testTap', e)
+    const ftModal = this.selectComponent('#c-ft-modal')
+    ftModal && ftModal.show && ftModal.show()
   }
 })

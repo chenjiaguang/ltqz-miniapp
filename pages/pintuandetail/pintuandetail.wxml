@@ -1,6 +1,6 @@
 <!--pages/pintuandetail/pintuandetail.wxml-->
 <view class='page-pintuandetail'>
-  <view class='row goods' bindtap='goGoodsDetail'>
+  <view class='row goods' bindtap='goGoodsDetail' data-goodsid="{{product_id}}">
     <image class='goods-cover' src="{{huodong.cover_url}}" mode="aspectFill"></image>
     <view class='goods-content flex1 column'>
       <text class='goods-title bold'>{{huodong.title}}</text>

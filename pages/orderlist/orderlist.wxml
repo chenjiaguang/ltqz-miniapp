@@ -36,6 +36,7 @@
     <text wx:if="{{tabs[4].loaded&&tabs[4].list.length==0}}" class='empty-text'>还没有相关的订单哦，快去下单吧~</text>
   </view>
 </ft-tabs>
+
 <draw-poster id="c-draw-poster" />
 
 

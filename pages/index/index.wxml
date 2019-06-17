@@ -1,4 +1,5 @@
 <!--index.wxml-->
+<!-- <view catchtap="testTap">是德国大使馆</view> -->
 <view class="page-index">
   <view class='page-top-padding'></view>
   <view wx:if="{{(banners && banners[0]) || (subBanners && subBanners[0])}}" class='banner-wrapper'>
@@ -32,3 +33,6 @@
     <!-- <ft-bubble content="10人拼团价" /> -->
   <ft-list-footer loaded="{{recommendationLoaded}}" loading="{{recommendationLoading}}" page="{{recommendationPage}}" show-no-more no-more-text="{{(recommendations && recommendations[0]) ? '没有更多了' : '暂时没有活动'}}" />
 </view>
+<!-- <ft-modal id="c-ft-modal" mode="2">
+  <view slot="top" class='bottom'>撒的发顺丰</view>
+</ft-modal> -->

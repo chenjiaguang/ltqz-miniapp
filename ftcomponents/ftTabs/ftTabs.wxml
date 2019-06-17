@@ -25,15 +25,17 @@
     <view wx:if="{{headerSeparator}}" class='line-separator-h'></view>
   </view>
   <!-- body部分 -->
-  <swiper class='tab-swiper' style="{{contentStyle}}" current="{{current}}" duration="{{300}}" bindchange="currentChange">
-    <swiper-item wx:for="{{tabs}}" wx:for-item="tab" wx:for-index="idx" wx:key="title">
-      <scroll-view class='body-wrapper' scroll-y data-idx="{{idx}}" bindscrolltolower="scrollToEnd">
-        <ft-list-loader visible="{{!tab.loaded}}" />
-        <slot name="tab{{idx}}"></slot>
-        <view wx:if="{{showEmpty && tab.loaded && tab.list && !tab.list[0]}}" class='empty-tip'>暂无数据~</view>
-        <ft-list-footer loaded="{{tab.loaded}}" loading="{{tab.loading}}" page="{{tab.page}}" show-no-more="{{tab.page && tab.page.pn && tab.list && tab.list[0]}}" no-more-text="{{noMoreText}}" />
-        <ft-iphone-bottom-adapter wx:if="{{tab.list && tab.list[0]}}" />
-      </scroll-view>
-    </swiper-item>
-  </swiper>
+  <view class='tap-body'>
+    <swiper class='tab-swiper' current="{{current}}" duration="{{300}}" bindchange="currentChange">
+      <swiper-item class="swiper-item" wx:for="{{tabs}}" wx:for-item="tab" wx:for-index="idx" wx:key="title">
+        <scroll-view class='body-wrapper' scroll-y data-idx="{{idx}}" bindscrolltolower="scrollToEnd">
+          <ft-list-loader visible="{{!tab.loaded}}" />
+          <slot name="tab{{idx}}"></slot>
+          <view wx:if="{{showEmpty && tab.loaded && tab.list && !tab.list[0]}}" class='empty-tip'>暂无数据~</view>
+          <ft-list-footer loaded="{{tab.loaded}}" loading="{{tab.loading}}" page="{{tab.page}}" show-no-more="{{tab.page && tab.page.pn && tab.list && tab.list[0]}}" no-more-text="{{noMoreText}}" />
+          <ft-iphone-bottom-adapter wx:if="{{tab.list && tab.list[0]}}" />
+        </scroll-view>
+      </swiper-item>
+    </swiper>
+  </view>
 </view>

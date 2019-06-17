@@ -1,0 +1,19 @@
+<!--ftcomponents/ftModalBottom/ftModalBottom.wxml-->
+<view class="wrapper{{taped ? (showModal ? ' wrapper-show' : ' wrapper-hide') : ' wrapper-hidden'}}" catchtouchmove='stopPropagation'>
+  <view class="mask{{showModal ? ' mask-show' : ' mask-hide'}}"></view>
+  <view class="content">
+    <view class="top top{{mode}}{{showModal ? ' top-show' : ' top-hide'}}" catchtap="hide">
+      <slot name="top"></slot>
+    </view>
+    <view class="bottom{{showModal ? ' bottom-show' : ' bottom-hide'}}">
+      <view class="bottom-content bottom-content{{mode}}">
+        <slot name="bottom"></slot>
+      </view>
+      <view wx:if="{{!hideCancel}}" class='cancel-wrapper'>
+        <view class="separator separator{{mode}}"></view>
+        <view class="cancel-btn cancel-btn{{mode}}" catchtap="hide" hover-stop-propagation hover-class='touched' hover-start-time="{{50}}" hover-stay-time="{{200}}"><text>{{cancelText}}</text></view>
+      </view>
+      <view wx:if="{{extraBottom}}" class="iphone-extra-bottom iphone-extra-bottom{{mode}}"></view>
+    </view>
+  </view>
+</view>

@@ -60,17 +60,18 @@ Component({
           computedStyle: ['borderRadius'],
         }, res => {
           this.imageLen = res.length
-          res.forEach((item, idx) => {
-            item.id      // 节点的ID
-            item.dataset // 节点的dataset
-            item.left    // 节点的左边界坐标
-            item.right   // 节点的右边界坐标
-            item.top     // 节点的上边界坐标
-            item.bottom  // 节点的下边界坐标
-            item.width   // 节点的宽度
-            item.height  // 节点的高度
-            this.drawImage(item, ctx, drawSuccess)
-          })
+          this.drawImage(res, ctx, 0, drawSuccess)
+          // res.forEach((item, idx) => {
+          //   item.id      // 节点的ID
+          //   item.dataset // 节点的dataset
+          //   item.left    // 节点的左边界坐标
+          //   item.right   // 节点的右边界坐标
+          //   item.top     // 节点的上边界坐标
+          //   item.bottom  // 节点的下边界坐标
+          //   item.width   // 节点的宽度
+          //   item.height  // 节点的高度
+          //   this.drawImage(item, ctx, idx, drawSuccess)
+          // })
         }).exec()
       }).exec()
     },
@@ -82,15 +83,15 @@ Component({
         this.triggerEvent('statuschange', { fetching: this.data.fetching, drawing: this.data.drawing })
       })
     },
-    drawImage: function (imageData, ctx, drawSuccess) {
+    drawImage: function (imageData, ctx, idx, drawSuccess) {
       wx.getImageInfo({
-        src: imageData.src,
+        src: imageData[idx].src,
         success: (res) => {
           // 按照aspectfill的方式截取
           const img_width = res.width
           const img_height = res.height
-          const draw_height = imageData.height
-          const draw_width = imageData.width
+          const draw_height = imageData[idx].height
+          const draw_width = imageData[idx].width
           let clip_left, clip_top, clip_width, clip_height // 左偏移值，上偏移值，截取宽度，截取高度
           clip_height = img_width * (draw_height / draw_width)
           if (clip_height > img_height) {
@@ -104,145 +105,160 @@ Component({
             clip_width = img_width
           }
           const banner_clip = { clip_left, clip_top, clip_width, clip_height }
-          if (parseInt(imageData.borderRadius) > 0) {
+          if (parseInt(imageData[idx].borderRadius) > 0) {
             ctx.save()
             ctx.beginPath()
-            ctx.arc((imageData.left + (imageData.width / 2)), (imageData.top + (imageData.height / 2)), imageData.width / 2, 0, 2 * Math.PI)
+            ctx.arc((imageData[idx].left + (imageData[idx].width / 2)), (imageData[idx].top + (imageData[idx].height / 2)), imageData[idx].width / 2, 0, 2 * Math.PI)
             ctx.closePath()
             ctx.clip()
-            ctx.drawImage(imageData.dataset.islocal ? imageData.src : res.path, banner_clip.clip_left, banner_clip.clip_top, banner_clip.clip_width, banner_clip.clip_height, imageData.left, imageData.top, imageData.width, imageData.height)
+            ctx.drawImage(imageData[idx].dataset.islocal ? imageData[idx].src : res.path, banner_clip.clip_left, banner_clip.clip_top, banner_clip.clip_width, banner_clip.clip_height, imageData[idx].left, imageData[idx].top, imageData[idx].width, imageData[idx].height)
             ctx.restore()
           } else {
-            ctx.drawImage(imageData.dataset.islocal ? imageData.src : res.path, banner_clip.clip_left, banner_clip.clip_top, banner_clip.clip_width, banner_clip.clip_height, imageData.left, imageData.top, imageData.width, imageData.height)
+            ctx.drawImage(imageData[idx].dataset.islocal ? imageData[idx].src : res.path, banner_clip.clip_left, banner_clip.clip_top, banner_clip.clip_width, banner_clip.clip_height, imageData[idx].left, imageData[idx].top, imageData[idx].width, imageData[idx].height)
           }
-          this.imageLen -= 1
-          if (this.imageLen < 1) {
+          // this.imageLen -= 1
+          // if (this.imageLen < 1) {
+          //   this.drawFillFunc(ctx, drawSuccess)
+          // }
+          if ((idx + 1) == imageData.length) {
             this.drawFillFunc(ctx, drawSuccess)
+          } else {
+            this.drawImage(imageData, ctx, idx + 1, drawSuccess)
           }
         }
       })
     },
-    drawFill: function (fillData, ctx, drawSuccess) {
+    drawFill: function (fillData, ctx, idx, drawSuccess) {
       let radius = {
         lt: 0,
         rt: 0,
         rb: 0,
         rl: 0
       }
-      if (fillData.borderRadius) {
-        const radiusArr = fillData.borderRadius.split(' ')
+      if (fillData[idx].borderRadius) {
+        const radiusArr = fillData[idx].borderRadius.split(' ')
         radius.lt = parseInt(radiusArr[0])
         radius.rt = parseInt(radiusArr[1] || radiusArr[0])
         radius.rb = parseInt(radiusArr[2] || radiusArr[0])
         radius.lb= parseInt(radiusArr[3] || radiusArr[1] || radiusArr[0])
       }
-      const x1 = fillData.left + radius.lt
-      const y1 = fillData.top + radius.lt
+      const x1 = fillData[idx].left + radius.lt
+      const y1 = fillData[idx].top + radius.lt
       const r1 = radius.lt
       const sA1 = Math.PI
       const eA1 = 1.5 * Math.PI
       ctx.save()
       ctx.beginPath()
-      ctx.moveTo(fillData.left, fillData.top + r1)
+      ctx.moveTo(fillData[idx].left, fillData[idx].top + r1)
       ctx.arc(x1, y1, r1, sA1, eA1)
-      ctx.lineTo(fillData.right - r1, fillData.top)
-      const x2 = fillData.right - radius.rt
-      const y2 = fillData.top + radius.rt
+      ctx.lineTo(fillData[idx].right - r1, fillData[idx].top)
+      const x2 = fillData[idx].right - radius.rt
+      const y2 = fillData[idx].top + radius.rt
       const r2 = radius.rt
       const sA2 = 1.5 * Math.PI
       const eA2 = 2 * Math.PI
       ctx.arc(x2, y2, r2, sA2, eA2)
-      ctx.lineTo(fillData.right, fillData.bottom - r2)
-      const x3 = fillData.right - radius.rb
-      const y3 = fillData.bottom - radius.rb
+      ctx.lineTo(fillData[idx].right, fillData[idx].bottom - r2)
+      const x3 = fillData[idx].right - radius.rb
+      const y3 = fillData[idx].bottom - radius.rb
       const r3 = radius.rb
       const sA3 = 0
       const eA3 = 0.5 * Math.PI
       ctx.arc(x3, y3, r3, sA3, eA3)
-      ctx.lineTo(fillData.left + r3, fillData.bottom)
-      const x4 = fillData.left + radius.lb
-      const y4 = fillData.bottom - radius.lb
+      ctx.lineTo(fillData[idx].left + r3, fillData[idx].bottom)
+      const x4 = fillData[idx].left + radius.lb
+      const y4 = fillData[idx].bottom - radius.lb
       const r4 = radius.lb
       const sA4 = 0.5 * Math.PI
       const eA4 = Math.PI
       ctx.arc(x4, y4, r4, sA4, eA4)
-      ctx.lineTo(fillData.left, fillData.top + r4)
-      ctx.setFillStyle(fillData.backgroundColor)
+      ctx.lineTo(fillData[idx].left, fillData[idx].top + r4)
+      ctx.setFillStyle(fillData[idx].backgroundColor)
       ctx.closePath()
       ctx.fill()
       ctx.restore()
       this.fillLen -= 1
-      if (this.fillLen < 1) {
+      // if (this.fillLen < 1) {
+      //   this.drawStrokeFunc(ctx, drawSuccess)
+      // }
+      if ((idx + 1) == fillData.length) {
         this.drawStrokeFunc(ctx, drawSuccess)
+      } else {
+        this.drawFill(fillData, ctx, idx + 1, drawSuccess)
       }
     },
-    drawStroke: function (strokeData, ctx, drawSuccess) {
+    drawStroke: function (strokeData, ctx, idx, drawSuccess) {
       let radius = {
         lt: 0,
         rt: 0,
         rb: 0,
         rl: 0
       }
-      if (strokeData.borderRadius) {
-        const radiusArr = strokeData.borderRadius.split(' ')
+      if (strokeData[idx].borderRadius) {
+        const radiusArr = strokeData[idx].borderRadius.split(' ')
         radius.lt = parseInt(radiusArr[0])
         radius.rt = parseInt(radiusArr[1] || radiusArr[0])
         radius.rb = parseInt(radiusArr[2] || radiusArr[0])
         radius.lb = parseInt(radiusArr[3] || radiusArr[1] || radiusArr[0])
       }
-      const x1 = strokeData.left + radius.lt
-      const y1 = strokeData.top + radius.lt
+      const x1 = strokeData[idx].left + radius.lt
+      const y1 = strokeData[idx].top + radius.lt
       const r1 = radius.lt
       const sA1 = Math.PI
       const eA1 = 1.5 * Math.PI
       ctx.save()
       ctx.beginPath()
-      ctx.moveTo(strokeData.left, strokeData.top + r1)
+      ctx.moveTo(strokeData[idx].left, strokeData[idx].top + r1)
       ctx.arc(x1, y1, r1, sA1, eA1)
-      ctx.lineTo(strokeData.right - r1, strokeData.top)
-      const x2 = strokeData.right - radius.rt
-      const y2 = strokeData.top + radius.rt
+      ctx.lineTo(strokeData[idx].right - r1, strokeData[idx].top)
+      const x2 = strokeData[idx].right - radius.rt
+      const y2 = strokeData[idx].top + radius.rt
       const r2 = radius.rt
       const sA2 = 1.5 * Math.PI
       const eA2 = 2 * Math.PI
       ctx.arc(x2, y2, r2, sA2, eA2)
-      ctx.lineTo(strokeData.right, strokeData.bottom - r2)
-      const x3 = strokeData.right - radius.rb
-      const y3 = strokeData.bottom - radius.rb
+      ctx.lineTo(strokeData[idx].right, strokeData[idx].bottom - r2)
+      const x3 = strokeData[idx].right - radius.rb
+      const y3 = strokeData[idx].bottom - radius.rb
       const r3 = radius.rb
       const sA3 = 0
       const eA3 = 0.5 * Math.PI
       ctx.arc(x3, y3, r3, sA3, eA3)
-      ctx.lineTo(strokeData.left + r3, strokeData.bottom)
-      const x4 = strokeData.left + radius.lb
-      const y4 = strokeData.bottom - radius.lb
+      ctx.lineTo(strokeData[idx].left + r3, strokeData[idx].bottom)
+      const x4 = strokeData[idx].left + radius.lb
+      const y4 = strokeData[idx].bottom - radius.lb
       const r4 = radius.lb
       const sA4 = 0.5 * Math.PI
       const eA4 = Math.PI
       ctx.arc(x4, y4, r4, sA4, eA4)
-      ctx.lineTo(strokeData.left, strokeData.top + r4)
-      ctx.setStrokeStyle(strokeData.borderColor)
+      ctx.lineTo(strokeData[idx].left, strokeData[idx].top + r4)
+      ctx.setStrokeStyle(strokeData[idx].borderColor)
       ctx.closePath()
       ctx.stroke()
       ctx.restore()
       this.strokeLen -= 1
-      if (this.strokeLen < 1) {
+      // if (this.strokeLen < 1) {
+      //   this.drawTextFunc(ctx, drawSuccess)
+      // }
+      if ((idx + 1) == strokeData.length) {
         this.drawTextFunc(ctx, drawSuccess)
+      } else {
+        this.drawStroke(strokeData, ctx, idx + 1, drawSuccess)
       }
     },
-    drawText: function (textData, ctx, drawSuccess) {
+    drawText: function (textData, ctx, idx, drawSuccess) {
       const alignObj = {start: 'left', center: 'center', end: 'right'}
       ctx.save()
-      ctx.setFontSize(parseInt(textData.fontSize))
-      ctx.setTextAlign(alignObj[textData.textAlign])
+      ctx.setFontSize(parseInt(textData[idx].fontSize))
+      ctx.setTextAlign(alignObj[textData[idx].textAlign])
       ctx.setTextBaseline('middle')
-      ctx.setFillStyle(textData.color)
-      if (textData.dataset.maxline && textData.dataset.maxlength) {
-        const chr = textData.dataset.text.split("")
+      ctx.setFillStyle(textData[idx].color)
+      if (textData[idx].dataset.maxline && textData[idx].dataset.maxlength) {
+        const chr = textData[idx].dataset.text.split("")
         let temp = ""
         let _row = []
         for (let a = 0; a < chr.length; a++) {
-          if (((temp + (chr[a])).length <= textData.dataset.maxlength)) { // 20个字算一行
+          if (((temp + (chr[a])).length <= textData[idx].dataset.maxlength)) { // 20个字算一行
             temp += chr[a]
           } else {
             _row.push(temp)
@@ -251,18 +267,64 @@ Component({
         }
         _row.push(temp)
         let row = _row.filter((item, idx) => idx < 2)
-        if (_row.length > textData.dataset.maxline) {
-          row[row.length - 1] = row[row.length - 1].substring(0, textData.dataset.maxlength - 3) + '...'
+        if (_row.length > textData[idx].dataset.maxline) {
+          row[row.length - 1] = row[row.length - 1].substring(0, textData[idx].dataset.maxlength - 3) + '...'
         }
         for (var b = 0; b < row.length; b++) {
-          ctx.fillText(row[b], textData.left + parseInt(textData.paddingLeft) + parseInt(textData.borderLeftWidth), textData.top + parseInt(textData.paddingTop) + parseInt(textData.borderTopWidth) + parseInt(textData.lineHeight) * (b + (1 / 2)), textData.width)
+          ctx.fillText(row[b], textData[idx].left + parseInt(textData[idx].paddingLeft) + parseInt(textData[idx].borderLeftWidth), textData[idx].top + parseInt(textData[idx].paddingTop) + parseInt(textData[idx].borderTopWidth) + parseInt(textData[idx].lineHeight) * (b + (1 / 2)), textData[idx].width)
         }
       } else {
-        ctx.fillText(textData.dataset.text, textData.left + parseInt(textData.paddingLeft) + parseInt(textData.borderLeftWidth), textData.top + parseInt(textData.paddingTop) + parseInt(textData.borderTopWidth) + parseInt(textData.lineHeight) / 2, textData.width)
+        ctx.fillText(textData[idx].dataset.text, textData[idx].left + parseInt(textData[idx].paddingLeft) + parseInt(textData[idx].borderLeftWidth), textData[idx].top + parseInt(textData[idx].paddingTop) + parseInt(textData[idx].borderTopWidth) + parseInt(textData[idx].lineHeight) / 2, textData[idx].width)
       }
       ctx.restore()
       this.textLen -= 1
-      if (this.textLen < 1) {
+      // if (this.textLen < 1) {
+      //   ctx.draw(true, () => {
+      //     wx.canvasToTempFilePath({
+      //       x: 0,
+      //       y: 0,
+      //       canvasId: 'c-draw-poster',
+      //       success: res => {
+      //         const query = this.createSelectorQuery().select('#top-wrapper').boundingClientRect(rect => {
+      //           if (rect) { // #top-wrapper有可能时隐藏状态的，所以做此判断
+      //             let width = 0
+      //             let height = 0
+      //             const posterRatio = this.posterWidth / this.posterHeight
+      //             const topWrapperRatio = rect.width / rect.height
+      //             if (posterRatio < topWrapperRatio) {
+      //               height = rect.height * 0.88
+      //               width = height * posterRatio
+      //             } else {
+      //               width = rect.width * 0.88
+      //               height = width / posterRatio
+      //             }
+      //             this.setData({
+      //               posterWidth: width,
+      //               posterHeight: height
+      //             })
+      //           }
+      //         }).exec()
+      //         let localPoster = res.tempFilePath
+      //         this.setData({
+      //           localPoster: localPoster,
+      //           drawing: false
+      //         }, () => {
+      //           this.triggerEvent('statuschange', { fetching: this.data.fetching, drawing: this.data.drawing })
+      //           drawSuccess && drawSuccess(localPoster)
+      //         })
+      //       },
+      //       fail: res => {
+      //         console.log('fail_res', res)
+      //         this.setData({
+      //           drawing: false
+      //         }, () => {
+      //           this.triggerEvent('statuschange', { fetching: this.data.fetching, drawing: this.data.drawing })
+      //         })
+      //       }
+      //     }, this)
+      //   })
+      // }
+      if ((idx + 1) == textData.length) {
         ctx.draw(true, () => {
           wx.canvasToTempFilePath({
             x: 0,
@@ -307,6 +369,8 @@ Component({
             }
           }, this)
         })
+      } else {
+        this.drawText(textData, ctx, idx + 1, drawSuccess)
       }
     },
     drawFillFunc: function (ctx, drawSuccess) {
@@ -316,18 +380,19 @@ Component({
         scrollOffset: true,
         computedStyle: ['borderRadius', 'backgroundColor']
       }, res => {
-        this.fillLen = res.length
-        res.forEach((item, idx) => {
-          item.id      // 节点的ID
-          item.dataset // 节点的dataset
-          item.left    // 节点的左边界坐标
-          item.right   // 节点的右边界坐标
-          item.top     // 节点的上边界坐标
-          item.bottom  // 节点的下边界坐标
-          item.width   // 节点的宽度
-          item.height  // 节点的高度
-          this.drawFill(item, ctx, drawSuccess)
-        })
+        // this.fillLen = res.length
+        this.drawFill(res, ctx, 0, drawSuccess)
+        // res.forEach((item, idx) => {
+        //   item.id      // 节点的ID
+        //   item.dataset // 节点的dataset
+        //   item.left    // 节点的左边界坐标
+        //   item.right   // 节点的右边界坐标
+        //   item.top     // 节点的上边界坐标
+        //   item.bottom  // 节点的下边界坐标
+        //   item.width   // 节点的宽度
+        //   item.height  // 节点的高度
+        //   this.drawFill(item, ctx, drawSuccess)
+        // })
       }).exec()
     },
     drawStrokeFunc: function (ctx, drawSuccess) {
@@ -337,22 +402,23 @@ Component({
         scrollOffset: true,
         computedStyle: ['borderRadius', 'borderColor']
       }, res => {
-        this.strokeLen = res.length
+        // this.strokeLen = res.length
         if (!res.length) { // 不存在stroke类型时，直接跳过
           this.drawTextFunc(ctx, drawSuccess)
           return false
         }
-        res.forEach((item, idx) => {
-          item.id      // 节点的ID
-          item.dataset // 节点的dataset
-          item.left    // 节点的左边界坐标
-          item.right   // 节点的右边界坐标
-          item.top     // 节点的上边界坐标
-          item.bottom  // 节点的下边界坐标
-          item.width   // 节点的宽度
-          item.height  // 节点的高度
-          this.drawStroke(item, ctx, drawSuccess)
-        })
+        this.drawStroke(res, ctx, 0, drawSuccess)
+        // res.forEach((item, idx) => {
+        //   item.id      // 节点的ID
+        //   item.dataset // 节点的dataset
+        //   item.left    // 节点的左边界坐标
+        //   item.right   // 节点的右边界坐标
+        //   item.top     // 节点的上边界坐标
+        //   item.bottom  // 节点的下边界坐标
+        //   item.width   // 节点的宽度
+        //   item.height  // 节点的高度
+        //   this.drawStroke(item, ctx, drawSuccess)
+        // })
       }).exec()
     },
     drawTextFunc: function (ctx, drawSuccess) {
@@ -363,18 +429,19 @@ Component({
         scrollOffset: true,
         computedStyle: ['fontSize', 'color', 'lineHeight', 'textAlign', 'paddingLeft', 'paddingTop', 'borderLeftWidth', 'borderTopWidth'],
       }, res => {
-        this.textLen = res.length
-        res.forEach((item, idx) => {
-          item.id      // 节点的ID
-          item.dataset // 节点的dataset
-          item.left    // 节点的左边界坐标
-          item.right   // 节点的右边界坐标
-          item.top     // 节点的上边界坐标
-          item.bottom  // 节点的下边界坐标
-          item.width   // 节点的宽度
-          item.height  // 节点的高度
-          this.drawText(item, ctx, drawSuccess)
-        })
+        // this.textLen = res.length
+        this.drawText(res, ctx, 0, drawSuccess)
+        // res.forEach((item, idx) => {
+        //   item.id      // 节点的ID
+        //   item.dataset // 节点的dataset
+        //   item.left    // 节点的左边界坐标
+        //   item.right   // 节点的右边界坐标
+        //   item.top     // 节点的上边界坐标
+        //   item.bottom  // 节点的下边界坐标
+        //   item.width   // 节点的宽度
+        //   item.height  // 节点的高度
+        //   this.drawText(item, ctx, drawSuccess)
+        // })
       }).exec()
     },
     getPosterData: function (huodong_id, tuan_id, dataSuccess) { // dataSuccess在成功获取后执行
@@ -403,7 +470,7 @@ Component({
           _obj.uid = data.user.id
           _obj.hAvatar = data.user.avatar
           _obj.hName = data.user.nick_name
-          _obj.hTip = data.sale_type == 2 ? '发起了拼团，邀请你参与拼团~' : '发现了一个宝贝，想要跟你分享~'
+          _obj.hTip = (data.sale_type == 2 && tuan_id) ? '发起了拼团，邀请你参与拼团~' : '发现了一个宝贝，想要跟你分享~'
           _obj.banner = data.cover_url
           _obj.title = data.title
           _obj.price = util.formatMoney(data.sale_type == 1 ? data.min_price : data.min_pt_price).showMoney
@@ -492,7 +559,7 @@ Component({
         page._onShareAppMessage = passShareFunc
         page.onShareAppMessage = function () {
           return {
-            title: (saleType == 2 && hName) ? (hName + '邀请你参与拼团') : title,
+            title: (saleType == 2 && tuanId && hName) ? (hName + '邀请你参与拼团') : title,
             path: path,
             imageUrl: banner
           }
