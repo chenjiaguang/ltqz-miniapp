@@ -17,7 +17,7 @@ Page({
     unickname: '',
     id: '',
     statusText: {
-      0: '活动已失效',
+      0: '活动未上架',
       1: '活动报名中',
       2: '活动报名中',
       3: '报名已结束',
@@ -25,7 +25,7 @@ Page({
       5: '活动已结束'
     },
     buttonStatusText: {
-      0: '活动失效',
+      0: '敬请期待',
       1: '立即报名',
       2: '报名已满',
       3: '报名截止',
@@ -173,8 +173,8 @@ Page({
     util.request('/huodong/detail', rData).then(res => {
       if (res.error == 0 && res.data) {
         // 处理展示详情内容
-        let arrEntities = { 'lt': '<', 'gt': '>', 'nbsp': ' ', 'amp': '&', 'quot': '"', 'mdash': '——', 'ldquo': '“', 'rdquo': '”', '#39': "'" }
-        res.data.content = res.data.content.replace(/\n/ig, '').replace(/<img/ig, '<img style="max-width:100%;height:auto;display:block"').replace(/<section/ig, '<div').replace(/\/section>/ig, '/div>')
+        let arrEntities = { 'lt': '<', 'gt': '>', 'nbsp': ' ', 'amp': '&', 'quot': '"', 'mdash': '——', 'ldquo': '“', 'rdquo': '”', '#39': "'", 'ensp': '' }
+        res.data.content = res.data.content.replace(/\n/ig, '').replace(/\t/ig, '').replace(/<img/ig, '<img style="max-width:100%;height:auto;display:block"').replace(/<section/ig, '<div').replace(/\/section>/ig, '/div>')
         // 处理时间格式
         res.data.valid_btime = util.formatDateTimeDefault('d', res.data.valid_btime)
         res.data.valid_etime = util.formatDateTimeDefault('d', res.data.valid_etime)
@@ -194,7 +194,8 @@ Page({
               avatar: item.tuan_master_avatar,
               username: item.tuan_master_nick_name,
               need: item.remain_spell_num,
-              remain: item.expired_timestamp
+              remain: item.expired_timestamp,
+              is_join: item.is_join
             }
           })
         }
@@ -241,7 +242,6 @@ Page({
     query.select(scrollid).boundingClientRect()
     query.selectViewport().scrollOffset()
     query.exec(res => {
-      console.log('res', res)
       const scrollPos = res[0].top + res[1].scrollTop - 90 * rpx
       wx.pageScrollTo({
         scrollTop: scrollPos,
@@ -284,7 +284,6 @@ Page({
   },
 
   showShoppingView: function (e) {
-    console.log('showShoppingView')
     this.setData({
       tuanId: e.currentTarget.dataset.saletype == 2 ? 0 : null
     })
@@ -437,8 +436,14 @@ Page({
   },
   
   groupTap: function (e) {
-    console.log('groupTap')
     const shoppingView = this.selectComponent('#c-shopping-view')
+    if (e.detail.isJoin) {
+      wx.showToast({
+        title: '您正在参与这个团哦～',
+        icon: 'none'
+      })
+      return false
+    }
     this.setData({
       tuanId: e.detail.tuanId
     })

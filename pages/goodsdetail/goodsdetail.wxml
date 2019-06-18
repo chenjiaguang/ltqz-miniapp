@@ -31,7 +31,7 @@
       </view>
     </view>
   </view>
-  <group-purchase wx:if="{{groupList && groupList.length > 0}}" group-list="{{groupList}}" catchpintuan="groupTap" />
+  <group-purchase wx:if="{{groupList && groupList.length > 0}}" group-list="{{groupList}}" total-num="{{tuan_join_num}}" catchpintuan="groupTap" />
   <view class='sub-overview'>
     <view wx:if="{{valid_btime && valid_etime}}" class='state-block-wrapper'>
       <view class='state-block'><image class='left-icon' mode="aspectFit" src="/assets/images/time_jointime.png"></image><text class='state-block-text'>活动日期：{{valid_btime}} 至 {{valid_etime}}</text></view>

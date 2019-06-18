@@ -57,7 +57,7 @@
           <view class="share-item-icon{{localPoster ? '' : ' disabled'}}">
             <text class='save-image-icon lutufont lutu-pengyouquan'></text>
           </view>
-          <text class='share-box-text'>分享到朋友圈</text>
+          <text class='share-box-text'>保存海报</text>
         </view>
       </view>
       <ft-iphone-bottom-adapter />

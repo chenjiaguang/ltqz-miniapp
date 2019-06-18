@@ -139,6 +139,10 @@ Component({
       this.toggleSession()
       const { saletype, currentSession, currentTickets, selectedTicketLength, totalPrice} = this.data
       this.triggerEvent('nextstep', { saletype, currentSession, currentTickets, selectedTicketLength, totalPrice})
+    },
+
+    stopPropagation: function () {
+      return false
     }
   }
 })

@@ -401,6 +401,8 @@ page{
 }
 
 .bottom-button-wrapper{
+  position: relative;
+  z-index: 9;
   overflow: visible;
 }
 .bottom-button{

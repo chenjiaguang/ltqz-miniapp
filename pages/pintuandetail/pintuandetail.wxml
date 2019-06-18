@@ -37,7 +37,7 @@
       <view wx:if="{{is_join && status == 1}}" class='button-box'>
         <view class="share-pentyouquan{{sharing ? ' disabled' : ''}}" catchtap="savePoster">
           <text class='lutufont lutu-pengyouquan'></text>
-          <text>分享到朋友圈</text>
+          <text>保存海报</text>
         </view>
         <button open-type='share' class="share-weixinhaoyou{{!canShareFriend ? ' disabled' : ''}}" disabled="{{!canShareFriend}}">
           <text class='lutufont lutu-weixin'></text>

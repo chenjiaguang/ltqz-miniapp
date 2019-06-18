@@ -101,16 +101,15 @@ Page({
     }
     util.request('/order/tuan_detail', rData).then(res => {
       if (res.data) {
-        console.log('/order/tuan_detail', res)
         res.data.huodong.valid_btime = util.formatDateTimeDefault('d', res.data.huodong.valid_btime)
         res.data.huodong.valid_etime = util.formatDateTimeDefault('d', res.data.huodong.valid_etime)
         res.data.created_at = util.formatDateTimeDefault('m', res.data.created_at)
         res.data.users = this.getUsers(res.data)
         if (res.data.status == 1) { // 状态为拼团中时，初始化分享到朋友圈
-          const title = res.data.user_name + '邀请你参与拼团'
+          const title = res.data.current_user_name + '邀请你参与拼团'
           let path = '/pages/pintuandetail/pintuandetail?id=' + id
           if (res.data.fenxiao_price && res.data.fenxiao_price > 0) {
-            path += ('&uid=' + res.data.user_id)
+            path += ('&uid=' + res.data.current_user_id)
           }
           const imageUrl = res.data.huodong.cover_url
           this.initShare(title, path, imageUrl)
@@ -187,13 +186,11 @@ Page({
     })
   },
   drawPosterChange: function (e) {
-    console.log('drawPosterChange', e)
     const {fetching, drawing} = e.detail
     const sharing = fetching || drawing
     this.setData({ sharing})
   },
   savePoster: function () {
-    console.log('savePoster')
     const { product_id, id } = this.data
     if (product_id && id) {
       const poster = this.selectComponent('#c-draw-poster')
@@ -203,14 +200,12 @@ Page({
     }
   },
   createTuan: function () {
-    console.log('createTuan')
     const shoppingView = this.selectComponent('#c-shopping-view')
     if (shoppingView && shoppingView.toggleSession) {
       shoppingView.toggleSession({ currentTarget: { dataset: {saletype: 2} } })
     }
   },
   joinTuan: function () {
-    console.log('joinTuan')
     const shoppingView = this.selectComponent('#c-shopping-view')
     if (shoppingView && shoppingView.toggleSession) {
       shoppingView.toggleSession({ currentTarget: { dataset: { saletype: 2 } } })
@@ -282,7 +277,6 @@ Page({
     }
   },
   goGoodsDetail: function (e) {
-    console.log('goGoodsDetail', e)
     if (e.currentTarget.dataset.goodsid) {
       wx.navigateTo({
         url: '/pages/goodsdetail/goodsdetail?id=' + e.currentTarget.dataset.goodsid

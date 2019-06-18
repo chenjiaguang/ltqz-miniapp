@@ -23,7 +23,7 @@ Component({
    */
   data: {
     activityStatusText: {
-      0: '已失效',
+      0: '未上架',
       1: '报名中',
       2: '已满额',
       3: '已截止',

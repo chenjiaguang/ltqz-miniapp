@@ -19,7 +19,7 @@
   </view>
   <view class='block-separator'></view>
   <block wx:if="{{groupList && groupList.length > 0}}">
-    <view class='group-header'>{{groupList.length}}人正在拼团，可直接参与</view>
+    <view class='group-header'>{{totalNum}}人正在拼团，可直接参与</view>
     <view class='line-separator-h'></view>
     <view style="height:16rpx"></view>
     <view wx:for="{{groupList}}" wx:key="id" class="group-item-wrapper{{remainTime[item.id] <= 0 ? ' disabled-group' : ''}}">

@@ -4,6 +4,10 @@ Component({
    * 组件的属性列表
    */
   properties: {
+    totalNum: {
+      type: Number,
+      value: 0
+    },
     groupList: {
       type: Array,
       value: [],
@@ -93,7 +97,6 @@ Component({
       return [hour, min, second].join(':')
     },
     ruleTap: function () {
-      console.log('ruleTap')
       wx.navigateTo({
         url: '/pages/statement/statement?type=3'
       })
@@ -105,7 +108,7 @@ Component({
       if (remainTime[ele.id] <= 0) { // 超时
         return false
       }
-      this.triggerEvent('pintuan', { tuanId: ele.id})
+      this.triggerEvent('pintuan', { tuanId: ele.id, isJoin: ele.is_join})
     }
   }
 })
