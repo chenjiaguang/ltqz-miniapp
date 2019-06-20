@@ -1,0 +1,5 @@
+<!--components/posterDrawer/posterDrawer.wxml-->
+<view class="wrapper" id="wrapper">
+  <slot></slot>
+  <canvas canvas-id="draw-canvas" class="draw-poster" catcherror="canvasError"></canvas>
+</view>

@@ -2,44 +2,10 @@
 @import "../../app.wxss";
 
 /* 场次、票种选择框 */
-.session-wrapper{
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  left: 0;
-  bottom: 0;
-  z-index: -1;
-  visibility: hidden;
-}
-.session-wrapper.show{
-  z-index: 10;
-  visibility: visible;
-}
-.session-mask{
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  left: 0;
-  bottom: 0;
-  background: transparent;
-  transition: background 300ms;
-}
-.session-mask.show{
-  background: rgba(0,0,0,0.65);
-}
 .session-context{
   border-radius: 12rpx 12rpx 0 0;
   background: #fff;
   padding: 62rpx 0 0;
-  position: absolute;
-  width: 100%;
-  left: 0;
-  bottom: 0;
-  transform: translateY(100%);
-  transition: transform 300ms;
-}
-.session-context.show{
-  transform: translateY(0);
 }
 .sessions{
   width: 100%;

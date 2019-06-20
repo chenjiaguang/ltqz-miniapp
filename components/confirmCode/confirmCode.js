@@ -65,6 +65,10 @@ Component({
         focus: false
       })
     },
+    toggle: function () {
+      const ftModal = this.selectComponent('#c-ft-modal')
+      ftModal && ftModal.toggle && ftModal.toggle()
+    },
     open: function (e) {
       let {maxLength, title, btnText} = e
       let _obj = {}
@@ -81,15 +85,17 @@ Component({
       _obj.cursor = 0
       _obj.focus = true
       _obj.codeStr = ''
-      _obj.actived = true
+      // _obj.actived = true
+      this.toggle()
       this.setData(_obj)
     },
     close: function () {
+      this.toggle()
       this.setData({
         cursor: 0,
         focus: false,
         codeStr: '',
-        actived: false
+        // actived: false
       })
     },
     confirm: function () {

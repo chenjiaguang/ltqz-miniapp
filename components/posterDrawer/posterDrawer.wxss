@@ -9,16 +9,16 @@
   width: 100%;
   left: 0;
   top: 0;
-  visibility: hidden;
-  overflow: visible;
+  /* visibility: hidden;
+  overflow: visible; */
 }
 .wrapper.show{
   visibility: visible;
 }
 .poster-body{
   padding: 34rpx 32rpx 50rpx;
-  opacity: 0;
-  visibility: hidden;
+  /* opacity: 0;
+  visibility: hidden; */
 }
 .head{
   padding: 40rpx 0;
@@ -199,10 +199,12 @@
   position: absolute;
   width: 100%;
   height: 100%;
-  left: 200%;
-  top: 200%;
-  opacity: 0;
-  visibility: hidden;
+  left: 10%;
+  top: 40%;
+  /* opacity: 0;
+  visibility: hidden; */
+  z-index: 999;
+  background: green;
 }
 .poster{
   width: 88%;

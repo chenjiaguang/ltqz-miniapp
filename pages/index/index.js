@@ -49,8 +49,14 @@ Page({
       this.fetchRecommandGoods(parseInt(recommendationPage.pn) + 1)
     }
   },
+  onShareAppMessage: function () {
+    const { cover_url } = this.data
+    return {
+      title: '路途亲子-最好的成长在路上',
+      path: '/pages/index/index'
+    }
+  },
   bannerTap: function (e) {
-    console.log('bannerTap', e)
     const {item} = e.detail
     if (item && item.path) {
       wx.navigateTo({
@@ -67,7 +73,6 @@ Page({
     }
   },
   cateTap: function (e) {
-    console.log('cateTap', e)
     const { item } = e.detail
     if (item && item.id) {
       wx.navigateTo({
@@ -92,7 +97,6 @@ Page({
     }
   },
   goodsTap: function (e) {
-    console.log('goodsTap', e)
     const {id} = e.detail
     if (id) {
       wx.navigateTo({
@@ -151,7 +155,6 @@ Page({
       pn: pn
     }
     util.request('/huodong/list', rData).then(res => {
-      console.log('/huodong/list', res)
       if (res.error == 0 && res.data) {
         let {
           list,
@@ -180,17 +183,12 @@ Page({
         this.setData(_obj)
       }
     }).catch(err => {
-      console.log('catch')
+      
     }).finally(res => {
       this.setData({
         recommendationLoading: false
       })
       wx.stopPullDownRefresh()
     })
-  },
-  testTap: function (e) {
-    console.log('testTap', e)
-    const ftModal = this.selectComponent('#c-ft-modal')
-    ftModal && ftModal.show && ftModal.show()
   }
 })

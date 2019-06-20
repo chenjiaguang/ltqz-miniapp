@@ -1,14 +1,12 @@
 <!--components/shoppingView/shoppingView.wxml-->
-<view class="session-wrapper{{showSession ? ' show' : ''}}" catchtouchmove="stopPropagation">
-  <view class="session-mask{{showSession ? ' show' : ''}}" catchtap="toggleSession"></view>
-  <view class="session-context{{showSession ? ' show' : ''}}">
+<ft-modal id="c-ft-modal" hide-cancel mode="1">
+  <view slot="bottom" class="session-context">
     <view class='session-box'>
       <view class='session-header'>选择场次</view>
       <scroll-view scroll-x class='sessions'>
         <view wx:for="{{session}}" wx:for-index="idx" wx:for-item="ss" wx:key="id" class="session{{idx == 0 ? ' first' : ''}}{{(idx + 1) == session.length ? ' last' : ''}}{{ss.stock == 0 ? ' session-disabled' : ((ss.stock == null || ss.stock > 20) ? ' session-ample' : ' session-normal')}}{{currentSession[saletype] == idx ? ' theme-bg-20' : ''}}" catchtap="sessionTap" data-status="{{ss.stock == 0 ? 'disabled' : ((ss.stock == null || ss.stock > 20) ? 'ample' : 'normal')}}" data-idx="{{idx}}">
           <view class='session-content'>
             <view class='session-content-text'>{{ss.name}}</view>
-            <!-- <view class="session-status{{ss.stock == 0 ? ' disabled' : ((ss.stock == null || ss.stock > 20) ? ' theme-bg' : ' normal')}}">{{ss.stock == 0 ? '售罄' : ((ss.stock == null || ss.stock > 20) ? '充足' : ('余' + ss.stock))}}</view> -->
           </view>
         </view>
       </scroll-view>
@@ -40,6 +38,5 @@
       </view>
       <button class="next-btn{{!selectedTicketLength[saletype] ? ' disabled' : ' theme-bg'}}" disabled="{{!selectedTicketLength[saletype]}}" catchtap="order">下一步</button>
     </view>
-    <ft-iphone-bottom-adapter />
   </view>
-</view>
+</ft-modal>

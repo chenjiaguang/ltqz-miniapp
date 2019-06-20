@@ -59,9 +59,9 @@ page{
   font-size: 28rpx;
   line-height: 42rpx;
   color: #333;
-  display: -webkit-box;
+  /* display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 2; */
   overflow: hidden;
   padding-top: 12rpx;
 }

@@ -1,11 +1,11 @@
 <!--ftcomponents/ftModalBottom/ftModalBottom.wxml-->
-<view class="wrapper{{taped ? (showModal ? ' wrapper-show' : ' wrapper-hide') : ' wrapper-hidden'}}" catchtouchmove='stopPropagation'>
-  <view class="mask{{showModal ? ' mask-show' : ' mask-hide'}}"></view>
+<view animation="{{wrapperAnimationData}}" class="wrapper" catchtouchmove='stopPropagation'>
+  <view animation="{{maskAnimationData}}" class="mask"></view>
   <view class="content">
-    <view class="top top{{mode}}{{showModal ? ' top-show' : ' top-hide'}}" catchtap="hide">
+    <view animation="{{topAnimationData}}" class="top top{{mode}}" catchtap="hide">
       <slot name="top"></slot>
     </view>
-    <view class="bottom{{showModal ? ' bottom-show' : ' bottom-hide'}}">
+    <view animation="{{bottomAnimationData}}" class="bottom">
       <view class="bottom-content bottom-content{{mode}}">
         <slot name="bottom"></slot>
       </view>

@@ -21,7 +21,6 @@ Component({
     huodongId: '',
     tuanId: '',
     localPoster: '',
-    showPoster: '',
     fenxiao_price: 0,
     canShareFriend: false,
     showHideClass: {
@@ -61,17 +60,6 @@ Component({
         }, res => {
           this.imageLen = res.length
           this.drawImage(res, ctx, 0, drawSuccess)
-          // res.forEach((item, idx) => {
-          //   item.id      // 节点的ID
-          //   item.dataset // 节点的dataset
-          //   item.left    // 节点的左边界坐标
-          //   item.right   // 节点的右边界坐标
-          //   item.top     // 节点的上边界坐标
-          //   item.bottom  // 节点的下边界坐标
-          //   item.width   // 节点的宽度
-          //   item.height  // 节点的高度
-          //   this.drawImage(item, ctx, idx, drawSuccess)
-          // })
         }).exec()
       }).exec()
     },
@@ -116,13 +104,15 @@ Component({
           } else {
             ctx.drawImage(imageData[idx].dataset.islocal ? imageData[idx].src : res.path, banner_clip.clip_left, banner_clip.clip_top, banner_clip.clip_width, banner_clip.clip_height, imageData[idx].left, imageData[idx].top, imageData[idx].width, imageData[idx].height)
           }
-          // this.imageLen -= 1
-          // if (this.imageLen < 1) {
-          //   this.drawFillFunc(ctx, drawSuccess)
-          // }
           if ((idx + 1) == imageData.length) {
+            // ctx.draw(true, () => {
+            //   this.drawFillFunc(ctx, drawSuccess)
+            // })
             this.drawFillFunc(ctx, drawSuccess)
           } else {
+            // ctx.draw(true, () => {
+            //   this.drawImage(imageData, ctx, idx + 1, drawSuccess)
+            // })
             this.drawImage(imageData, ctx, idx + 1, drawSuccess)
           }
         }
@@ -177,13 +167,15 @@ Component({
       ctx.closePath()
       ctx.fill()
       ctx.restore()
-      this.fillLen -= 1
-      // if (this.fillLen < 1) {
-      //   this.drawStrokeFunc(ctx, drawSuccess)
-      // }
       if ((idx + 1) == fillData.length) {
+        // ctx.draw(true, () => {
+        //   this.drawStrokeFunc(ctx, drawSuccess)
+        // })
         this.drawStrokeFunc(ctx, drawSuccess)
       } else {
+        // ctx.draw(true, () => {
+        //   this.drawFill(fillData, ctx, idx + 1, drawSuccess)
+        // })
         this.drawFill(fillData, ctx, idx + 1, drawSuccess)
       }
     },
@@ -236,13 +228,15 @@ Component({
       ctx.closePath()
       ctx.stroke()
       ctx.restore()
-      this.strokeLen -= 1
-      // if (this.strokeLen < 1) {
-      //   this.drawTextFunc(ctx, drawSuccess)
-      // }
       if ((idx + 1) == strokeData.length) {
+        // ctx.draw(true, () => {
+        //   this.drawTextFunc(ctx, drawSuccess)
+        // })
         this.drawTextFunc(ctx, drawSuccess)
       } else {
+        // ctx.draw(true, () => {
+        //   this.drawStroke(strokeData, ctx, idx + 1, drawSuccess)
+        // })
         this.drawStroke(strokeData, ctx, idx + 1, drawSuccess)
       }
     },
@@ -254,122 +248,86 @@ Component({
       ctx.setTextBaseline('middle')
       ctx.setFillStyle(textData[idx].color)
       if (textData[idx].dataset.maxline && textData[idx].dataset.maxlength) {
-        const chr = textData[idx].dataset.text.split("")
+        const chr = textData[idx].dataset.text
         let temp = ""
         let _row = []
-        for (let a = 0; a < chr.length; a++) {
-          if (((temp + (chr[a])).length <= textData[idx].dataset.maxlength)) { // 20个字算一行
-            temp += chr[a]
+        for (let char of chr) {
+          if (((temp + (char)).length <= textData[idx].dataset.maxlength)) {
+            temp += char
           } else {
             _row.push(temp)
-            temp = chr[a]
+            temp = char
           }
         }
         _row.push(temp)
-        let row = _row.filter((item, idx) => idx < 2)
-        if (_row.length > textData[idx].dataset.maxline) {
-          row[row.length - 1] = row[row.length - 1].substring(0, textData[idx].dataset.maxlength - 3) + '...'
+        let row = _row.filter((item, _idx) => _idx < textData[idx].dataset.maxline)
+        if (_row.length >= textData[idx].dataset.maxline && _row[row.length - 1].length >= textData[idx].dataset.maxlength) {
+          row[row.length - 1] = row[row.length - 1] + '...'
         }
-        for (var b = 0; b < row.length; b++) {
-          ctx.fillText(row[b], textData[idx].left + parseInt(textData[idx].paddingLeft) + parseInt(textData[idx].borderLeftWidth), textData[idx].top + parseInt(textData[idx].paddingTop) + parseInt(textData[idx].borderTopWidth) + parseInt(textData[idx].lineHeight) * (b + (1 / 2)), textData[idx].width)
+        if (row.length != Math.round(textData[idx].height / parseInt(textData[idx].lineHeight))) { // 实际上没有超过最大宽度，但是按照20个字一行来算确超过时，修正
+          const realRowNum = Math.round(textData[idx].height / parseInt(textData[idx].lineHeight))
+          row[realRowNum - 1] = row[realRowNum - 1] + row[realRowNum]
+          row = row.filter((item, idx) => idx < realRowNum)
+        }
+        for (let b = 0; b < row.length; b++) {
+          ctx.fillText(row[b], alignObj[textData[idx].textAlign] == 'center' ? (textData[idx].left + textData[idx].width / 2) : textData[idx].left + parseInt(textData[idx].paddingLeft) + parseInt(textData[idx].borderLeftWidth), textData[idx].top + parseInt(textData[idx].paddingTop) + parseInt(textData[idx].borderTopWidth) + parseInt(textData[idx].lineHeight) * (b + (1 / 2)), textData[idx].width)
         }
       } else {
-        ctx.fillText(textData[idx].dataset.text, textData[idx].left + parseInt(textData[idx].paddingLeft) + parseInt(textData[idx].borderLeftWidth), textData[idx].top + parseInt(textData[idx].paddingTop) + parseInt(textData[idx].borderTopWidth) + parseInt(textData[idx].lineHeight) / 2, textData[idx].width)
+        ctx.fillText(textData[idx].dataset.text, alignObj[textData[idx].textAlign] == 'center' ? (textData[idx].left + textData[idx].width / 2) : textData[idx].left + parseInt(textData[idx].paddingLeft) + parseInt(textData[idx].borderLeftWidth), textData[idx].top + parseInt(textData[idx].paddingTop) + parseInt(textData[idx].borderTopWidth) + parseInt(textData[idx].lineHeight) / 2, textData[idx].width)
       }
       ctx.restore()
       this.textLen -= 1
-      // if (this.textLen < 1) {
-      //   ctx.draw(true, () => {
-      //     wx.canvasToTempFilePath({
-      //       x: 0,
-      //       y: 0,
-      //       canvasId: 'c-draw-poster',
-      //       success: res => {
-      //         const query = this.createSelectorQuery().select('#top-wrapper').boundingClientRect(rect => {
-      //           if (rect) { // #top-wrapper有可能时隐藏状态的，所以做此判断
-      //             let width = 0
-      //             let height = 0
-      //             const posterRatio = this.posterWidth / this.posterHeight
-      //             const topWrapperRatio = rect.width / rect.height
-      //             if (posterRatio < topWrapperRatio) {
-      //               height = rect.height * 0.88
-      //               width = height * posterRatio
-      //             } else {
-      //               width = rect.width * 0.88
-      //               height = width / posterRatio
-      //             }
-      //             this.setData({
-      //               posterWidth: width,
-      //               posterHeight: height
-      //             })
-      //           }
-      //         }).exec()
-      //         let localPoster = res.tempFilePath
-      //         this.setData({
-      //           localPoster: localPoster,
-      //           drawing: false
-      //         }, () => {
-      //           this.triggerEvent('statuschange', { fetching: this.data.fetching, drawing: this.data.drawing })
-      //           drawSuccess && drawSuccess(localPoster)
-      //         })
-      //       },
-      //       fail: res => {
-      //         console.log('fail_res', res)
-      //         this.setData({
-      //           drawing: false
-      //         }, () => {
-      //           this.triggerEvent('statuschange', { fetching: this.data.fetching, drawing: this.data.drawing })
-      //         })
-      //       }
-      //     }, this)
-      //   })
-      // }
       if ((idx + 1) == textData.length) {
         ctx.draw(true, () => {
-          wx.canvasToTempFilePath({
-            x: 0,
-            y: 0,
-            canvasId: 'c-draw-poster',
-            success: res => {
-              const query = this.createSelectorQuery().select('#top-wrapper').boundingClientRect(rect => {
-                if (rect) { // #top-wrapper有可能时隐藏状态的，所以做此判断
-                  let width = 0
-                  let height = 0
-                  const posterRatio = this.posterWidth / this.posterHeight
-                  const topWrapperRatio = rect.width / rect.height
-                  if (posterRatio < topWrapperRatio) {
-                    height = rect.height * 0.88
-                    width = height * posterRatio
-                  } else {
-                    width = rect.width * 0.88
-                    height = width / posterRatio
+          setTimeout(() => {
+            wx.canvasToTempFilePath({
+              x: 0,
+              y: 0,
+              canvasId: 'c-draw-poster',
+              success: res => {
+                const query = this.createSelectorQuery().select('#top-wrapper').boundingClientRect(rect => {
+                  if (rect) { // #top-wrapper有可能时隐藏状态的，所以做此判断
+                    let width = 0
+                    let height = 0
+                    const posterRatio = this.posterWidth / this.posterHeight
+                    const topWrapperRatio = rect.width / rect.height
+                    if (posterRatio < topWrapperRatio) {
+                      height = rect.height * 0.88
+                      width = height * posterRatio
+                    } else {
+                      width = rect.width * 0.88
+                      height = width / posterRatio
+                    }
+                    this.setData({
+                      posterWidth: width,
+                      posterHeight: height
+                    })
                   }
-                  this.setData({
-                    posterWidth: width,
-                    posterHeight: height
-                  })
-                }
-              }).exec()
-              let localPoster = res.tempFilePath
-              this.setData({
-                localPoster: localPoster,
-                drawing: false
-              }, () => {
-                this.triggerEvent('statuschange', { fetching: this.data.fetching, drawing: this.data.drawing })
-                drawSuccess && drawSuccess(localPoster)
-              })
-            },
-            fail: res => {
-              console.log('fail_res', res)
-              this.setData({
-                drawing: false
-              }, () => {
-                this.triggerEvent('statuschange', { fetching: this.data.fetching, drawing: this.data.drawing })
-              })
-            }
-          }, this)
+                }).exec()
+                let localPoster = res.tempFilePath
+                this.setData({
+                  localPoster: localPoster,
+                  drawing: false
+                }, () => {
+                  this.triggerEvent('statuschange', { fetching: this.data.fetching, drawing: this.data.drawing })
+                  drawSuccess && drawSuccess(localPoster)
+                })
+              },
+              fail: res => {
+                console.log('fail_res', res)
+                this.setData({
+                  drawing: false
+                }, () => {
+                  this.triggerEvent('statuschange', { fetching: this.data.fetching, drawing: this.data.drawing })
+                })
+              }
+            }, this)
+          }, 200)
         })
       } else {
+        // ctx.draw(true, () => {
+        //   this.drawText(textData, ctx, idx + 1, drawSuccess)
+        // })
         this.drawText(textData, ctx, idx + 1, drawSuccess)
       }
     },
@@ -380,19 +338,7 @@ Component({
         scrollOffset: true,
         computedStyle: ['borderRadius', 'backgroundColor']
       }, res => {
-        // this.fillLen = res.length
         this.drawFill(res, ctx, 0, drawSuccess)
-        // res.forEach((item, idx) => {
-        //   item.id      // 节点的ID
-        //   item.dataset // 节点的dataset
-        //   item.left    // 节点的左边界坐标
-        //   item.right   // 节点的右边界坐标
-        //   item.top     // 节点的上边界坐标
-        //   item.bottom  // 节点的下边界坐标
-        //   item.width   // 节点的宽度
-        //   item.height  // 节点的高度
-        //   this.drawFill(item, ctx, drawSuccess)
-        // })
       }).exec()
     },
     drawStrokeFunc: function (ctx, drawSuccess) {
@@ -402,23 +348,11 @@ Component({
         scrollOffset: true,
         computedStyle: ['borderRadius', 'borderColor']
       }, res => {
-        // this.strokeLen = res.length
         if (!res.length) { // 不存在stroke类型时，直接跳过
           this.drawTextFunc(ctx, drawSuccess)
           return false
         }
         this.drawStroke(res, ctx, 0, drawSuccess)
-        // res.forEach((item, idx) => {
-        //   item.id      // 节点的ID
-        //   item.dataset // 节点的dataset
-        //   item.left    // 节点的左边界坐标
-        //   item.right   // 节点的右边界坐标
-        //   item.top     // 节点的上边界坐标
-        //   item.bottom  // 节点的下边界坐标
-        //   item.width   // 节点的宽度
-        //   item.height  // 节点的高度
-        //   this.drawStroke(item, ctx, drawSuccess)
-        // })
       }).exec()
     },
     drawTextFunc: function (ctx, drawSuccess) {
@@ -427,21 +361,12 @@ Component({
         rect: true,
         size: true,
         scrollOffset: true,
-        computedStyle: ['fontSize', 'color', 'lineHeight', 'textAlign', 'paddingLeft', 'paddingTop', 'borderLeftWidth', 'borderTopWidth'],
+        computedStyle: ['fontSize', 'color', 'lineHeight', 'textAlign', 'paddingLeft', 'paddingTop', 'borderLeftWidth', 'borderTopWidth']
       }, res => {
-        // this.textLen = res.length
-        this.drawText(res, ctx, 0, drawSuccess)
-        // res.forEach((item, idx) => {
-        //   item.id      // 节点的ID
-        //   item.dataset // 节点的dataset
-        //   item.left    // 节点的左边界坐标
-        //   item.right   // 节点的右边界坐标
-        //   item.top     // 节点的上边界坐标
-        //   item.bottom  // 节点的下边界坐标
-        //   item.width   // 节点的宽度
-        //   item.height  // 节点的高度
-        //   this.drawText(item, ctx, drawSuccess)
+        // const arr = res.map(item => {
+        //   return { fontsize: item.fontSize, dataset: item.dataset, lineHeight: item.lineHeight, color: item.color }
         // })
+        this.drawText(res, ctx, 0, drawSuccess)
       }).exec()
     },
     getPosterData: function (huodong_id, tuan_id, dataSuccess) { // dataSuccess在成功获取后执行
@@ -505,7 +430,6 @@ Component({
     startDraw: function (huodong_id, tuan_id) {
       this.showPoster()
       const { huodongId, tuanId, localPoster } = this.data
-      console.log('startDraw', huodong_id, tuan_id, huodongId, tuanId, localPoster)
       if (huodong_id == huodongId && ((!tuan_id && !tuanId) || tuan_id == tuanId) && localPoster) { // 之前已经画过
         return false
       }
@@ -517,7 +441,6 @@ Component({
     },
     startDrawAndSavePoster: function (huodong_id, tuan_id) {
       const { huodongId, tuanId, localPoster } = this.data
-      console.log(huodong_id, tuan_id, huodongId, tuanId, localPoster)
       if (huodong_id == huodongId && ((!tuan_id && !tuanId) || tuan_id == tuanId) && localPoster) { // 之前已经画过
         this.savePoster()
         return false
@@ -530,15 +453,13 @@ Component({
       this.getPosterData(huodong_id, tuan_id, dataSuccess)
     },
     showPoster: function () {
-      this.setData({
-        showPoster: 2
-      })
+      const ftModal = this.selectComponent('#c-ft-modal')
+      ftModal && ftModal.toggle && ftModal.toggle()
       this.initShare()
     },
     hidePoster: function () {
-      this.setData({
-        showPoster: 1
-      })
+      const ftModal = this.selectComponent('#c-ft-modal')
+      ftModal && ftModal.toggle && ftModal.toggle()
       this.recoverShare()
     },
     initShare: function () {
@@ -598,7 +519,12 @@ Component({
                       content: '海报已生成并保存至你的手机相册了哦，分享到朋友圈给好友种草一下吧',
                       showCancel: false,
                       confirmText: '确定',
-                      confirmColor: confirmColor
+                      confirmColor,
+                      success: res => {
+                        if (res.confirm) {
+                          this.hidePoster()
+                        }
+                      }
                     })
                   },
                   fail: () => {
@@ -633,7 +559,12 @@ Component({
                               content: '海报已生成并保存至你的手机相册了哦，分享到朋友圈给好友种草一下吧',
                               showCancel: false,
                               confirmText: '确定',
-                              confirmColor
+                              confirmColor,
+                              success: res => {
+                                if (res.confirm) {
+                                  this.hidePoster()
+                                }
+                              }
                             })
                           },
                           fail: () => {
@@ -661,7 +592,12 @@ Component({
                   content: '海报已生成并保存至你的手机相册了哦，分享到朋友圈给好友种草一下吧',
                   showCancel: false,
                   confirmText: '确定',
-                  confirmColor
+                  confirmColor,
+                  success: res => {
+                    if (res.confirm) {
+                      this.hidePoster()
+                    }
+                  }
                 })
               },
               fail: () => {

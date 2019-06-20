@@ -37,7 +37,7 @@ Component({
     currentTickets: { 1: [], 2: [] },
     selectedTicketLength: { 1: 0, 2: 0 },
     totalPrice: { 1: 0, 2: 0 },
-    showSession: false
+    // showSession: false
   },
 
   /**
@@ -130,6 +130,8 @@ Component({
         _obj['currentSession.' + _saletype] = 0
         _obj['currentTickets.' + _saletype] = tickets
       }
+      const ftModal = this.selectComponent('#c-ft-modal')
+      ftModal && ftModal.toggle && ftModal.toggle()
       _obj.showSession = !showSession
       _obj.saletype = _saletype
       this.setData(_obj)

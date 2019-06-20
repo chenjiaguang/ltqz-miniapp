@@ -152,8 +152,6 @@ const request = (url, data, config = {}) => {
   const apiVersion = (config && config.apiVersion) || app.config.apiVersion || '/v1'
   const token = (config && config.token) || storageHelper.getStorage('token') || ''
   const timeStamp = new Date().getTime()
-  // const token = '5aa2ba17d929a73c7057a114df4ea440'
-  console.log('apiVersion', apiVersion)
   return new Promise((resolve, reject) => {
     wx.request({
       url: app.config.baseUrl + apiVersion + url,

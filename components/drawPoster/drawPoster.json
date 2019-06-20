@@ -1,6 +1,7 @@
 {
   "component": true,
   "usingComponents": {
+    "ft-modal": "../../ftcomponents/ftModal/ftModal",
     "ft-iphone-bottom-adapter": "../../ftcomponents/ftIphoneBottomAdapter/ftIphoneBottomAdapter"
   }
 }

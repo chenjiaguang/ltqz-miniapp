@@ -1,5 +1,4 @@
 <!--index.wxml-->
-<!-- <view catchtap="testTap">是德国大使馆</view> -->
 <view class="page-index">
   <view class='page-top-padding'></view>
   <view wx:if="{{(banners && banners[0]) || (subBanners && subBanners[0])}}" class='banner-wrapper'>
@@ -30,9 +29,5 @@
     <view class='recommendation-header'><view class='left-line line-separator-h'></view><view class='recommendation-icon theme-bg'><image class='recommendation-icon-image' src="/assets/images/thumb_white.png" mode="aspectFit"></image></view><text class='recommendation-header-title'>为您推荐</text><view class='right-line line-separator-h'></view></view>
     <activity-card wx:for="{{recommendations}}" wx:for-item="activity" wx:for-index="aidx" wx:key="id" activity="{{activity}}" catchactivitytap="goodsTap" />
   </view>
-    <!-- <ft-bubble content="10人拼团价" /> -->
   <ft-list-footer loaded="{{recommendationLoaded}}" loading="{{recommendationLoading}}" page="{{recommendationPage}}" show-no-more no-more-text="{{(recommendations && recommendations[0]) ? '没有更多了' : '暂时没有活动'}}" />
 </view>
-<!-- <ft-modal id="c-ft-modal" mode="2">
-  <view slot="top" class='bottom'>撒的发顺丰</view>
-</ft-modal> -->

@@ -105,18 +105,20 @@
         <view class='detail-and-comment-header'>
           <view catchtap="changeTab" data-idx="{{0}}" data-scrollid="#goods-content" class="detail-and-comment-tab{{currentTab == 0 ? ' theme-color' : ' black-color'}}"><text>详情</text><view class="tab-indicator{{currentTab == 0 ? ' theme-bg' : ' transparent-bg'}}"></view></view>
           <view wx:if="{{notice}}" catchtap="changeTab" data-idx="{{1}}" data-scrollid="#goods-notice" class="detail-and-comment-tab{{currentTab == 1 ? ' theme-color' : ' black-color'}}"><text>购买须知</text><view class="tab-indicator{{currentTab == 1 ? ' theme-bg' : ' transparent-bg'}}"></view></view>
-          <view catchtap="changeTab" data-idx="{{notice ? 2 : 1}}" data-scrollid="#comment-content" class="detail-and-comment-tab{{currentTab == 2 ? ' theme-color' : ' black-color'}}"><text>评价{{(comment_num && comment_num) > 0 ? ('(' + comment_num + ')') : ''}}</text><view class="tab-indicator{{currentTab == 2 ? ' theme-bg' : ' transparent-bg'}}"></view></view>
+          <view catchtap="changeTab" data-idx="{{notice ? 2 : 1}}" data-scrollid="#comment-content" class="detail-and-comment-tab{{currentTab == (notice ? 2 : 1) ? ' theme-color' : ' black-color'}}"><text>评价{{(comment_num && comment_num) > 0 ? ('(' + comment_num + ')') : ''}}</text><view class="tab-indicator{{currentTab == (notice ? 2 : 1) ? ' theme-bg' : ' transparent-bg'}}"></view></view>
         </view>
         <view class='line-separator-h'></view>
       </view>
     </view>
     <view class='detail-and-comment-content'>
       <view class="scrollpoint goodsdetail-content" data-tabindex="{{0}}" id="goods-content">
+        <view style="height:px"></view>
         <rich-text wx:if="{{content}}" nodes="{{content}}" class='rich-text'></rich-text>
         <view wx:if="{{!content}}" style="text-align:center;font-size:28rpx;color:#999">加载中...</view>
       </view>
       <view class='scrollpoint goodsdetail-notice' data-tabindex="{{1}}" id="goods-notice">
         <view wx:if="{{notice}}">
+          <view style="height:px"></view>
           <view class='block-separator'></view>
           <view class='goodsdetail-notice-detail'>
             <rich-text wx:if="{{notice}}" nodes="{{notice}}" class='rich-text'></rich-text>
@@ -124,6 +126,7 @@
         </view>
       </view>
       <view class="scrollpoint goodsdetail-score" data-tabindex="{{notice ? 2 : 1}}" id="comment-content">
+        <view style="height:px"></view>
         <view class='block-separator'></view>
         <view wx:if="{{comments && comments.length}}" class='score-overview'>
           <view class='overview-content'>
@@ -144,7 +147,7 @@
       </view>
     </view>
   </view>
-  <view wx:if="{{goodsLoaded}}" class='bottom-button-wrapper' catchtouchmove="stopPropagation">
+  <view class='bottom-button-wrapper' catchtouchmove="stopPropagation">
     <!-- <view class="session-wrapper{{showSession ? ' show' : ''}}">
       <view class="session-mask{{showSession ? ' show' : ''}}" catchtap="toggleSession"></view>
       <view class="session-context{{showSession ? ' show' : ''}}">

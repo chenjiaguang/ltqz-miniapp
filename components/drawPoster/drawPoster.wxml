@@ -1,5 +1,5 @@
 <!-- components/drawPoster/drawPoster.wxml -->
-<view class="wrapper{{showHideClass[showPoster] || ''}}" id="wrapper">
+<view class="wrapper" id="wrapper">
   <view class='poster-body'>
     <view class='head'>
       <image class='header-avatar draw-image' src="{{hAvatar}}" mode="aspectFill"></image>
@@ -29,38 +29,37 @@
       <image class='logo draw-image' src="/assets/images/draw_logo.png" mode="aspectFit" data-islocal="{{true}}"></image>
       <view class='qrcode-box'>
         <image class='qrcode draw-image' src="{{qrcode}}" mode="aspectFit"></image>
-        <view class='tip draw-text' data-text="长按图片识别二维码，立即参与拼团">长按图片识别二维码，立即参与拼团</view>
+        <view class='tip-box'>
+          <view class='tip draw-text' data-text="长按图片识别二维码">长按图片识别二维码</view>
+          <view wx:if="{{joinUsers && joinUsers.length > 0}}" class='tip draw-text' data-text="立即参与拼团">立即参与拼团</view>
+          <view wx:else class='tip draw-text' data-text="立即购买">立即购买</view>
+        </view>
       </view>
     </view>
   </view>
   <canvas canvas-id="c-draw-poster" class="draw-poster" catcherror="canvasError"></canvas>
 </view>
-<view wx:if="{{!hideComponent}}" class="share-box{{showHideClass[showPoster] || ''}}" catchtouchmove='stopPropagation'>
-  <view class="share-bg{{showHideClass[showPoster] || ''}}"></view>
-  <view class="share-content{{showHideClass[showPoster] || ''}}">
-    <view id="top-wrapper" class="top-wrapper{{showHideClass[showPoster] || ''}}" catchtap="hidePoster">
-      <view wx:if="{{!localPoster}}" class='loading-image'><text>正在生成图片...</text></view>
-      <image wx:if="{{localPoster}}" class='poster' src="{{localPoster}}" style="width:{{posterWidth ? (posterWidth + 'px') : '88%'}};height:{{posterHeight ? (posterHeight + 'px') : '88%'}}" mode="aspectFit" catchtap="stopPropagation"></image>
-      <!-- <canvas canvas-id="share-poster" class="share-canvas{{localPoster ? ' drawed' : ''}}{{showHideClass[showPoster] || ''}}" catchtap="stopPropagation"></canvas> -->
-    </view>
-    <view class="bottom-wrapper{{showHideClass[showPoster] || ''}}">
-      <view wx:if="{{fenxiao_price && fenxiao_price > 0}}" class='share-tip'>好友通过你的分享购买此产品，你将获得{{fenxiao_price}}元收益</view>
-      <view class='bottom-content'>
-        <view class='share-friends'>
-          <view class="share-item-icon{{canShareFriend ? '' : ' disabled'}}">
-            <text class='share-friend-icon lutufont lutu-weixin'></text>
-          </view>
-          <button open-type='share' disabled="{{!canShareFriend}}" class='share-friend-btn'></button>
-          <text class='share-box-text'>发给好友</text>
+<ft-modal wx:if="{{!hideComponent}}" id="c-ft-modal" hide-cancel mode="1">
+  <view slot="top" id="top-wrapper" class="top-wrapper" catchtap="hidePoster">
+    <view wx:if="{{!localPoster}}" class='loading-image'><text>正在生成图片...</text></view>
+    <image wx:if="{{localPoster}}" class='poster' src="{{localPoster}}" style="width:{{posterWidth ? (posterWidth + 'px') : '88%'}};height:{{posterHeight ? (posterHeight + 'px') : '88%'}}" mode="aspectFit" catchtap="stopPropagation"></image>
+  </view>
+  <view slot="bottom" class="bottom-wrapper">
+    <view wx:if="{{fenxiao_price && fenxiao_price > 0}}" class='share-tip'>好友通过你的分享购买此产品，你将获得{{fenxiao_price}}元收益</view>
+    <view class='bottom-content'>
+      <view class='share-friends'>
+        <view class="share-item-icon{{canShareFriend ? '' : ' disabled'}}">
+          <text class='share-friend-icon lutufont lutu-weixin'></text>
         </view>
-        <view class='save-image' catchtap="savePoster">
-          <view class="share-item-icon{{localPoster ? '' : ' disabled'}}">
-            <text class='save-image-icon lutufont lutu-pengyouquan'></text>
-          </view>
-          <text class='share-box-text'>保存海报</text>
-        </view>
+        <button open-type='share' disabled="{{!canShareFriend}}" class='share-friend-btn'></button>
+        <text class='share-box-text'>发给好友</text>
       </view>
-      <ft-iphone-bottom-adapter />
+      <view class='save-image' catchtap="savePoster">
+        <view class="share-item-icon{{localPoster ? '' : ' disabled'}}">
+          <text class='save-image-icon lutufont lutu-pengyouquan'></text>
+        </view>
+        <text class='share-box-text'>保存海报</text>
+      </view>
     </view>
   </view>
-</view>
+</ft-modal>

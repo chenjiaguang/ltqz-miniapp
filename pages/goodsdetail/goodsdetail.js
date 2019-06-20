@@ -89,6 +89,7 @@ Page({
   onLoad: function (options) {
     let id = ''
     let uid = ''
+    this.options = options
     if (options.scene) { // 扫码进来
       const scene = decodeURIComponent(options.scene)
       let paramsArr = scene.split('&')
@@ -159,14 +160,16 @@ Page({
   /**
    * 用户点击右上角分享
    */
-  // onShareAppMessage: function () {
-  //   const { title, id, shareFriendBanner, share_cover_url, cover_url, uid} = this.data
-  //   return {
-  //     title: title,
-  //     path: '/pages/goodsdetail/goodsdetail?id=' + id + '&uid=' + uid,
-  //     imageUrl: shareFriendBanner || share_cover_url || cover_url
-  //   }
-  // },
+  onShareAppMessage: function () {
+    const { title, id, cover_url, uid, fenxiao_price} = this.data
+    if (title && id && cover_url) {
+      return {
+        title: title,
+        path: '/pages/goodsdetail/goodsdetail?id=' + id + ((uid && fenxiao_price) ? ('&uid=' + uid) : ''),
+        imageUrl: cover_url + '?x-oss-process=image/resize,m_fill,w_750,h_600'
+      }
+    }
+  },
 
   fetchGoods: function (id) {
     let rData = {id}
@@ -233,20 +236,35 @@ Page({
 
   changeTab: function (e) {
     const { idx, scrollid } = e.currentTarget.dataset
+    console.log('changeTab', idx, scrollid)
     const systemInfo = wx.getSystemInfoSync()
     const rpx = systemInfo.windowWidth / 750
-    this.setData({
-      currentTab: idx
-    })
     const query = wx.createSelectorQuery()
     query.select(scrollid).boundingClientRect()
     query.selectViewport().scrollOffset()
     query.exec(res => {
       const scrollPos = res[0].top + res[1].scrollTop - 90 * rpx
       wx.pageScrollTo({
-        scrollTop: scrollPos,
-        duration: 0
+        scrollTop: scrollPos + 1,
+        duration: 0,
+        complete: res => {
+          // setTimeout(() => {
+          //   this.setData({
+          //     currentTab: idx
+          //   })
+          // }, 100)
+          
+          
+        }
       })
+      // this.setData({
+      //   currentTab: idx
+      // })
+      // wx.nextTick(() => {
+      //   this.setData({
+      //     currentTab: idx
+      //   })
+      // })
     })
   },
 
