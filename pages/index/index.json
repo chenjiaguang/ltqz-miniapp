@@ -10,6 +10,7 @@
     "ft-list-footer": "../../ftcomponents/ftListFooter/ftListFooter",
     "ft-bubble": "../../ftcomponents/ftBubble/ftBubble",
     "ft-modal": "../../ftcomponents/ftModal/ftModal",
+    "collect-btn": "../../components/collectBtn/collectBtn",
     "activity-card": "../../components/activityCard/activityCard"
   }
 }

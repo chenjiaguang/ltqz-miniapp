@@ -23,7 +23,7 @@
 		}
 	},
 	"compileType": "miniprogram",
-	"libVersion": "2.7.1",
+	"libVersion": "2.7.2",
 	"appid": "wx1e538beb2007bee7",
 	"projectname": "%E8%B7%AF%E9%80%94%E4%BA%B2%E5%AD%90",
 	"debugOptions": {
@@ -201,7 +201,7 @@
 					"id": 21,
 					"name": "活动详情",
 					"pathName": "pages/goodsdetail/goodsdetail",
-					"query": "id=53",
+					"query": "id=63",
 					"scene": null
 				},
 				{

@@ -1,0 +1,6 @@
+{
+  "component": true,
+  "usingComponents": {
+    "ft-bubble": "../../ftcomponents/ftBubble/ftBubble"
+  }
+}

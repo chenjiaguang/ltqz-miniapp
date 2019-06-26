@@ -4,12 +4,17 @@ import storageHelper from '/utils/storageHelper.js'
 import expand from '/utils/expand.js'
 import util from '/utils/util.js'
 let store = require('/store/index.js')
+const systemInfo = wx.getSystemInfoSync()
+console.log('systemInfo', systemInfo)
+const pageNavigationCustomable = util.isVersionGreater(systemInfo.version, '7.0.0') || (util.isVersionGreater(systemInfo.SDKVersion, '2.5.2') && systemInfo.platform === 'devtools')
 
 App({
   globalData: {
     userInfo: null,
     themeColor: '#FF9500', // 设置主题色
-    themeModalConfirmColor: '#108EE9'
+    themeModalConfirmColor: '#108EE9',
+    statusBarHeight: systemInfo.statusBarHeight,
+    pageNavigationCustomable: pageNavigationCustomable
   },
   config: config,
   store,

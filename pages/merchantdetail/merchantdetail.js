@@ -7,14 +7,14 @@ Page({
    * 页面的初始数据
    */
   data: {
-    id: '1',
-    name: '路途亲子',
-    introduce: '路途亲子我们带领孩子探索世界，除了游玩我们选择用更科学的方式，天文、地理、化学、生物、自然，你以为科学只在课堂里吗？',
-    rate: 4.5,
-    rate_num: 200,
-    type_pic_url: 'http://i1.bvimg.com/685753/69601cd97e8be3cb.jpg',
-    bg_pic_url: 'http://i1.bvimg.com/685753/69601cd97e8be3cb.jpg',
-    logo_url: 'http://i1.bvimg.com/685753/69601cd97e8be3cb.jpg',
+    id: '',
+    name: '',
+    introduce: '',
+    rate: 0,
+    rate_num: 0,
+    type_pic_url: '',
+    bg_pic_url: '',
+    logo_url: '',
     activitys: [],
     activityLoaded: false,
     activityLoading: false,

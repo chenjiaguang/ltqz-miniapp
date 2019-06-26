@@ -6,6 +6,7 @@ const util = require('../../utils/util.js')
 Page({
   name: 'index',
   data: {
+    collected: false,
     banners: [], // 主banner
     subBanners: [], // 副banner
     cates: [], // 分类
@@ -52,7 +53,7 @@ Page({
   onShareAppMessage: function () {
     const { cover_url } = this.data
     return {
-      title: '路途亲子-最好的成长在路上',
+      title: '范团亲子-最好的成长在路上',
       path: '/pages/index/index'
     }
   },
@@ -164,6 +165,7 @@ Page({
           item.min_price = util.formatMoney(item.min_price).showMoney
           item.min_origin_price = util.formatMoney(item.min_origin_price).showMoney
           item.min_pt_price = util.formatMoney(item.min_pt_price).showMoney
+          item.min_qg_price = util.formatMoney(item.min_qg_price).showMoney
         })
         let _obj = {}
         _obj.recommendationLoaded = true
@@ -189,6 +191,11 @@ Page({
         recommendationLoading: false
       })
       wx.stopPullDownRefresh()
+    })
+  },
+  test: function () {
+    this.setData({
+      collected: !this.data.collected
     })
   }
 })

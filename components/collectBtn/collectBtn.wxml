@@ -1,0 +1,9 @@
+<!--components/collectBtn/collectBtn.wxml-->
+<view class='wrapper' style="width:{{size}}rpx;height:{{size}}rpx">
+  <view class='content' catchtap="collectionTap">
+    <view class='bg'>
+      <view class='bg-content' animation="{{bgAnimationData}}"></view>
+    </view>
+    <view class="icon theme-color lutufont{{collected ? ' lutu-collected' : ' lutu-collect'}}" animation="{{iconAnimationData}}" style="font-size:{{size}}rpx;line-height:size"></view>
+  </view>
+</view>

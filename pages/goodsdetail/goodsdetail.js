@@ -32,8 +32,16 @@ Page({
       4: '报名已满',
       5: '活动结束'
     },
-    sale_type: '1', // 该商品是 团购 还是 普通商品（1:普通商品，2:团购商品）
-    saletype: '1', // 当前是 普通购买 还是 发起拼团
+    qgButtonStatusText: {
+      0: '敬请期待',
+      1: '立即报名',
+      2: '暂不销售',
+      3: '报名截止',
+      4: '报名已满',
+      5: '活动结束'
+    },
+    sale_type: '1', // 该商品是 团购 还是 普通商品（1:普通商品，2:团购商品，3:抢购模式）
+    saletype: '1', // 当前是 普通购买 还是 发起拼团 还是 抢购模式
     is_collect: false,
     showCollectTip: false,
     groupList: [],
@@ -71,12 +79,6 @@ Page({
     comments: [],
     contact: '',
     session: [],
-    currentSession: {1: null, 2: null},
-    currentTickets: {1: [], 2: []},
-    selectedTicketLength: {1: 0, 2: 0},
-    totalPrice: {1: 0, 2: 0},
-    showSession: false,
-    show_share_box: false,
     localPoster: '',
     orderContact: null
   },
@@ -189,6 +191,10 @@ Page({
         res.data.show_min_origin_price = util.formatMoney(res.data.min_origin_price).showMoney
         res.data.min_pt_price = util.formatMoney(res.data.min_pt_price).money
         res.data.show_min_pt_price = util.formatMoney(res.data.min_pt_price).showMoney
+        res.data.min_qg_price = util.formatMoney(res.data.min_qg_price).money
+        res.data.show_min_qg_price = util.formatMoney(res.data.min_qg_price).showMoney
+        const { sale_type, price_num, spell_num, status, show_min_price, show_min_origin_price, show_min_pt_price, show_min_qg_price } = res.data
+        res.data.goods_status_data = JSON.parse(JSON.stringify({ sale_type, price_num, spell_num, status, show_min_price, show_min_origin_price, show_min_pt_price, show_min_qg_price }))
         res.data.goodsLoaded = true
         if (res.data.tuan && res.data.tuan.length > 0) {
           res.data.groupList = res.data.tuan.map(item => {
@@ -483,7 +489,7 @@ Page({
     })
     util.request(url, rData).then(res => {
       if (res.error == 0) {
-        if (!is_collect) { // 收藏成功 且 是第一次收藏 才提示，其他情况静默
+        if (!is_collect) { // 收藏成功
           const goodsCollected = storageHelper.getStorage('goodsCollected')
           if (!goodsCollected) {
             this.setData({

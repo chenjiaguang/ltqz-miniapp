@@ -2,7 +2,7 @@
 <view wx:if="{{showType === 'update_token'}}" class='update-token-view'>登录信息已过期，正在更新登录状态...</view>
 <view wx:if="{{showType === 'permission'}}" class='page-permission column ai-center'>
   <image class='bg' src='/assets/images/login_bg.png' mode="widthFix" />
-  <text class='tip'>路途亲子需要你授权以下权限</text>
+  <text class='tip'>范团亲子需要你授权以下权限</text>
   <view class='typerow row ai-center'>
     <text class='typeicon lutufont lutu-weixin {{authUserInfo?"able":"disable"}}'></text>
     <view class='column'>

@@ -1,0 +1,12 @@
+<!--ftcomponents/ftBottomBox/ftBottomBox.wxml-->
+<view class="wrapper">
+  <view style="height:{{boxHeight}}rpx"></view>
+  <view wx:if="{{extraBottom}}" class="iphone-extra-bottom"></view>
+  <view class="box-wrapper">
+    <view class="box-content" style="background-color:{{bg}}">
+      <slot></slot>
+    </view>
+    <view wx:if="{{extraBottom}}" class="iphone-extra-bottom" style="background-color:{{bg}}"></view>
+  </view>
+</view>
+  

@@ -65,10 +65,14 @@ page{
   justify-content: center;
   align-items: center;
   font-size: 24rpx;
+  line-height: 24rpx;
   height: 36rpx;
   padding: 0 8rpx;
   margin: 5rpx 16rpx 5rpx 0;
+  box-sizing: border-box;
   border-radius: 2rpx;
+  border-width: 1px;
+  border-style: solid;
 }
 
 .buy-for{
@@ -294,7 +298,7 @@ button.submit-btn.disabled{
 }
 .buyfor-item{
   height: 100rpx;
-  padding: 0 32rpx;
+  padding: 0 32rpx 0 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -328,11 +332,16 @@ button.submit-btn.disabled{
 .wirte-icon-wrapper{
   overflow: hidden;
   align-self: center;
+  padding-left: 32rpx;
+  height: 100%;
+  display: flex;
+  align-items: center;
 }
 .wirte-icon{
   width: 36rpx;
   height: 39rpx;
   margin-right: 32rpx;
+  display: block;
 }
 
 

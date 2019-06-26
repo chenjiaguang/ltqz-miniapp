@@ -48,22 +48,18 @@ page{
   line-height: 42rpx;
   font-weight: bold;
   color: #333;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
   overflow: hidden;
   padding-top: 12rpx;
+  word-break: break-all;
 }
 
 .intro{
   font-size: 28rpx;
   line-height: 42rpx;
-  color: #333;
-  /* display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2; */
+  color: #666;
   overflow: hidden;
   padding-top: 12rpx;
+  word-break: break-all;
 }
 .price-and-status{
   display: flex;
@@ -405,13 +401,13 @@ page{
   z-index: 9;
   overflow: visible;
 }
-.bottom-button{
+/* .bottom-button{
   position: fixed;
   width: 100%;
   left: 0;
   bottom: 0;
   z-index: 2;
-}
+} */
 .bottom-button-content{
   display: flex;
   height: 100rpx;

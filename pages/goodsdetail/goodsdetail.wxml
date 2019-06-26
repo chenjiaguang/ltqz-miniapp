@@ -7,11 +7,8 @@
       <share-button profit="{{fenxiao_price}}" show-price catchshare="shareBtnTap" />
     </view>
   </view>
-  <view class="price-and-status theme-linear-gradient-170-reverse">
-    <!-- <view class='shadow-box'>
-      <view class='shadow1'></view>
-      <view class='shadow2'></view>
-    </view> -->
+  <goods-detail-status goods-status-data="{{goods_status_data}}" />
+  <!-- <view class="price-and-status theme-linear-gradient-170-reverse">
     <view wx:if="{{show_min_price && show_min_price > 0}}" class='actual-price'><text style="font-size:38rpx;padding-top:10rpx;margin-right:6rpx">¥</text><text>{{sale_type == 2 ? show_min_pt_price : show_min_price}}</text><text wx:if="{{price_num > 1}}" class='text-qi'>起</text></view>
     <view wx:if="{{!show_min_price || show_min_price == 0}}" class='free-price'>免费</view>
     <view wx:if="{{show_min_origin_price && show_min_origin_price > 0}}" class='origin-price'>
@@ -19,7 +16,7 @@
       <text>¥{{show_min_origin_price}}</text>
     </view>
     <view class="status{{status == 1 ? ' status-able' : ' status-other'}}">{{statusText[status]}}</view>
-  </view>
+  </view> -->
   <view class='overview'>
     <view class='title-and-intro-box'>
       <view class='title-and-intro'>
@@ -147,58 +144,13 @@
       </view>
     </view>
   </view>
-  <view class='bottom-button-wrapper' catchtouchmove="stopPropagation">
-    <!-- <view class="session-wrapper{{showSession ? ' show' : ''}}">
-      <view class="session-mask{{showSession ? ' show' : ''}}" catchtap="toggleSession"></view>
-      <view class="session-context{{showSession ? ' show' : ''}}">
-        <view class='session-box'>
-          <view class='session-header'>选择场次</view>
-          <scroll-view scroll-x class='sessions'>
-            <view wx:for="{{session}}" wx:for-index="idx" wx:for-item="ss" wx:key="id" class="session{{idx == 0 ? ' first' : ''}}{{(idx + 1) == session.length ? ' last' : ''}}{{ss.stock == 0 ? ' session-disabled' : ((ss.stock == null || ss.stock > 20) ? ' session-ample' : ' session-normal')}}{{currentSession[saletype] == idx ? ' theme-bg-20' : ''}}" catchtap="sessionTap" data-status="{{ss.stock == 0 ? 'disabled' : ((ss.stock == null || ss.stock > 20) ? 'ample' : 'normal')}}" data-idx="{{idx}}">
-              <view class='session-content'>
-                <view class='session-content-text'>{{ss.name}}</view>
-              </view>
-            </view>
-          </scroll-view>
-          <view class='line-separator-h'></view>
-          <view class='ticket-header' style="padding-top:32rpx">选择数量</view>
-          <scroll-view scroll-y class='ticket-box'>
-            <view wx:for="{{currentTickets[saletype]}}" wx:for-index="idx" wx:for-item="ticket" wx:key="id" class='ticket-item'>
-              <view class='ticket-name'>{{ticket.type.name}}</view>
-              <view class='ticket-price'>¥{{(saletype == 1) ? ticket.type.show_price : ''}}{{(saletype == 2) ? ticket.type.show_pt_price : ''}}</view>
-              <view class='ticket-buttons'>
-                <view class="minus-btn{{ticket.num <= 0 ? ' disabled' : ''}}" catchtap="countTicket" data-type="minus" data-idx="{{idx}}">
-                  <text class="lutufont lutu-jian{{ticket.num <= 0 ? ' disabled' : ''}}"></text>
-                </view>
-                <view class='choose-num'><text class="choose-num-text{{ticket.num <= 0 ? ' disabled' : ''}}">{{ticket.num}}</text></view>
-                <view class="add-btn{{(ticket.stock == 0 || (ticket.stock && ticket.stock <= ticket.num)) ? ' disabled' : ' theme-bg theme-border-color'}}" catchtap="countTicket" data-type="add" data-idx="{{idx}}">
-                  <text class="lutufont lutu-jia{{(ticket.stock == 0 || (ticket.stock && ticket.stock <= ticket.num)) ? ' disabled' : ''}}"></text>
-                </view>
-                <view class="stock-text{{ticket.stock == 0 ? ' disabled' : ''}}">({{ticket.stock == 0 ? '售罄' : ((ticket.stock == null || ticket.stock > 20) ? '充足' : ('余' + ticket.stock))}})</view>
-              </view>
-            </view>
-            <view style="height:40rpx"></view>
-          </scroll-view>
-        </view>
-        <view class='line-separator-h' style="transform-origin:50% 100%"></view>
-        <view class='next-step-button'>
-          <view class='total-price'>
-            <text class='total-price-title'>总计</text>
-            <text class='total-price-text'>¥{{totalPrice[saletype]}}</text>
-          </view>
-          <button class="next-btn{{!selectedTicketLength[saletype] ? ' disabled' : ' theme-bg'}}" disabled="{{!selectedTicketLength[saletype]}}" catchtap="order">下一步</button>
-        </view>
-        <ft-iphone-bottom-adapter />
-      </view>
-    </view> -->
-    <view class='line-separator-h' style="transform-origin:50% 100%;background:transparent"></view>
-    <view style="height:100rpx"></view>
-    <!-- 普通活动的底部按钮 -->
-    <view wx:if="{{sale_type == 1}}" class='bottom-button'>
+  <!-- 普通商品底部按钮 sale_type为1（普通商品）或者 (sale_type为3（抢购商品）且不是抢购中且不是已售罄) -->
+  <ft-bottom-box wx:if="{{sale_type == 1 || (sale_type == 3 && qg_status != 2 && qg_status != 3) }}" box-height="{{102}}" bg="#FFFFFF">
+    <view class='bottom-button'>
       <view class='line-separator-h' style="transform-origin:50% 100%;background:#D8D8D8"></view>
       <view class='bottom-button-content'>
         <view class="first-collect-tip{{showCollectTip ? ' show' : ''}}">
-          <view class='tip-body'>已收藏的商品，可以在我 的-我的收藏中查看哦！</view>
+          <view class='tip-body'>已收藏的商品，可以在我的-我的收藏中查看哦！</view>
           <view class='tip-arrow'></view>
         </view>
         <view class='kefu-and-collect'>
@@ -214,20 +166,21 @@
         <!-- 可报名且用户电话存在 或 不可报名 -->
         <view class='join-btn-wrapper'>
           <button wx:if="{{status != 1 || (status == 1 && orderContact)}}" class="join-btn{{status != 1 ? ' disabled' : ' theme-bg'}}" disabled="{{status != 1}}" catchtap="showShoppingView" data-saletype="1">
-            <view class='join-text' style="font-size:34rpx;line-height:46rpx">{{buttonStatusText[status]}}</view>
+            <view class='join-text' style="font-size:34rpx;line-height:46rpx">{{sale_type == 1 ? buttonStatusText[status] : qgButtonStatusText[status]}}</view>
           </button>
           <!-- 可报名且用户电话不存在 -->
           <button wx:if="{{status == 1 && !orderContact}}" class="join-btn theme-bg" open-type='getPhoneNumber' bindgetphonenumber="initContact"><text class='join-text' style="font-size:34rpx;line-height:46rpx">立即报名</text></button>
         </view>
       </view>
-      <ft-iphone-bottom-adapter bg="#fff" />
     </view>
-    <!-- 拼团商品的底部按钮 -->
-    <view wx:if="{{sale_type == 2}}" class='bottom-button'>
+  </ft-bottom-box>
+  <!-- 拼团商品底部按钮 -->
+  <ft-bottom-box wx:if="{{sale_type == 2}}" box-height="{{102}}" bg="#FFFFFF">
+    <view class='bottom-button'>
       <view class='line-separator-h' style="transform-origin:50% 100%;background:#D8D8D8"></view>
       <view class='bottom-button-content'>
         <view class="first-collect-tip{{showCollectTip ? ' show' : ''}}">
-          <view class='tip-body'>已收藏的商品，可以在我 的-我的收藏中查看哦！</view>
+          <view class='tip-body'>已收藏的商品，可以在我的-我的收藏中查看哦！</view>
           <view class='tip-arrow'></view>
         </view>
         <view class='kefu-and-collect'>
@@ -258,40 +211,38 @@
           <button wx:if="{{status == 1 && !orderContact}}" class="join-btn theme-bg" open-type='getPhoneNumber' bindgetphonenumber="initContact"><text class='join-text' style="font-size:34rpx;line-height:46rpx">立即报名</text></button>
         </view>
       </view>
-      <ft-iphone-bottom-adapter bg="#fff" />
     </view>
-    <ft-iphone-bottom-adapter />
-  </view>
-  <!-- <view class="share-box{{show_share_box ? ' show' : ''}}" catchtouchmove='stopPropagation'>
-    <view class="share-bg{{show_share_box ? ' show' : ''}}"></view>
-    <view class='share-content'>
-      <view class="top-wrapper{{show_share_box ? ' show' : ''}}" catchtap="toggleShareBox">
-        <view wx:if="{{!localPoster}}" class='loading-image'><text>正在生成图片...</text></view>
-        <canvas canvas-id="share-poster" class="share-canvas{{localPoster ? ' drawed' : ''}}{{show_share_box ? ' show' : ''}}" catchtap="stopPropagation"></canvas>
-      </view>
-      <view class="bottom-wrapper{{show_share_box ? ' show' : ''}}">
-        <view wx:if="{{fenxiao_price}}" class='share-tip'>好友通过你的分享购买此产品，你将获得{{fenxiao_price}}元收益</view>
-        <view class='bottom-content'>
-          <view class='share-friends'>
-            <view class='share-item-icon'>
-              <text class='share-friend-icon lutufont lutu-weixin'></text>
-            </view>
-            <button open-type='share' class='share-friend-btn'></button>
-            <text class='share-box-text'>发给好友</text>
-          </view>
-          <view class='save-image' catchtap="savePoster">
-            <view class="share-item-icon{{localPoster ? '' : ' disabled'}}">
-              <text class='save-image-icon lutufont lutu-pengyouquan'></text>
-            </view>
-            <text class='share-box-text'>分享到朋友圈</text>
+  </ft-bottom-box>
+  <!-- 抢购底部按钮 -->
+  <ft-bottom-box wx:if="{{sale_type == 3 && (qg_status == 2 || qg_status == 3) }}" box-height="{{102}}" bg="#FFFFFF">
+    <view class='bottom-button'>
+      <view class='line-separator-h' style="transform-origin:50% 100%;background:#D8D8D8"></view>
+      <view class='bottom-button-content'>
+        <view class="first-collect-tip{{showCollectTip ? ' show' : ''}}">
+          <view class='tip-body'>已收藏的商品，可以在我的-我的收藏中查看哦！</view>
+          <view class='tip-arrow'></view>
+        </view>
+        <view class='kefu-and-collect'>
+          <button open-type="contact" class='kefu' hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
+            <text class='kefu-icon theme-color lutufont lutu-kefu'></text>
+            <text class='kefu-text'>客服</text>
+          </button>
+          <view class='collect' catchtap="collectTap" hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
+            <text class="collect-icon theme-color lutufont{{is_collect ? ' lutu-collected' : ' lutu-collect'}}"></text>
+            <text class='collect-text'>{{is_collect ? '已收藏' : '收藏'}}</text>
           </view>
         </view>
-        <ft-iphone-bottom-adapter />
+        <!-- 可报名且用户电话存在 或 不可报名 -->
+        <view class='join-btn-wrapper'>
+          <button wx:if="{{status != 1 || (status == 1 && orderContact)}}" class="join-btn{{status != 1 ? ' disabled' : ' theme-bg'}}" disabled="{{status != 1}}" catchtap="showShoppingView" data-saletype="3">
+            <view class='join-text' style="font-size:34rpx;line-height:46rpx">{{qg_status == 2 ? '立即抢购' : '已售罄'}}</view>
+          </button>
+          <!-- 可报名且用户电话不存在 -->
+          <button wx:if="{{status == 1 && !orderContact}}" class="join-btn theme-bg" open-type='getPhoneNumber' bindgetphonenumber="initContact"><text class='join-text' style="font-size:34rpx;line-height:46rpx">立即抢购</text></button>
+        </view>
       </view>
     </view>
-  </view> -->
+  </ft-bottom-box>
 </view>
 <draw-poster id="c-draw-poster" />
 <shopping-view wx:if="{{status == 1 && session && session.length > 0}}" id="c-shopping-view" session="{{session}}" catchnextstep="nextTap" />
-<!-- 目前的版本不需要绘制分享的banner，先注释 -->
-<!-- <canvas canvas-id="share-friend-banner" class="share-friend-banner"></canvas> -->

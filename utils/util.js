@@ -199,6 +199,24 @@ const request = (url, data, config = {}) => {
   })
 }
 
+const isVersionGreater = (currentVer, ver) => {
+  const currentVerArr = currentVer.split('.')
+  const verArr = ver.split('.')
+  if (currentVerArr.length != verArr.length) { // 无法比较
+    return false
+  }
+  let greater = false
+  if (currentVerArr[0] > verArr[0] || (currentVerArr[0] == verArr[0] && currentVerArr.length == 1)) {
+    return true
+  } else if (currentVerArr[0] < verArr[0]) {
+    return false
+  } else if (currentVerArr.length == 1) {
+    return currentVerArr[0] >= verArr[0]
+  } else {
+    return isVersionGreater(currentVerArr.filter((item, idx) => idx > 0).join('.'), verArr.filter((item, idx) => idx > 0).join('.'))
+  }
+}
+
 module.exports = {
   checkLogin,
   formatTime: formatTime,
@@ -207,5 +225,6 @@ module.exports = {
   request,
   formatMoney,
   backAndToast,
-  formatDateTimeDefault
+  formatDateTimeDefault,
+  isVersionGreater
 }

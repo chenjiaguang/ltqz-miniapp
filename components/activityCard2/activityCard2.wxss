@@ -68,7 +68,10 @@
 /* .status.status1{
   background: rgba(100,182,49, 0.65);
 } */
- .status.status0, .status.status2, .status.status3, .status.status4, .status.status5{
+ /* .status.status0, .status.status2, .status.status3, .status.status4, .status.status5{
+  background: rgba(0,0,0, 0.65);
+} */
+.status-other{
   background: rgba(0,0,0, 0.65);
 }
 
@@ -115,7 +118,7 @@
   height: 48rpx;
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-end;
   padding-top: 10rpx;
   box-sizing: content-box;
 }
@@ -132,18 +135,48 @@
   margin-right: 14rpx;
   box-sizing: border-box;
 }
+.qg-box{
+  width: 124rpx;
+  height: 36rpx;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 18rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 24rpx;
+  margin-right: 14rpx;
+  box-sizing: border-box;
+}
 .price{
-  font-size: 36rpx;
   font-weight: bold;
   color: #F24724;
   flex: 1;
+  display: flex;
+  align-items: flex-end;
+}
+.price-sign{
+  font-size: 24rpx;
+  padding-top: 6rpx;
+  line-height: 30rpx;
+  margin-right: 4rpx;
+}
+.actual-price{
+  font-size: 36rpx;
+  line-height: 36rpx;
 }
 .actual-price-qi{
   padding-top: 6rpx;
   font-size: 24rpx;
+  line-height: 30rpx;
+}
+.actual-price-free{
+  font-size: 24rpx;
+  line-height: 36rpx;
 }
 .join{
   font-size: 28rpx;
+  line-height: 36rpx;
   color: #999999;
 }
 .lutufont{
