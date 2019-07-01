@@ -2,6 +2,8 @@
   "navigationBarTitleText": "提交订单",
   "backgroundColor": "#F5F5F5",
   "usingComponents": {
+    "ft-bottom-box": "../../ftcomponents/ftBottomBox/ftBottomBox",
+    "ft-modal": "../../ftcomponents/ftModal/ftModal",
     "ft-iphone-bottom-adapter": "../../ftcomponents/ftIphoneBottomAdapter/ftIphoneBottomAdapter"
   }
 }

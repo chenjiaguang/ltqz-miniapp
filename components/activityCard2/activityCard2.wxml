@@ -4,8 +4,7 @@
   <view class='wrapper-content'>
     <view class='image-box'>
       <image class='image' src="{{activity.cover_url}}" mode="aspectFill"></image>
-      <view wx:if="{{activity.sale_type == 3}}" class="status{{(activity.qg_status == 1 || activity.qg_status == 2 || activity.status == 1) ? ' theme-bg-65' : ' status-other'}}">{{activityQgStatusText[activity.qg_status] || activityStatusText[activity.status]}}</view>
-      <view wx:else class="status{{activity.status == 1 ? ' theme-bg-65' : ' status-other'}}">{{activityStatusText[activity.status]}}</view>
+      <view class="status{{statusDisabled ? ' status-other' : ' theme-bg-65'}}">{{statusText}}</view>
     </view>
     <view class='right-box'>
       <view class='title'>{{activity.title}}</view>
@@ -17,27 +16,30 @@
         <view wx:if="{{activity.sale_type == 2 && activity.spell_num}}" class='tuan-box theme-border-color theme-color'><text>{{activity.spell_num}}人团</text></view>
         <view wx:if="{{activity.sale_type == 3}}" class='qg-box theme-border-color theme-color'><text>限时抢购</text></view>
         <view class='price'>
-          <block wx:if="{{activity.sale_type == 1}}">
+          <view wx:if="{{!isFree}}" class="price-sign">¥</view>
+          <view class='actual-price'>{{priceText}}</view>
+          <view wx:if="{{hasMore}}" class='actual-price-qi'>起</view>
+          <!-- <block wx:if="{{activity.sale_type == 1}}">
             <view wx:if="{{activity.min_price && activity.min_price > 0}}" class="price-sign">¥</view>
             <view wx:if="{{activity.min_price && activity.min_price > 0}}" class='actual-price'>{{activity.min_price}}</view>
             <view wx:if="{{activity.price_num > 1 && activity.min_price && activity.min_price > 0}}" class='actual-price-qi'>起</view>
             <view wx:if="{{!activity.min_price || activity.min_price == 0}}" class='actual-price-free'>免费</view>
           </block>
           <block wx:if="{{activity.sale_type == 2}}">
-            <view wx:if="{{activity.min_price && activity.min_price > 0}}" class="price-sign">¥</view>
+            <view wx:if="{{activity.min_pt_price && activity.min_pt_price > 0}}" class="price-sign">¥</view>
             <view wx:if="{{activity.min_pt_price && activity.min_pt_price > 0}}" class='actual-price'>{{activity.min_pt_price}}</view>
             <view wx:if="{{activity.price_num > 1 && activity.min_pt_price && activity.min_pt_price > 0}}" class='actual-price-qi'>起</view>
             <view wx:if="{{!activity.min_pt_price || activity.min_pt_price == 0}}" class='actual-price-free'>免费</view>
           </block>
           <block wx:if="{{activity.sale_type == 3}}">
-            <view wx:if="{{activity.min_price && activity.min_price > 0}}" class="price-sign">¥</view>
+            <view wx:if="{{activity.min_qg_price && activity.min_qg_price > 0}}" class="price-sign">¥</view>
             <view wx:if="{{activity.min_qg_price && activity.min_qg_price > 0}}" class='actual-price'>{{activity.min_qg_price}}</view>
             <view wx:if="{{activity.price_num > 1 && activity.min_qg_price && activity.min_qg_price > 0}}" class='actual-price-qi'>起</view>
             <view wx:if="{{!activity.min_qg_price || activity.min_qg_price == 0}}" class='actual-price-free'>免费</view>
-          </block>
+          </block> -->
           <!-- <text wx:if="{{activity.min_price && activity.min_price > 0}}" class='actual-price'>¥{{activity.min_price}}</text><text wx:if="{{activity.price_num > 1 && activity.min_price && activity.min_price > 0}}" class='actual-price-qi'>起</text><text wx:if="{{!activity.min_price || activity.min_price == 0}}" class='actual-price'>免费</text> -->
         </view>
-        <view wx:if="{{activity.join_num && activity.join_num > 0}}" class='join'>累计{{activity.join_num}}人报名</view>
+        <!-- <view wx:if="{{activity.join_num && activity.join_num > 0}}" class='join'>累计{{activity.join_num}}人报名</view> -->
       </view>
     </view>
   </view>

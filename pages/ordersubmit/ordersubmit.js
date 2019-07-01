@@ -36,8 +36,7 @@ Page({
     clause_checked: true,
     totalPrice: 0,
     disabled_submit: false,
-    submitting: false,
-    show_buy_for: false
+    submitting: false
   },
 
   /**
@@ -236,7 +235,7 @@ Page({
       return {id: item.id, quantity: item.num}
     })
     let buy_for_ids = buy_for.map(item => item.id)
-    const tuanid = saletype == 1 ? null : (tuan_id || 0)
+    const tuanid = saletype == 2 ? (tuan_id || 0) : null
     let rData = {
       huodong_id: id,
       ticket: ticket,
@@ -320,11 +319,11 @@ Page({
     this.setData(_obj)
   },
 
-  toggleBuyfor: function () {
-    const { show_buy_for, buy_for, buyfors } = this.data
-    let _buyfors = [].concat(buyfors)
-    let _obj = {}
-    if (!show_buy_for) {
+  toggleBuyfor: function (e) {
+    if (e && e.currentTarget.dataset.compute) {
+      const { buy_for, buyfors } = this.data
+      let _buyfors = [].concat(buyfors)
+      let _obj = {}
       let ids = buy_for.map(item => item.id)
       if (_buyfors && _buyfors.length) {
         _buyfors.forEach(item => {
@@ -332,9 +331,10 @@ Page({
         })
       }
       _obj.buyfors = _buyfors
+      this.setData(_obj)
     }
-    _obj.show_buy_for = !show_buy_for
-    this.setData(_obj)
+    const ftModal = this.selectComponent('#c-ft-modal')
+    ftModal && ftModal.toggle && ftModal.toggle()
   },
 
   cancelChangeBuyfor: function () {

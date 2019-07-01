@@ -3,14 +3,17 @@
   "backgroundColorTop": "#F5F5F5",
   "backgroundColorBottom": "#FFFFFF",
   "enablePullDownRefresh": true,
+  "disableSwipeBack": true,
   "usingComponents": {
     "ft-banners": "../../ftcomponents/ftBanners/ftBanners",
     "ft-cates": "../../ftcomponents/ftCates/ftCates",
     "ft-theme": "../../ftcomponents/ftTheme/ftTheme",
+    "ft-sale-box": "../../ftcomponents/ftSaleBox/ftSaleBox",
     "ft-list-footer": "../../ftcomponents/ftListFooter/ftListFooter",
     "ft-bubble": "../../ftcomponents/ftBubble/ftBubble",
     "ft-modal": "../../ftcomponents/ftModal/ftModal",
     "collect-btn": "../../components/collectBtn/collectBtn",
+    "sale-card": "../../components/saleCard/saleCard",
     "activity-card": "../../components/activityCard/activityCard"
   }
 }

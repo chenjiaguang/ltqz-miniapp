@@ -342,7 +342,7 @@ page{
 .goodsdetail-content.current, .goodsdetail-score.current, .goodsdetail-notice.current{
   display: block;
 }
-.goodsdetail-content{
+.goodsdetail-content-text{
   padding: 44rpx 0;
   margin: 0 32rpx;
   overflow: auto;
@@ -366,6 +366,15 @@ page{
   justify-content: space-between;
   align-items: center;
   padding: 0 32rpx;
+}
+.overview-separator{
+  border-left-width: 10rpx;
+  border-left-style: solid;
+  padding-left: 10rpx;
+  font-size: 32rpx;
+  line-height: 32rpx;
+  font-weight: bold;
+  overflow: visible;
 }
 .comment-amount{
   font-size: 28rpx;

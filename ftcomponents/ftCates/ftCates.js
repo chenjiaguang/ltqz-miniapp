@@ -18,7 +18,7 @@ Component({
     },
     justify: { // 接受space-between、space-around、center、flex-star、flex-end
       type: String,
-      value: 'space-between'
+      value: 'center'
     },
     iconWidth: {
       type: String,

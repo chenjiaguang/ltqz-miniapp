@@ -398,7 +398,15 @@ Component({
           _obj.hTip = (data.sale_type == 2 && tuan_id) ? '发起了拼团，邀请你参与拼团~' : '发现了一个宝贝，想要跟你分享~'
           _obj.banner = data.cover_url
           _obj.title = data.title
-          _obj.price = util.formatMoney(data.sale_type == 1 ? data.min_price : data.min_pt_price).showMoney
+          let price = ''
+          if (data.sale_type == 1) { // 普通
+            price = util.formatMoney(data.min_price).showMoney
+          } else if (data.sale_type == 2) { // 拼团
+            price = util.formatMoney(data.min_pt_price).showMoney
+          } else if (data.sale_type == 3) { // 抢购
+            price = util.formatMoney(data.min_qg_price).showMoney
+          }
+          _obj.price = price
           _obj.fenxiao_price = util.formatMoney(data.fenxiao_price).showMoney
           _obj.pintuan = data.spell_num
           _obj.joinNumber = data.join_num

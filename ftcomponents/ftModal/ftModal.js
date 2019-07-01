@@ -46,7 +46,7 @@ Component({
     stopPropagation: function () {
       return false
     },
-    hide: function () {
+    hide: function (e) {
       this.showModal = false
       if (!this.wrapperHideAnimation) {
         this.wrapperHideAnimation = wx.createAnimation({
@@ -82,6 +82,9 @@ Component({
         topAnimationData: this.topAnimation.export(),
         bottomAnimationData: this.bottomAnimation.export()
       })
+      if (e && e.currentTarget.dataset.origin == 'mask') { // 如果是点击遮罩隐藏，则执行maskhide回调
+        this.triggerEvent('maskhide')
+      }
     },
     show: function () {
       this.showModal = true

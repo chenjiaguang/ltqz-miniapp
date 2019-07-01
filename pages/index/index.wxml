@@ -8,18 +8,12 @@
   <!-- <view style="position:relative;z-index:99;padding:0 100rpx">
     <collect-btn collected="{{collected}}" catchcollecttap="test" />
   </view> -->
-  <ft-cates wx:if="{{cates && cates[0]}}" cates="{{cates}}" padding="14rpx 26rpx 14rpx" justify="flex-start" catchtap="cateTap" />
+  <ft-cates wx:if="{{cates && cates[0]}}" cates="{{cates}}" max="{{(cates.length < 10 && cates.length != 5) ? 4 : 5}}" padding="14rpx 26rpx 14rpx" catchtap="cateTap" />
   <view wx:if="{{themes && themes[0]}}" class='theme-box'>
     <view class='theme-header'><text class='theme-header-title'>热门主题</text><text class='theme-header-tip'>提前领 最高<text style="color:#F24724">省¥50</text></text></view>
     <ft-theme themes="{{themes}}" catchthemetap="themeTap" />
   </view>
-  <view wx:if="{{activitys && activitys[0]}}" class="activity-box{{activitys.length > 2 ? ' mode2' : ' mode1'}}">
-    <view wx:for="{{activitys}}" wx:for-index="idx" wx:for-item="activity" wx:key="title" class="activity-item{{activitys.length > 2 ? ' mode2' : ' mode1'}}" catchtap="activityTap" data-link="{{activity.link}}">
-      <view class='activity-title'>{{activity.title}}</view>
-      <view class='activity-content'>{{activity.content}}</view>
-      <image wx:if="{{activity.link}}" class="activity-icon{{activitys.length > 2 ? ' mode2' : ' mode1'}}{{idx === 0 ? ' first-icon' : ''}}" src="{{activity.icon}}" mode="aspectFit"></image>
-    </view>
-  </view>
+  <ft-sale-box wx:if="{{activitys && activitys[0]}}" sales="{{activitys}}" />
   <view wx:if="{{hots && hots[0]}}" class='hot-box'>
     <view class='hot-header'><view class='left-line line-separator-h'></view><view class='hot-icon theme-bg'><image class='hot-icon-image' src="/assets/images/top_hot.png" mode="aspectFit"></image></view><text class='hot-header-title'>热卖TOP榜</text><view class='right-line line-separator-h'></view></view>
     <activity-card wx:for="{{hots}}" wx:for-item="activity" wx:for-index="aidx" wx:key="id" activity="{{activity}}" catchactivitytap="goodsTap" />
@@ -32,5 +26,9 @@
     <view class='recommendation-header'><view class='left-line line-separator-h'></view><view class='recommendation-icon theme-bg'><image class='recommendation-icon-image' src="/assets/images/thumb_white.png" mode="aspectFit"></image></view><text class='recommendation-header-title'>为您推荐</text><view class='right-line line-separator-h'></view></view>
     <activity-card wx:for="{{recommendations}}" wx:for-item="activity" wx:for-index="aidx" wx:key="id" activity="{{activity}}" catchactivitytap="goodsTap" />
   </view>
+  <!-- <view class="" hover-class="none" hover-stop-propagation="false">
+    水电费说
+  </view>
+  <sale-card wx:for="{{recommendations}}" wx:for-item="sale" wx:for-index="sidx" wx:key="id" sale="{{sale}}" catchsaletap="goodsTap" /> -->
   <ft-list-footer loaded="{{recommendationLoaded}}" loading="{{recommendationLoading}}" page="{{recommendationPage}}" show-no-more no-more-text="{{(recommendations && recommendations[0]) ? '没有更多了' : '暂时没有活动'}}" />
 </view>

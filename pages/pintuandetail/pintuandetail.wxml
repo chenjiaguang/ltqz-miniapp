@@ -102,4 +102,4 @@
 </view>
 <view class='line-separator-h'></view>
 <draw-poster id="c-draw-poster" catchstatuschange="drawPosterChange" hide-component />
-<shopping-view wx:if="{{huodong.status == 1 && huodong.session && huodong.session.length > 0}}" id="c-shopping-view" session="{{huodong.session}}" catchnextstep="nextTap" />
+<shopping-view wx:if="{{huodong.status == 1 && huodong.session && huodong.session.length > 0}}" id="c-shopping-view" session="{{huodong.session}}" timestamp="{{pintuanTimestamp}}" catchnextstep="nextTap" />

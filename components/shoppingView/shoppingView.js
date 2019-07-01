@@ -27,6 +27,29 @@ Component({
         })
         this.initSession(session)
       }
+    },
+    timestamp: {
+      type: Number,
+      value: 0,
+      observer: function (newVal, oldVal) { // 初始化(重置)session
+        // 属性值变化时执行
+        if (this.data.session) {
+          let session = [].concat(this.data.session)
+          session.forEach((item, idx) => { // 票的价格处理(String -> Number，分保留，另存一份用于展示的价格, 计算时用分，展示时
+            item.ticket.forEach(it => {
+              it.type.show_price = util.formatMoney(it.type.price).showMoney
+              it.type.price = util.formatMoney(it.type.price).money
+              it.type.show_pt_price = util.formatMoney(it.type.pt_price).showMoney
+              it.type.pr_price = util.formatMoney(it.type.pt_price).money
+              it.type.show_origin_price = util.formatMoney(it.type.origin_price).showMoney
+              it.type.origin_price = util.formatMoney(it.type.origin_price).money
+              it.type.show_qg_price = util.formatMoney(it.type.qg_price).showMoney
+              it.type.qg_price = util.formatMoney(it.type.qg_price).money
+            })
+          })
+          this.initSession(session)
+        }
+      }
     }
   },
 
@@ -76,6 +99,7 @@ Component({
       this.setData(_obj)
     },
     initSession: function (session) {
+      console.log('initSession')
       let _session = JSON.parse(JSON.stringify(session))
       let current = null
       let selected = []

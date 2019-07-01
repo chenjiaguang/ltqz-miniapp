@@ -22,6 +22,8 @@ Page({
     // ],
     themes: [], // 主题
     // activitys: [
+    //   { title: '天天免费', content: '爆款商品0元购', link: '/pages/goodsdetail/goodsdetail?id=19', icon: 'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2229346952,2661940409&fm=27&gp=0.jpg', bg: 'green'},
+    //   { title: '天天免费', content: '爆款商品0元购', link: '/pages/goodsdetail/goodsdetail?id=19', icon: 'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2229346952,2661940409&fm=27&gp=0.jpg'},
     //   { title: '天天免费', content: '爆款商品0元购', link: '/pages/goodsdetail/goodsdetail?id=19', icon: 'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2229346952,2661940409&fm=27&gp=0.jpg'},
     //   { title: '限时抢购', content: '精品好物低价抢', link: '/pages/goodsdetail/goodsdetail?id=19', icon: 'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2229346952,2661940409&fm=27&gp=0.jpg'},
     //   { title: '体验券/优惠券', content: '热门活动超值体验', link: '', icon: 'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2229346952,2661940409&fm=27&gp=0.jpg'}
@@ -123,11 +125,13 @@ Page({
           item.min_price = util.formatMoney(item.min_price).showMoney
           item.min_origin_price = util.formatMoney(item.min_origin_price).showMoney
           item.min_pt_price = util.formatMoney(item.min_pt_price).showMoney
+          item.min_qg_price = util.formatMoney(item.min_qg_price).showMoney
         })
         news.forEach(item => {
           item.min_price = util.formatMoney(item.min_price).showMoney
           item.min_origin_price = util.formatMoney(item.min_origin_price).showMoney
           item.min_pt_price = util.formatMoney(item.min_pt_price).showMoney
+          item.min_qg_price = util.formatMoney(item.min_qg_price).showMoney
         })
         this.setData({
           banners,

@@ -4,6 +4,7 @@
   "navigationBarTitleText": "我的",
   "backgroundColorTop": "#FFFFFF",
   "backgroundColorBottom": "#f5f5f5",
+  "disableSwipeBack": true,
   "usingComponents": {
     "ft-user-avatar": "../../ftcomponents/ftUserAvatar/ftUserAvatar",
     "ft-user-name": "../../ftcomponents/ftUserName/ftUserName",

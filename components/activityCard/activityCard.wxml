@@ -1,10 +1,13 @@
 <!--components/activityCard/activityCard.wxml-->
 <view class='wrapper' catchtap="boxTap" hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
   <view class='cover-box'>
-    <image class='cover' src="{{activity.cover_url}}" mode="aspectFill"></image>
+    <image class='cover' src="{{activity.cover_url}}" mode="aspectFill" lazy-load></image>
     <view class='price-tag theme-bg'>
       <view class='price-content'>
-        <block wx:if="{{activity.sale_type == 1}}">
+        <view wx:if="{{!isFree}}" class="price-sign">¥</view>
+        <view class='actual-price'>{{priceText}}</view>
+        <view wx:if="{{hasMore}}" class='actual-price-qi'>起</view>
+        <!-- <block wx:if="{{activity.sale_type == 1}}">
           <text wx:if="{{activity.min_price && activity.min_price > 0}}" class='actual-price'><text style="font-size:24rpx;padding-top:2rpx;margin-right:4rpx;">¥</text>{{activity.min_price}}</text><text wx:if="{{activity.price_num > 1 && activity.min_price && activity.min_price > 0}}" class='actual-price-qi'>起</text><text wx:if="{{!activity.min_price || activity.min_price == 0}}" class='actual-price-free'>免费</text>
         </block>
         <block wx:elif="{{activity.sale_type == 2}}">
@@ -12,7 +15,7 @@
         </block>
         <block wx:elif="{{activity.sale_type == 3}}">
           <text wx:if="{{activity.min_qg_price && activity.min_qg_price > 0}}" class='actual-price'><text style="font-size:24rpx;padding-top:2rpx;margin-right:4rpx;">¥</text>{{activity.min_qg_price}}</text><text wx:if="{{activity.price_num > 1 && activity.min_qg_price && activity.min_qg_price > 0}}" class='actual-price-qi'>起</text><text wx:if="{{!activity.min_qg_price || activity.min_qg_price == 0}}" class='actual-price-free'>免费</text>
-        </block>
+        </block> -->
       </view>
       <view wx:if="{{activity.sale_type == 2}}" class='tuan-box theme-color'>{{activity.spell_num}}人团</view>
       <view wx:elif="{{activity.sale_type == 3}}" class='tuan-box theme-color'>限时抢购</view>

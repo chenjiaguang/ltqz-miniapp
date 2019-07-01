@@ -4,7 +4,7 @@
     <view class='session-box'>
       <view class='session-header'>选择场次</view>
       <scroll-view scroll-x class='sessions'>
-        <view wx:for="{{session}}" wx:for-index="idx" wx:for-item="ss" wx:key="id" class="session{{idx == 0 ? ' first' : ''}}{{(idx + 1) == session.length ? ' last' : ''}}{{ss[stockObj[saletype]] == 0 ? ' session-disabled' : ((ss[stockObj[saletype]] == null || ss[stockObj[saletype]] > 20) ? ' session-ample' : ' session-normal')}}{{currentSession[saletype] == idx ? ' theme-bg-20' : ''}}" catchtap="sessionTap" data-status="{{ss[stockObj[saletype]] == 0 ? 'disabled' : ((ss[stockObj[saletype]] == null || ss[stockObj[saletype]] > 20) ? 'ample' : 'normal')}}" data-idx="{{idx}}">
+        <view wx:for="{{session}}" wx:for-index="idx" wx:for-item="ss" wx:key="id" class="session{{idx == 0 ? ' first' : ''}}{{(idx + 1) == session.length ? ' last' : ''}}{{ss[stockObj[saletype]] == 0 ? ' session-disabled' : ((ss[stockObj[saletype]] == null || ss[stockObj[saletype]] > 20) ? ' session-ample' : ' session-normal')}}{{currentSession[saletype] == idx ? ' theme-bg-50' : ''}}" catchtap="sessionTap" data-status="{{ss[stockObj[saletype]] == 0 ? 'disabled' : ((ss[stockObj[saletype]] == null || ss[stockObj[saletype]] > 20) ? 'ample' : 'normal')}}" data-idx="{{idx}}">
           <view class='session-content'>
             <view class='session-content-text'>{{ss.name}}</view>
           </view>

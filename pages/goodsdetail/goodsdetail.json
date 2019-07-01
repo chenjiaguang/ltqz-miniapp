@@ -13,6 +13,7 @@
     "goods-detail-status": "../../components/goodsDetailStatus/goodsDetailStatus",
     "shopping-view": "../../components/shoppingView/shoppingView",
     "group-purchase": "../../components/groupPurchase/groupPurchase",
+    "qg-overview": "../../components/qgOverview/qgOverview",
     "ft-bottom-box": "../../ftcomponents/ftBottomBox/ftBottomBox",
     "ft-iphone-bottom-adapter": "../../ftcomponents/ftIphoneBottomAdapter/ftIphoneBottomAdapter"
   }

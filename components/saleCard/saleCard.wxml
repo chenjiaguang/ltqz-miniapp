@@ -1,0 +1,29 @@
+<!--components/saleCard/saleCard.wxml-->
+<view class="wrapper" catchtap="boxTap" hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
+  <view class="image-box">
+    <image class="image" src="{{sale.cover_url}}" mode="aspectFill" lazy-load />
+    <view wx:if="{{sale.sale_type == 2 && sale.spell_num}}" class="sign"><text>{{sale.spell_num}}人团</text></view>
+    <view wx:if="{{sale.sale_type == 3}}" class="sign"><text>限时抢购</text></view>
+  </view>
+  <view class="title">{{sale.title}}</view>
+  <view class="intro">{{sale.desc}}</view>
+  <view class='tags' wx:if="{{sale.tags && sale.tags[0]}}">
+    <block wx:for="{{sale.tags}}" wx:for-item="tag" wx:for-index="tidx" wx:key="label">
+      <!-- 地址标签不显示 -->
+      <view wx:if="{{tag.type != 'address'}}" class='tag-item theme-border-color theme-color'><text>{{tag.label}}</text></view>
+    </block>
+  </view>
+  <view class="price-and-button">
+    <view class='price-content'>
+      <view wx:if="{{!isFree}}" class="actual-price-sign">¥</view>
+      <view class='actual-price'>{{priceText}}</view>
+      <view wx:if="{{hasMore}}" class='actual-price-qi'>起</view>
+      <view wx:if="{{sale.min_origin_price && sale.min_origin_price > 0 && sale.sale_type != 1}}" class="origin-price-box">
+        <text class="origin-price-sign">¥</text><text class="origin-price" hover-class="none" hover-stop-propagation="false">{{sale.min_origin_price}}</text>
+        <view class="origin-price-box-line"></view>
+      </view>
+    </view>
+    <view class="btn{{((sale.sale_type == 3 && (sale.qg_status == 1 || sale.qg_status == 2)) || (sale.status == 1 && sale.sale_type != 3)) ? ' theme-bg' : ' btn-disabled'}}"><text>{{btnText[sale.sale_type][sale.sale_type == 3 ? sale.qg_status : sale.status]}}</text></view>
+  </view>
+</view>
+  

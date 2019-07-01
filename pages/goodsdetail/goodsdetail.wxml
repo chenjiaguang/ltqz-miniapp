@@ -7,16 +7,7 @@
       <share-button profit="{{fenxiao_price}}" show-price catchshare="shareBtnTap" />
     </view>
   </view>
-  <goods-detail-status goods-status-data="{{goods_status_data}}" />
-  <!-- <view class="price-and-status theme-linear-gradient-170-reverse">
-    <view wx:if="{{show_min_price && show_min_price > 0}}" class='actual-price'><text style="font-size:38rpx;padding-top:10rpx;margin-right:6rpx">¥</text><text>{{sale_type == 2 ? show_min_pt_price : show_min_price}}</text><text wx:if="{{price_num > 1}}" class='text-qi'>起</text></view>
-    <view wx:if="{{!show_min_price || show_min_price == 0}}" class='free-price'>免费</view>
-    <view wx:if="{{show_min_origin_price && show_min_origin_price > 0}}" class='origin-price'>
-      <view wx:if="{{sale_type == 2 && spell_num}}" class='group-sign'><ft-bubble content="{{spell_num + '人拼团价'}}" /></view>
-      <text>¥{{show_min_origin_price}}</text>
-    </view>
-    <view class="status{{status == 1 ? ' status-able' : ' status-other'}}">{{statusText[status]}}</view>
-  </view> -->
+  <goods-detail-status goods-status-data="{{goods_status_data}}" catchtimeout="qgTimeout" />
   <view class='overview'>
     <view class='title-and-intro-box'>
       <view class='title-and-intro'>
@@ -28,7 +19,11 @@
       </view>
     </view>
   </view>
+  <!-- 拼团模块 -->
   <group-purchase wx:if="{{groupList && groupList.length > 0}}" group-list="{{groupList}}" total-num="{{tuan_join_num}}" catchpintuan="groupTap" />
+  <!-- 抢购模块 -->
+  <qg-overview wx:if="{{sale_type == 3 && (qg_status == 1 || qg_status == 2 || qg_status == 3)}}" goods-status-data="{{goods_status_data}}" />
+  <!-- 活动信息概览 -->
   <view class='sub-overview'>
     <view wx:if="{{valid_btime && valid_etime}}" class='state-block-wrapper'>
       <view class='state-block'><image class='left-icon' mode="aspectFit" src="/assets/images/time_jointime.png"></image><text class='state-block-text'>活动日期：{{valid_btime}} 至 {{valid_etime}}</text></view>
@@ -68,6 +63,7 @@
       <view class='state-block'><image class='left-icon' mode="aspectFit" src="/assets/images/tuikuan.png"></image><text class='state-block-text'>本次活动不支持退款</text></view>
     </view>
   </view>
+  <!-- 参加活动人数 -->
   <view wx:if="{{join_num && join_num > 0}}" class='join-box'>
     <view class='block-separator'></view>
     <view class='join-header'><text>累计{{join_num}}人参加</text></view>
@@ -77,6 +73,7 @@
       <view wx:if="{{join_users && join_users.length && join_users.length >= 6}}" class='more-user' style="position:relative;z-index:0"><view class='dot'></view><view class='dot'></view><view class='dot'></view></view>
     </view>
   </view>
+  <!-- 活动主办方信息 -->
   <view class='sponsor-box'>
     <view class='block-separator'></view>
     <view class='sponsor-header'><text>活动主办方</text><text wx:if="{{shop.type_pic_url}}" style="font-size:26rpx;color:#999;" catchtap="viewBusinessCertification">查看商家资质<text class='next-icon lutufont lutu-next2' style="margin-left:26rpx;"></text></text></view>
@@ -87,7 +84,7 @@
         <view class='sponsor-title'>{{shop.name}}</view>
         <view class='sponsor-intro'>{{shop.introduce}}</view>
         <view class='activity-and-score'>
-          <view class='activity-num'>活动数量<text class='theme-color' style="margin-left:10rpx">{{shop.huodong_num}}</text></view>
+          <view class='activity-num'>商品数量<text class='theme-color' style="margin-left:10rpx">{{shop.huodong_num}}</text></view>
           <view class='line-separator-v' style="height:28rpx;background:#D8D8D8;"></view>
           <view class='activity-score'>商家评分<text class='theme-color' style="margin-left:10rpx">{{shop.rate}}</text></view>
         </view>
@@ -95,6 +92,7 @@
       <text class='next-icon lutufont lutu-next2' style="margin-left:26rpx;align-self:center"></text>
     </view>
   </view>
+  <!-- 活动详情、购买须知、评价 -->
   <view class='block-separator'></view>
   <view class='detail-and-comment' id="tab-wrapper">
     <view class='scrollpoint detail-and-comment-header-wrapper' data-tabheader="{{true}}">
@@ -109,29 +107,37 @@
     </view>
     <view class='detail-and-comment-content'>
       <view class="scrollpoint goodsdetail-content" data-tabindex="{{0}}" id="goods-content">
-        <view style="height:px"></view>
-        <rich-text wx:if="{{content}}" nodes="{{content}}" class='rich-text'></rich-text>
+        <view class="block-separator"></view>
+        <view class='overview-content'>
+          <view class="overview-separator theme-border-color">详情</view>
+        </view>
+        <view class='line-separator-h'></view>
+        <view class="goodsdetail-content-text">
+          <rich-text wx:if="{{content}}" nodes="{{content}}" class='rich-text'></rich-text>
+        </view>
         <view wx:if="{{!content}}" style="text-align:center;font-size:28rpx;color:#999">加载中...</view>
       </view>
       <view class='scrollpoint goodsdetail-notice' data-tabindex="{{1}}" id="goods-notice">
         <view wx:if="{{notice}}">
-          <view style="height:px"></view>
-          <view class='block-separator'></view>
+          <view class="block-separator"></view>
+          <view class='overview-content'>
+            <view class="overview-separator theme-border-color">购买须知</view>
+          </view>
+          <view class='line-separator-h'></view>
           <view class='goodsdetail-notice-detail'>
             <rich-text wx:if="{{notice}}" nodes="{{notice}}" class='rich-text'></rich-text>
           </view>
         </view>
       </view>
       <view class="scrollpoint goodsdetail-score" data-tabindex="{{notice ? 2 : 1}}" id="comment-content">
-        <view style="height:px"></view>
-        <view class='block-separator'></view>
-        <view wx:if="{{comments && comments.length}}" class='score-overview'>
+        <view class="block-separator"></view>
+        <view class='score-overview'>
           <view class='overview-content'>
-            <ft-star-box score="{{avg_score}}" size="{{30}}" />
-            <text class='comment-amount'>{{comment_num}}人评价</text>
+            <view class="overview-separator theme-border-color">评价</view>
+            <ft-star-box wx:if="{{avg_score && avg_score > 0}}" score="{{avg_score}}" size="{{30}}" />
           </view>
-          <view class='line-separator-h'></view>
         </view>
+        <view class='line-separator-h'></view>
         <view wx:if="{{(!comments || !comments.length) && commentLoaded}}" class='empty-comment'>
           <image class='empty-image' src="/assets/images/empty_comment.png" mode="aspectFit"></image>
           <text class='empty-text'>啊哦，暂时还没有评价哦~</text>
@@ -166,7 +172,7 @@
         <!-- 可报名且用户电话存在 或 不可报名 -->
         <view class='join-btn-wrapper'>
           <button wx:if="{{status != 1 || (status == 1 && orderContact)}}" class="join-btn{{status != 1 ? ' disabled' : ' theme-bg'}}" disabled="{{status != 1}}" catchtap="showShoppingView" data-saletype="1">
-            <view class='join-text' style="font-size:34rpx;line-height:46rpx">{{sale_type == 1 ? buttonStatusText[status] : qgButtonStatusText[status]}}</view>
+            <view class='join-text' style="font-size:34rpx;line-height:46rpx">{{btnText}}</view>
           </button>
           <!-- 可报名且用户电话不存在 -->
           <button wx:if="{{status == 1 && !orderContact}}" class="join-btn theme-bg" open-type='getPhoneNumber' bindgetphonenumber="initContact"><text class='join-text' style="font-size:34rpx;line-height:46rpx">立即报名</text></button>
@@ -234,8 +240,8 @@
         </view>
         <!-- 可报名且用户电话存在 或 不可报名 -->
         <view class='join-btn-wrapper'>
-          <button wx:if="{{status != 1 || (status == 1 && orderContact)}}" class="join-btn{{status != 1 ? ' disabled' : ' theme-bg'}}" disabled="{{status != 1}}" catchtap="showShoppingView" data-saletype="3">
-            <view class='join-text' style="font-size:34rpx;line-height:46rpx">{{qg_status == 2 ? '立即抢购' : '已售罄'}}</view>
+          <button wx:if="{{status != 1 || (status == 1 && orderContact)}}" class="join-btn{{(status != 1 || (status == 1 && qg_status == 3)) ? ' disabled' : ' theme-bg'}}" disabled="{{status != 1 || (status == 1 && qg_status == 3)}}" catchtap="showShoppingView" data-saletype="3">
+            <view class='join-text' style="font-size:34rpx;line-height:46rpx">{{btnText}}</view>
           </button>
           <!-- 可报名且用户电话不存在 -->
           <button wx:if="{{status == 1 && !orderContact}}" class="join-btn theme-bg" open-type='getPhoneNumber' bindgetphonenumber="initContact"><text class='join-text' style="font-size:34rpx;line-height:46rpx">立即抢购</text></button>
@@ -245,4 +251,4 @@
   </ft-bottom-box>
 </view>
 <draw-poster id="c-draw-poster" />
-<shopping-view wx:if="{{status == 1 && session && session.length > 0}}" id="c-shopping-view" session="{{session}}" catchnextstep="nextTap" />
+<shopping-view wx:if="{{status == 1 && session && session.length > 0}}" id="c-shopping-view" session="{{session}}" timestamp="{{goodsTimestamp}}" catchnextstep="nextTap" />

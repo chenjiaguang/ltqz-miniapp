@@ -2,7 +2,7 @@
 <view animation="{{wrapperAnimationData}}" class="wrapper" catchtouchmove='stopPropagation'>
   <view animation="{{maskAnimationData}}" class="mask"></view>
   <view class="content">
-    <view animation="{{topAnimationData}}" class="top top{{mode}}" catchtap="hide">
+    <view animation="{{topAnimationData}}" class="top top{{mode}}" catchtap="hide" data-origin="mask">
       <slot name="top"></slot>
     </view>
     <view animation="{{bottomAnimationData}}" class="bottom">

@@ -173,9 +173,10 @@
   display: flex;
   height: 100rpx;
   background: #fff;
+  align-items: center;
 }
 .total-price{
-  width: 450rpx;
+  width: 460rpx;
   height: 100%;
   display: flex;
   align-items: center;
@@ -197,9 +198,12 @@
 .next-btn{
   flex: 1;
   border: none;
-  border-radius: 0;
+  border-radius: 39rpx;
   font-size: 36rpx;
   color: #fff;
+  height: 78rpx;
+  line-height: 78rpx;
+  margin-right: 32rpx;
 }
 .next-btn:after, .next-btn:before{
   display: none;

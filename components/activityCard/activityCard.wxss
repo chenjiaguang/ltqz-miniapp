@@ -31,13 +31,27 @@
   height: 64rpx;
   padding: 0 28rpx;
   display: flex;
+  justify-content: center;
   align-items: center;
 }
+.price-sign{
+  font-size: 24rpx;
+  padding-top: 6rpx;
+  line-height: 30rpx;
+  margin-right: 4rpx;
+}
+.actual-price{
+  font-size: 36rpx;
+  line-height: 36rpx;
+}
 .actual-price-qi{
-  font-size: 28rpx;
+  padding-top: 6rpx;
+  font-size: 24rpx;
+  line-height: 30rpx;
 }
 .actual-price-free{
-  font-size: 28rpx;
+  font-size: 24rpx;
+  line-height: 36rpx;
 }
 .tuan-box{
   height: 44rpx;
@@ -73,11 +87,11 @@
 }
 .tag-item{
   margin: 8rpx;
-  padding: 0 8rpx;
+  padding: 0 14rpx;
   height: 36rpx;
   font-size: 24rpx;
   line-height: 24rpx;
-  border-radius: 2rpx;
+  border-radius: 18rpx;
   box-sizing: border-box;
   display: flex;
   justify-content: center;

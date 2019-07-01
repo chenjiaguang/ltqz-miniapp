@@ -1,0 +1,6 @@
+{
+  "enablePullDownRefresh": false,
+  "usingComponents": {
+    "ft-pull-to-refresh": "../../ftcomponents/ftPullToRefresh/ftPullToRefresh"
+  }
+}

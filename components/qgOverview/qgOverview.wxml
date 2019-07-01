@@ -1,0 +1,47 @@
+<!--components/qgOverview/qgOverview.wxml-->
+<view class="wrapper">
+  <view class="block-separator"></view>
+  <view class="box" hover-class="none" hover-stop-propagation="false">
+    <view class="header">限时抢购</view>
+    <!-- 预热中 -->
+    <view wx:if="{{goodsStatusData.qg_status == 1}}" class="content">
+      <view class="tip-box">
+        <view class="tip-text">{{beginTime}}开抢</view>
+        <view class="tip-text">
+          <text class="price-head">抢购价：</text>
+          <text wx:if="{{goodsStatusData.show_min_qg_price && goodsStatusData.show_min_qg_price > 0}}" class="price-sign">¥</text>
+          <text wx:if="{{goodsStatusData.show_min_qg_price && goodsStatusData.show_min_qg_price > 0}}" class="price-num">{{goodsStatusData.show_min_qg_price}}</text>
+          <text wx:if="{{goodsStatusData.price_num > 1}}" class="price-qi">起</text>
+          <text wx:if="{{!(goodsStatusData.show_min_qg_price && goodsStatusData.show_min_qg_price > 0)}}" class="price-free">免费</text>
+        </view>
+      </view>
+      <form catchsubmit="remindTap" report-submit class="remind-box">
+        <input type="text" name="id" value="{{goodsStatusData.id}}" style="width:0;height:0;display:none" />
+        <button form-type="submit" disabled="{{remindRequesting}}" class="remind-btn theme-border-color{{qgRemind ? ' theme-color' : ' theme-bg'}}">
+          <text>{{qgRemind ? '取消提醒' : '开抢提醒'}}</text>
+        </button>
+      </form>
+      <!-- <view class="remind-btn theme-bg" catchtap="remindTap">
+        <text>开抢提醒</text>
+      </view> -->
+    </view>
+    <!-- 抢购中 -->
+    <view wx:if="{{goodsStatusData.qg_status == 2}}" class="content">
+      <view class="tip-box">
+        <view class="tip-text">
+          <text class="price-head">此商品正在参加抢购，{{(goodsStatusData.qg_max_limit && goodsStatusData.qg_max_limit > 0) ? ('每人限购' + goodsStatusData.qg_max_limit + '件，') : ''}}{{(goodsStatusData.total_qg_count && goodsStatusData.total_qg_count > 0) ? ('共' + goodsStatusData.total_qg_count + '件，') : ''}}请抓紧时间购买！</text>
+        </view>
+      </view>
+    </view>
+    <!-- 已抢光 -->
+    <view wx:if="{{goodsStatusData.qg_status == 3}}" class="content">
+      <view class="tip-box">
+        <view class="tip-text">
+          <text class="price-head">此商品{{(goodsStatusData.total_qg_count && goodsStatusData.total_qg_count > 0) ? (goodsStatusData.total_qg_count + '件') : ''}}已被抢光，请期待下次抢购！</text>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class="block-separator"></view>
+</view>
+  

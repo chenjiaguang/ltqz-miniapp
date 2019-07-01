@@ -169,6 +169,7 @@ Page({
             item.data.min_price = util.formatMoney(item.data.min_price).showMoney
             item.data.min_origin_price = util.formatMoney(item.data.min_origin_price).showMoney
             item.data.min_pt_price = util.formatMoney(item.data.min_pt_price).showMoney
+            item.data.min_qg_price = util.formatMoney(item.data.min_qg_price).showMoney
           }
         })
         if (pn == 1) {

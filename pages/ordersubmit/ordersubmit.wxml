@@ -20,7 +20,7 @@
   <view class='block-separator'></view>
   <view class='buy-for'>
     <view class='buy-for-header'>出行人信息</view>
-    <view class='buy-for-body' catchtap="toggleBuyfor">
+    <view class='buy-for-body' catchtap="toggleBuyfor" data-compute="{{true}}">
       <view class='buy-for-left'>
         <!-- 未选中联系人 -->
         <view wx:if="{{buy_for.length === 0}}" class='buy-for-placeholder'>请选择出行人</view>
@@ -50,12 +50,49 @@
     </view>
   </view>
   <view class='clause-box' catchtap="changeClause">
-    <text class="clause-icon lutufont lutu-checked{{clause_checked ? ' theme-color' : ' disabled'}}"></text>
+    <text class="clause-icon lutufont{{clause_checked ? ' lutu-tick' : ' lutu-uncheck disabled'}}"></text>
     <text>我已阅读并同意</text>
-    <text catchtap="clauseTap" data-ele="{{clause}}" wx:for="{{clauses}}" wx:for-index="idx" wx:for-item="clause" wx:key="name" class='clause-text theme-color'><text wx:if="{{idx !== 0}}">、</text>{{clause.name}}</text>
+    <text catchtap="clauseTap" data-ele="{{clause}}" wx:for="{{clauses}}" wx:for-index="idx" wx:for-item="clause" wx:key="name" class='clause-text'><text wx:if="{{idx !== 0}}">、</text>{{clause.name}}</text>
     <text>等重要条款</text>
   </view>
-  <view class='bottom-button-wrapper' catchtouchmove="stopPropagation">
+  <ft-bottom-box box-height="{{102}}" bg="#FFFFFF">
+    <view class='bottom-button'>
+      <view class='total-box'>
+        <text class='total-text'>需支付</text>
+        <text class='total-amout'>¥{{totalPrice}}</text>
+      </view>
+      <button class="submit-btn{{(disabled_submit || submitting) ? ' disabled' : ' theme-bg'}}" disabled="{{disabled_submit || submitting}}" catchtap="submitOrder">去支付</button>
+    </view>
+  </ft-bottom-box>
+  <ft-modal id="c-ft-modal" hide-cancel mode="1">
+    <view slot="bottom" class="buyfor-context">
+      <view class='buyfor-box'>
+        <view class='buyfor-header'><text class='cancel' catchtap="cancelChangeBuyfor">取消</text><text class='confirm' catchtap="confirmChangeBuyfor">确定</text></view>
+      </view>
+      <view class='new-buyfor' catchtap="editBuyfor" data-needidcard="{{include_bx == 1}}" hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}"><text class='new-icon theme-color lutufont lutu-add2'></text><text class='new-text theme-color'>新增</text></view>
+      <view class='block-separator'></view>
+      <scroll-view scroll-y class='buyfors' style="height:{{buyforsWrapperHeight || '408rpx'}}">
+        <view wx:if="{{!buyfors || !buyfors[0]}}" style="height:300rpx"></view>
+        <view wx:for="{{buyfors}}" wx:for-index="idx" wx:for-item="buyfor" wx:key="id" class='buyfor-item-wrapper'>
+          <view class='buyfor-item' catchtap="toggleBuyforChecked" data-idx="{{idx}}" hover-stop-propagation hover-class="{{(include_bx == 1 && buyfor.id_number || include_bx != 1) ? 'bg-touched' : 'none'}}" hover-start-time="{{50}}" hover-stay-time="{{200}}">
+            <view class='wirte-icon-wrapper' catchtap="editBuyfor" data-needidcard="{{include_bx == 1}}" data-buyfor="{{buyfor}}" hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
+              <image class='wirte-icon' src="/assets/images/write_icon.png" mode="aspectFit"></image>
+            </view>
+            <view class='buyfor-center'>
+              <view class='buyfor-name'>{{buyfor.name}}</view>
+              <!-- <view wx:if="{{buyfor.tip}}" class='buyfor-idcard disabled'>{{buyfor.tip}}</view> -->
+              <view wx:if="{{include_bx == 1 && !buyfor.id_number}}" class='buyfor-idcard disabled'>请填写身份证号</view>
+              <view wx:elif="{{include_bx == 1 && buyfor.id_number}}" class='buyfor-idcard'><text>身份证 </text><text wx:for="{{buyfor.id_number}}" wx:key="*this">{{index >= 4 && index < (buyfor.id_number.length - 4) ? '*' : item}}</text></view>
+              <view wx:else class='buyfor-idcard'></view>
+            </view>
+            <text class="buyfor-check-icon lutufont{{buyfor.checked ? ' lutu-checked green-color' : ' lutu-uncheck'}}"></text>
+          </view>
+          <view class='line-separator-h' style="margin-left:98rpx;width:652rpx"></view>
+        </view>
+      </scroll-view>
+    </view>
+  </ft-modal>
+  <!-- <view class='bottom-button-wrapper' catchtouchmove="stopPropagation">
     <view class="buyfor-wrapper{{show_buy_for ? ' show' : ''}}">
       <view class="buyfor-mask{{show_buy_for ? ' show' : ''}}" catchtap="toggleBuyfor"></view>
       <view class="buyfor-context{{show_buy_for ? ' show' : ''}}">
@@ -73,7 +110,6 @@
               </view>
               <view class='buyfor-center'>
                 <view class='buyfor-name'>{{buyfor.name}}</view>
-                <!-- <view wx:if="{{buyfor.tip}}" class='buyfor-idcard disabled'>{{buyfor.tip}}</view> -->
                 <view wx:if="{{include_bx == 1 && !buyfor.id_number}}" class='buyfor-idcard disabled'>请填写身份证号</view>
                 <view wx:elif="{{include_bx == 1 && buyfor.id_number}}" class='buyfor-idcard'><text>身份证 </text><text wx:for="{{buyfor.id_number}}" wx:key="*this">{{index >= 4 && index < (buyfor.id_number.length - 4) ? '*' : item}}</text></view>
                 <view wx:else class='buyfor-idcard'></view>
@@ -100,5 +136,5 @@
       <ft-iphone-bottom-adapter bg="#fff" />
     </view>
     <ft-iphone-bottom-adapter />
-  </view>
+  </view> -->
 </view>

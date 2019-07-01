@@ -15,7 +15,8 @@
     <view class='title draw-text' data-text="{{title}}" data-maxline="{{2}}" data-maxlength="{{20}}">{{title}}</view>
     <view class='price draw-text' data-text="{{price > 0 ? ('¥' + price) : '免费'}}">
       <text>{{price > 0 ? ('¥' + price) : '免费'}}</text>
-      <view wx:if="{{pintuan && pintuan > 0}}" class='pintuan-tag draw-fill draw-text' data-text="{{pintuan + '人拼团价'}}">{{pintuan}}人拼团价</view>
+      <view wx:if="{{saleType == 2 && pintuan && pintuan > 0}}" class='pintuan-tag draw-fill draw-text' data-text="{{pintuan + '人拼团价'}}">{{pintuan}}人拼团价</view>
+      <view wx:if="{{saleType == 3}}" class='pintuan-tag draw-fill draw-text' data-text="限时抢购">限时抢购</view>
     </view>
     <view wx:if="{{joinNumber && joinNumber > 0}}" class='join-num draw-text' data-text="{{'累计' + joinNumber + '人报名'}}">累计{{joinNumber}}人报名</view>
     <view wx:if="{{joinUsers && joinUsers.length}}" class='join-user-box'>

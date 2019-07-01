@@ -23,7 +23,23 @@
   height: 100%;
 }
 
-.state {
+.status{
+  position: absolute;
+  width: 100%;
+  height: 36rpx;
+  left: 0;
+  bottom: 0;
+  font-size: 24rpx;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.status-other{
+  background: rgba(0,0,0, 0.65);
+}
+
+/* .state {
   position: absolute;
   left: 0;
   right: 0;
@@ -35,13 +51,9 @@
   text-align: center;
 }
 
-/* .state0 {
-  background: rgba(100, 182, 49, 0.65);
-} */
-
 .state1, .sdtate2, .state3{
   background-color: rgba(0, 0, 0, 0.65);
-}
+} */
 
 .content-box {
   flex: 1;

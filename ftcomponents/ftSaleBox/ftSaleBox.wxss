@@ -1,0 +1,64 @@
+/* ftcomponents/ftSaleBox/ftSaleBox.wxss */
+@import "../../app.wxss";
+
+.wrapper{
+  padding: 14rpx 18rpx 10rpx 32rpx;
+  overflow: hidden;
+  box-sizing: content-box;
+}
+.sale-item{
+  width: 336rpx;
+  height: 144rpx;
+  box-sizing: border-box;
+  padding: 20rpx;
+  margin: 0 14rpx 14rpx 0;
+  border-radius: 12rpx;
+  position: relative;
+  float: left;
+}
+.sale-item1.first{
+  width: 686rpx;
+  height: 144rpx
+}
+.sale-item3.first{
+  width: 336rpx;
+  height: 302rpx;
+}
+.sale-item5.first{
+  width: 336rpx;
+  height: 302rpx;
+}
+
+.sale-title{
+  font-size: 32rpx;
+  line-height: 44rpx;
+  font-weight: bold;
+  color: #333;
+  padding-bottom: 6rpx;
+}
+
+.sale-content{
+  font-size: 24rpx;
+  line-height: 32rpx;
+  color: #999;
+}
+
+.sale-icon{
+  width: 60rpx;
+  height: 60rpx;
+  position: absolute;
+  right: 20rpx;
+  bottom: 25rpx;
+}
+.sale-icon3.first{
+  width: 96rpx;
+  height: 96rpx;
+  right: 40rpx;
+  bottom: 40rpx;
+}
+.sale-icon5.first{
+  width: 96rpx;
+  height: 96rpx;
+  right: 40rpx;
+  bottom: 40rpx;
+}

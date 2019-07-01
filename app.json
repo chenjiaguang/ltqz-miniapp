@@ -33,7 +33,8 @@
     "pages/statement/statement",
     "pages/collection/collection",
     "pages/pintuandetail/pintuandetail",
-    "pages/commentmanager/commentmanager"
+    "pages/commentmanager/commentmanager",
+    "pages/testpage/testpage"
   ],
   "window": {
     "backgroundTextStyle": "dark",

@@ -16,30 +16,19 @@ Page({
     uavatar: '',
     unickname: '',
     id: '',
-    statusText: {
-      0: '活动未上架',
-      1: '活动报名中',
-      2: '活动报名中',
-      3: '报名已结束',
-      4: '报名已结束',
-      5: '活动已结束'
-    },
-    buttonStatusText: {
-      0: '敬请期待',
-      1: '立即报名',
-      2: '报名已满',
-      3: '报名截止',
-      4: '报名已满',
-      5: '活动结束'
-    },
-    qgButtonStatusText: {
-      0: '敬请期待',
-      1: '立即报名',
-      2: '暂不销售',
-      3: '报名截止',
-      4: '报名已满',
-      5: '活动结束'
-    },
+    btnText: '',
+    // buttonStatusText: {
+    //   0: '敬请期待',
+    //   1: '立即报名',
+    //   2: '报名已满',
+    //   3: '报名截止',
+    //   4: '报名已满',
+    //   5: '活动结束'
+    // },
+    // qgButtonStatusText: {
+    //   2: '立即抢购',
+    //   3: '已抢光',
+    // },
     sale_type: '1', // 该商品是 团购 还是 普通商品（1:普通商品，2:团购商品，3:抢购模式）
     saletype: '1', // 当前是 普通购买 还是 发起拼团 还是 抢购模式
     is_collect: false,
@@ -173,6 +162,68 @@ Page({
     }
   },
 
+  initBtnText: function (activity) {
+    let btnText = ''
+    let btnDisabled = false
+    let priceText = ''
+    let isFree = false
+    let hasMore = false
+    if (activity.sale_type == 1) { // 普通
+      const text = {
+        0: '敬请期待',
+        1: '立即报名',
+        2: '报名已满',
+        3: '报名截止',
+        4: '报名已满',
+        5: '活动结束'
+      }
+      btnText = text[activity.status]
+      btnDisabled = activity.status != 1
+      priceText = (activity.show_min_price && activity.show_min_price) > 0 ? activity.show_min_price : '免费'
+      isFree = !activity.show_min_price || activity.show_min_price == 0
+      hasMore = activity.price_num > 1 && activity.show_min_price && activity.show_min_price > 0
+    } else if (activity.sale_type == 2) { // 拼团
+      const text = {
+        0: '敬请期待',
+        1: '立即报名',
+        2: '报名已满',
+        3: '报名截止',
+        4: '报名已满',
+        5: '活动结束'
+      }
+      btnText = text[activity.status]
+      btnDisabled = activity.status != 1
+      priceText = (activity.show_min_pt_price && activity.show_min_pt_price > 0) ? activity.show_min_pt_price : '免费'
+      isFree = !activity.show_min_pt_price || activity.show_min_pt_price == 0
+      hasMore = activity.price_num > 1 && activity.show_min_pt_price && activity.show_min_pt_price > 0
+    } else if (activity.sale_type == 3) { // 抢购
+      const text = {
+        0: '立即报名',
+        1: '立即报名',
+        2: '立即抢购',
+        3: '已抢光',
+        8: '立即报名'
+      }
+      if (activity.qg_status == 1 && activity.status == 2) {
+        btnText = '暂不销售'
+        btnDisabled = true
+      } else {
+        btnText = text[activity.qg_status]
+        btnDisabled = activity.qg_status != 1 && activity.qg_status != 2
+      }
+      priceText = (activity.show_min_qg_price && activity.show_min_qg_price > 0) ? activity.show_min_qg_price : '免费'
+      isFree = !activity.show_min_qg_price || activity.show_min_qg_price == 0
+      hasMore = activity.price_num > 1 && activity.show_min_qg_price && activity.show_min_qg_price > 0
+    }
+    this.setData({
+      btnText,
+      btnDisabled,
+      priceText,
+      isFree,
+      hasMore
+    })
+  },
+
   fetchGoods: function (id) {
     let rData = {id}
     util.request('/huodong/detail', rData).then(res => {
@@ -193,9 +244,10 @@ Page({
         res.data.show_min_pt_price = util.formatMoney(res.data.min_pt_price).showMoney
         res.data.min_qg_price = util.formatMoney(res.data.min_qg_price).money
         res.data.show_min_qg_price = util.formatMoney(res.data.min_qg_price).showMoney
-        const { sale_type, price_num, spell_num, status, show_min_price, show_min_origin_price, show_min_pt_price, show_min_qg_price } = res.data
-        res.data.goods_status_data = JSON.parse(JSON.stringify({ sale_type, price_num, spell_num, status, show_min_price, show_min_origin_price, show_min_pt_price, show_min_qg_price }))
+        const { id, sale_type, price_num, spell_num, status, qg_status, remain_qg, show_min_price, show_min_origin_price, show_min_pt_price, show_min_qg_price, qg_btime, qg_etime, qg_max_limit, total_qg_count, is_book_remind } = res.data
+        res.data.goods_status_data = JSON.parse(JSON.stringify({ id, sale_type, price_num, spell_num, status, qg_status, remain_qg, show_min_price, show_min_origin_price, show_min_pt_price, show_min_qg_price, qg_btime, qg_etime, qg_max_limit, total_qg_count, is_book_remind }))
         res.data.goodsLoaded = true
+        res.data.goodsTimestamp = new Date().getTime()
         if (res.data.tuan && res.data.tuan.length > 0) {
           res.data.groupList = res.data.tuan.map(item => {
             return {
@@ -208,6 +260,7 @@ Page({
             }
           })
         }
+        this.initBtnText(res.data)
         this.setData(res.data, () => {
           this.setData({
             content: this.data.content.replace(/\t\t\t/gi, '')
@@ -481,12 +534,12 @@ Page({
     if (!goodsLoaded || collectting) { // 未获取数据成功 或 正在操作，则点击收藏无效
       return false
     }
-    wx.vibrateShort()
     const url = is_collect ? '/collect/delete' : '/collect/add'
     const rData = is_collect ? { ids: [id] } : { product_id: id}
     this.setData({
       collectting: true
     })
+    wx.vibrateShort()
     util.request(url, rData).then(res => {
       if (res.error == 0) {
         if (!is_collect) { // 收藏成功
@@ -532,5 +585,9 @@ Page({
     wx.navigateTo({
       url: '/pages/ordersubmit/ordersubmit'
     })
+  },
+
+  qgTimeout: function () {
+    this.fetchGoods(this.options.id)
   }
 })

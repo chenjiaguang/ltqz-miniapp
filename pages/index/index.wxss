@@ -88,8 +88,9 @@ page{
   width: 96rpx;
   height: 96rpx;
   position: absolute;
-  right: 39rpx;
-  bottom: 42rpx;
+  right: 40rpx;
+  bottom: 40rpx;
+  top: unset;
   transform: translateY(0);
 }
 .hot-box, .new-box{

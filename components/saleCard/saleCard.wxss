@@ -1,0 +1,144 @@
+/* components/saleCard/saleCard.wxss */
+@import "../../app.wxss";
+
+.wrapper{
+  padding: 32rpx 0;
+}
+
+.tags{
+  padding: 20rpx 24rpx 0;
+  display: flex;
+  flex-wrap: wrap;
+  overflow: hidden;
+}
+.tag-item{
+  margin: 8rpx;
+  padding: 0 14rpx;
+  height: 36rpx;
+  font-size: 24rpx;
+  line-height: 24rpx;
+  border-radius: 18rpx;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-width: 1px;
+  border-style: solid;
+}
+.image-box{
+  margin: 0 32rpx;
+  position: relative;
+  border-radius: 8rpx;
+  overflow: hidden;
+}
+.image{
+  display: block;
+  width: 100%;
+  height: 386rpx;
+}
+.sign{
+  height: 56rpx;
+  padding: 0 24rpx;
+  font-size: 24rpx;
+  line-height: 24rpx;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 0 0 30rpx 0;
+  background-image: linear-gradient(142deg, #FF6D5E, #FF3B30);
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+.title{
+  font-size: 32rpx;
+  line-height: 44rpx;
+  color: #333;
+  font-weight: bold;
+  word-break: break-all;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 20rpx 32rpx 0;
+}
+.intro{
+  font-size: 24rpx;
+  line-height: 32rpx;
+  color: #999;
+  word-break: break-all;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 8rpx 32rpx 0;
+}
+.price-and-button{
+  display: flex;
+  align-items: flex-end;
+  padding: 0 32rpx;
+  margin-top: -8rpx;
+}
+.price-content{
+  flex: 1;
+  display: flex;
+  align-items: flex-end;
+  color: #F24724;
+}
+.actual-price-sign{
+  font-size: 24rpx;
+  line-height: 28rpx;
+  margin-right: 4rpx;
+}
+.actual-price{
+  font-size: 36rpx;
+  line-height: 36rpx;
+}
+.actual-price-qi{
+  font-size: 24rpx;
+  line-height: 28rpx;
+}
+.actual-price-free{
+  font-size: 32rpx;
+  line-height: 32rpx;
+}
+.origin-price-box{
+  display: flex;
+  align-items: flex-end;
+  color: #999;
+  margin-left: 18rpx;
+  position: relative;
+}
+.origin-price-box-line{
+  position: absolute;
+  width: 100%;
+  height: 1px;
+  background: #999;
+  left: 0;
+  top: 50%;
+}
+.origin-price-sign{
+  font-size: 24rpx;
+  line-height: 28rpx;
+  padding-top: 4rpx
+}
+.origin-price{
+  font-size: 28rpx;
+  line-height: 32rpx;
+}
+
+.btn{
+  min-width: 182rpx;
+  height: 70rpx;
+  font-size: 34rpx;
+  line-height: 34rpx;
+  border-radius: 35rpx;
+  padding: 0 40rpx;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+}
+.btn-disabled{
+  background-color: #B8B8B8;
+}

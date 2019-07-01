@@ -48,7 +48,8 @@ Page({
     this.setData({
       id: id
     })
-    this.fetchPintuan(id)
+    this.pintuanid = id
+    this.fetchPintuan(this.pintuanid)
     this.getOrderContact()
   },
 
@@ -105,6 +106,7 @@ Page({
         res.data.huodong.valid_etime = util.formatDateTimeDefault('d', res.data.huodong.valid_etime)
         res.data.created_at = util.formatDateTimeDefault('m', res.data.created_at)
         res.data.users = this.getUsers(res.data)
+        res.data.pintuanTimestamp = new Date().getTime()
         if (res.data.status == 1) { // 状态为拼团中时，初始化分享到朋友圈
           const title = res.data.current_user_name + '邀请你参与拼团'
           let path = '/pages/pintuandetail/pintuandetail?id=' + id
@@ -152,7 +154,10 @@ Page({
         timeout
       })
       if (timeout && this.timer) {
-        clearInterval(this.timer)
+        this.fetchPintuan(this.pintuanid)
+        if (this.timer) {
+          clearInterval(this.timer)
+        }
       }
     }
     func()
