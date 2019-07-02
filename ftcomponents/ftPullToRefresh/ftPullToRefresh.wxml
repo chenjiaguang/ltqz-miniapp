@@ -1,8 +1,11 @@
 <!--ftcomponents/ftPullToRefresh/ftPullToRefresh.wxml-->
 <wxs module="m1" src="./ftPullToRefresh.wxs"></wxs>
 <view class="refresh-wrap" style="{{backgroundColor ? 'background-color:' + backgroundColor + ';' : ''}}">
-  <view class="refresh" style="{{color ? 'border-color:' + color + ';' : ''}}"></view>
+  <view class="pulling-text">下拉刷新</view>
+  <view class="releasing-text">松开加载</view>
+  <view class="refreshing-text">加载中</view>
 </view>
+<image class="refresh-icon" src="/assets/images/refresh_icon.png" mode="aspectFit" />
 <view class="wrap" change:refreshed="{{m1.onRefreshed}}" refreshed="{{refreshed}}" change:refreshing="{{m1.onRefreshing}}" refreshing="{{refreshing}}" data-dist-max="{{distMax}}" data-reach-top="{{reachTop}}" bind:touchstart="{{m1.touchStart}}" bind:touchmove="{{m1.touchMove}}" bind:touchend="{{m1.touchEnd}}">
   <view class="intersection-dot"></view>
   <slot></slot>

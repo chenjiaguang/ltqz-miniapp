@@ -1,7 +1,7 @@
 <!-- components/drawPoster/drawPoster.wxml -->
 <view class="wrapper" id="wrapper">
   <view class='poster-body'>
-    <view class='head'>
+    <!-- <view class='head'>
       <image class='header-avatar draw-image' src="{{hAvatar}}" mode="aspectFill"></image>
       <view class='header-right'>
         <view class='header-name'>
@@ -10,7 +10,7 @@
         </view>
         <view class="header-tip draw-text" data-text="{{hTip}}">{{hTip}}</view>
       </view>
-    </view>
+    </view> -->
     <image class='banner draw-image' src="{{banner}}" mode="aspectFill"></image>
     <view class='title draw-text' data-text="{{title}}" data-maxline="{{2}}" data-maxlength="{{20}}">{{title}}</view>
     <view class='price draw-text' data-text="{{price > 0 ? ('¥' + price) : '免费'}}">

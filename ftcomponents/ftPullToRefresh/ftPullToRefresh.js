@@ -48,6 +48,9 @@ Component({
         this.observer = null
       }
     },
+    vibrateShort() {
+      wx.vibrateShort()
+    }
   },
   ready() {
     this.initObserver()

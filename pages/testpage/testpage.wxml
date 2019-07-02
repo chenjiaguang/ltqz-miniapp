@@ -1,5 +1,6 @@
 <!--pages/testpage/testpage.wxml-->
 <ft-pull-to-refresh refreshing="{{refreshing}}" refreshed="{{refreshed}}" bindrefresh="pullToRefresh">
+  <image class="banner" src="http://testdimg.lutu.com/img/0c/2e/23/1f/0c2e231f4c1d780e1252a09ffaca4acf.jpg" mode="aspectFill" />
 水电费了 阿三
 <view>水电费了 阿三</view>
 <view>水电费了 阿三</view>

@@ -11,7 +11,6 @@ function touchStart(e, ins) {
   state.distThreshold = state.distMax * 0.75
   state.reachTop = dataset.reachTop
   state.status = state.status || "pending" // pending、pulling、releasing、refreshing
-
   if (state.status === "pending" && state.reachTop) {
     state.startPulling = true
     state.pullStartX = e.touches[0].clientX
@@ -19,15 +18,23 @@ function touchStart(e, ins) {
     state.distance = 0
 
     state.component = state.component || ins.selectComponent(".refresh-wrap")
-    state.component.removeClass("transition")
-    state.component.removeClass("animation")
-    state.component.removeClass("fadeout")
-    state.component.setStyle({
-      'margin-top': (state.distance - 42) + "px",
-      opacity: 0,
-      transform: "rotate(0)",
-      "-webkit-transform": "rotate(0)"
-    })
+    state.icon = state.icon || ins.selectComponent(".refresh-icon")
+    state.icon.removeClass("transition")
+    state.icon.removeClass("animation")
+    state.icon.removeClass("fadeout")
+    // state.icon.setStyle({
+    //   transform: 'translateY(' + state.distance + 'px)',
+    //   "-webkit-transform": 'translateY(' + state.distance + 'px)'
+    // })
+    // state.component.removeClass("transition")
+    // state.component.removeClass("animation")
+    // state.component.removeClass("fadeout")
+    // state.component.setStyle({
+    //   'margin-top': (state.distance - 42) + "px",
+    //   opacity: 0,
+    //   transform: "rotate(0)",
+    //   "-webkit-transform": "rotate(0)"
+    // })
   }
 }
 
@@ -46,40 +53,69 @@ function touchMove(e, ins) {
   var distExtraY = state.pullMoveY - state.pullStartY
   if (distExtraY > 0 && Math.abs(distExtraY) >= Math.abs(distExtraX)) {
     state.distance = calcResistance(distExtraY, state.distMax)
-    state.component.setStyle({
-      'margin-top': (state.distance - 42) + "px",
-      opacity: Math.min(1, state.distance / state.distThreshold),
-      transform: "rotate(" + (495 * state.distance / state.distMax) + "deg)",
-      "-webkit-transform": "rotate(" + (495 * state.distance / state.distMax) + "deg)"
-    })
 
     if (state.status === "pulling" && state.distance > state.distThreshold) {
       state.status = "releasing"
+      state.releasingTime = Date.now()
+      state.icon.addClass('transition')
+      state.icon.setStyle({
+        top: (state.distThreshold - 32) + 'px'
+      })
+      ins.callMethod('vibrateShort')
     }
     if (state.status === "releasing" && state.distance < state.distThreshold) {
       state.status = "pulling"
+      state.icon.removeClass('transition')
+      state.icon.setStyle({
+        top: '-32px'
+      })
+    } else if (state.status === "releasing" && state.distance > state.distThreshold) {
+      if (state.releasingTime && (Date.now() - 300) > state.releasingTime) {
+        state.icon.removeClass('transition')
+      }
+      state.icon.setStyle({
+        top: (state.distThreshold - 32) + 'px',
+        transform: 'rotate(' + distExtraY / state.distThreshold / 1.5 * 360 + 'deg)',
+        '-webkit-transform': 'rotate(' + distExtraY / state.distThreshold / 1.5 * 360 + 'deg)'
+      })
     }
-    return false
+    // state.icon.setStyle({
+    //   transform: 'translateY(' + state.distance + 'px)',
+    //   "-webkit-transform": 'translateY(' + state.distance + 'px)'
+    // })
+    // state.component.setStyle({
+    //   'margin-top': (state.distance - 42) + "px",
+    //   opacity: Math.min(1, state.distance / state.distThreshold),
+    //   transform: "rotate(" + (495 * state.distance / state.distMax) + "deg)",
+    //   "-webkit-transform": "rotate(" + (495 * state.distance / state.distMax) + "deg)"
+    // })
+    // return false
   }
   return true
 }
 
 function touchEnd(e, ins) {
   var state = e.instance.getState()
-
+  console.log('touchEnd', state.startPulling, state.status, state.distance)
   if (!state.startPulling || state.status === "refreshing") {
     return
   }
   state.startPulling = false
+  // console.log('touchEnd', state.status, state.distance)
   if (state.status === "releasing" && state.distance > state.distThreshold) {
     state.status = "refreshing"
     state.distance = state.distThreshold
-
-    state.component.addClass("animation")
-    state.component.setStyle({
-      'margin-top': (state.distance - 42) + "px",
-      opacity: Math.min(1, state.distance / state.distThreshold),
+    console.log('refreshing')
+    // state.icon.addClass("transition")
+    state.icon.addClass("animation")
+    state.icon.setStyle({
+      top: (state.distance - 32) + 'px'
     })
+    // state.component.addClass("animation")
+    // state.component.setStyle({
+    //   'margin-top': (state.distance - 42) + "px",
+    //   opacity: Math.min(1, state.distance / state.distThreshold),
+    // })
 
     ins.triggerEvent("refresh")
   } else {
@@ -91,13 +127,19 @@ function reset(state) {
   state.status = "pending"
   state.startPulling = false
   state.distance = 0
-  state.component.addClass("transition")
-  state.component.setStyle({
-    'margin-top': (state.distance - 42) + "px",
-    opacity: 0,
-    transform: "rotate(0)",
-    "-webkit-transform": "rotate(0)"
+  state.icon.removeClass("transition")
+  // state.icon.addClass("transition")
+  state.icon.setStyle({
+    top: (state.distance - 32) + 'px'
   })
+  
+  // state.component.addClass("transition")
+  // state.component.setStyle({
+  //   'margin-top': (state.distance - 42) + "px",
+  //   opacity: 0,
+  //   transform: "rotate(0)",
+  //   "-webkit-transform": "rotate(0)"
+  // })
 }
 
 function onRefreshed(newValue, oldValue, ins, itemIns) {
@@ -105,17 +147,26 @@ function onRefreshed(newValue, oldValue, ins, itemIns) {
     var state = itemIns.getState()
     state.status = "pending"
     state.startPulling = false
-
+    
     var component = state.component || ins.selectComponent(".refresh-wrap")
-    component.removeClass("animation")
-    component.addClass("transition")
-    component.addClass("fadeout")
-    component.setStyle({
-      'margin-top': "-42px",
-      opacity: 0,
-      transform: "scale(0)",
-      "-webkit-transform": "rotate(0)"
+    var icon = state.icon || ins.selectComponent(".refresh-icon")
+    console.log('dddf')
+    icon.removeClass("animation")
+    icon.removeClass("transition")
+    icon.addClass("transition")
+    icon.addClass("fadeout")
+    state.icon.setStyle({
+      top: '-32px'
     })
+    // component.removeClass("animation")
+    // component.addClass("transition")
+    // component.addClass("fadeout")
+    // component.setStyle({
+    //   'margin-top': "-42px",
+    //   opacity: 0,
+    //   transform: "scale(0)",
+    //   "-webkit-transform": "rotate(0)"
+    // })
   }
 }
 
@@ -126,20 +177,29 @@ function onRefreshing(newValue, oldValue, ins, itemIns) {
     state.distMax = state.distMax || dataset.distMax
     state.distThreshold = state.distThreshold || state.distMax * 0.75
 
+    console.log('dddff')
     state.status = "refreshing"
     state.distance = state.distThreshold
     state.startPulling = false
     state.component = state.component || ins.selectComponent(".refresh-wrap")
-
-    // state.component.removeClass("transition")
-    state.component.removeClass("fadeout")
-    state.component.addClass("transition")
-    state.component.addClass("animation")
-    state.component.setStyle({
-      'margin-top': (state.distance - 42) + "px",
-      opacity: 1,
-      transition: "none",
+    state.icon = state.icon || ins.selectComponent(".refresh-icon")
+    
+    state.icon.removeClass("fadeout")
+    state.icon.removeClass("transition")
+    // state.icon.addClass("transition")
+    state.icon.addClass("animation")
+    state.icon.setStyle({
+      top: (state.distance - 32) + 'px'
     })
+
+    // state.component.removeClass("fadeout")
+    // state.component.addClass("transition")
+    // state.component.addClass("animation")
+    // state.component.setStyle({
+    //   'margin-top': (state.distance - 42) + "px",
+    //   opacity: 1,
+    //   transition: "none",
+    // })
 
     ins.triggerEvent("refresh")
   }
