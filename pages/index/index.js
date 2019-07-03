@@ -6,6 +6,8 @@ const util = require('../../utils/util.js')
 Page({
   name: 'index',
   data: {
+    refreshing: false,
+    refreshed: false,
     collected: false,
     banners: [], // 主banner
     subBanners: [], // 副banner
@@ -194,6 +196,12 @@ Page({
       this.setData({
         recommendationLoading: false
       })
+      if (pn ==1) {
+        this.setData({
+          refreshing: false,
+          refreshed: true
+        })
+      }
       wx.stopPullDownRefresh()
     })
   },

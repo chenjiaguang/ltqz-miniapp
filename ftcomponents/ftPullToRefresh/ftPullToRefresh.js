@@ -1,7 +1,12 @@
 // ftcomponents/ftPullToRefresh/ftPullToRefresh.js
 // 使用的时候，用本组件包裹可以触发下拉刷新的内容。enablePullDownRefresh需要设置为false。
-
+const app = getApp()
+const platform = app.globalData.platform
+  
 Component({
+  options: {
+    multipleSlots: true // 在组件定义时的选项中启用多slot支持
+  },
   properties: {
     refreshed: { // 必选，通知本组件收起
       type: Boolean,
@@ -15,17 +20,14 @@ Component({
       type: Number,
       value: 160,
     },
-    color: { // 可选，圆弧颜色
-      type: String,
-      value: "#000",
-    },
-    backgroundColor: { // 可选，背景颜色
-      type: String,
-      value: "#fff",
-    },
+    iconDist: {
+      type: Number,
+      value: 140
+    }
   },
   data: {
-    reachTop: false,
+    platform: platform,
+    reachTop: false
   },
   methods: {
     initObserver() {

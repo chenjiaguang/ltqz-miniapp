@@ -7,6 +7,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    navTitle: '',
     typeTitle: {
       1: '用户须知',
       2: '免责声明',
@@ -22,6 +23,9 @@ Page({
     const title = this.data.typeTitle[options.type]
     wx.setNavigationBarTitle({
       title: title || ''
+    })
+    this.setData({
+      navTitle: title || ''
     })
     this.fetchStatement(options.type)
   },

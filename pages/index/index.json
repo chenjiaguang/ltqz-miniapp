@@ -2,9 +2,11 @@
   "backgroundColor": "#FFFFFF",
   "backgroundColorTop": "#F5F5F5",
   "backgroundColorBottom": "#FFFFFF",
-  "enablePullDownRefresh": true,
+  "enablePullDownRefresh": false,
   "disableSwipeBack": true,
   "usingComponents": {
+    "ft-pull-to-refresh": "../../ftcomponents/ftPullToRefresh/ftPullToRefresh",
+    "ft-custom-nav": "../../ftcomponents/ftCustomNav/ftCustomNav",
     "ft-banners": "../../ftcomponents/ftBanners/ftBanners",
     "ft-cates": "../../ftcomponents/ftCates/ftCates",
     "ft-theme": "../../ftcomponents/ftTheme/ftTheme",

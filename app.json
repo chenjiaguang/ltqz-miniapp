@@ -37,6 +37,7 @@
     "pages/testpage/testpage"
   ],
   "window": {
+    "navigationStyle": "custom",
     "backgroundTextStyle": "dark",
     "navigationBarBackgroundColor": "#FFFFFF",
     "backgroundColor": "#FFFFFF",

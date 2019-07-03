@@ -5,6 +5,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    navTitle: '',
     image: ''
   },
 
@@ -20,6 +21,9 @@ Page({
     if (options.title) {
       wx.setNavigationBarTitle({
         title: options.title,
+      })
+      this.setData({
+        navTitle: options.title
       })
     }
   },

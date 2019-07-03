@@ -7,6 +7,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    navTitle: '',
     id: '',
     genderPickerRange: [{
         label: '男',
@@ -32,13 +33,6 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
-    this.setData({
-      id: options.id || '',
-      name: options.name || '',
-      idcard: options.id_number || '',
-      sex: options.sex || '',
-      requireidcard: options.requireidcard || false
-    })
     if (options.id) {
       wx.setNavigationBarTitle({
         title: '编辑出行人'
@@ -48,6 +42,14 @@ Page({
         title: '新增出行人'
       })
     }
+    this.setData({
+      id: options.id || '',
+      name: options.name || '',
+      idcard: options.id_number || '',
+      sex: options.sex || '',
+      requireidcard: options.requireidcard || false,
+      navTitle: options.id ? '编辑出行人' : '新增出行人'
+    })
   },
 
   /**

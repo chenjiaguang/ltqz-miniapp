@@ -10,7 +10,8 @@ page{
   height: 14rpx;
 }
 .banner-wrapper{
-  padding: 10rpx 0 10rpx;
+  /* padding: 10rpx 0 10rpx; */
+  padding: 0 0 10rpx;
 }
 .sub-banner{
   display: block;

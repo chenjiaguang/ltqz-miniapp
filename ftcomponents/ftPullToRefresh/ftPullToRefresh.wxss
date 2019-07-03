@@ -27,7 +27,7 @@
 }
 :host{
   overflow-y: visible;
-  position: relative;
+  /* position: relative; */
 }
 .refresh-icon{
   position: fixed;
@@ -47,7 +47,7 @@
 /* .refresh-icon.fadeout {
   animation: fadeout 0.3s ease-in-out;
 } */
-.refresh-wrap {
+/* .refresh-wrap {
   width: 42px;
   height: 42px;
   background-color: #fff;
@@ -61,7 +61,6 @@
   left: 0;
   top: -42px;
   transform: scale(1, 1);
-  /* 目前发现的可以在超出容器后，仍能显示的就只有animation属性了,所以这里简单的加个animation属性来达到显示的效果 */
   animation: rolling 100000000s linear infinite;
 }
 .refresh-wrap.transition {
@@ -102,12 +101,16 @@
 }
 .refreshing-text.show{
   display: block;
-}
-.wrap {
+} */
+.wrapper {
   width: 100%;
-  position: relative;
+  position: absolute;
+  /* overflow: visible; */
 }
-.wrap .intersection-dot {
+.wrapper.transition {
+  transition: top 0.3s;
+}
+.wrapper .intersection-dot {
   position: absolute;
   width: 100%;
   height: 1px;

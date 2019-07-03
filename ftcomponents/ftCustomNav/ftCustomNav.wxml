@@ -1,11 +1,14 @@
 <!--ftcomponents/ftCustomNav/ftCustomNav.wxml-->
-<view wx:if="{{canuse && fixed}}" style="height:44px;padding-top:{{statusBarHeight}}px;box-sizing:content-box;background-color:{{bg}}"></view>
-<view wx:if="{{canuse}}" class="{{fixed ? ' wrapper-fixed' : 'wrapper-normal'}}" style="background-color:{{bg}};color:{{color}}">
-  <view class='status-bar' style="height:{{statusBarHeight}}px"></view>
-  <view class='nav-box'>
-    <view class='left-btns'>
-      <view wx:if="{{showBack}}" class='nav-back lutufont lutu-back' style="color:{{color}}" catchtap="goBack"></view>
-    </view>
-    <text class='title'>{{title}}</text>
-  </view>
+<view style="height:{{fixed ? 0 : navBoxHeight}}px;padding-top:{{fixed ? 0 : statusBarHeight}}px;box-sizing:content-box;background-color:{{bg}}">
+  <view class="intersection-dot"></view>
 </view>
+<cover-view wx:if="{{useable}}" class="wrapper{{showNav ? ' show' : ' hide'}}" style="background-color:{{bg}};color:{{color}}">
+  <cover-view class='status-bar' style="height:{{statusBarHeight}}px"></cover-view>
+  <cover-view class='nav-box' style="height:{{navBoxHeight}}px">
+    <cover-view class='left-btns'>
+      <cover-view wx:if="{{showBack}}" class='nav-back lutufont lutu-back' style="color:{{color}}" catchtap="goBack"></cover-view>
+      <cover-image wx:if="{{showHome}}" class="nav-home" src="/assets/images/home_icon.png" mode="aspectFit" catchtap="goHome" />
+    </cover-view>
+    <cover-view class='title'>{{title}}</cover-view>
+  </cover-view>
+</cover-view>

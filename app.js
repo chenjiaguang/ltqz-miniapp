@@ -5,16 +5,27 @@ import expand from '/utils/expand.js'
 import util from '/utils/util.js'
 let store = require('/store/index.js')
 const systemInfo = wx.getSystemInfoSync()
-console.log('systemInfo', systemInfo)
 const pageNavigationCustomable = util.isVersionGreater(systemInfo.version, '7.0.0') || (util.isVersionGreater(systemInfo.SDKVersion, '2.5.2') && systemInfo.platform === 'devtools')
+const statusBarHeight = systemInfo.statusBarHeight
+const MenuButtonInfo = wx.getMenuButtonBoundingClientRect()
+const menuTopSpace = MenuButtonInfo.top - statusBarHeight
+const navBoxHeight = menuTopSpace * 2 + MenuButtonInfo.height // 导航胶囊上下分别留6px的间隔
+const navUseableWidth = MenuButtonInfo.left - 20
+const navWrapperHeight = statusBarHeight + navBoxHeight
 
 App({
   globalData: {
     userInfo: null,
     themeColor: '#FF9500', // 设置主题色
     themeModalConfirmColor: '#108EE9',
-    statusBarHeight: systemInfo.statusBarHeight,
-    pageNavigationCustomable: pageNavigationCustomable
+    platform: systemInfo.platform,
+    customNav: {
+      useable: pageNavigationCustomable,
+      statusBarHeight: systemInfo.statusBarHeight,
+      navBoxHeight: navBoxHeight,
+      useableWidth: navUseableWidth,
+      navHeight: navWrapperHeight
+    }
   },
   config: config,
   store,

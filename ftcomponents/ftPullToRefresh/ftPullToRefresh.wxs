@@ -7,7 +7,10 @@ function calcResistance(distExtra, distMax) {
 function touchStart(e, ins) {
   var dataset = e.instance.getDataset()
   var state = e.instance.getState()
+  state.platform = dataset.platform
   state.distMax = dataset.distMax
+  state.iconDist = dataset.iconDist
+  state.iconDist = dataset.iconDist
   state.distThreshold = state.distMax * 0.75
   state.reachTop = dataset.reachTop
   state.status = state.status || "pending" // pending、pulling、releasing、refreshing
@@ -17,24 +20,21 @@ function touchStart(e, ins) {
     state.pullStartY = e.touches[0].clientY
     state.distance = 0
 
-    state.component = state.component || ins.selectComponent(".refresh-wrap")
     state.icon = state.icon || ins.selectComponent(".refresh-icon")
+    state.wrapper = state.wrapper || ins.selectComponent(".wrapper")
+
     state.icon.removeClass("transition")
     state.icon.removeClass("animation")
     state.icon.removeClass("fadeout")
-    // state.icon.setStyle({
-    //   transform: 'translateY(' + state.distance + 'px)',
-    //   "-webkit-transform": 'translateY(' + state.distance + 'px)'
-    // })
-    // state.component.removeClass("transition")
-    // state.component.removeClass("animation")
-    // state.component.removeClass("fadeout")
-    // state.component.setStyle({
-    //   'margin-top': (state.distance - 42) + "px",
-    //   opacity: 0,
-    //   transform: "rotate(0)",
-    //   "-webkit-transform": "rotate(0)"
-    // })
+
+    if (state.platform === 'android' || state.platform === 'devtools') { // 安卓或开发工具
+      state.wrapper.removeClass("transition")
+      state.wrapper.setStyle({
+        top: state.distance + 'px',
+        // transform: 'translateY(' + state.distance + 'px)',
+        // "-webkit-transform": 'translateY(' + state.distance + 'px)'
+      })
+    }
   }
 }
 
@@ -59,7 +59,7 @@ function touchMove(e, ins) {
       state.releasingTime = Date.now()
       state.icon.addClass('transition')
       state.icon.setStyle({
-        top: (state.distThreshold - 32) + 'px'
+        top: (state.iconDist - 32) + 'px'
       })
       ins.callMethod('vibrateShort')
     }
@@ -74,48 +74,45 @@ function touchMove(e, ins) {
         state.icon.removeClass('transition')
       }
       state.icon.setStyle({
-        top: (state.distThreshold - 32) + 'px',
+        top: (state.iconDist - 32) + 'px',
         transform: 'rotate(' + distExtraY / state.distThreshold / 1.5 * 360 + 'deg)',
         '-webkit-transform': 'rotate(' + distExtraY / state.distThreshold / 1.5 * 360 + 'deg)'
       })
     }
-    // state.icon.setStyle({
-    //   transform: 'translateY(' + state.distance + 'px)',
-    //   "-webkit-transform": 'translateY(' + state.distance + 'px)'
-    // })
-    // state.component.setStyle({
-    //   'margin-top': (state.distance - 42) + "px",
-    //   opacity: Math.min(1, state.distance / state.distThreshold),
-    //   transform: "rotate(" + (495 * state.distance / state.distMax) + "deg)",
-    //   "-webkit-transform": "rotate(" + (495 * state.distance / state.distMax) + "deg)"
-    // })
-    // return false
+    if (state.platform === 'android' || state.platform === 'devtools') { // 安卓或开发工具
+      state.wrapper.removeClass('transition')
+      state.wrapper.setStyle({
+        top: state.distance + 'px',
+        // transform: 'translateY(' + state.distance + 'px)',
+        // "-webkit-transform": 'translateY(' + state.distance + 'px)'
+      })
+      return false
+    }
   }
   return true
 }
 
 function touchEnd(e, ins) {
   var state = e.instance.getState()
-  console.log('touchEnd', state.startPulling, state.status, state.distance)
   if (!state.startPulling || state.status === "refreshing") {
     return
   }
   state.startPulling = false
-  // console.log('touchEnd', state.status, state.distance)
   if (state.status === "releasing" && state.distance > state.distThreshold) {
     state.status = "refreshing"
     state.distance = state.distThreshold
-    console.log('refreshing')
-    // state.icon.addClass("transition")
     state.icon.addClass("animation")
     state.icon.setStyle({
-      top: (state.distance - 32) + 'px'
+      top: (state.iconDist - 32) + 'px'
     })
-    // state.component.addClass("animation")
-    // state.component.setStyle({
-    //   'margin-top': (state.distance - 42) + "px",
-    //   opacity: Math.min(1, state.distance / state.distThreshold),
-    // })
+    if (state.platform === 'android' || state.platform === 'devtools') { // 安卓或开发工具
+      state.wrapper.addClass('transition')
+      state.wrapper.setStyle({
+        top: state.distance + 'px',
+        // transform: 'translateY(' + state.distance + 'px)',
+        // "-webkit-transform": 'translateY(' + state.distance + 'px)'
+      })
+    }
 
     ins.triggerEvent("refresh")
   } else {
@@ -128,18 +125,18 @@ function reset(state) {
   state.startPulling = false
   state.distance = 0
   state.icon.removeClass("transition")
-  // state.icon.addClass("transition")
   state.icon.setStyle({
-    top: (state.distance - 32) + 'px'
+    top: '-32px'
   })
-  
-  // state.component.addClass("transition")
-  // state.component.setStyle({
-  //   'margin-top': (state.distance - 42) + "px",
-  //   opacity: 0,
-  //   transform: "rotate(0)",
-  //   "-webkit-transform": "rotate(0)"
-  // })
+
+  if (state.platform === 'android' || state.platform === 'devtools') { // 安卓或开发工具
+    state.wrapper.addClass('transition')
+    state.wrapper.setStyle({
+      top: state.distance + 'px',
+      // transform: 'translateY(' + state.distance + 'px)',
+      // "-webkit-transform": 'translateY(' + state.distance + 'px)'
+    })
+  }
 }
 
 function onRefreshed(newValue, oldValue, ins, itemIns) {
@@ -148,25 +145,23 @@ function onRefreshed(newValue, oldValue, ins, itemIns) {
     state.status = "pending"
     state.startPulling = false
     
-    var component = state.component || ins.selectComponent(".refresh-wrap")
+    var wrapper = state.wrapper || ins.selectComponent(".wrapper")
     var icon = state.icon || ins.selectComponent(".refresh-icon")
-    console.log('dddf')
     icon.removeClass("animation")
-    icon.removeClass("transition")
     icon.addClass("transition")
     icon.addClass("fadeout")
-    state.icon.setStyle({
+    icon.setStyle({
       top: '-32px'
     })
-    // component.removeClass("animation")
-    // component.addClass("transition")
-    // component.addClass("fadeout")
-    // component.setStyle({
-    //   'margin-top': "-42px",
-    //   opacity: 0,
-    //   transform: "scale(0)",
-    //   "-webkit-transform": "rotate(0)"
-    // })
+
+    if (state.platform === 'android' || state.platform === 'devtools') { // 安卓或开发工具
+      wrapper.addClass('transition')
+      wrapper.setStyle({
+        top: '0px',
+        // transform: 'translateY(0)',
+        // "-webkit-transform": 'translateY(0)'
+      })
+    }
   }
 }
 
@@ -175,31 +170,31 @@ function onRefreshing(newValue, oldValue, ins, itemIns) {
     var dataset = itemIns.getDataset()
     var state = itemIns.getState()
     state.distMax = state.distMax || dataset.distMax
+    state.iconDist = state.iconDist || dataset.iconDist
     state.distThreshold = state.distThreshold || state.distMax * 0.75
 
-    console.log('dddff')
     state.status = "refreshing"
     state.distance = state.distThreshold
     state.startPulling = false
-    state.component = state.component || ins.selectComponent(".refresh-wrap")
+    
+    state.wrapper = state.wrapper || ins.selectComponent(".wrapper")
     state.icon = state.icon || ins.selectComponent(".refresh-icon")
     
     state.icon.removeClass("fadeout")
-    state.icon.removeClass("transition")
-    // state.icon.addClass("transition")
+    state.icon.addClass("transition")
     state.icon.addClass("animation")
     state.icon.setStyle({
-      top: (state.distance - 32) + 'px'
+      top: (state.iconDist - 32) + 'px'
     })
-
-    // state.component.removeClass("fadeout")
-    // state.component.addClass("transition")
-    // state.component.addClass("animation")
-    // state.component.setStyle({
-    //   'margin-top': (state.distance - 42) + "px",
-    //   opacity: 1,
-    //   transition: "none",
-    // })
+    console.log('state.wrapper', state.wrapper)
+    if (state.platform === 'android' || state.platform === 'devtools') { // 安卓或开发工具
+      state.wrapper.addClass('transition')
+      state.wrapper.setStyle({
+        top: state.distance + 'px',
+        // transform: 'translateY(' + state.distance + 'px)',
+        // "-webkit-transform": 'translateY(' + state.distance + 'px)'
+      })
+    }
 
     ins.triggerEvent("refresh")
   }

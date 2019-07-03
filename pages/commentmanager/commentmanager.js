@@ -7,6 +7,8 @@ Page({
    * 页面的初始数据
    */
   data: {
+    navColor: '#FFFFFF',
+    navBg: '#FFFFFF',
     index: 0,
     tabs: [{
       title: '全部',
@@ -43,6 +45,10 @@ Page({
       wx.setNavigationBarColor({
         frontColor: '#ffffff',
         backgroundColor: app.globalData.themeColor
+      })
+      this.setData({
+        navColor: '#FFFFFF',
+        navBg: app.globalData.themeColor,
       })
     }
     this.options = options // 把options保存下来
