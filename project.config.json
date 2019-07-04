@@ -50,7 +50,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 28,
+			"current": -1,
 			"list": [
 				{
 					"id": -1,
@@ -129,13 +129,6 @@
 					"scene": null
 				},
 				{
-					"id": 13,
-					"name": "收益-申请提现",
-					"pathName": "pages/requestcash/requestcash",
-					"query": "",
-					"scene": null
-				},
-				{
 					"id": -1,
 					"name": "收益-收益明细",
 					"pathName": "pages/userprofitdetail/userprofitdetail",
@@ -201,7 +194,7 @@
 					"id": 21,
 					"name": "活动详情",
 					"pathName": "pages/goodsdetail/goodsdetail",
-					"query": "id=64",
+					"query": "id=70",
 					"scene": null
 				},
 				{

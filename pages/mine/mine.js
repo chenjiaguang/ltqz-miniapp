@@ -1,11 +1,18 @@
 // pages/mine/mine.js
 const util = require('../../utils/util.js')
+const app = getApp()
+let themeColor = '#FFFFFF'
+if (app) {
+  themeColor = app.globalData.themeColor
+}
 Page({
   name: "mine",
   /**
    * 页面的初始数据
    */
   data: {
+    navTitle: '我的',
+    navBg: themeColor || '#FFFFFF',
     user: null,
     fx_apply_entrance: false,
     be_partner_entrance: {

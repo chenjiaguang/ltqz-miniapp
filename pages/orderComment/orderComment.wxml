@@ -1,4 +1,5 @@
 <!--pages/orderComment/orderComment.wxml-->
+<ft-custom-nav title="{{navTitle}}" />
 <view class='card'>
   <activity-content data="{{order}}" />
 </view>

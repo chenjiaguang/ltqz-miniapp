@@ -1,5 +1,7 @@
 <!--pages/orderlist/orderlist.wxml-->
-<ft-tabs class="tabs" type="2" tabs="{{tabs}}" current-color="{{tabCurrentColor}}" index="{{index}}" catchfetchlist="fetchlist" showEmpty="{{false}}" catchtabchange='tabchange'>
+<ft-pull-to-refresh refreshing="{{refreshing}}" refreshed="{{refreshed}}" bindrefresh="onPullDownRefresh">
+<ft-custom-nav slot="header" title="{{navTitle}}" />
+<ft-tabs slot="body" class="tabs" type="2" tabs="{{tabs}}" current-color="{{tabCurrentColor}}" index="{{index}}" catchfetchlist="fetchlist" showEmpty="{{false}}" catchtabchange='tabchange'>
   <view slot="tab0">
     <view class='list-box'>
       <order-card wx:for="{{tabs[0].list}}" item="{{item}}" wx:key="order_id" catchorderListRefresh="refresh" catchshare="shareTap"></order-card>
@@ -36,6 +38,7 @@
     <text wx:if="{{tabs[4].loaded&&tabs[4].list.length==0}}" class='empty-text'>还没有相关的订单哦，快去下单吧~</text>
   </view>
 </ft-tabs>
+</ft-pull-to-refresh>
 
 <draw-poster id="c-draw-poster" />
 

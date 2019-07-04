@@ -8,6 +8,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    navTitle: '电子票',
     order_id: '',
     huodong: {},
     hexiao_status_text: { // -1为失效订单|0为待付款|1为待参与|2为待评价|3已评价(当status为2或3时视为已核销)

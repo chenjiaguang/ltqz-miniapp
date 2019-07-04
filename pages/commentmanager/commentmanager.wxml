@@ -1,4 +1,5 @@
 <!--pages/commentmanager/commentmanager.wxml-->
+<ft-custom-nav title="{{navTitle}}" color="{{navColor}}" bg="{{navBg}}" />
 <ft-tabs class="tabs" type="2" tabs="{{tabs}}" index="{{index}}" catchfetchlist="fetchlist" showEmpty="{{false}}" catchtabchange='tabchange'>
   <view slot="tab0">
     <view class='list-box'>

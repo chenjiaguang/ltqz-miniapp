@@ -3,6 +3,7 @@
   "backgroundColorTop": "#F5F5F5",
   "backgroundColorBottom": "#FFFFFF",
   "usingComponents": {
+    "ft-custom-nav": "../../ftcomponents/ftCustomNav/ftCustomNav",
     "ft-banners": "../../ftcomponents/ftBanners/ftBanners",
     "ft-list-footer": "../../ftcomponents/ftListFooter/ftListFooter",
     "ft-iphone-bottom-adapter": "../../ftcomponents/ftIphoneBottomAdapter/ftIphoneBottomAdapter",

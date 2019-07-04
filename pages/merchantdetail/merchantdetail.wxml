@@ -1,4 +1,5 @@
 <!--pages/merchantdetail/merchantdetail.wxml-->
+<ft-custom-nav title="{{navTitle}}" />
 <view class='page-merchantdetail'>
   <view class='top-overview'>
     <image class='banner' mode="aspectFill" src="{{bg_pic_url}}"></image>

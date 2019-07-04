@@ -9,6 +9,7 @@ const pageNavigationCustomable = util.isVersionGreater(systemInfo.version, '7.0.
 const statusBarHeight = systemInfo.statusBarHeight
 const MenuButtonInfo = wx.getMenuButtonBoundingClientRect()
 const menuTopSpace = MenuButtonInfo.top - statusBarHeight
+const menuHeight = MenuButtonInfo.height
 const navBoxHeight = menuTopSpace * 2 + MenuButtonInfo.height // 导航胶囊上下分别留6px的间隔
 const navUseableWidth = MenuButtonInfo.left - 20
 const navWrapperHeight = statusBarHeight + navBoxHeight
@@ -22,6 +23,7 @@ App({
     customNav: {
       useable: pageNavigationCustomable,
       statusBarHeight: systemInfo.statusBarHeight,
+      menuHeight: menuHeight,
       navBoxHeight: navBoxHeight,
       useableWidth: navUseableWidth,
       navHeight: navWrapperHeight

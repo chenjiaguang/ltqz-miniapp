@@ -1,9 +1,0 @@
-<!--pages/partnercollector/partnercollector.wxml-->
-<view class='page-partnercollector'>
-  <view class='bottom-btn' style="background:transparent"></view>
-  <ft-iphone-bottom-adapter />
-  <view class='bottom-btn-wrapper'>
-    <view class='bottom-btn' catchtap="submitInfo">提交申请信息</view>
-    <ft-iphone-bottom-adapter />
-  </view>
-</view>

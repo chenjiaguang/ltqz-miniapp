@@ -1,4 +1,5 @@
 <!--pages/goodslist/goodslist.wxml-->
+<ft-custom-nav title="{{navTitle}}" />
 <view class='page-goodslist'>
   <ft-banners wx:if="{{banners && banners[0]}}" banners="{{banners}}" height="320rpx" spacing="{{0}}" border-radius="0" indicator-color="#999" indicator-currunt-color="#01CEB3" previous-margin="{{0}}" next-margin="{{0}}" catchtap="bannerTap" />
   <activity-card2 wx:for="{{activitys}}" wx:for-index="idx" wx:for-item="activity" wx:key="id" activity="{{activity}}" top-border="{{idx !== 0}}" catchactivitytap="activityTap" />

@@ -1,4 +1,5 @@
 <!--pages/userinfo/userinfo.wxml-->
+<ft-custom-nav title="{{navTitle}}" />
 <view class='card'>
   <view class='item row ai-center jc-between'>
     <text class='title'>头像</text>

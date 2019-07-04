@@ -7,6 +7,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    navTitle: '订单评价',
     id: '',
     order: null,
     content: '',

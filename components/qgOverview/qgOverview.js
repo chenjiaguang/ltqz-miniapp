@@ -99,8 +99,8 @@ Component({
         remindRequesting: true
       })
       wx.vibrateShort()
-      util.request('/huodong/qg_remind', rData).then(res => {
-        console.log('/huodong/qg_remind', res)
+      util.request('/product/qg_remind', rData).then(res => {
+        console.log('/product/qg_remind', res)
         let _obj = {}
         _obj.remindRequesting = false
         if (res.error == 0) {

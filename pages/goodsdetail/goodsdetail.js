@@ -1,6 +1,11 @@
 // pages/goodsdetail/goodsdetail.js
 import util from '../../utils/util.js'
 import storageHelper from '../../utils/storageHelper.js'
+const app =  getApp()
+let navHeight = 0
+if (app.globalData.customNav && app.globalData.customNav.navHeight) {
+  navHeight = app.globalData.customNav.navHeight
+}
 // todo 添加购买须知后滚动切换tab有bug，需修复
 Page({
   name: 'goodsdetail',
@@ -8,7 +13,9 @@ Page({
    * 页面的初始数据
    */
   data: {
+    navTitle: '活动详情',
     tabFixed: false,
+    navHeight: navHeight,
     goodsLoaded: false, // 是否已加载数据
     commentLoaded: false, // 是否已加载评价
     fromUid: '',
@@ -226,7 +233,7 @@ Page({
 
   fetchGoods: function (id) {
     let rData = {id}
-    util.request('/huodong/detail', rData).then(res => {
+    util.request('/product/detail', rData).then(res => {
       if (res.error == 0 && res.data) {
         // 处理展示详情内容
         let arrEntities = { 'lt': '<', 'gt': '>', 'nbsp': ' ', 'amp': '&', 'quot': '"', 'mdash': '——', 'ldquo': '“', 'rdquo': '”', '#39': "'", 'ensp': '' }
@@ -302,7 +309,7 @@ Page({
     query.select(scrollid).boundingClientRect()
     query.selectViewport().scrollOffset()
     query.exec(res => {
-      const scrollPos = res[0].top + res[1].scrollTop - 90 * rpx
+      const scrollPos = res[0].top + res[1].scrollTop - (90 * rpx) - this.data.navHeight
       wx.pageScrollTo({
         scrollTop: scrollPos + 1,
         duration: 0,
@@ -330,13 +337,15 @@ Page({
   initTabScroll: function () {
     const systemInfo = wx.getSystemInfoSync()
     const rpx = systemInfo.windowWidth / 750
-    const tabHeaderObserveRect = { bottom: -(systemInfo.windowHeight - 1)}
-    const tabContentObserveRect = { top: -90 * rpx, bottom: -(systemInfo.windowHeight - 1 - 90 *rpx) }
+      
+    const tabHeaderObserveRect = { bottom: -(systemInfo.windowHeight - 1) + this.data.navHeight}
+    const tabContentObserveRect = { top: -(90 * rpx) - this.data.navHeight, bottom: -(systemInfo.windowHeight - (90 * rpx) - this.data.navHeight - 1) }
     wx.createIntersectionObserver().relativeToViewport(tabHeaderObserveRect).observe('#tab-wrapper', (res) => {
       const tabFixed = res.intersectionRatio > 0
       this.setData({tabFixed})
     })
     wx.createIntersectionObserver().relativeToViewport(tabContentObserveRect).observe('#goods-content', (res) => {
+      console.log('#goods-content', systemInfo.windowHeight, res)
       if (res.intersectionRatio > 0) {
         const { tabindex: currentTab } = res.dataset
         this.setData({ currentTab })

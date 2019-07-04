@@ -1,4 +1,5 @@
 <!--pages/mine/mine.wxml-->
+<ft-custom-nav title="{{navTitle}}" bg="{{navBg}}" color="#ffffff" />
 <view class='page-mine'>
   <view class='user-info theme-bg row center' catchtap="goUserInfo">
     <image class="avatar" src="{{user.avatar}}" />

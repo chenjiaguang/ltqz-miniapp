@@ -1,5 +1,6 @@
 // pages/orderdetail/orderdetail.js
 const util = require('../../utils/util.js')
+import storageHelper from '../../utils/storageHelper'
 
 Page({
   name: 'orderdetail',
@@ -7,6 +8,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    navTitle: '订单详情',
     id: '',
     order: null,
     traveler_infos: [],

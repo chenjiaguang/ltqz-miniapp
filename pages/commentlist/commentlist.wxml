@@ -1,4 +1,5 @@
 <!--pages/commentmanager/commentmanager.wxml-->
+<ft-custom-nav title="{{navTitle}}" />
 <view class='page-commentlist'>
   <ft-list-loader visible="{{!loaded}}" />
   <view wx:if="{{list && list[0]}}" class='list-box'>

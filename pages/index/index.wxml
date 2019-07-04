@@ -1,21 +1,12 @@
 <!--index.wxml-->
 <ft-pull-to-refresh refreshing="{{refreshing}}" refreshed="{{refreshed}}" bindrefresh="onPullDownRefresh">
-  <!-- <ft-custom-nav slot="header" hideDist="422rpx" fixed /> -->
+  <ft-custom-nav slot="header" hideDist="422rpx" fixed />
   <!-- <view class='page-top-padding'></view> -->
   <view slot="body" class="page-index">
   <view wx:if="{{(banners && banners[0]) || (subBanners && subBanners[0])}}" class='banner-wrapper'>
     <!-- <ft-custom-nav hideDist="211" fixed /> -->
     <ft-banners wx:if="{{banners && banners[0]}}" banners="{{banners}}" height="422rpx" spacing="{{0}}" border-radius="0" indicator-color="rgba(0,0,0,0.5)" indicator-currunt-color="rgba(0,0,0,1)" previous-margin="{{0}}" next-margin="{{0}}" catchtap="bannerTap" />
     <ft-banners wx:if="{{subBanners && subBanners[0]}}" banners="{{subBanners}}" height="180rpx" spacing="{{0}}" border-radius="0" indicator-color="rgba(0,0,0,0.5)" indicator-currunt-color="rgba(0,0,0,1)" previous-margin="{{0}}" next-margin="{{0}}" catchtap="bannerTap" />
-  </view>
-  <view style="position:fixed;left:0;top:100px;background:red;z-index:9999">
-    11111111111111
-  </view>
-  <view style="position:fixed;left:0;top:200px;background:red;z-index:9999">
-    22222222222222
-  </view>
-  <view style="position:fixed;left:0;top:300px;background:red;z-index:9999">
-    33333333333333
   </view>
   <ft-cates wx:if="{{cates && cates[0]}}" cates="{{cates}}" max="{{(cates.length < 10 && cates.length != 5) ? 4 : 5}}" padding="14rpx 26rpx 14rpx" catchtap="cateTap" />
   <view wx:if="{{themes && themes[0]}}" class='theme-box'>

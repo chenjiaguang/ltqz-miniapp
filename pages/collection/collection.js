@@ -6,6 +6,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    navTitle: '我的收藏',
     status: 0,
     isCheckAll: false,
     list: [],

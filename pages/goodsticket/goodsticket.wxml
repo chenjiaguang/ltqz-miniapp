@@ -1,4 +1,5 @@
 <!--pages/goodsticket/goodsticket.wxml-->
+<ft-custom-nav title="{{navTitle}}" />
 <view class='page-goodsticket'>
   <view class='info-wrapper'>
     <view class='top-info'>

@@ -1,11 +1,19 @@
 // pages/hexiaosetting/hexiaosetting.js
 const util = require('../../utils/util.js')
+const app = getApp()
+let themeColor = '#FFFFFF'
+if (app) {
+  themeColor = app.globalData.themeColor
+}
+
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
+    navTitle: '核销码设置',
+    navBg: themeColor || '#FFFFFF',
     id: '',
     code: ''
   },

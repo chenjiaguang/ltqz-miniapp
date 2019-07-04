@@ -2,6 +2,7 @@
   "navigationBarTitleText": "电子票",
   "backgroundColor": "#F5F5F5",
   "usingComponents": {
+    "ft-custom-nav": "../../ftcomponents/ftCustomNav/ftCustomNav",
     "confirm-code": "../../components/confirmCode/confirmCode",
     "ft-iphone-bottom-adapter": "../../ftcomponents/ftIphoneBottomAdapter/ftIphoneBottomAdapter"
   }

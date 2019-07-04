@@ -161,7 +161,7 @@ Page({
       status: 1,
       pn: pn
     }
-    util.request('/huodong/list', rData).then(res => {
+    util.request('/product/list', rData).then(res => {
       if (res.error == 0 && res.data) {
         let {
           list,

@@ -1,4 +1,5 @@
 <!--pages/activitymanager/activitymanager.wxml-->
+<ft-custom-nav title="{{navTitle}}" bg="{{navBg}}" color="#ffffff" />
 <ft-list-loader visible="{{!page}}" />
 <block wx:for="{{list}}" wx:key='id'>
   <activity-card3 class="activity" activity="{{item}}" />

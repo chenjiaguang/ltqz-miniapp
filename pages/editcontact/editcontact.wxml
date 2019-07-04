@@ -1,4 +1,5 @@
 <!--pages/editcontact/editcontact.wxml-->
+<ft-custom-nav title="{{navTitle}}" />
 <view class='page-editcontact'>
   <view class='card info-box'>
     <view class='info-item-wrapper'>

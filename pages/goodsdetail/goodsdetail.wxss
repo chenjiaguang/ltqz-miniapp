@@ -294,7 +294,7 @@ page{
   height: 90rpx;
 }
 .detail-and-comment-header-fixer{
-  position: relative;
+  position: static;
   width: 100%;
   left: 0;
   top: 0;

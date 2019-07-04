@@ -1,6 +1,7 @@
 // ftcomponents/ftCustomNav/ftCustomNav.js
 const app = getApp()
 const navInfo = app.globalData.customNav
+console.log('navInfo', navInfo)
 Component({
   /**
    * 组件的属性列表
@@ -14,13 +15,27 @@ Component({
       type: Boolean,
       value: false
     },
-    color: {
+    color: { // 仅支持 #000000 和 #ffffff
       type: String,
-      value: '#000000'
+      value: '#000000',
+      observer: function (newVal, oldVal) {
+        // 属性值变化时执行
+        if (newVal === '#ffffff') {
+          wx.setNavigationBarColor({
+            frontColor: newVal,
+            backgroundColor	: this.data.bg || '#ffffff'
+          })
+        } else if (newVal === '#000000') {
+          wx.setNavigationBarColor({
+            frontColor: newVal,
+            backgroundColor	: this.data.bg || '#ffffff'
+          })
+        }
+      }
     },
     bg: {
       type: String,
-      value: '#FFFFFF'
+      value: '#ffffff'
     },
     hideDist: {
       type: String,
@@ -31,14 +46,16 @@ Component({
         let dist = 0
         const systemInfo = wx.getSystemInfoSync()
         const rpx = systemInfo.windowWidth / 750
-        if (val.indexOf('rpx') !== -1) { // 传入的是rpx
-          dist = parseInt(val) * rpx
-        } else if (val.indexOf('%') !== -1) {
-          dist = systemInfo.windowHeight * (parseFloat(val) / 100)
-        } else {
-          dist = parseInt(val)
+        if (val) {
+          if (val.indexOf('rpx') !== -1) { // 传入的是rpx
+            dist = parseInt(val) * rpx
+          } else if (val.indexOf('%') !== -1) {
+            dist = systemInfo.windowHeight * (parseFloat(val) / 100)
+          } else {
+            dist = parseInt(val)
+          }
+          this.initObserver(dist)
         }
-        this.initObserver(dist)
       }
     }
   },
@@ -47,12 +64,14 @@ Component({
    * 组件的初始数据
    */
   data: {
+    showHideChanged: false,
     showNav: true,
     showBack: false,
     showHome: false,
     useable: navInfo.useable,
     statusBarHeight: navInfo.statusBarHeight,
     navBoxHeight: navInfo.navBoxHeight,
+    menuHeight: navInfo.menuHeight,
     useableWidth: navInfo.useableWidth,
     navHeight: navInfo.navHeight,
     color: '#333333',
@@ -61,6 +80,7 @@ Component({
 
   attached: function () {
     const pages = getCurrentPages()
+    console.log('attached', pages)
     if (pages.length > 1) {
       this.setData({
         showBack: true,
@@ -85,6 +105,7 @@ Component({
         this.observer.relativeToViewport({top: top}).observe(".intersection-dot", (res) => {
           const showNav = res.intersectionRatio <= 0
           this.setData({
+            showHideChanged: true,
             showNav
           })
         })
@@ -110,18 +131,21 @@ Component({
     }
   },
   ready () {
+    console.log('ready')
     let val = this.data.hideDist
     let dist = 0
     const systemInfo = wx.getSystemInfoSync()
     const rpx = systemInfo.windowWidth / 750
-    if (val.indexOf('rpx') !== -1) { // 传入的是rpx
-      dist = parseInt(val) * rpx
-    } else if (val.indexOf('%') !== -1) {
-      dist = systemInfo.windowHeight * (parseFloat(val) / 100)
-    } else {
-      dist = parseInt(val)
+    if (val) {
+      if (val.indexOf('rpx') !== -1) { // 传入的是rpx
+        dist = parseInt(val) * rpx
+      } else if (val.indexOf('%') !== -1) {
+        dist = systemInfo.windowHeight * (parseFloat(val) / 100)
+      } else {
+        dist = parseInt(val)
+      }
+      this.initObserver(dist)
     }
-    this.initObserver(dist)
   },
   detached() {
     this.clearObserver()

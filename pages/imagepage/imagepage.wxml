@@ -1,4 +1,5 @@
 <!--pages/imagepage/imagepage.wxml-->
+<ft-custom-nav title="{{navTitle}}" />
 <view class='page-imagepage'>
   <image wx:if="{{image}}" class='image' mode="widthFix" src="{{image}}"></image>
 </view>

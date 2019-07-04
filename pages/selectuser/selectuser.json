@@ -5,6 +5,7 @@
   "backgroundColorTop": "#ffffff",
   "backgroundColorBottom": "#f5f5f5",
   "usingComponents": {
+    "ft-custom-nav": "../../ftcomponents/ftCustomNav/ftCustomNav",
     "ft-list-loader": "../../ftcomponents/ftListLoader/ftListLoader"
   }
 }

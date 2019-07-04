@@ -1,3 +1,4 @@
+<ft-custom-nav title="{{navTitle}}" />
 <view class="add-box card column ai-center" catchtap='addItem' hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
   <text class="lutufont lutu-add2 theme-color"></text>
   <text class="add-text theme-color">新增出行人信息</text>

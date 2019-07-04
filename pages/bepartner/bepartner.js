@@ -6,6 +6,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    navTitle: '申请合伙人',
     user: null
   },
 

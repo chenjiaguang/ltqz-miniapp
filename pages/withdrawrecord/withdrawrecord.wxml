@@ -1,4 +1,5 @@
 <view class='column ai-stretch'>
+  <ft-custom-nav title="{{navTitle}}" bg="{{navBg}}" color="#ffffff" />
   <ft-list-loader visible="{{!page}}" />
   <block wx:for="{{list}}" wx:key="id">
     <view class='card row jc-between ai-center'>

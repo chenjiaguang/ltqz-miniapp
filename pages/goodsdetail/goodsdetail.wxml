@@ -1,4 +1,5 @@
 <!--pages/goodsdetail/goodsdetail.wxml-->
+<ft-custom-nav hideDist="735rpx" fixed title="{{navTitle}}" />
 <view class='page-goodsdetail'>
   <view class='banner-wrapper'>
     <image class='cover' src="{{cover_url}}" mode="aspectFill"></image>
@@ -96,7 +97,7 @@
   <view class='block-separator'></view>
   <view class='detail-and-comment' id="tab-wrapper">
     <view class='scrollpoint detail-and-comment-header-wrapper' data-tabheader="{{true}}">
-      <view class="detail-and-comment-header-fixer{{tabFixed ? ' fixed' : ''}}">
+      <view class="detail-and-comment-header-fixer{{tabFixed ? ' fixed' : ''}}" style="top:{{navHeight}}px;">
         <view class='detail-and-comment-header'>
           <view catchtap="changeTab" data-idx="{{0}}" data-scrollid="#goods-content" class="detail-and-comment-tab{{currentTab == 0 ? ' theme-color' : ' black-color'}}"><text>详情</text><view class="tab-indicator{{currentTab == 0 ? ' theme-bg' : ' transparent-bg'}}"></view></view>
           <view wx:if="{{notice}}" catchtap="changeTab" data-idx="{{1}}" data-scrollid="#goods-notice" class="detail-and-comment-tab{{currentTab == 1 ? ' theme-color' : ' black-color'}}"><text>购买须知</text><view class="tab-indicator{{currentTab == 1 ? ' theme-bg' : ' transparent-bg'}}"></view></view>

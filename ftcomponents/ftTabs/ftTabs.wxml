@@ -28,7 +28,7 @@
   <view class='tap-body'>
     <swiper class='tab-swiper' current="{{current}}" duration="{{300}}" bindchange="currentChange">
       <swiper-item class="swiper-item" wx:for="{{tabs}}" wx:for-item="tab" wx:for-index="idx" wx:key="title">
-        <scroll-view class='body-wrapper' scroll-y data-idx="{{idx}}" bindscrolltolower="scrollToEnd">
+        <scroll-view class='body-wrapper' scroll-y data-idx="{{idx}}" scroll-top="{{scrollTop[idx]}}" lower-threshold="{{loadmoreThreshold[idx] || 50}}" bindscroll="recoverThreshold" bindscrolltolower="scrollToEnd">
           <ft-list-loader visible="{{!tab.loaded}}" />
           <slot name="tab{{idx}}"></slot>
           <view wx:if="{{showEmpty && tab.loaded && tab.list && !tab.list[0]}}" class='empty-tip'>暂无数据~</view>

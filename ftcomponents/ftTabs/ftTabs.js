@@ -69,8 +69,11 @@ Component({
    * 组件的初始数据
    */
   data: {
-    current: 0
+    loadmoreThreshold: {},
+    current: 0,
   },
+
+  stopLoadmore: {},
 
   ready: function() {
     let idx = this.data.index
@@ -125,6 +128,14 @@ Component({
         this.triggerEvent('tabchange', e.detail)
       }
     },
+    recoverThreshold: function (e) {
+      let {
+        idx
+      } = e.currentTarget.dataset
+      this.setData({
+        ['loadmoreThreshold.' + idx]: 50
+      })
+    },
     scrollToEnd: function(e) {
       let {
         idx
@@ -136,6 +147,9 @@ Component({
         page
       } = this.data.tabs[idx]
       let pn = ((page && page.pn) ? page.pn : firstPage) + 1
+      this.setData({
+        ['loadmoreThreshold.' + idx]: -50
+      })
       this.fetchList(idx, pn)
     },
     fetchList: function(idx, pn, isRefresh) {

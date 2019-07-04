@@ -1,11 +1,19 @@
 // pages/userprofit/userprofit.js
 const util = require('../../utils/util.js')
+const app = getApp()
+let themeColor = '#FFFFFF'
+if (app) {
+  themeColor = app.globalData.themeColor
+}
+
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
+    navTitle: '收益详情',
+    navBg: themeColor || '#FFFFFF',
     total: '',
     can_remit: '',
     has_remit: '',

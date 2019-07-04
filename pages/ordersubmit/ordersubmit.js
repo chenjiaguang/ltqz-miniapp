@@ -8,6 +8,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    navTitle: '提交订单',
     id: '', // 商品id
     fromUid: '', // 分销员id（分享出去的人的id）
     orderId: '', // 提交订单后生成的订单id

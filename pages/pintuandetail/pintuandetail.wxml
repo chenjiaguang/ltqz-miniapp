@@ -1,4 +1,5 @@
 <!--pages/pintuandetail/pintuandetail.wxml-->
+<ft-custom-nav title="{{navTitle}}" />
 <view class='page-pintuandetail'>
   <view class='row goods' bindtap='goGoodsDetail' data-goodsid="{{product_id}}">
     <image class='goods-cover' src="{{huodong.cover_url}}" mode="aspectFill"></image>

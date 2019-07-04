@@ -6,6 +6,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    navTitle: '个人资料',
     genderRange: [{
         title: '男',
         value: '1'

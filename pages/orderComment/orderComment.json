@@ -3,6 +3,7 @@
   "backgroundColorTop": "#f5f5f5",
   "backgroundColorBottom": "#f5f5f5",
   "usingComponents": {
+    "ft-custom-nav": "../../ftcomponents/ftCustomNav/ftCustomNav",
     "activity-content": "../../components/activityContent/activityContent",
     "ft-star-box": "../../ftcomponents/ftStarBox/ftStarBox",
     "ft-image-upload": "../../ftcomponents/ftImageUpload/ftImageUpload",

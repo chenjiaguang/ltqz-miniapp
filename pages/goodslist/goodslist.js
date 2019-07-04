@@ -23,6 +23,9 @@ Page({
       wx.setNavigationBarTitle({
         title: options.title
       })
+      this.setData({
+        navTitle: options.title
+      })
     }
     this.options = options
     this.fetchGoods(options.id, 1)
@@ -123,8 +126,8 @@ Page({
       home_class: id,
       pn: pn
     }
-    util.request('/huodong/list', rData).then(res => {
-      console.log('/huodong/list', res)
+    util.request('/product/list', rData).then(res => {
+      console.log('/product/list', res)
       if (res.error == 0 && res.data) {
         let {
           list,

@@ -8,6 +8,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    navTitle: '拼团详情',
     status: '', // 0:拼团失败，1:拼团中，2:拼团成功
     remainTime: 0,
     remainTimeText: '',

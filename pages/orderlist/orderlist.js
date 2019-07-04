@@ -7,6 +7,9 @@ Page({
    * 页面的初始数据
    */
   data: {
+    navTitle: '全部订单',
+    refreshing: false,
+    refreshed: true,
     index: 0,
     // states: ['', '0', '1', '2'],
     states: ['', '0', '4', '1', '2'],
@@ -171,6 +174,13 @@ Page({
         [`tabs[${index}].loaded`]: true,
         [`tabs[${index}].loading`]: false,
       })
+    }).finally(res => {
+      if (pn ==1) {
+        this.setData({
+          refreshing: false,
+          refreshed: true
+        })
+      }
     })
   },
 

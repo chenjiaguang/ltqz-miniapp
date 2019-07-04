@@ -1,11 +1,18 @@
 // pages/businessassistant/businessassistant.js
 const util = require('../../utils/util.js')
+const app = getApp()
+let themeColor = '#FFFFFF'
+if (app) {
+  themeColor = app.globalData.themeColor
+}
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
+    navTitle: '商家助手',
+    navBg: themeColor || '#FFFFFF',
     id: '',
     data: null,
     hexiao_entrance: {

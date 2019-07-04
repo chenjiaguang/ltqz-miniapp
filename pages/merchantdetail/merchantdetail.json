@@ -4,6 +4,7 @@
   "backgroundColorTop": "#F5F5F5",
   "backgroundColorBottom": "#FFFFFF",
   "usingComponents": {
+    "ft-custom-nav": "../../ftcomponents/ftCustomNav/ftCustomNav",
     "ft-star-box": "../../ftcomponents/ftStarBox/ftStarBox",
     "ft-list-loader": "../../ftcomponents/ftListLoader/ftListLoader",
     "ft-list-footer": "../../ftcomponents/ftListFooter/ftListFooter",

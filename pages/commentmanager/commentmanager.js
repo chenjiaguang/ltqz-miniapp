@@ -7,8 +7,9 @@ Page({
    * 页面的初始数据
    */
   data: {
-    navColor: '#FFFFFF',
-    navBg: '#FFFFFF',
+    navTitle: '评价管理',
+    navColor: '#ffffff',
+    navBg: '#ffffff',
     index: 0,
     tabs: [{
       title: '全部',
@@ -47,8 +48,17 @@ Page({
         backgroundColor: app.globalData.themeColor
       })
       this.setData({
-        navColor: '#FFFFFF',
+        navColor: '#ffffff',
         navBg: app.globalData.themeColor,
+      })
+    } else {
+      wx.setNavigationBarColor({
+        frontColor: '#000000',
+        backgroundColor: '#ffffff'
+      })
+      this.setData({
+        navColor: '#000000',
+        navBg: '#ffffff',
       })
     }
     this.options = options // 把options保存下来

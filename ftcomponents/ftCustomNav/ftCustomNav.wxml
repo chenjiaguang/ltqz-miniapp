@@ -1,14 +1,18 @@
 <!--ftcomponents/ftCustomNav/ftCustomNav.wxml-->
-<view style="height:{{fixed ? 0 : navBoxHeight}}px;padding-top:{{fixed ? 0 : statusBarHeight}}px;box-sizing:content-box;background-color:{{bg}}">
+<view style="height:{{fixed ? 0 : navBoxHeight}}px;padding-top:{{fixed ? 0 : statusBarHeight}}px;box-sizing:content-box;background-color:{{showNav ? bg : 'transparent'}}">
   <view class="intersection-dot"></view>
 </view>
-<cover-view wx:if="{{useable}}" class="wrapper{{showNav ? ' show' : ' hide'}}" style="background-color:{{bg}};color:{{color}}">
+<cover-view wx:if="{{useable}}" class="wrapper{{showNav ? ' show' : ' hide'}}" style="background-color:{{showNav ? bg : 'transparent'}};color:{{color}}">
   <cover-view class='status-bar' style="height:{{statusBarHeight}}px"></cover-view>
   <cover-view class='nav-box' style="height:{{navBoxHeight}}px">
-    <cover-view class='left-btns'>
-      <cover-view wx:if="{{showBack}}" class='nav-back lutufont lutu-back' style="color:{{color}}" catchtap="goBack"></cover-view>
-      <cover-image wx:if="{{showHome}}" class="nav-home" src="/assets/images/home_icon.png" mode="aspectFit" catchtap="goHome" />
+    <cover-view class='left-btns' style="height:{{menuHeight}}px">
+      <cover-view wx:if="{{showBack}}" class="nav-back nav-back-{{color === '#ffffff' ? 'black' : 'white'}}{{showNav ? ' show' : ' hide'}}" style="width:{{menuHeight}}px;height:{{menuHeight}}px;line-height:{{menuHeight}}px;color:{{color}}" catchtap="goBack">
+        <cover-image class="back-image" src="{{'/assets/images/back_icon_' + (color === '#ffffff' ? 'white' : 'black') + '.png'}}" mode="aspectFit" />
+      </cover-view>
+      <cover-view wx:if="{{showHome}}" class="nav-home nav-home-{{color === '#ffffff' ? 'black' : 'white'}}{{showNav ? ' show' : ' hide'}}" style="width:{{menuHeight}}px;height:{{menuHeight}}px;" catchtap="goHome">
+        <cover-image class="home-image" src="/assets/images/home_icon.png" mode="aspectFit" />
+      </cover-view>
     </cover-view>
-    <cover-view class='title'>{{title}}</cover-view>
+    <cover-view class="title{{showHideChanged ? (showNav ? ' show' : ' hide') : (hideDist ? ' hide' : ' show')}}">{{title}}</cover-view>
   </cover-view>
 </cover-view>

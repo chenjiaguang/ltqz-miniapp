@@ -1,4 +1,5 @@
 <!--pages/statement/statement.wxml-->
+<ft-custom-nav title="{{navTitle}}" />
 <view class='page-statement'>
   <rich-text wx:if="{{content}}" nodes="{{content}}"></rich-text>
 </view>

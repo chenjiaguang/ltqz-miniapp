@@ -1,4 +1,5 @@
 <!--pages/userinfo/userinfo.wxml-->
+<ft-custom-nav title="{{navTitle}}" />
 <view class='tip'>想成为范团亲子的分销合伙人，获得现金奖励吗？ 现在提交您的申请信息，我们会在1-2天内进行审核：</view>
 <view class='card'>
   <view class='item row ai-center jc-between'>

@@ -5,6 +5,7 @@
   "backgroundColorBottom": "#FFFFFF",
   "usingComponents": {
     "ft-banners": "../../ftcomponents/ftBanners/ftBanners",
+    "ft-custom-nav": "../../ftcomponents/ftCustomNav/ftCustomNav",
     "share-button": "../../components/shareButton/shareButton",
     "ft-star-box": "../../ftcomponents/ftStarBox/ftStarBox",
     "comment-box": "../../components/commentBox/commentBox",

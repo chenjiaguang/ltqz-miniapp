@@ -2,8 +2,11 @@
   "backgroundColor": "#FFFFFF",
   "backgroundColorTop": "#FFFFFF",
   "backgroundColorBottom": "#FFFFFF",
+  "navigationBarBackgroundColor": "#FF9500",
+  "navigationBarTextStyle": "white",
   "navigationBarTitleText": "评价管理",
   "usingComponents": {
+    "ft-custom-nav": "../../ftcomponents/ftCustomNav/ftCustomNav",
     "ft-tabs": "../../ftcomponents/ftTabs/ftTabs",
     "ft-star-box": "../../ftcomponents/ftStarBox/ftStarBox",
     "ft-list-loader": "../../ftcomponents/ftListLoader/ftListLoader",

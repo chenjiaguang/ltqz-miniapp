@@ -1,4 +1,5 @@
 <!--pages/orderdetail/orderdetail.wxml-->
+<ft-custom-nav title="{{navTitle}}" />
 <view class='page-orderdetail'>
   <view class="left-time{{(countdown > 0 && countdown_text) ? ' show' : ''}}"><text>{{countdown_text}}</text></view>
   

@@ -320,7 +320,7 @@ Component({
       }, () => {
         this.triggerEvent('statuschange', { fetching: this.data.fetching, drawing: this.data.drawing })
       })
-      util.request('/huodong/share', rData).then(res => {
+      util.request('/product/share', rData).then(res => {
         if (res.data) {
           let data = res.data
           let _obj = {}

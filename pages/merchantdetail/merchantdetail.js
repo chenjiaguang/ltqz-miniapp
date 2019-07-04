@@ -7,6 +7,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    navTitle: '商家详情',
     id: '',
     name: '',
     introduce: '',
@@ -128,8 +129,8 @@ Page({
       shop_id: id,
       pn: pn
     }
-    util.request('/huodong/list', rData).then(res => {
-      console.log('/huodong/list', res)
+    util.request('/product/list', rData).then(res => {
+      console.log('/product/list', res)
       if (res.error == 0 && res.data) {
         let {
           list,

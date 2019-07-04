@@ -5,6 +5,7 @@
   "backgroundColorTop": "#FF9500",
   "backgroundColorBottom": "#f5f5f5",
   "usingComponents": {
+    "ft-custom-nav": "../../ftcomponents/ftCustomNav/ftCustomNav",
     "ft-iphone-bottom-adapter": "../../ftcomponents/ftIphoneBottomAdapter/ftIphoneBottomAdapter",
     "ft-list-loader": "../../ftcomponents/ftListLoader/ftListLoader",
     "ft-list-footer": "../../ftcomponents/ftListFooter/ftListFooter"
