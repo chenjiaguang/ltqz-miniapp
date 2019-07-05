@@ -18,8 +18,8 @@
     </view>
     <view style="height:26rpx"></view>
   </view>
-  <view class='block-separator'></view>
-  <view class='buy-for'>
+  <view wx:if="{{fill_info}}" class='buy-for'>
+    <view class='block-separator'></view>
     <view class='buy-for-header'>出行人信息</view>
     <view class='buy-for-body' catchtap="toggleBuyfor" data-compute="{{true}}">
       <view class='buy-for-left'>
@@ -38,16 +38,12 @@
       <text class='buy-for-icon lutufont lutu-next2'></text>
     </view>
   </view>
-  <view class='block-separator'></view>
-  <view class='contact-info'>
+  <view wx:if="{{contact && contact.length}}" class='contact-info'>
+    <view class='block-separator'></view>
     <view class='contact-header'>联系人信息</view>
-    <view class='contact-name'>
-      <view class='contact-name-title'><text>联系人</text></view>
-      <input class='contact-name-input' value="{{contact.name}}" placeholder-class="input-placeholder" type="text" placeholder="请填写联系人姓名" bindinput="contactInput" data-ele="name"></input>
-    </view>
-    <view class='contact-phone'>
-      <view class='contact-phone-title'><text>手机号</text></view>
-      <input class='contact-phone-input' value="{{contact.phone}}" placeholder-class="input-placeholder" type="number" placeholder="请输入手机号" bindinput="contactInput" data-ele="phone"></input>
+    <view wx:for="{{contact}}" wx:item="ct" wx:index="idx" wx:key="name" class='contact-item'>
+      <view class='contact-item-title'><text>{{ct.label}}</text></view>
+      <input class='contact-item-input' value="{{ct.value}}" placeholder-class="input-placeholder" type="text" placeholder="请填写联系人{{ct.label}}" bindinput="contactInput" data-ele="{{ct.name}}" data-idx="{{idx}}"></input>
     </view>
   </view>
   <view class='clause-box' catchtap="changeClause">

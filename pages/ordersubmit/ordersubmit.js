@@ -26,10 +26,7 @@ Page({
     buy_for: [],
     buy_for_text: '',
     buyfors: [],
-    contact: {
-      name: '',
-      phone: ''
-    },
+    contact: [],
     clauses: [
       { name: '用户须知', path: '/pages/statement/statement?type=1'},
       { name: '平台免责声明', path: '/pages/statement/statement?type=2'}
@@ -47,9 +44,21 @@ Page({
     let data = storageHelper.getStorage('orderSubmitJson') ? JSON.parse(storageHelper.getStorage('orderSubmitJson')) : {}
     const contactJson = storageHelper.getStorage('orderContact')
     if (contactJson) {
-      data.contact = JSON.parse(contactJson)
+      let contact = JSON.parse(contactJson) || []
+      let shouldFill = this.getFillForm(data.fill_form)
+      const shouldFillName = shouldFill.map(item => item.name)
+      let updateContact = contact.filter(item => shouldFillName.indexOf(item.name) !== -1)
+      shouldFill.forEach(item => {
+        for (let i = 0; i < updateContact.length; i++) {
+          if (updateContact[i].name === item.name && updateContact[i].value) {
+            item.value = updateContact[i].value
+          }
+        }
+      })
+      data.contact = shouldFill
     }
     data.selectedTickets = data.currentTickets.filter(item => item.num > 0)
+    // const shouldFill = this.getFillForm(data.fill_form)
     this.setData(data)
     this.fetchBuyfors() // 获取常用联系人
     this.setBuyforsWrapperHeight() // 设置选择联系人弹窗高度为扳平高度
@@ -106,6 +115,16 @@ Page({
 
   stopPropagation: function () {
     return false
+  },
+
+  getFillForm: function (form) {
+    let fillForm = []
+    if (form && form.key) {
+      for( let key in form.key) {
+        fillForm.push({name: form.key[key], label: key, value: ''})
+      }
+    }
+    return fillForm
   },
 
   fetchBuyfors: function () {
@@ -203,31 +222,54 @@ Page({
 
   submitOrder: function () {
     console.log('submitOrder')
-    const { id, fromUid, selectedTickets, contact, buy_for, submitting, clause_checked, saletype, tuan_id, totalPrice} = this.data
-    if (!(contact.name && contact.phone && buy_for && buy_for.length && !submitting && clause_checked)) { // 如果联系人信息不完整、没有选中的出行人、正在提交，则中断操作
-      if (!contact.name) {
-        wx.showToast({
-          title: '填写联系人姓名',
-          icon: 'none'
-        })
-      } else if (!contact.phone) {
-        wx.showToast({
-          title: '填写联系人手机号',
-          icon: 'none'
-        })
-      } else if (!buy_for || !buy_for.length) {
-        wx.showToast({
-          title: '选择出行人',
-          icon: 'none'
-        })
-      } else if (!clause_checked) {
-        wx.showToast({
-          title: '请勾选同意重要条款',
-          icon: 'none'
-        })
-      }
+    const { id, fromUid, fill_info, selectedTickets, contact, buy_for, submitting, clause_checked, saletype, tuan_id, totalPrice} = this.data
+    const contactEmptyItem = contact.filter(item => !item.value)
+
+    if (fill_info && (!buy_for || (buy_for && !buy_for.length))) { // 联系人信息不完整
+      wx.showToast({
+        title: '请选择出行人',
+        icon: 'none'
+      })
+      return false
+    } else if (contactEmptyItem && contactEmptyItem.length) { // 需要填写出行人信息 且 没有选中的出行人
+      wx.showToast({
+        title: '请填写联系人' + contactEmptyItem[0].label,
+        icon: 'none'
+      })
+      return false
+    } else if (!clause_checked) { // 未同意条款
+      wx.showToast({
+        title: '请勾选同意重要条款',
+        icon: 'none'
+      })
+      return false
+    } else if (submitting) { // 正在提交
       return false
     }
+    // if (!((!fill_info || (fill_info && buy_for && buy_for.length)) && !submitting && clause_checked)) { // 如果联系人信息不完整、需要填写出行人信息 且 没有选中的出行人、正在提交，则中断操作
+    //   if (!contact.name) {
+    //     wx.showToast({
+    //       title: '请填写联系人姓名',
+    //       icon: 'none'
+    //     })
+    //   } else if (!contact.phone) {
+    //     wx.showToast({
+    //       title: '请填写联系人手机号',
+    //       icon: 'none'
+    //     })
+    //   } else if (fill_info && !buy_for || !buy_for.length) {
+    //     wx.showToast({
+    //       title: '请选择出行人',
+    //       icon: 'none'
+    //     })
+    //   } else if (!clause_checked) {
+    //     wx.showToast({
+    //       title: '请勾选同意重要条款',
+    //       icon: 'none'
+    //     })
+    //   }
+    //   return false
+    // }
     // 保存联系人信息
     let contactJson = JSON.stringify(contact)
     storageHelper.setStorage('orderContact', contactJson)
@@ -241,8 +283,8 @@ Page({
       huodong_id: id,
       ticket: ticket,
       traveler_ids: buy_for_ids,
-      name: contact.name,
-      phone: contact.phone,
+      // name: contact.name.value,
+      // phone: contact.phone.value,
       fenxiao_user_id: fromUid,
       tuan_id: tuanid,
       total_price: totalPrice
@@ -314,9 +356,9 @@ Page({
 
   contactInput: function (e) {
     const {value} = e.detail
-    const {ele} = e.currentTarget.dataset
+    const {ele, idx} = e.currentTarget.dataset
     let _obj = {}
-    _obj['contact.' + ele] = value
+    _obj['contact[' + idx + '].' + ele] = value
     this.setData(_obj)
   },
 

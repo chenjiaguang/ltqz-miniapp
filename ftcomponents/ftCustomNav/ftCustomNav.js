@@ -64,6 +64,7 @@ Component({
    * 组件的初始数据
    */
   data: {
+    observeDist: 0,
     showHideChanged: false,
     showNav: true,
     showBack: false,
@@ -73,9 +74,7 @@ Component({
     navBoxHeight: navInfo.navBoxHeight,
     menuHeight: navInfo.menuHeight,
     useableWidth: navInfo.useableWidth,
-    navHeight: navInfo.navHeight,
-    color: '#333333',
-    bg: '#ffffff'
+    navHeight: navInfo.navHeight
   },
 
   attached: function () {
@@ -101,9 +100,12 @@ Component({
     initObserver(dist) {
       if (dist) {
         let top = dist - navInfo.navHeight
+        this.setData({
+          observeDist: top
+        })
         this.observer = this.createIntersectionObserver()
-        this.observer.relativeToViewport({top: top}).observe(".intersection-dot", (res) => {
-          const showNav = res.intersectionRatio <= 0
+        this.observer.relativeToViewport().observe(".intersection-dot", (res) => {
+          const showNav = res.intersectionRatio == 0
           this.setData({
             showHideChanged: true,
             showNav
@@ -125,6 +127,7 @@ Component({
       })
     },
     goHome: function () {
+      console.log('goHome')
       wx.switchTab({
         url: '/pages/index/index'
       })

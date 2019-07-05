@@ -1,4 +1,4 @@
-const config = require('/configs/index.js')
+const config = require('/configs/index.js');
 import authManager from '/utils/authManager.js'
 import storageHelper from '/utils/storageHelper.js'
 import expand from '/utils/expand.js'

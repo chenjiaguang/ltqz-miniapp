@@ -470,10 +470,8 @@ Page({
     } else {
       let phone = storageHelper.getStorage('uphone')
       if (phone) {
-        let _obj = {
-          name: '',
-          phone: phone
-        }
+        let _obj = contactJson ? JSON.parse(contactJson): {}
+        _obj.phone = phone
         storageHelper.setStorage('orderContact', JSON.stringify(_obj))
         this.setData({
           orderContact: _obj
@@ -483,10 +481,8 @@ Page({
           if (res.error == 0 && res.data) { // 获取用户信息成功
             if (res.data.phone) { // 有电话才设置
               storageHelper.setStorage('uphone', res.data.phone)
-              const _obj = {
-                name: res.data.nick_name,
-                phone: res.data.phone
-              }
+              let _obj = contactJson ? JSON.parse(contactJson): {}
+              _obj.phone = res.data.phone
               storageHelper.setStorage('orderContact', JSON.stringify(_obj))
               this.setData({
                 orderContact: _obj
@@ -506,10 +502,9 @@ Page({
         encryptedData: encryptedData,
       }).then(res => {
         if (res.error == 0) {
-          let _obj = {
-            name: '',
-            phone: res.data.phoneNumber
-          }
+          const contactJson = storageHelper.getStorage('orderContact')
+          let _obj = contactJson ? JSON.parse(contactJson): {}
+          _obj.phone = res.data.phoneNumber
           storageHelper.setStorage('orderContact', JSON.stringify(_obj))
           this.setData({
             orderContact: _obj
@@ -588,8 +583,8 @@ Page({
 
   nextTap: function (e) {
     const { saletype, currentSession, currentTickets, selectedTicketLength, totalPrice } = e.detail
-    const { id, tuanId: tuan_id, fromUid, title, valid_btime, valid_etime, address, session, sale_type, refund = false, include_bx } = this.data
-    let data = JSON.parse(JSON.stringify({ id, fromUid, title, address, valid_btime, valid_etime, session, sale_type, saletype, selectedTicketLength: selectedTicketLength[saletype], currentSession: currentSession[saletype], currentTickets: currentTickets[saletype], refund, include_bx, totalPrice: totalPrice[saletype], tuan_id }))
+    const { id, tuanId: tuan_id, fromUid, fill_info, fill_form, title, valid_btime, valid_etime, address, session, sale_type, refund = false, include_bx } = this.data
+    let data = JSON.parse(JSON.stringify({ id, fromUid, fill_info, fill_form, title, address, valid_btime, valid_etime, session, sale_type, saletype, selectedTicketLength: selectedTicketLength[saletype], currentSession: currentSession[saletype], currentTickets: currentTickets[saletype], refund, include_bx, totalPrice: totalPrice[saletype], tuan_id }))
     storageHelper.setStorage('orderSubmitJson', JSON.stringify(data))
     wx.navigateTo({
       url: '/pages/ordersubmit/ordersubmit'

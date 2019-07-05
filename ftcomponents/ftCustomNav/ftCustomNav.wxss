@@ -11,13 +11,15 @@
   z-index: 99;
   /* transition: opacity 0.3s, z-index 0.3s; */
 }
-.wrapper.show{
-  /* z-index: 99; */
-  background: #ffffff;
+.nav-bg{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
 }
-.wrapper.hide{
-  background: transparent;
-  /* z-index: -1; */
+.status-bar{
+  position: relative;
+  z-index: 2;
 }
 .nav-box{
   width: 100%;
@@ -25,66 +27,68 @@
   justify-content: center;
   align-items: center;
   position: relative;
+  z-index: 2;
 }
 .left-btns{
   position: absolute;
-  left: 0;
+  left: 7px;
   top: 50%;
-  transform: translateY(-50%);
-  overflow: hidden;
-  padding-left: 7px;
   display: flex;
   align-items: center;
+  /* background: green; */
+  visibility: visible !important;
 }
-.nav-back{
-  /* font-size: 20px; */
+.icon-button{
+  position: relative;
+  z-index: 999;
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  /* background: red; */
+}
+/* .icon-button.show{
+  visibility: visible;
+}
+.icon-button.hide{
+  visibility: hidden;
+} */
+.icon{
+  padding: 0;
+  border: none;
+  font-size: 20px;
+  text-align: center;
   border-radius: 50%;
-  /* text-align: center; */
-  box-sizing: border-box;
-  display: flex !important;
-  justify-content: center;
-  align-items: center;
+  display: block !important;
+  visibility: visible !important;
 }
-.back-image{
-  width: 20px;
-  height: 20px;
+.icon-black.show{
+  background: rgba(0, 0, 0, 0.1);
 }
-.nav-back-black.hide{
+.icon-white.show{
+  background: rgba(255, 255, 255, 0.1);
+}
+.icon-black.hide{
   background: rgba(0, 0, 0, 0.15);
 }
-.nav-back-white.hide{
+.icon-white.hide{
   background: rgba(255, 255, 255, 0.6);
 }
-.nav-home{
-  display: block;
-  border-radius: 50%;
-  display: flex !important;
-  justify-content: center;
-  align-items: center;
-}
-.nav-home-black.hide{
-  background: rgba(0, 0, 0, 0.15);
-}
-.nav-home-white.hide{
-  background: rgba(255, 255, 255, 0.6);
-}
-.home-image{
-  width: 24px;
-  height: 24px;
+.icon:after{
+  display: none;
+  visibility: hidden;
 }
 .title{
   font-size: 18px;
   line-height: 24px;
   font-weight: 500;
-  padding-bottom: 2px;
   opacity: 1;
+  background-color: transparent;
+  display: block !important;
 }
 .title.hide{
-  display: block;
   opacity: 0;
 }
 .intersection-dot{
   width: 100%;
-  height: 1px;
   visibility: hidden;
 }
