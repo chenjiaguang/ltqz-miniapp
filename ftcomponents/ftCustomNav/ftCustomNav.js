@@ -9,7 +9,7 @@ Component({
   properties: {
     title: {
       type: String,
-      value: '范团亲子'
+      value: '范团精选'
     },
     fixed: {
       type: Boolean,

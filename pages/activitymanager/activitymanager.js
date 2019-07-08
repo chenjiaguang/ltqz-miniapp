@@ -80,7 +80,7 @@ Page({
     this.setData({
       loading: true
     })
-    util.request('/admin/huodong/list', {
+    util.request('/admin/product/list', {
       pn: pn,
       id: this.data.id
     }).then(res => {

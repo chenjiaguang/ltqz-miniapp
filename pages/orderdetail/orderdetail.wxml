@@ -4,11 +4,11 @@
   <view class="left-time{{(countdown > 0 && countdown_text) ? ' show' : ''}}"><text>{{countdown_text}}</text></view>
   
   <view class='row goods' bindtap='goGoodsDetail'>
-    <image class='goods-cover' src="{{huodong.cover_url}}" mode="aspectFill"></image>
+    <image class='goods-cover' src="{{product.cover_url}}" mode="aspectFill"></image>
     <view class='goods-content flex1 column'>
-      <text class='goods-title bold'>{{huodong.title}}</text>
-      <text class='goods-time'>{{huodong.valid_btime}} 至 {{huodong.valid_etime}}</text>
-      <text class='goods-location'>{{huodong.address}}</text>
+      <text class='goods-title bold'>{{product.title}}</text>
+      <text class='goods-time'>{{product.valid_btime}} 至 {{product.valid_etime}}</text>
+      <text class='goods-location'>{{product.address}}</text>
     </view>
     <text class='lutufont lutu-next2'></text>
   </view>
@@ -23,17 +23,17 @@
     <view class='line-separator-h'></view>
     <view class='item row'>
       <text class='key'>活动名称</text>
-      <text class='value'>{{huodong.title}}</text>
+      <text class='value'>{{product.title}}</text>
     </view>
     <view class='line-separator-h'></view>
     <view class='item row'>
       <text class='key'>活动地点</text>
-      <text class='value'>{{huodong.address || '--'}}</text>
+      <text class='value'>{{product.address || '--'}}</text>
     </view>
     <view class='line-separator-h'></view>
     <view class='item row'>
       <text class='key'>活动场次</text>
-      <text class='value'>{{huodong.session}}</text>
+      <text class='value'>{{product.session}}</text>
     </view>
     <view class='line-separator-h'></view>
     <view class='item row'>
@@ -43,7 +43,7 @@
     <view class='line-separator-h'></view>
     <view class='item row'>
       <text class='key'>实付金额</text>
-      <text class='value'>¥{{order.show_price}}{{(huodong.include_bx == 1) ? '（费用包含保险）' : ''}}</text>
+      <text class='value'>¥{{order.show_price}}{{(product.include_bx == 1) ? '（费用包含保险）' : ''}}</text>
     </view>
     <view class='line-separator-h'></view>
     <view class='item row'>
@@ -59,16 +59,16 @@
 
   <view class='list' wx:if="traveler_infos.length">
     <view class='title'>出行人信息</view>
-    <block wx:if="{{huodong.include_bx == 1}}">
+    <block wx:if="{{product.include_bx == 1}}">
       <block wx:for="{{traveler_infos}}" wx:key="name">
         <view class='line-separator-h'></view>
         <view class='item row'>
-          <text class='key'>{{item.huodongTraveler.name}}</text>
-          <text class='value'><text wx:for="{{item.huodongTraveler.id_number}}" wx:key="*this" wx:for-item="str" wx:for-index="stridx">{{(stridx >= 4 && stridx < item.huodongTraveler.id_number.length - 4) ? '*' : str}}</text></text>
+          <text class='key'>{{item.productTraveler.name}}</text>
+          <text class='value'><text wx:for="{{item.productTraveler.id_number}}" wx:key="*this" wx:for-item="str" wx:for-index="stridx">{{(stridx >= 4 && stridx < item.productTraveler.id_number.length - 4) ? '*' : str}}</text></text>
         </view>
       </block>
     </block>
-    <block wx:if="{{huodong.include_bx != 1 && traveler_name_text}}">
+    <block wx:if="{{product.include_bx != 1 && traveler_name_text}}">
       <view class='line-separator-h'></view>
       <view class='item row'>
         <text class='key'>{{traveler_name_text}}</text>
@@ -76,17 +76,14 @@
     </block>
   </view>
 
-  <view class='list'>
+  <view wx:if="{{contact_info && contact_info.length}}" class='list'>
     <view class='title'>联系人信息</view>
-    <view class='line-separator-h'></view>
-    <view class='item row'>
-      <span class='key'>姓名</span>
-      <span class='value'>{{order.name}}</span>
-    </view>
-    <view class='line-separator-h'></view>
-    <view class='item row'>
-      <span class='key'>手机</span>
-      <span class='value'>{{order.phone}}</span>
+    <view wx:for="{{contact_info}}" wx:key="label">
+      <view class='line-separator-h'></view>
+      <view class='item row'>
+        <span class='key'>{{item.label}}</span>
+        <span class='value'>{{item.value}}</span>
+      </view>
     </view>
   </view>
   <view wx:if="{{order.status && (order.status === '0' || (order.status !== '0' && order.status !== '-1'))}}" class='bottom-button-wrapper'>

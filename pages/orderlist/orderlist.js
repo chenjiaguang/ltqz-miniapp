@@ -110,16 +110,17 @@ Page({
   onPullDownRefresh: function() {
     wx.stopPullDownRefresh()
     let i = this.data.index
-    this.setData({
-      [`tabs[${i}].page`]: {
-        pn: 1
-      },
-      [`tabs[${i}].list`]: [],
-      [`tabs[${i}].loaded`]: false,
-      [`tabs[${i}].loading`]: false,
-    }, () => {
-      this.loadList(i, 1)
-    })
+    // this.setData({
+    //   [`tabs[${i}].page`]: {
+    //     pn: 1
+    //   },
+    //   [`tabs[${i}].list`]: [],
+    //   [`tabs[${i}].loaded`]: false,
+    //   [`tabs[${i}].loading`]: false,
+    // }, () => {
+    //   this.loadList(i, 1)
+    // })
+    this.loadList(i, 1)
   },
 
   /**
@@ -153,7 +154,7 @@ Page({
       [`tabs[${index}].loading`]: true,
     })
     util.request('/order/list', data).then(res => {
-      let list = []
+      // let list = []
       res.data.list.forEach((item) => {
         item.price = util.formatMoney(item.price).showMoney
         item.huodong.valid_btime = util.formatDateTimeDefault('d', item.huodong.valid_btime)
@@ -162,18 +163,20 @@ Page({
           return item.name + '×' + item.quantity
         }).join(',')
       })
-      
+      let _obj = {}
       if (pn == 1) {
-        list = res.data.list
+        _obj[`tabs[${index}].list`] = res.data.list
       } else {
-        list = this.data.tabs[index].list.concat(res.data.list)
+        let preLen = this.data.tabs[index].list.length
+        let currentNum = res.data.list.length
+        for (let i = 0; i < currentNum; i++) {
+          _obj[`tabs[${index}].list[${preLen + i}]`] = res.data.list[i]
+        }
       }
-      this.setData({
-        [`tabs[${index}].list`]: list,
-        [`tabs[${index}].page`]: res.data.page,
-        [`tabs[${index}].loaded`]: true,
-        [`tabs[${index}].loading`]: false,
-      })
+      _obj[`tabs[${index}].page`] = res.data.page,
+      _obj[`tabs[${index}].loaded`] = true,
+      _obj[`tabs[${index}].loading`] = false
+      this.setData(_obj)
     }).finally(res => {
       if (pn ==1) {
         this.setData({

@@ -18,11 +18,11 @@ Component({
     },
     distMax: { // 可选，可以下拉的最大高度，回弹的高度为最大高度的75%
       type: Number,
-      value: 160,
+      value: 110,
     },
     iconDist: {
       type: Number,
-      value: 140
+      value: 110
     }
   },
   data: {

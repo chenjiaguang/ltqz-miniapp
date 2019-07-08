@@ -1,4 +1,6 @@
 // components/activityCard3/activityCard3.js
+import statusHelper from '../../utils/statusHelper'
+
 Component({
   /**
    * 组件的属性列表
@@ -9,7 +11,13 @@ Component({
       value: {},
       observer: function (newVal, oldVal) { // 初始化状态
         // 属性值变化时执行
-        this.initStatus(newVal)
+        if (newVal) {
+          const statusObj = statusHelper.getCardText(newVal.type, newVal.sale_type, newVal.status, newVal.qg_status)
+          const priceObj = statusHelper.getPriceText(newVal.type, newVal.sale_type, newVal.status, newVal.qg_status, newVal.min_price, newVal.min_pt_price, newVal.min_qg_price, newVal.price_num)
+          let _obj = Object.assign({}, statusObj, priceObj)
+          this.setData(_obj)
+        }
+        // this.initStatus(newVal)
       }
     },
   },
@@ -22,20 +30,7 @@ Component({
     statusDisabled: false,
     priceText: '',
     isFree: false,
-    hasMore: false,
-    // activityStatusText: {
-    //   0: '未上架',
-    //   1: '报名中',
-    //   2: '已满额',
-    //   3: '已截止',
-    //   4: '已截止',
-    //   5: '已结束'
-    // },
-    // activityQgStatusText: {
-    //   1: '预热中',
-    //   2: '抢购中',
-    //   3: '已抢光'
-    // }
+    hasMore: false
   },
 
   /**
@@ -100,7 +95,7 @@ Component({
     },
     goSignUpManager(e) {
       wx.navigateTo({
-        url: `/pages/signupmanager/signupmanager?id=${e.currentTarget.dataset.shopid}&hd_id=${e.currentTarget.dataset.hdid}`
+        url: `/pages/signupmanager/signupmanager?id=${e.currentTarget.dataset.shopid}&product_id=${e.currentTarget.dataset.hdid}`
       })
     }
   }

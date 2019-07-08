@@ -3,10 +3,6 @@
   <view class='top-box row'>
     <view class='cover-box'>
       <image class='cover' src="{{activity.cover_url}}" mode="aspectFill"/>
-      <!-- <text wx:if="{{activity.status==1}}" class='state theme-bg-65'>报名中</text>
-      <text wx:if="{{activity.status==2}}" class='state state1'>已满额</text>
-      <text wx:if="{{activity.status==3||activity.status==4}}" class='state state2'>已截止</text>
-      <text wx:if="{{activity.status==5}}" class='state state3'>已结束</text> -->
       <view class="status{{statusDisabled ? ' status-other' : ' theme-bg-65'}}">{{statusText}}</view>
     </view>
     <view class='content-box column'>

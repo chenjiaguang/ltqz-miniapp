@@ -41,9 +41,15 @@
   <view wx:if="{{contact && contact.length}}" class='contact-info'>
     <view class='block-separator'></view>
     <view class='contact-header'>联系人信息</view>
-    <view wx:for="{{contact}}" wx:item="ct" wx:index="idx" wx:key="name" class='contact-item'>
-      <view class='contact-item-title'><text>{{ct.label}}</text></view>
-      <input class='contact-item-input' value="{{ct.value}}" placeholder-class="input-placeholder" type="text" placeholder="请填写联系人{{ct.label}}" bindinput="contactInput" data-ele="{{ct.name}}" data-idx="{{idx}}"></input>
+    <view wx:for="{{contact}}" wx:key="name" class='contact-item'>
+      <view class='contact-item-title'><text>{{item.label}}</text></view>
+      <picker wx:if="{{item.name == 'gender'}}" class="gender-wrapper" bindchange="genderChange" value="{{genderIdx}}" range="{{genderArray}}" data-idx="{{index}}">
+        <view class="gender-picker{{item.value ? '' : ' empty'}}">
+          <text>{{item.value || '请选择性别'}}</text>
+          <text class="gender-icon lutufont lutu-next"></text>
+        </view>
+      </picker>
+      <input wx:else class='contact-item-input' type="{{inputType[item.name] || 'text'}}" value="{{contact[index].value}}" placeholder-class="input-placeholder" type="text" placeholder="请填写联系人{{item.label}}" bindinput="contactInput" data-idx="{{index}}"></input>
     </view>
   </view>
   <view class='clause-box' catchtap="changeClause">

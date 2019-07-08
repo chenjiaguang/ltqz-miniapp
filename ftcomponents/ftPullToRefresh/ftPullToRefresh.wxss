@@ -33,19 +33,27 @@
   align-items: stretch;
   /* position: relative; */
 }
-.refresh-icon{
+.icon-wrapper{
   position: fixed;
   width: 32px;
   height: 32px;
-  top: -32px;
+  top: 0;
   left: 100rpx;
-  transform: translateY(0);
+  transform: translateY(-32px);
   z-index: 9999;
 }
-.refresh-icon.transition {
-  transition: top 0.3s ease-in-out;
+.icon-wrapper.transition {
+  transition: transform 0.3s ease-in-out;
 }
-.refresh-icon.animation {
+.icon{
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.icon.transition {
+  transition: transform 0.3s ease-in-out;
+}
+.icon.animation {
   animation: rolling2 1.5s linear infinite;
 }
 /* .refresh-icon.fadeout {

@@ -20,7 +20,7 @@ Page({
       2: '女'
     },
     id: '',
-    hd_id: '',
+    product_id: '',
     join_num: '',
     js_price: '',
     list: [],
@@ -34,7 +34,7 @@ Page({
   onLoad: function(options) {
     this.setData({
       id: options.id,
-      hd_id: options.hd_id
+      product_id: options.product_id
     })
   },
 
@@ -90,9 +90,9 @@ Page({
     this.setData({
       loading: true
     })
-    util.request('/admin/huodong/detail', {
+    util.request('/admin/product/detail', {
       id: this.data.id,
-      hd_id: this.data.hd_id,
+      product_id: this.data.product_id,
       pn: pn
     }).then(res => {
       res.data.js_price = util.formatMoney(res.data.js_price).showMoney
@@ -130,7 +130,7 @@ Page({
   },
   goDetail() {
     wx.navigateTo({
-      url: '/pages/goodsdetail/goodsdetail?id=' + this.data.hd_id
+      url: '/pages/goodsdetail/goodsdetail?id=' + this.data.product_id
     })
   },
   tapItem() {

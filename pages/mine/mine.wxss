@@ -31,6 +31,7 @@
   height: 120rpx;
   margin-right: 30rpx;
   border-radius: 50%;
+  background-color: #F5F5F5;
 }
 
 .user-person {

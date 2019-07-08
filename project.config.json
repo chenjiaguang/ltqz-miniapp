@@ -167,7 +167,7 @@
 					"id": 15,
 					"name": "商助-报名详情",
 					"pathName": "pages/signupmanager/signupmanager",
-					"query": "id=1&hd_id=1",
+					"query": "id=1&product_id=1",
 					"scene": null
 				},
 				{

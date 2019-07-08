@@ -12,6 +12,7 @@ Page({
     id: '',
     order: null,
     traveler_infos: [],
+    contact_info: [],
     countdown: 0,
     countdown_text: '',
     repaying: false
@@ -92,11 +93,12 @@ Page({
         res.data.ticket_text = res.data.ticket.map((item) => {
           return item.name + '×' + item.quantity
         }).join(',')
+        let product = res.data.huodong || res.data.vgoods
         // 处理时间格式
-        res.data.huodong.valid_btime = util.formatDateTimeDefault('d', res.data.huodong.valid_btime)
-        res.data.huodong.valid_etime = util.formatDateTimeDefault('d', res.data.huodong.valid_etime)
+        product.valid_btime = util.formatDateTimeDefault('d', product.valid_btime)
+        product.valid_etime = util.formatDateTimeDefault('d', product.valid_etime)
         res.data.created_at = util.formatDateTimeDefault('m', res.data.created_at)
-        
+        // 处理价格
         res.data.show_price = util.formatMoney(res.data.price).showMoney
         res.data.status = res.data.status.toString()
         let countdown = 0
@@ -110,18 +112,21 @@ Page({
           this.countdownTimer = setInterval(this.startCountdown, 1000)
         }
         let traveler_name_text = ''
-        console.log('traveler_name_text1', traveler_name_text)
-        if (res.data.huodong.include_bx != 1) { // 不包含保险时生成出行人名字字符串
-          traveler_name_text = res.data.traveler_infos.map(item => item.huodongTraveler.name).join('，')
+        if (product && product.include_bx != 1) { // 不包含保险时生成出行人名字字符串
+          traveler_name_text = res.data.traveler_infos.map(item => item.productTraveler.name).join('，')
         }
-        console.log('traveler_name_text2', traveler_name_text)
+        let contact_info = []
+        for (let key in res.data.form) {
+          contact_info.push({label: key, value: res.data.form[key]})
+        }
         this.setData({
           traveler_name_text: traveler_name_text,
           countdown: countdown,
           countdown_text: countdown_text,
-          huodong: res.data.huodong,
+          product: product,
           order: res.data,
-          traveler_infos: res.data.traveler_infos
+          traveler_infos: res.data.traveler_infos,
+          contact_info: contact_info
         })
       }
     }).catch(err => { })
@@ -218,9 +223,15 @@ Page({
   },
 
   goGoodsDetail() {
-    wx.navigateTo({
-      url: '/pages/goodsdetail/goodsdetail?id=' + this.data.huodong.id
-    })
+    let id = null
+    if (this.data.product && this.data.product.id) {
+      id = this.data.product.id
+    }
+    if (id !== null) {
+      wx.navigateTo({
+        url: '/pages/goodsdetail/goodsdetail?id=' + id
+      })
+    }
   },
 
   shareTap: function (e) {

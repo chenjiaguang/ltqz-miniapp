@@ -57,7 +57,7 @@ Page({
   onShareAppMessage: function () {
     const { cover_url } = this.data
     return {
-      title: '范团亲子-最好的成长在路上',
+      title: '范团精选-最好的成长在路上',
       path: '/pages/index/index'
     }
   },

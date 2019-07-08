@@ -1,4 +1,6 @@
 // components/goodsDetailStatus/goodsDetailStatus.js
+import statusHelper from '../../utils/statusHelper'
+
 Component({
   /**
    * 组件的属性列表
@@ -9,6 +11,12 @@ Component({
       value: {},
       observer: function (newVal, oldVal) {
         // 属性值变化时执行
+        if (newVal) {
+          const statusText = statusHelper.getStatusText(newVal.type, newVal.sale_type, newVal.status, newVal.qg_status)
+          const priceObj = statusHelper.getPriceText(newVal.type, newVal.sale_type, newVal.status, newVal.qg_status, newVal.show_min_price, newVal.show_min_pt_price, newVal.show_min_qg_price, newVal.price_num)
+          let _obj = Object.assign({}, {statusText}, priceObj)
+          this.setData(_obj)
+        }
         this.countDown(newVal)
       }
     }
@@ -18,15 +26,10 @@ Component({
    * 组件的初始数据
    */
   data: {
-    
-    statusText: {
-      0: '活动未上架',
-      1: '活动报名中',
-      2: '活动报名中',
-      3: '报名已结束',
-      4: '报名已结束',
-      5: '活动已结束'
-    },
+    statusText: '',
+    priceText: '',
+    isFree: false,
+    hasMore: false,
     remainTimeText: '',
     remainTime: 0,
     timeout: false

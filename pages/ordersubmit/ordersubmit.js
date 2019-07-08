@@ -8,6 +8,12 @@ Page({
    * 页面的初始数据
    */
   data: {
+    genderArray: ['男', '女'],
+    genderIdx: 0,
+    inputType: {
+      phone: 'number',
+      id_number: 'idcard'
+    },
     navTitle: '提交订单',
     id: '', // 商品id
     fromUid: '', // 分销员id（分享出去的人的id）
@@ -44,21 +50,18 @@ Page({
     let data = storageHelper.getStorage('orderSubmitJson') ? JSON.parse(storageHelper.getStorage('orderSubmitJson')) : {}
     const contactJson = storageHelper.getStorage('orderContact')
     if (contactJson) {
-      let contact = JSON.parse(contactJson) || []
+      let contactObj = JSON.parse(contactJson) || {}
       let shouldFill = this.getFillForm(data.fill_form)
-      const shouldFillName = shouldFill.map(item => item.name)
-      let updateContact = contact.filter(item => shouldFillName.indexOf(item.name) !== -1)
       shouldFill.forEach(item => {
-        for (let i = 0; i < updateContact.length; i++) {
-          if (updateContact[i].name === item.name && updateContact[i].value) {
-            item.value = updateContact[i].value
+        for (let key in contactObj) {
+          if (item.name === key && contactObj[key]) {
+            item.value = contactObj[key]
           }
         }
       })
-      data.contact = shouldFill
+      data.contact = shouldFill.concat([{name: 'gender', value: '', label: '性别'}])
     }
     data.selectedTickets = data.currentTickets.filter(item => item.num > 0)
-    // const shouldFill = this.getFillForm(data.fill_form)
     this.setData(data)
     this.fetchBuyfors() // 获取常用联系人
     this.setBuyforsWrapperHeight() // 设置选择联系人弹窗高度为扳平高度
@@ -163,6 +166,12 @@ Page({
     return buyfor ? JSON.parse(JSON.stringify(buyfor)) : null
   },
 
+  genderChange: function (e) {
+    let _obj = {}
+    _obj.genderIdx = e.detail.value
+    _obj['contact[' + e.currentTarget.dataset.idx + '].value'] = this.data.genderArray[e.detail.value]
+    this.setData(_obj)
+  },
   pay: function (id, paydata) {
     const { timeStamp, nonceStr, signType, paySign } = paydata
     wx.requestPayment({
@@ -222,7 +231,7 @@ Page({
 
   submitOrder: function () {
     console.log('submitOrder')
-    const { id, fromUid, fill_info, selectedTickets, contact, buy_for, submitting, clause_checked, saletype, tuan_id, totalPrice} = this.data
+    const { id, fromUid, fill_info, fill_form, selectedTickets, contact, buy_for, submitting, clause_checked, saletype, tuan_id, totalPrice} = this.data
     const contactEmptyItem = contact.filter(item => !item.value)
 
     if (fill_info && (!buy_for || (buy_for && !buy_for.length))) { // 联系人信息不完整
@@ -233,7 +242,7 @@ Page({
       return false
     } else if (contactEmptyItem && contactEmptyItem.length) { // 需要填写出行人信息 且 没有选中的出行人
       wx.showToast({
-        title: '请填写联系人' + contactEmptyItem[0].label,
+        title: contactEmptyItem[0].name == 'gender' ? '请选择联系人性别' : ('请填写联系人' + contactEmptyItem[0].label),
         icon: 'none'
       })
       return false
@@ -246,39 +255,24 @@ Page({
     } else if (submitting) { // 正在提交
       return false
     }
-    // if (!((!fill_info || (fill_info && buy_for && buy_for.length)) && !submitting && clause_checked)) { // 如果联系人信息不完整、需要填写出行人信息 且 没有选中的出行人、正在提交，则中断操作
-    //   if (!contact.name) {
-    //     wx.showToast({
-    //       title: '请填写联系人姓名',
-    //       icon: 'none'
-    //     })
-    //   } else if (!contact.phone) {
-    //     wx.showToast({
-    //       title: '请填写联系人手机号',
-    //       icon: 'none'
-    //     })
-    //   } else if (fill_info && !buy_for || !buy_for.length) {
-    //     wx.showToast({
-    //       title: '请选择出行人',
-    //       icon: 'none'
-    //     })
-    //   } else if (!clause_checked) {
-    //     wx.showToast({
-    //       title: '请勾选同意重要条款',
-    //       icon: 'none'
-    //     })
-    //   }
-    //   return false
-    // }
-    // 保存联系人信息
-    let contactJson = JSON.stringify(contact)
-    storageHelper.setStorage('orderContact', contactJson)
+    // 保存、生成提交联系人信息
+    let form = {}
+    const contactJson = storageHelper.getStorage('orderContact')
+    let _obj = contactJson ? JSON.parse(contactJson): {}
+    contact.forEach(item => {
+      if (item.value) {
+        form[item.name] = item.value
+        _obj[item.name] = item.value
+      }
+    })
+    storageHelper.setStorage('orderContact', JSON.stringify(_obj))
     // 提交支付信息
     let ticket = selectedTickets.map(item => {
       return {id: item.id, quantity: item.num}
     })
     let buy_for_ids = buy_for.map(item => item.id)
     const tuanid = saletype == 2 ? (tuan_id || 0) : null
+
     let rData = {
       huodong_id: id,
       ticket: ticket,
@@ -287,7 +281,9 @@ Page({
       // phone: contact.phone.value,
       fenxiao_user_id: fromUid,
       tuan_id: tuanid,
-      total_price: totalPrice
+      total_price: totalPrice,
+      form_id: fill_form ? fill_form.id : '',
+      form: form
     }
     this.setData({
       submitting: true
@@ -356,9 +352,9 @@ Page({
 
   contactInput: function (e) {
     const {value} = e.detail
-    const {ele, idx} = e.currentTarget.dataset
+    const {idx} = e.currentTarget.dataset
     let _obj = {}
-    _obj['contact[' + idx + '].' + ele] = value
+    _obj['contact[' + idx + '].value'] = value
     this.setData(_obj)
   },
 

@@ -1,7 +1,7 @@
 /* eslint-disable */
 
 function calcResistance(distExtra, distMax) {
-  return Math.min(1, distExtra / distMax / 1.5) * Math.min(distMax, distExtra)
+  return Math.min(1, distExtra / distMax / 2) * Math.min(distMax, distExtra)
 }
 
 function touchStart(e, ins) {
@@ -20,12 +20,13 @@ function touchStart(e, ins) {
     state.pullStartY = e.touches[0].clientY
     state.distance = 0
 
-    state.icon = state.icon || ins.selectComponent(".refresh-icon")
+    state.iconWrapper = state.iconWrapper || ins.selectComponent(".icon-wrapper")
+    state.icon = state.icon || ins.selectComponent(".icon")
     state.wrapper = state.wrapper || ins.selectComponent(".wrapper")
 
-    state.icon.removeClass("transition")
+    state.iconWrapper.removeClass("transition")
     state.icon.removeClass("animation")
-    state.icon.removeClass("fadeout")
+    state.iconWrapper.removeClass("fadeout")
 
     if (state.platform === 'android' || state.platform === 'devtools') { // 安卓或开发工具
       state.wrapper.removeClass("transition")
@@ -57,26 +58,35 @@ function touchMove(e, ins) {
     if (state.status === "pulling" && state.distance > state.distThreshold) {
       state.status = "releasing"
       state.releasingTime = Date.now()
-      state.icon.addClass('transition')
-      state.icon.setStyle({
-        top: (state.iconDist - 32) + 'px'
+      state.iconWrapper.addClass('transition')
+      state.iconWrapper.setStyle({
+        // top: (state.iconDist - 32) + 'px',
+        transform: 'translateY(' + state.iconDist + 'px)',
+        "-webkit-transform": 'translateY(' + state.iconDist + 'px)'
       })
       ins.callMethod('vibrateShort')
     }
     if (state.status === "releasing" && state.distance < state.distThreshold) {
       state.status = "pulling"
-      state.icon.removeClass('transition')
-      state.icon.setStyle({
-        top: '-32px'
+      state.iconWrapper.removeClass('transition')
+      state.iconWrapper.setStyle({
+        // top: '-32px',
+        transform: 'translateY(-32px)',
+        "-webkit-transform": 'translateY(-32px)'
       })
     } else if (state.status === "releasing" && state.distance > state.distThreshold) {
       if (state.releasingTime && (Date.now() - 300) > state.releasingTime) {
+        state.iconWrapper.removeClass('transition')
         state.icon.removeClass('transition')
       }
+      state.iconWrapper.setStyle({
+        // top: (state.iconDist - 32) + 'px',
+        transform: 'translateY(' + state.iconDist + 'px)',
+        "-webkit-transform": 'translateY(' + state.iconDist + 'px)'
+      })
       state.icon.setStyle({
-        top: (state.iconDist - 32) + 'px',
-        transform: 'rotate(' + distExtraY / state.distThreshold / 1.5 * 360 + 'deg)',
-        '-webkit-transform': 'rotate(' + distExtraY / state.distThreshold / 1.5 * 360 + 'deg)'
+        transform: 'rotate(' + distExtraY / state.distThreshold / 2 * 360 + 'deg)',
+        '-webkit-transform': 'rotate(' + distExtraY / state.distThreshold / 2 * 360 + 'deg)'
       })
     }
     if (state.platform === 'android' || state.platform === 'devtools') { // 安卓或开发工具
@@ -102,13 +112,15 @@ function touchEnd(e, ins) {
     state.status = "refreshing"
     state.distance = state.distThreshold
     state.icon.addClass("animation")
-    state.icon.setStyle({
-      top: (state.iconDist - 32) + 'px'
+    state.iconWrapper.setStyle({
+      // top: state.iconDist + 'px',
+      transform: 'translateY(' + state.iconDist + 'px)',
+      "-webkit-transform": 'translateY(' + state.iconDist + 'px)'
     })
     if (state.platform === 'android' || state.platform === 'devtools') { // 安卓或开发工具
       state.wrapper.addClass('transition')
       state.wrapper.setStyle({
-        top: state.distance + 'px',
+        top: '0px',
         // transform: 'translateY(' + state.distance + 'px)',
         // "-webkit-transform": 'translateY(' + state.distance + 'px)'
       })
@@ -124,9 +136,11 @@ function reset(state) {
   state.status = "pending"
   state.startPulling = false
   state.distance = 0
-  state.icon.removeClass("transition")
-  state.icon.setStyle({
-    top: '-32px'
+  state.iconWrapper.removeClass("transition")
+  state.iconWrapper.setStyle({
+    // top: '-32px',
+    transform: 'translateY(-32px)',
+    "-webkit-transform": 'translateY(-32px)'
   })
 
   if (state.platform === 'android' || state.platform === 'devtools') { // 安卓或开发工具
@@ -146,12 +160,15 @@ function onRefreshed(newValue, oldValue, ins, itemIns) {
     state.startPulling = false
     
     var wrapper = state.wrapper || ins.selectComponent(".wrapper")
-    var icon = state.icon || ins.selectComponent(".refresh-icon")
+    var iconWrapper = state.iconWrapper || ins.selectComponent(".icon-wrapper")
+    var icon = state.icon || ins.selectComponent(".icon")
     icon.removeClass("animation")
-    icon.addClass("transition")
-    icon.addClass("fadeout")
-    icon.setStyle({
-      top: '-32px'
+    iconWrapper.addClass("transition")
+    iconWrapper.addClass("fadeout")
+    iconWrapper.setStyle({
+      // top: '-32px',
+      transform: 'translateY(-32px)',
+      "-webkit-transform": 'translateY(-32px)'
     })
 
     if (state.platform === 'android' || state.platform === 'devtools') { // 安卓或开发工具
@@ -178,13 +195,16 @@ function onRefreshing(newValue, oldValue, ins, itemIns) {
     state.startPulling = false
     
     state.wrapper = state.wrapper || ins.selectComponent(".wrapper")
-    state.icon = state.icon || ins.selectComponent(".refresh-icon")
+    state.iconWrapper = state.iconWrapper || ins.selectComponent(".icon-wrapper")
+    state.icon = state.icon || ins.selectComponent(".icon")
     
-    state.icon.removeClass("fadeout")
-    state.icon.addClass("transition")
+    state.iconWrapper.removeClass("fadeout")
+    state.iconWrapper.addClass("transition")
     state.icon.addClass("animation")
-    state.icon.setStyle({
-      top: (state.iconDist - 32) + 'px'
+    state.iconWrapper.setStyle({
+      // top: state.iconDist + 'px',
+      transform: 'translateY(' + state.iconDist + 'px)',
+    "-webkit-transform": 'translateY(' + state.iconDist + 'px)'
     })
     console.log('state.wrapper', state.wrapper)
     if (state.platform === 'android' || state.platform === 'devtools') { // 安卓或开发工具
