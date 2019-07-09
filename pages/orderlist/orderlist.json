@@ -6,8 +6,10 @@
   "usingComponents": {
     "ft-custom-nav": "../../ftcomponents/ftCustomNav/ftCustomNav",
     "ft-pull-to-refresh": "../../ftcomponents/ftPullToRefresh/ftPullToRefresh",
-    "ft-tabs": "../../ftcomponents/ftTabs/ftTabs",
     "draw-poster": "../../components/drawPoster/drawPoster",
-    "order-card": "../../components/orderCard/orderCard"
+    "order-card": "../../components/orderCard/orderCard",
+    "ft-list-loader": "../../ftcomponents/ftListLoader/ftListLoader",
+    "ft-list-footer": "../../ftcomponents/ftListFooter/ftListFooter",
+    "ft-iphone-bottom-adapter": "../../ftcomponents/ftIphoneBottomAdapter/ftIphoneBottomAdapter"
   }
 }

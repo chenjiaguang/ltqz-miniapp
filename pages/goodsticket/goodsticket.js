@@ -10,7 +10,7 @@ Page({
   data: {
     navTitle: '电子票',
     order_id: '',
-    huodong: {},
+    product: {},
     hexiao_status_text: { // -1为失效订单|0为待付款|1为待参与|2为待评价|3已评价(当status为2或3时视为已核销)
       '-1': '未核销',
       0: '未核销',
@@ -171,10 +171,11 @@ Page({
         let _obj = {}
         _obj.order_id = res.data.order_id
         _obj.ticked_num_text = this.initTicketNumText(res.data.ticket)
-        _obj.huodong = {
-          title: res.data.huodong.title,
-          address: res.data.huodong.address,
-          session: res.data.huodong.session
+        let product = res.data.huodong || res.data.vgoods
+        _obj.product = {
+          title: product.title,
+          address: product.address,
+          session: product.session
         }
         _obj.status = res.data.status
         _obj.qr_code_url = res.data.qr_code_url
@@ -224,10 +225,11 @@ Page({
           let _obj = {}
           _obj.order_id = res.data.order_id
           _obj.ticked_num_text = this.initTicketNumText(res.data.ticket)
-          _obj.huodong = {
-            title: res.data.huodong.title,
-            address: res.data.huodong.address,
-            session: res.data.huodong.session
+          let product = res.data.huodong || res.data.vgoods
+          _obj.product = {
+            title: product.title,
+            address: product.address,
+            session: product.session
           }
           _obj.status = res.data.status
           _obj.qr_code_url = res.data.qr_code_url

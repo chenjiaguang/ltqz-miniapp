@@ -1,0 +1,14 @@
+/* components/proprietaryIcon/proprietaryIcon.wxss */
+@import "../../app.wxss";
+
+.proprietary-icon{
+  width: 78rpx;
+  height: 36rpx;
+  font-size: 24rpx;
+  line-height: 24rpx;
+  border-radius: 18rpx;
+  color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

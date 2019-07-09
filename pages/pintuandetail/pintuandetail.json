@@ -3,6 +3,7 @@
   "usingComponents": {
     "ft-custom-nav": "../../ftcomponents/ftCustomNav/ftCustomNav",
     "draw-poster": "../../components/drawPoster/drawPoster",
-    "shopping-view": "../../components/shoppingView/shoppingView"
+    "shopping-view": "../../components/shoppingView/shoppingView",
+    "shopping-view2": "../../components/shoppingView2/shoppingView2"
   }
 }

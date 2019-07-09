@@ -31,11 +31,17 @@ Page({
     util.request('/order/detail', {
       id: this.data.id
     }).then(res => {
-      res.data.huodong.valid_btime = util.formatDateTimeDefault('d', res.data.huodong.valid_btime)
-      res.data.huodong.valid_etime = util.formatDateTimeDefault('d', res.data.huodong.valid_etime)
+      let product = res.data.huodong || res.data.vgoods
+      if (product && product.valid_btime) {
+        product.valid_btime = util.formatDateTimeDefault('d', product.valid_btime)
+      }
+      if (product && product.valid_etime) {
+        product.valid_etime = util.formatDateTimeDefault('d', product.valid_etime)
+      }
       res.data.ticket_text = res.data.ticket.map((item) => {
         return item.name + '×' + item.quantity
       }).join(',')
+      res.data.product = product
       this.setData({
         order: res.data
       })

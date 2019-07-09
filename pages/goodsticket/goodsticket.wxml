@@ -5,6 +5,9 @@
     <view class='top-info'>
       <image class="qr-code{{(status == 2 || status == 3) ? ' disabled' : ''}}" src="{{qr_code_url}}" mode="aspectFit"></image>
       <view wx:if="{{status == 2 || status == 3}}" class='checked-icon'><text>已核销</text></view>
+      <view wx:elif="{{status == -1}}" class='checked-icon'><text>已失效</text></view>
+      <!-- 未核销暂不显示 -->
+      <!-- <view wx:elif="{{status === 0 || status === '0' || status == 1}}" class='checked-icon'><text>未核销</text></view> -->
       <!-- <view class='line-info'><text>过期时间：</text><text>{{deadline || ''}}</text></view> -->
       <view class='line-info'><text>核销状态：</text><text class="{{(status == 2 || status == 3) ? 'status-text-normal' : 'theme-color'}}">{{hexiao_status_text[status]}}</text></view>
       <view class='line-info'><text>核销时间：</text><text>{{checked_time || '--'}}</text></view>
@@ -13,15 +16,16 @@
       <button wx:if="{{status == 2 || status == 3}}" class="comment-btn{{status != 2 ? ' disabled' : ' theme-bg'}}" disabled="{{status != 2}}" catchtap="goComment">{{status == 2 ? '去评价' : '已评价'}}</button>
     </view>
     <view style="border:1px dashed #D8D8D8;width:638rpx;margin:0 auto;transform:scale(1, 0.5);transform-origin:50% 100%"></view>
-    <view class='bottom-info'>
+    活动商品
+    <view wx:if="{{type == 1}}" class='bottom-info'>
       <view class='info-item'>
         <view class="info-left">活动名称</view>
-        <view class='info-right'>{{huodong.title}}</view>
+        <view class='info-right'>{{product.title}}</view>
       </view>
       <view class='line-separator-h'></view>
       <view class='info-item'>
         <view class="info-left">活动场次</view>
-        <view class='info-right'>{{huodong.session}}</view>
+        <view class='info-right'>{{product.session}}</view>
       </view>
       <view class='line-separator-h'></view>
       <view class='info-item'>
@@ -31,7 +35,32 @@
       <view class='line-separator-h'></view>
       <view class='info-item'>
         <view class="info-left">活动地点</view>
-        <view class='info-right'>{{(huodong && huodong.address) ? huodong.address : '--'}}</view>
+        <view class='info-right'>{{(product && product.address) ? product.address : '--'}}</view>
+      </view>
+      <view class='left-ball'></view>
+      <view class='right-ball'></view>
+    </view>
+    <!-- 非活动商品 -->
+    <view wx:if="{{type == 2}}" class='bottom-info'>
+      <view class='info-item'>
+        <view class="info-left">商品名称</view>
+        <view class='info-right'>{{product.title}}</view>
+      </view>
+      <view class='line-separator-h'></view>
+      <view class='info-item'>
+        <view class="info-left">核销有效期</view>
+        <!-- todo -->
+        <view class='info-right'>{{product.session}}</view>
+      </view>
+      <view class='line-separator-h'></view>
+      <view class='info-item'>
+        <view class="info-left">购买数量</view>
+        <view class='info-right'>{{ticked_num_text}}</view>
+      </view>
+      <view class='line-separator-h'></view>
+      <view class='info-item'>
+        <view class="info-left">地点</view>
+        <view class='info-right'>{{(product && product.address) ? product.address : '--'}}</view>
       </view>
       <view class='left-ball'></view>
       <view class='right-ball'></view>

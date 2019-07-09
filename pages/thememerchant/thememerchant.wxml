@@ -1,0 +1,3 @@
+<!--pages/thememerchant/thememerchant.wxml-->
+<ft-custom-nav title="{{navTitle}}" />
+<merchant-card />

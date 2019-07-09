@@ -18,7 +18,7 @@
         <image class='comment-image' src="{{image}}" mode="aspectFill"></image>
       </view>
     </view>
-    <view wx:if="{{comment.huodong && comment.huodong.id && comment.huodong.title && showGoods}}" class='goods'>{{comment.huodong.title}}</view>
+    <view wx:if="{{comment.product && comment.product.id && comment.product.title && showGoods}}" class='goods'>{{comment.product.title}}</view>
     <view wx:if="{{comment.ticket && comment.ticket[0] && showTicket}}" class='ticket'><text>已购：</text><text wx:for="{{comment.ticket}}" wx:key="name">{{item.name}}{{(index + 1) === comment.ticket.length ? '' : '、'}}</text></view>
     <view class='reply-container' wx:if="{{comment.reply}}">
       <view class='triangle-up'></view>

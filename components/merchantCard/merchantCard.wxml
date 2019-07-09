@@ -1,0 +1,20 @@
+<!--components/merchantCard/merchantCard.wxml-->
+<view class="wrapper" catchtap="boxTap" hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
+  <view wx:if="{{topBorder}}" class="line-separator-h" style="width:718rpx;margin-left:32rpx"></view>
+  <view class="content">
+    <image class="cover" src="http://testdimg.lutu.com/img/0c/2e/23/1f/0c2e231f4c1d780e1252a09ffaca4acf.jpg" mode="aspectFill" lazy-load />
+    <view class="right">
+      <view class="title">
+        <view class="title-text">善良的风景善良分家阿善良分家阿善良分家阿善良就阿善良分家</view>
+        <proprietary-icon wx:if="{{merchant.nature == 1}}" /> 
+      </view>
+      <ft-star-box score="{{4.5}}" size="{{30}}" style="margin-top:4rpx" />
+      <view class="flex-1-adapter"></view>
+      <!-- <view class="goods-icons">
+        <view class="tuan-box theme-border-color theme-color"><text>3人团</text></view>
+        <view class="qg-box theme-border-color theme-color"><text>限时抢购</text></view>
+      </view> -->
+    </view>
+  </view>
+</view>
+  

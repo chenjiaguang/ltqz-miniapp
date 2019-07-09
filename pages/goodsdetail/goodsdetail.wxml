@@ -26,7 +26,7 @@
   <qg-overview wx:if="{{sale_type == 3 && (qg_status == 1 || qg_status == 2 || qg_status == 3)}}" goods-status-data="{{goods_status_data}}" />
   <!-- 活动信息概览 -->
   <view class='sub-overview'>
-    <view wx:if="{{valid_btime && valid_etime}}" class='state-block-wrapper'>
+    <view wx:if="{{type == 1 && valid_btime && valid_etime}}" class='state-block-wrapper'>
       <view class='state-block'><image class='left-icon' mode="aspectFit" src="/assets/images/time_jointime.png"></image><text class='state-block-text'>活动日期：{{valid_btime}} 至 {{valid_etime}}</text></view>
     </view>
     <view wx:if="{{dead_line}}" class='state-block-wrapper'>
@@ -252,4 +252,5 @@
   </ft-bottom-box>
 </view>
 <draw-poster id="c-draw-poster" />
-<shopping-view wx:if="{{status == 1 && session && session.length > 0}}" id="c-shopping-view" session="{{session}}" timestamp="{{goodsTimestamp}}" catchnextstep="nextTap" />
+<shopping-view wx:if="{{status == 1 && session && session.length > 0 && type == 1}}" id="c-shopping-view" session="{{session}}" timestamp="{{goodsTimestamp}}" catchnextstep="nextTap" />
+<shopping-view2 wx:if="{{status == 1 && session && session.length > 0 && type == 2}}" id="c-shopping-view" session="{{session}}" timestamp="{{goodsTimestamp}}" catchnextstep="nextTap" />

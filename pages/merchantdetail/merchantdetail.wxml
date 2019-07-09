@@ -7,7 +7,10 @@
       <view class='merchant-info'>
         <image class='logo' mode="aspectFill" src="{{logo_url}}"></image>
         <view class='merchant-right'>
-          <view class='merchant-title'>{{name}}</view>
+          <view class='merchant-title'>
+            <text>{{name}}</text>
+            <proprietary-icon wx:if="{{natrue == 1}}" style="margin-left:14rpx" />
+          </view>
           <view class='merchant-intro'>{{introduce}}</view>
         </view>
       </view>

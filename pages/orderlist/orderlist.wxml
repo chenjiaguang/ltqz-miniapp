@@ -1,83 +1,32 @@
 <!--pages/orderlist/orderlist.wxml-->
 <ft-pull-to-refresh refreshing="{{refreshing}}" refreshed="{{refreshed}}" bindrefresh="onPullDownRefresh">
-<ft-custom-nav slot="header" title="{{navTitle}}" />
-<ft-tabs slot="body" class="tabs" type="2" tabs="{{tabs}}" current-color="{{tabCurrentColor}}" index="{{index}}" catchfetchlist="fetchlist" showEmpty="{{false}}" catchtabchange='tabchange'>
-  <view slot="tab0">
-    <view class='list-box'>
-      <order-card wx:for="{{tabs[0].list}}" item="{{item}}" wx:key="order_id" catchorderListRefresh="refresh" catchshare="shareTap"></order-card>
+<view slot="header" class="top-header">
+  <ft-custom-nav title="{{navTitle}}" />
+  <view class="header header2">
+    <view class="title-box title-box2" id="tab{{idx}}" wx:for="{{tabs}}" wx:for-item="tab" wx:for-index="idx" wx:key="title" catchtap="tabTap" data-idx="{{idx}}">
+      <view class='title' style="color:{{index === idx ? tabCurrentColor : color}}">
+        <text>{{tab.title}}</text>
+      </view>
     </view>
-    <image wx:if="{{tabs[0].loaded&&tabs[0].list.length==0}}" class='empty-img' src='/assets/images/order.png' />
-    <text wx:if="{{tabs[0].loaded&&tabs[0].list.length==0}}" class='empty-text'>还没有相关的订单哦，快去下单吧~</text>
-  </view>
-  <view slot="tab1">
-    <view class='list-box'>
-      <order-card wx:for="{{tabs[1].list}}" item="{{item}}" wx:key="order_id" catchorderListRefresh="refresh" catchshare="shareTap"></order-card>
+    <view class='slide-box'>
+      <view class='slide-block' style="background:{{tabCurrentColor}};transform:translateX({{(0.5 + index) * (750/tabs.length)}}rpx);width:68rpx;height:6rpx;margin-left:-34rpx"></view>
     </view>
-    <image wx:if="{{tabs[1].loaded&&tabs[1].list.length==0}}" class='empty-img' src='/assets/images/order.png' />
-    <text wx:if="{{tabs[1].loaded&&tabs[1].list.length==0}}" class='empty-text'>还没有相关的订单哦，快去下单吧~</text>
+    <view class='line-separator-h'></view>
   </view>
-  <view slot="tab2">
-    <view class='list-box'>
-      <order-card wx:for="{{tabs[2].list}}" item="{{item}}" wx:key="order_id" catchorderListRefresh="refresh" catchshare="shareTap"></order-card>
-    </view>
-    <image wx:if="{{tabs[2].loaded&&tabs[2].list.length==0}}" class='empty-img' src='/assets/images/order.png' />
-    <text wx:if="{{tabs[2].loaded&&tabs[2].list.length==0}}" class='empty-text'>还没有相关的订单哦，快去下单吧~</text>
-  </view>
-  <view slot="tab3">
-    <view class='list-box'>
-      <order-card wx:for="{{tabs[3].list}}" item="{{item}}" wx:key="order_id" catchorderListRefresh="refresh" catchshare="shareTap"></order-card>
-    </view>
-    <image wx:if="{{tabs[3].loaded&&tabs[3].list.length==0}}" class='empty-img' src='/assets/images/order.png' />
-    <text wx:if="{{tabs[3].loaded&&tabs[3].list.length==0}}" class='empty-text'>还没有相关的订单哦，快去下单吧~</text>
-  </view>
-  <view slot="tab4">
-    <view class='list-box'>
-      <order-card wx:for="{{tabs[4].list}}" item="{{item}}" wx:key="order_id" catchorderListRefresh="refresh" catchshare="shareTap"></order-card>
-    </view>
-    <image wx:if="{{tabs[4].loaded&&tabs[4].list.length==0}}" class='empty-img' src='/assets/images/order.png' />
-    <text wx:if="{{tabs[4].loaded&&tabs[4].list.length==0}}" class='empty-text'>还没有相关的订单哦，快去下单吧~</text>
-  </view>
-</ft-tabs>
+</view>
+<view slot="body" class="page-body">
+  <swiper class='tab-swiper' current="{{index}}" duration="{{300}}" bindchange="currentChange">
+    <swiper-item class="swiper-item" wx:for="{{tabs}}" wx:for-item="tab" wx:for-index="idx" wx:key="title">
+      <scroll-view class='body-wrapper' scroll-y data-idx="{{idx}}" bindscrolltolower="scrollToEnd">
+        <ft-list-loader visible="{{!tab.loaded}}" />
+        <order-card wx:for="{{tabs[idx].list}}" item="{{item}}" wx:key="order_id" catchorderListRefresh="refresh" catchshare="shareTap"></order-card>
+        <ft-list-footer loaded="{{tab.loaded}}" loading="{{tab.loading}}" page="{{tab.page}}" show-no-more="{{tab.page && tab.page.pn && tab.list && tab.list[0]}}" no-more-text="没有更多了" />
+        <image wx:if="{{tabs[idx].loaded&&tabs[idx].list.length==0}}" class='empty-img' src='/assets/images/order.png' />
+        <text wx:if="{{tabs[idx].loaded&&tabs[idx].list.length==0}}" class='empty-text'>还没有相关的订单哦，快去下单吧~</text>
+        <ft-iphone-bottom-adapter wx:if="{{tab.list && tab.list[0]}}" />
+      </scroll-view>
+    </swiper-item>
+  </swiper>
+</view>
 </ft-pull-to-refresh>
-
 <draw-poster id="c-draw-poster" />
-
-
-<!-- <ft-tabs class="tabs" type="2" tabs="{{tabs}}" current-color="{{tabCurrentColor}}" index="{{index}}" catchfetchlist="fetchlist" showEmpty="{{false}}" catchtabchange='tabchange'>
-  <view slot="tab0">
-    <view class='list-box'>
-      <order-card wx:for="{{tabs[0].list}}" item="{{item}}" wx:key="order_id" catchorderListRefresh="refresh" catchshare="shareTap"></order-card>
-    </view>
-    <image wx:if="{{tabs[0].loaded&&tabs[0].list.length==0}}" class='empty-img' src='/assets/images/order.png' />
-    <text wx:if="{{tabs[0].loaded&&tabs[0].list.length==0}}" class='empty-text'>还没有相关的订单哦，快去下单吧~</text>
-  </view>
-  <view slot="tab1">
-    <view class='list-box'>
-      <order-card wx:for="{{tabs[1].list}}" item="{{item}}" wx:key="order_id" catchorderListRefresh="refresh" catchshare="shareTap"></order-card>
-    </view>
-    <image wx:if="{{tabs[1].loaded&&tabs[1].list.length==0}}" class='empty-img' src='/assets/images/order.png' />
-    <text wx:if="{{tabs[1].loaded&&tabs[1].list.length==0}}" class='empty-text'>还没有相关的订单哦，快去下单吧~</text>
-  </view>
-  <view slot="tab2">
-    <view class='list-box'>
-      <order-card wx:for="{{tabs[2].list}}" item="{{item}}" wx:key="order_id" catchorderListRefresh="refresh" catchshare="shareTap"></order-card>
-    </view>
-    <image wx:if="{{tabs[2].loaded&&tabs[2].list.length==0}}" class='empty-img' src='/assets/images/order.png' />
-    <text wx:if="{{tabs[2].loaded&&tabs[2].list.length==0}}" class='empty-text'>还没有相关的订单哦，快去下单吧~</text>
-  </view>
-  <view slot="tab3">
-    <view class='list-box'>
-      <order-card wx:for="{{tabs[3].list}}" item="{{item}}" wx:key="order_id" catchorderListRefresh="refresh" catchshare="shareTap"></order-card>
-    </view>
-    <image wx:if="{{tabs[3].loaded&&tabs[3].list.length==0}}" class='empty-img' src='/assets/images/order.png' />
-    <text wx:if="{{tabs[3].loaded&&tabs[3].list.length==0}}" class='empty-text'>还没有相关的订单哦，快去下单吧~</text>
-  </view>
-  <view slot="tab4">
-    <view class='list-box'>
-      <order-card wx:for="{{tabs[4].list}}" item="{{item}}" wx:key="order_id" catchorderListRefresh="refresh" catchshare="shareTap"></order-card>
-    </view>
-    <image wx:if="{{tabs[4].loaded&&tabs[4].list.length==0}}" class='empty-img' src='/assets/images/order.png' />
-    <text wx:if="{{tabs[4].loaded&&tabs[4].list.length==0}}" class='empty-text'>还没有相关的订单哦，快去下单吧~</text>
-  </view>
-</ft-tabs>
-<draw-poster id="c-draw-poster" /> -->

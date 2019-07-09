@@ -31,7 +31,9 @@
     "pages/collection/collection",
     "pages/pintuandetail/pintuandetail",
     "pages/commentmanager/commentmanager",
-    "pages/testpage/testpage"
+    "pages/testpage/testpage",
+    "pages/thememerchant/thememerchant",
+    "pages/themegoods/themegoods"
   ],
   "window": {
     "navigationStyle": "custom",

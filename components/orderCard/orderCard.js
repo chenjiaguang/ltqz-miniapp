@@ -72,9 +72,9 @@ Component({
       })
     },
     shareTap: function (e) {
-      const { hd_id, tuan_id} = this.data.item
+      const { product_id, tuan_id} = this.data.item
       this.triggerEvent('share', {
-        hd_id,
+        product_id,
         pt_id: tuan_id
       })
     }

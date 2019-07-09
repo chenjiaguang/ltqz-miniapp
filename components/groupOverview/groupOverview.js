@@ -115,7 +115,7 @@ Component({
     shareTap: function (e) {
       const { id, product_id } = this.data.group
       this.triggerEvent('share', {
-        hd_id: product_id,
+        product_id: product_id,
         pt_id: id
       })
     }

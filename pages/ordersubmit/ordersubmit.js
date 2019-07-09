@@ -274,7 +274,7 @@ Page({
     const tuanid = saletype == 2 ? (tuan_id || 0) : null
 
     let rData = {
-      huodong_id: id,
+      product_id: id,
       ticket: ticket,
       traveler_ids: buy_for_ids,
       // name: contact.name.value,

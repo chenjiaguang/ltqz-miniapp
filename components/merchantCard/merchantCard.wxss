@@ -1,0 +1,73 @@
+/* components/merchantCard/merchantCard.wxss */
+@import "../../app.wxss";
+
+.wrapper{
+  background: #FFFFFF;
+  overflow: hidden;
+}
+.content{
+  padding: 30rpx 0;
+  margin: 0 32rpx;
+  display: flex;
+}
+.cover{
+  background: #F5F5F5;
+  display: block;
+  width: 190rpx;
+  height: 190rpx;
+  border-radius: 8rpx;
+}
+.right{
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  margin-left: 24rpx;
+}
+.title{
+  font-size: 32rpx;
+  line-height: 44rpx;
+  color: #333333;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+}
+.title-text{
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.flex-1-adapter{
+  flex: 1;
+}
+.goods-icons{
+  display: flex;
+  flex-wrap: wrap;
+}
+.tuan-box{
+  width: 90rpx;
+  height: 36rpx;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 18rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 24rpx;
+  margin-right: 10rpx;
+  box-sizing: border-box;
+}
+.qg-box{
+  width: 124rpx;
+  height: 36rpx;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 18rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 24rpx;
+  margin-right: 10rpx;
+  box-sizing: border-box;
+}

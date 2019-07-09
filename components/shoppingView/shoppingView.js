@@ -18,7 +18,7 @@ Component({
             it.type.show_price = util.formatMoney(it.type.price).showMoney
             it.type.price = util.formatMoney(it.type.price).money
             it.type.show_pt_price = util.formatMoney(it.type.pt_price).showMoney
-            it.type.pr_price = util.formatMoney(it.type.pt_price).money
+            it.type.pt_price = util.formatMoney(it.type.pt_price).money
             it.type.show_origin_price = util.formatMoney(it.type.origin_price).showMoney
             it.type.origin_price = util.formatMoney(it.type.origin_price).money
             it.type.show_qg_price = util.formatMoney(it.type.qg_price).showMoney
@@ -40,7 +40,7 @@ Component({
               it.type.show_price = util.formatMoney(it.type.price).showMoney
               it.type.price = util.formatMoney(it.type.price).money
               it.type.show_pt_price = util.formatMoney(it.type.pt_price).showMoney
-              it.type.pr_price = util.formatMoney(it.type.pt_price).money
+              it.type.pt_price = util.formatMoney(it.type.pt_price).money
               it.type.show_origin_price = util.formatMoney(it.type.origin_price).showMoney
               it.type.origin_price = util.formatMoney(it.type.origin_price).money
               it.type.show_qg_price = util.formatMoney(it.type.qg_price).showMoney

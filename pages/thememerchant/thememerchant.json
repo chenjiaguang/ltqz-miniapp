@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "优质商家推荐",
+  "usingComponents": {
+    "ft-custom-nav": "../../ftcomponents/ftCustomNav/ftCustomNav",
+    "merchant-card": "../../components/merchantCard/merchantCard"
+  }
+}

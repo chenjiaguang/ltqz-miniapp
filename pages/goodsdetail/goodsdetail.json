@@ -13,6 +13,7 @@
     "draw-poster": "../../components/drawPoster/drawPoster",
     "goods-detail-status": "../../components/goodsDetailStatus/goodsDetailStatus",
     "shopping-view": "../../components/shoppingView/shoppingView",
+    "shopping-view2": "../../components/shoppingView2/shoppingView2",
     "group-purchase": "../../components/groupPurchase/groupPurchase",
     "qg-overview": "../../components/qgOverview/qgOverview",
     "ft-bottom-box": "../../ftcomponents/ftBottomBox/ftBottomBox",

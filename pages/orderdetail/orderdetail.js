@@ -95,8 +95,8 @@ Page({
         }).join(',')
         let product = res.data.huodong || res.data.vgoods
         // 处理时间格式
-        product.valid_btime = util.formatDateTimeDefault('d', product.valid_btime)
-        product.valid_etime = util.formatDateTimeDefault('d', product.valid_etime)
+        product.valid_btime = product.valid_btime ? util.formatDateTimeDefault('d', product.valid_btime) : ''
+        product.valid_etime = product.valid_etime ? util.formatDateTimeDefault('d', product.valid_etime) : ''
         res.data.created_at = util.formatDateTimeDefault('m', res.data.created_at)
         // 处理价格
         res.data.show_price = util.formatMoney(res.data.price).showMoney
@@ -235,11 +235,11 @@ Page({
   },
 
   shareTap: function (e) {
-    const {hd_id, pt_id} = e.detail
-    if (hd_id && pt_id) {
+    const {product_id, pt_id} = e.detail
+    if (product_id && pt_id) {
       const poster = this.selectComponent('#c-draw-poster')
       if (poster && poster.startDraw) {
-        poster.startDraw(hd_id, pt_id)
+        poster.startDraw(product_id, pt_id)
       }
     }
   }

@@ -103,8 +103,14 @@ Page({
     }
     util.request('/order/tuan_detail', rData).then(res => {
       if (res.data) {
-        res.data.huodong.valid_btime = util.formatDateTimeDefault('d', res.data.huodong.valid_btime)
-        res.data.huodong.valid_etime = util.formatDateTimeDefault('d', res.data.huodong.valid_etime)
+        let product = res.data.huodong || res.data.vgoods
+        if (product && product.valid_btime) {
+          product.valid_btime = util.formatDateTimeDefault('d', product.valid_btime)
+        }
+        if (product && product.valid_etime) {
+          product.valid_etime = util.formatDateTimeDefault('d', product.valid_etime)
+        }
+        res.data.product = product
         res.data.created_at = util.formatDateTimeDefault('m', res.data.created_at)
         res.data.users = this.getUsers(res.data)
         res.data.pintuanTimestamp = new Date().getTime()
@@ -114,7 +120,7 @@ Page({
           if (res.data.fenxiao_price && res.data.fenxiao_price > 0) {
             path += ('&uid=' + res.data.current_user_id)
           }
-          const imageUrl = res.data.huodong.cover_url
+          const imageUrl = res.data.product.cover_url
           this.initShare(title, path, imageUrl)
         }
         this.setData(res.data)
@@ -291,7 +297,7 @@ Page({
   },
   nextTap: function (e) {
     const { saletype, currentSession, currentTickets, selectedTicketLength, totalPrice} = e.detail
-    const { product_id: id, id: tuan_id, fromUid, huodong: { title, valid_btime, valid_etime, address, session, sale_type, refund = false, include_bx }, } = this.data
+    const { product_id: id, id: tuan_id, fromUid, product: { title, valid_btime, valid_etime, address, session, sale_type, refund = false, include_bx }, } = this.data
     let data = JSON.parse(JSON.stringify({ id, fromUid, title, address, valid_btime, valid_etime, session, sale_type, saletype, selectedTicketLength: selectedTicketLength[saletype], currentSession: currentSession[saletype], currentTickets: currentTickets[saletype], refund, include_bx, totalPrice: totalPrice[saletype], tuan_id }))
     if (this.data.status != 1) { // 如果不是拼团中，设置tuan_id为0，即为新开一个团
       data.tuan_id = 0

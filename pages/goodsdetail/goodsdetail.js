@@ -160,7 +160,9 @@ Page({
   },
 
   initBtnText: function (activity) {
+    console.log('44444')
     const btnTextObj = statusHelper.getBtnText(activity.type, activity.sale_type, activity.status, activity.qg_status)
+    console.log('55555')
     this.setData(btnTextObj)
   },
 
@@ -169,11 +171,12 @@ Page({
     util.request('/product/detail', rData).then(res => {
       if (res.error == 0 && res.data) {
         // 处理展示详情内容
+        console.log('11111')
         let arrEntities = { 'lt': '<', 'gt': '>', 'nbsp': ' ', 'amp': '&', 'quot': '"', 'mdash': '——', 'ldquo': '“', 'rdquo': '”', '#39': "'", 'ensp': '' }
         res.data.content = res.data.content.replace(/\n/ig, '').replace(/\t/ig, '').replace(/<img/ig, '<img style="max-width:100%;height:auto;display:block"').replace(/<section/ig, '<div').replace(/\/section>/ig, '/div>')
         // 处理时间格式
-        res.data.valid_btime = util.formatDateTimeDefault('d', res.data.valid_btime)
-        res.data.valid_etime = util.formatDateTimeDefault('d', res.data.valid_etime)
+        res.data.valid_btime = res.data.valid_btime ? util.formatDateTimeDefault('d', res.data.valid_btime) : ''
+        res.data.valid_etime = res.data.valid_etime ? util.formatDateTimeDefault('d', res.data.valid_etime) : ''
         // 价格处理(String -> Number，分润，最小价格)
         res.data.fenxiao_price = util.formatMoney(res.data.fenxiao_price).showMoney
         res.data.min_price = util.formatMoney(res.data.min_price).money
@@ -188,6 +191,7 @@ Page({
         res.data.goods_status_data = JSON.parse(JSON.stringify({ id, type, sale_type, price_num, spell_num, status, qg_status, remain_qg, show_min_price, show_min_origin_price, show_min_pt_price, show_min_qg_price, qg_btime, qg_etime, qg_max_limit, total_qg_count, is_book_remind }))
         res.data.goodsLoaded = true
         res.data.goodsTimestamp = new Date().getTime()
+        console.log('22222')
         if (res.data.tuan && res.data.tuan.length > 0) {
           res.data.groupList = res.data.tuan.map(item => {
             return {
@@ -200,6 +204,7 @@ Page({
             }
           })
         }
+        console.log('33333')
         this.initBtnText(res.data)
         this.setData(res.data, () => {
           this.setData({

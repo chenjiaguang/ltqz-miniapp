@@ -1,23 +1,33 @@
 <!--pages/commentmanager/commentmanager.wxml-->
 <ft-custom-nav title="{{navTitle}}" color="{{navColor}}" bg="{{navBg}}" />
-<ft-tabs class="tabs" type="2" tabs="{{tabs}}" index="{{index}}" catchfetchlist="fetchlist" showEmpty="{{false}}" catchtabchange='tabchange'>
-  <view slot="tab0">
-    <view class='list-box'>
-      <comment-box role="business" wx:for="{{tabs[0].list}}" wx:for-index="idx" wx:for-item="comment" wx:key="id" comment="{{comment}}" show-goods="{{showGoods}}" show-ticket="{{showTicket}}" top-border="{{idx !== 0}}" catchreply="replyTap" />
-    </view>
 
-    <image wx:if="{{tabs[0].loaded&&tabs[0].list.length==0}}" class='empty-img' src='/assets/images/empty_comment.png' />
-    <text wx:if="{{tabs[0].loaded&&tabs[0].list.length==0}}" class='empty-text'>啊哦，暂时还没有评价哦~</text>
-  </view>
-  <view slot="tab1">
-    <view class='list-box'>
-      <comment-box role="{{business}}" wx:for="{{tabs[1].list}}" wx:for-index="idx" wx:for-item="comment" wx:key="id" comment="{{comment}}" show-goods="{{showGoods}}" show-ticket="{{showTicket}}" top-border="{{idx !== 0}}" catchreply="replyTap" />
+<view class="page-body">
+  <view class="header header2">
+    <view class="title-box title-box2" id="tab{{idx}}" wx:for="{{tabs}}" wx:for-item="tab" wx:for-index="idx" wx:key="title" catchtap="tabTap" data-idx="{{idx}}">
+      <view class='title' style="color:{{index === idx ? tabCurrentColor : color}}">
+        <text>{{tab.title}}</text>
+      </view>
     </view>
-
-    <image wx:if="{{tabs[1].loaded&&tabs[1].list.length==0}}" class='empty-img' src='/assets/images/empty_comment.png' />
-    <text wx:if="{{tabs[1].loaded&&tabs[1].list.length==0}}" class='empty-text'>啊哦，暂时还没有评价哦~</text>
+    <view class='slide-box'>
+      <view class='slide-block' style="background:{{tabCurrentColor}};transform:translateX({{(0.5 + index) * (750/tabs.length)}}rpx);width:68rpx;height:6rpx;margin-left:-34rpx"></view>
+    </view>
+    <view class='line-separator-h'></view>
   </view>
-</ft-tabs>
+  <view class="tab-body">
+    <swiper class='tab-swiper' current="{{index}}" duration="{{300}}" bindchange="currentChange">
+      <swiper-item class="swiper-item" wx:for="{{tabs}}" wx:for-item="tab" wx:for-index="idx" wx:key="title">
+        <scroll-view class='body-wrapper' scroll-y data-idx="{{idx}}" bindscrolltolower="scrollToEnd">
+          <ft-list-loader visible="{{!tab.loaded}}" />
+          <comment-box role="business" wx:for="{{tabs[idx].list}}" wx:for-index="tidx" wx:for-item="comment" wx:key="id" comment="{{comment}}" show-goods="{{showGoods}}" show-ticket="{{showTicket}}" top-border="{{idx !== 0}}" catchreply="replyTap" />
+          <ft-list-footer loaded="{{tab.loaded}}" loading="{{tab.loading}}" page="{{tab.page}}" show-no-more="{{tab.page && tab.page.pn && tab.list && tab.list[0]}}" no-more-text="没有更多了" />
+          <image wx:if="{{tabs[idx].loaded&&tabs[idx].list.length==0}}" class='empty-img' src='/assets/images/empty_comment.png' />
+          <text wx:if="{{tabs[idx].loaded&&tabs[idx].list.length==0}}" class='empty-text'>啊哦，暂时还没有评价哦~</text>
+          <ft-iphone-bottom-adapter wx:if="{{tab.list && tab.list[0]}}" />
+        </scroll-view>
+      </swiper-item>
+    </swiper>
+  </view>
+</view>
 
 <ft-mask show="{{reply_focus}}">
   <view class="row ai-center jc-between bottom-reply-box{{reply_focus ? ' focus' : ''}}">

@@ -64,7 +64,7 @@
   background: #E6E6E6;
   color: #333;
 }
-.session-header, .ticket-header{
+.session-header, .ticket-header, .sub-header{
   height: 66rpx;
   line-height: 66rpx;
   font-size: 30rpx;
@@ -100,7 +100,8 @@
   align-items: center;
   overflow: hidden;
   padding: 0 32rpx;
-  height: 76rpx;
+  min-height: 76rpx;
+  box-sizing: border-box;
 }
 .ticket-name{
   width: 260rpx;

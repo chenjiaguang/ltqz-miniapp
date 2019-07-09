@@ -121,8 +121,15 @@ Page({
         const cates = res.data.class.map(item => {
           return {id: item.id, name: item.name, image: item.icon_url}
         })
-        const hots = res.data.hots || []
-        const news = res.data.news || []
+        let hots = []
+        let news = []
+        let recommend = res.data.recommend
+        if (recommend && recommend.top && recommend.top.length) { // 热卖
+          hots = recommend.top
+        }
+        if (recommend && recommend.new && recommend.new.length) { // 新品
+          news = recommend.new
+        }
         hots.forEach(item => {
           item.min_price = util.formatMoney(item.min_price).showMoney
           item.min_origin_price = util.formatMoney(item.min_origin_price).showMoney

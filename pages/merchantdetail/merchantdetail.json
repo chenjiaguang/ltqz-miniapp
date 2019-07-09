@@ -9,6 +9,7 @@
     "ft-list-loader": "../../ftcomponents/ftListLoader/ftListLoader",
     "ft-list-footer": "../../ftcomponents/ftListFooter/ftListFooter",
     "activity-card2": "../../components/activityCard2/activityCard2",
+    "proprietary-icon": "../../components/proprietaryIcon/proprietaryIcon",
     "ft-iphone-bottom-adapter": "../../ftcomponents/ftIphoneBottomAdapter/ftIphoneBottomAdapter"
   }
 }

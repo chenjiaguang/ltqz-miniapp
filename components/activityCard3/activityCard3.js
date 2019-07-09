@@ -95,7 +95,7 @@ Component({
     },
     goSignUpManager(e) {
       wx.navigateTo({
-        url: `/pages/signupmanager/signupmanager?id=${e.currentTarget.dataset.shopid}&product_id=${e.currentTarget.dataset.hdid}`
+        url: `/pages/signupmanager/signupmanager?id=${e.currentTarget.dataset.shopid}&product_id=${e.currentTarget.dataset.productid}`
       })
     }
   }

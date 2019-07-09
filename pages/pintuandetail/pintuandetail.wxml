@@ -2,11 +2,11 @@
 <ft-custom-nav title="{{navTitle}}" />
 <view class='page-pintuandetail'>
   <view class='row goods' bindtap='goGoodsDetail' data-goodsid="{{product_id}}">
-    <image class='goods-cover' src="{{huodong.cover_url}}" mode="aspectFill"></image>
+    <image class='goods-cover' src="{{product.cover_url}}" mode="aspectFill"></image>
     <view class='goods-content flex1 column'>
-      <text class='goods-title bold'>{{huodong.title}}</text>
-      <text class='goods-time'>{{huodong.valid_btime}} 至 {{huodong.valid_etime}}</text>
-      <text class='goods-location'>{{huodong.address}}</text>
+      <text class='goods-title bold'>{{product.title}}</text>
+      <text class='goods-time'>{{product.valid_btime}} 至 {{product.valid_etime}}</text>
+      <text class='goods-location'>{{product.address}}</text>
     </view>
     <text class='lutufont lutu-next2'></text>
   </view>
@@ -49,45 +49,45 @@
       <view wx:elif="{{!is_join && status == 1}}" class='button-box'>
         <view class='join-btn theme-bg' catchtap="joinTuan">
           <text>参加Ta的拼团</text>
-          <button wx:if="{{huodong.status == 1 && !orderContact}}" class="get-phone-btn" open-type='getPhoneNumber' bindgetphonenumber="initContact"></button>
+          <button wx:if="{{product.status == 1 && !orderContact}}" class="get-phone-btn" open-type='getPhoneNumber' bindgetphonenumber="initContact"></button>
         </view>
       </view>
       <!-- 活动可购买 且 拼团失败 且 是团长 -->
-      <view wx:elif="{{(status === 0 || status === '0') && huodong && huodong.status == 1 && is_master}}" class='button-box'>
+      <view wx:elif="{{(status === 0 || status === '0') && product && product.status == 1 && is_master}}" class='button-box'>
         <view class='join-btn theme-bg' catchtap="createTuan">
           <text>重新开这个团</text>
-          <button wx:if="{{huodong.status == 1 && !orderContact}}" class="get-phone-btn" open-type='getPhoneNumber' bindgetphonenumber="initContact"></button>
+          <button wx:if="{{product.status == 1 && !orderContact}}" class="get-phone-btn" open-type='getPhoneNumber' bindgetphonenumber="initContact"></button>
         </view>
       </view>
       <!-- 活动可购买 且 拼团失败 且 不是团长 -->
-      <view wx:elif="{{(status === 0 || status === '0') && huodong && huodong.status == 1 && !is_master}}" class='button-box'>
+      <view wx:elif="{{(status === 0 || status === '0') && product && product.status == 1 && !is_master}}" class='button-box'>
         <view class='join-btn theme-bg' catchtap="createTuan">
           <text>我来开这个团</text>
-          <button wx:if="{{huodong.status == 1 && !orderContact}}" class="get-phone-btn" open-type='getPhoneNumber' bindgetphonenumber="initContact"></button>
+          <button wx:if="{{product.status == 1 && !orderContact}}" class="get-phone-btn" open-type='getPhoneNumber' bindgetphonenumber="initContact"></button>
         </view>
       </view>
       <!-- 活动不可购买 且 拼团失败 -->
-      <view wx:elif="{{(status === 0 || status === '0') && huodong && huodong.status != 1}}" class='button-box'>
+      <view wx:elif="{{(status === 0 || status === '0') && product && product.status != 1}}" class='button-box'>
         <view class='join-btn theme-bg' catchtap="goHome">
           <text>查看更多拼团活动</text>
         </view>
       </view>
       <!-- 活动可购买 且 拼团成功 且 是团长 -->
-      <view wx:elif="{{status == 2 && huodong && huodong.status == 1 && is_master}}" class='button-box'>
+      <view wx:elif="{{status == 2 && product && product.status == 1 && is_master}}" class='button-box'>
         <view class='join-btn theme-bg' catchtap="createTuan">
           <text>再开一团</text>
-          <button wx:if="{{huodong.status == 1 && !orderContact}}" class="get-phone-btn" open-type='getPhoneNumber' bindgetphonenumber="initContact"></button>
+          <button wx:if="{{product.status == 1 && !orderContact}}" class="get-phone-btn" open-type='getPhoneNumber' bindgetphonenumber="initContact"></button>
         </view>
       </view>
       <!-- 活动可购买 且 拼团成功 且 不是团长 -->
-      <view wx:elif="{{status == 2 && huodong && huodong.status == 1 && !is_master}}" class='button-box'>
+      <view wx:elif="{{status == 2 && product && product.status == 1 && !is_master}}" class='button-box'>
         <view class='join-btn theme-bg' catchtap="createTuan">
           <text>我也开个团</text>
-          <button wx:if="{{huodong.status == 1 && !orderContact}}" class="get-phone-btn" open-type='getPhoneNumber' bindgetphonenumber="initContact"></button>
+          <button wx:if="{{product.status == 1 && !orderContact}}" class="get-phone-btn" open-type='getPhoneNumber' bindgetphonenumber="initContact"></button>
         </view>
       </view>
       <!-- 活动不可购买 且 拼团成功 -->
-      <view wx:elif="{{status == 2 && huodong && huodong.status != 1}}" class='button-box'>
+      <view wx:elif="{{status == 2 && product && product.status != 1}}" class='button-box'>
         <view class='join-btn theme-bg' catchtap="goHome">
           <text>查看更多拼团活动</text>
         </view>
@@ -103,4 +103,5 @@
 </view>
 <view class='line-separator-h'></view>
 <draw-poster id="c-draw-poster" catchstatuschange="drawPosterChange" hide-component />
-<shopping-view wx:if="{{huodong.status == 1 && huodong.session && huodong.session.length > 0}}" id="c-shopping-view" session="{{huodong.session}}" timestamp="{{pintuanTimestamp}}" catchnextstep="nextTap" />
+<shopping-view wx:if="{{product.status == 1 && product.session && product.session.length > 0 && type == 1}}" id="c-shopping-view" session="{{product.session}}" timestamp="{{pintuanTimestamp}}" catchnextstep="nextTap" />
+<shopping-view wx:if="{{product.status == 1 && product.session && product.session.length > 0 && type == 2}}" id="c-shopping-view" session="{{product.session}}" timestamp="{{pintuanTimestamp}}" catchnextstep="nextTap" />

@@ -50,6 +50,7 @@ Page({
       this.setData({
         navColor: '#ffffff',
         navBg: app.globalData.themeColor,
+        tabCurrentColor: app.globalData.themeColor
       })
     } else {
       wx.setNavigationBarColor({
@@ -62,6 +63,7 @@ Page({
       })
     }
     this.options = options // 把options保存下来
+    this.tabTap({currentTarget: {dataset: {idx: 0}}})
   },
 
   /**
@@ -109,28 +111,68 @@ Page({
 
   },
 
-  onPageScroll: function (e) {
-    // console.log('onPageScroll', e.scrollTop)
-    const {
-      top_fixed
-    } = this.data
-    if (e.scrollTop <= 0 && top_fixed) {
-      console.log('ddd')
-      this.setData({
-        top_fixed: false
-      })
-    } else if (e.scrollTop > 0 && !top_fixed) {
-      console.log('eee')
-      this.setData({
-        top_fixed: true
-      })
-    }
-  },
-
-  tabchange(e) {
-    this.setData({
-      index: e.detail.current
+  // onPageScroll: function (e) {
+  //   // console.log('onPageScroll', e.scrollTop)
+  //   const {
+  //     top_fixed
+  //   } = this.data
+  //   if (e.scrollTop <= 0 && top_fixed) {
+  //     console.log('ddd')
+  //     this.setData({
+  //       top_fixed: false
+  //     })
+  //   } else if (e.scrollTop > 0 && !top_fixed) {
+  //     console.log('eee')
+  //     this.setData({
+  //       top_fixed: true
+  //     })
+  //   }
+  // },
+  tabTap: function(e) {
+    let {
+      idx
+    } = e.currentTarget.dataset
+    this.currentChange({
+      detail: {
+        current: idx,
+        source: 'touch'
+      }
     })
+  },
+  currentChange: function(e) {
+    const {
+      current,
+      source
+    } = e.detail
+    if (source === 'touch') {
+      let idx = current
+      this.setData({
+        index: idx
+      })
+      let {
+        list,
+        page,
+        loading
+      } = this.data.tabs[idx]
+      let pn = (page && page.pn) ? page.pn : 1
+      if (loading) { // 正在加载
+        if (pn.toString() === '1') {
+          wx.stopPullDownRefresh()
+        }
+        return false
+      }
+      if (list && list[0] && pn.toString() === '1') { // 已有数据 且 是请求第一页数据
+        return false
+      }
+      if (page && page.is_end) { // 最后一页
+        return false
+      }
+      // 触发加载fatchlist事件
+      this.fetchlist({detail: {
+        idx,
+        pn
+      }})
+    }
   },
   fetchlist(e) {
     this.fetchComment(e.detail.idx, this.options, e.detail.pn)

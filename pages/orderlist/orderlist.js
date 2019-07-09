@@ -70,8 +70,11 @@ Page({
     let index = parseInt(options ? options.type : 0)
     index = isNaN(index) ? 0 : index
     storageHelper.setStorage('orderListRefresh', '')
-    this.setData({
-      index: index
+    this.currentChange({
+      detail: {
+        current: index,
+        source: 'touch'
+      }
     })
   },
 
@@ -136,13 +139,83 @@ Page({
   onShareAppMessage: function() {
 
   },
-  tabchange(e) {
-    this.setData({
-      index: e.detail.current
+  tabTap: function(e) {
+    let {
+      idx
+    } = e.currentTarget.dataset
+    this.currentChange({
+      detail: {
+        current: idx,
+        source: 'touch'
+      }
     })
+  },
+  currentChange: function(e) {
+    const {
+      current,
+      source
+    } = e.detail
+    if (source === 'touch') {
+      let idx = current
+      this.setData({
+        index: idx
+      })
+      // 触发tabchange事件
+      let {
+        list,
+        page,
+        loading
+      } = this.data.tabs[idx]
+      let pn = (page && page.pn) ? page.pn : 1
+      if (loading) { // 正在加载
+        if (pn.toString() === '1') {
+          wx.stopPullDownRefresh()
+        }
+        return false
+      }
+      if (list && list[0] && pn.toString() === '1') { // 已有数据 且 是请求第一页数据
+        return false
+      }
+      if (page && page.is_end) { // 最后一页
+        return false
+      }
+      // 触发加载fatchlist事件
+      this.fetchlist({detail: {
+        idx,
+        pn
+      }})
+    }
   },
   fetchlist(e) {
     this.loadList(e.detail.idx, e.detail.pn)
+  },
+  scrollToEnd: function(e) {
+    let {
+      idx
+    } = e.currentTarget.dataset
+    let {
+      list,
+      page,
+      loading
+    } = this.data.tabs[idx]
+    let pn = ((page && page.pn) ? page.pn : 1) + 1
+    if (loading) { // 正在加载
+      if (pn.toString() === '1') {
+        wx.stopPullDownRefresh()
+      }
+      return false
+    }
+    if (list && list[0] && pn.toString() === '1') { // 已有数据 且 是请求第一页数据
+      return false
+    }
+    if (page && page.is_end) { // 最后一页
+      return false
+    }
+    // 触发加载fatchlist事件
+    this.fetchlist({detail: {
+      idx,
+      pn
+    }})
   },
   loadList(index, pn = 1) {
     let data = {
@@ -157,8 +230,14 @@ Page({
       // let list = []
       res.data.list.forEach((item) => {
         item.price = util.formatMoney(item.price).showMoney
-        item.huodong.valid_btime = util.formatDateTimeDefault('d', item.huodong.valid_btime)
-        item.huodong.valid_etime = util.formatDateTimeDefault('d', item.huodong.valid_etime)
+        let product = item.huodong || item.vgoods
+        if (product && product.valid_btime) {
+          product.valid_btime = util.formatDateTimeDefault('d', product.valid_btime)
+        }
+        if (product && product.valid_etime) {
+          product.valid_etime = util.formatDateTimeDefault('d', product.valid_etime)
+        }
+        item.product = product
         item.ticket_text = item.ticket.map((item) => {
           return item.name + '×' + item.quantity
         }).join(',')
@@ -231,11 +310,11 @@ Page({
   },
 
   shareTap: function (e) {
-    const {hd_id, pt_id} = e.detail
-    if (hd_id && pt_id) {
+    const {product_id, pt_id} = e.detail
+    if (product_id && pt_id) {
       const poster = this.selectComponent('#c-draw-poster')
       if (poster && poster.startDraw) {
-        poster.startDraw(hd_id, pt_id)
+        poster.startDraw(product_id, pt_id)
       }
     }
   }

@@ -85,8 +85,8 @@ Page({
       id: this.data.id
     }).then(res => {
       res.data.list.forEach((item) => {
-        item.valid_btime = util.formatDateTimeDefault('m', item.valid_btime)
-        item.valid_etime = util.formatDateTimeDefault('m', item.valid_etime)
+        item.valid_btime = item.valid_btime ? util.formatDateTimeDefault('m', item.valid_btime) : ''
+        item.valid_etime = item.valid_etime ? util.formatDateTimeDefault('m', item.valid_etime) : ''
         item.js_price = util.formatMoney(item.js_price).showMoney
       })
       if (pn == 1) {

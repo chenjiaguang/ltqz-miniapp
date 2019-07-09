@@ -1,0 +1,2 @@
+<!--components/proprietaryIcon/proprietaryIcon.wxml-->
+<view class="proprietary-icon theme-bg"><text>自营</text></view>

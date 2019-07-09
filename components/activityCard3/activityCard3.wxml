@@ -1,5 +1,5 @@
 <!--components/activityCard/activityCard.wxml-->
-<view class='card column' catchtap="goSignUpManager" data-hdid="{{activity.id}}" data-shopid="{{activity.shop_id}}" hover-stop-propagation hover-class='card-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
+<view class='card column' catchtap="goSignUpManager" data-productid="{{activity.id}}" data-shopid="{{activity.shop_id}}" hover-stop-propagation hover-class='card-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
   <view class='top-box row'>
     <view class='cover-box'>
       <image class='cover' src="{{activity.cover_url}}" mode="aspectFill"/>
@@ -7,7 +7,7 @@
     </view>
     <view class='content-box column'>
       <text class='title bold'>{{activity.title}}</text>
-      <text class='time'>{{activity.valid_btime}} 至 {{activity.valid_etime}}</text>
+      <text wx:if="{{activity.valid_btime && activity.valid_etime}}" class='time'>{{activity.valid_btime}} 至 {{activity.valid_etime}}</text>
       <text class='location'>{{activity.address}}</text>
     </view>
   </view>
