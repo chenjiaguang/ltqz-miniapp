@@ -9,7 +9,7 @@
         <view class='merchant-right'>
           <view class='merchant-title'>
             <text>{{name}}</text>
-            <proprietary-icon wx:if="{{natrue == 1}}" style="margin-left:14rpx" />
+            <proprietary-icon wx:if="{{nature == 1}}" style="margin-left:14rpx" />
           </view>
           <view class='merchant-intro'>{{introduce}}</view>
         </view>

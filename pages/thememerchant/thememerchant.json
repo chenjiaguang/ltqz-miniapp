@@ -2,6 +2,9 @@
   "navigationBarTitleText": "优质商家推荐",
   "usingComponents": {
     "ft-custom-nav": "../../ftcomponents/ftCustomNav/ftCustomNav",
-    "merchant-card": "../../components/merchantCard/merchantCard"
+    "merchant-card": "../../components/merchantCard/merchantCard",
+    "ft-list-loader": "../../ftcomponents/ftListLoader/ftListLoader",
+    "ft-list-footer": "../../ftcomponents/ftListFooter/ftListFooter",
+    "ft-iphone-bottom-adapter": "../../ftcomponents/ftIphoneBottomAdapter/ftIphoneBottomAdapter"
   }
 }

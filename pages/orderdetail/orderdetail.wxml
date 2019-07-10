@@ -30,12 +30,13 @@
       <text class='key'>{{order.type == 1 ? '活动地点' : '地点'}}</text>
       <text class='value'>{{product.address || '--'}}</text>
     </view>
-    <!-- todo -->
-    <view wx:if="{{order.type == 2}}" class='line-separator-h'></view>
-    <view wx:if="{{order.type == 2}}" class='item row'>
-      <text class='key'>核销有效期</text>
-      <text class='value'>{{product.address || '--'}}</text>
-    </view>
+    <block wx:if="{{order.type == 2 && order.hx_rule}}">
+      <view class='line-separator-h'></view>
+      <view class='item row'>
+        <text class='key'>核销有效期</text>
+        <text class='value'>{{order.hx_rule || '--'}}</text>
+      </view>
+    </block>
     <view wx:if="{{order.type == 1}}" class='line-separator-h'></view>
     <view wx:if="{{order.type == 1}}" class='item row'>
       <text class='key'>活动场次</text>
@@ -63,7 +64,7 @@
     </view>
   </view>
 
-  <view class='list' wx:if="traveler_infos.length">
+  <view class='list' wx:if="{{traveler_infos && traveler_infos.length}}">
     <view class='title'>出行人信息</view>
     <block wx:if="{{product.include_bx == 1}}">
       <block wx:for="{{traveler_infos}}" wx:key="name">

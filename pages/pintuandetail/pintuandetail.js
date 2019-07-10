@@ -296,13 +296,19 @@ Page({
     }
   },
   nextTap: function (e) {
-    const { saletype, currentSession, currentTickets, selectedTicketLength, totalPrice} = e.detail
-    const { product_id: id, id: tuan_id, fromUid, product: { title, valid_btime, valid_etime, address, session, sale_type, refund = false, include_bx }, } = this.data
-    let data = JSON.parse(JSON.stringify({ id, fromUid, title, address, valid_btime, valid_etime, session, sale_type, saletype, selectedTicketLength: selectedTicketLength[saletype], currentSession: currentSession[saletype], currentTickets: currentTickets[saletype], refund, include_bx, totalPrice: totalPrice[saletype], tuan_id }))
-    if (this.data.status != 1) { // 如果不是拼团中，设置tuan_id为0，即为新开一个团
-      data.tuan_id = 0
+    const { saletype, currentSession, currentSubSession, currentTickets, subSessions, selectedTicketLength, totalPrice} = e.detail
+    const { type, product_id: id, id: tuan_id, fromUid, product: { title, valid_btime, valid_etime, address, session, sale_type, refund = false, include_bx }, hx_rule } = this.data
+    let dataObj = {type, id, fromUid, title, address, valid_btime, valid_etime, session, sale_type, saletype, selectedTicketLength: selectedTicketLength[saletype], currentSession: currentSession[saletype], refund, include_bx, totalPrice: totalPrice[saletype], tuan_id, hx_rule}
+    if (type == 1) { // 活动
+      dataObj.currentTickets = currentTickets[saletype]
+    } else if (type == 2) { // 非活动
+      dataObj.currentSubSession = currentSubSession[saletype]
+      dataObj.subSessions = subSessions[saletype]
     }
-    storageHelper.setStorage('orderSubmitJson', JSON.stringify(data))
+    if (this.data.status != 1) { // 如果不是拼团中，设置tuan_id为0，即为新开一个团
+      dataObj.tuan_id = 0
+    }
+    storageHelper.setStorage('orderSubmitJson', JSON.stringify(dataObj))
     wx.navigateTo({
       url: '/pages/ordersubmit/ordersubmit'
     })

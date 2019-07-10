@@ -1,3 +1,6 @@
 <!--pages/thememerchant/thememerchant.wxml-->
 <ft-custom-nav title="{{navTitle}}" />
-<merchant-card />
+<ft-list-loader visible="{{!loaded}}" />
+<merchant-card wx:for="{{list}}" wx:for-index="idx" wx:for-item="merchant" wx:key="id" top-border="{{idx !== 0}}" merchant="{{merchant}}" catchmerchanttap="merchantTap" />
+<ft-list-footer loading="{{loading}}" page="{{page}}" show-no-more="{{list && list[0]}}" no-more-text="没有更多了" />
+<ft-iphone-bottom-adapter />

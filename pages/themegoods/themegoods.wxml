@@ -1,2 +1,6 @@
 <!--pages/themegoods/themegoods.wxml-->
-<text>pages/themegoods/themegoods.wxml</text>
+<ft-custom-nav title="{{navTitle}}" />
+<ft-list-loader visible="{{!loaded}}" />
+<sale-card wx:for="{{list}}" wx:for-index="idx" wx:for-item="sale" wx:key="id" sale="{{sale}}" catchsaletap="saleTap" />
+<ft-list-footer loading="{{loading}}" page="{{page}}" show-no-more="{{list && list[0]}}" no-more-text="没有更多了" />
+<ft-iphone-bottom-adapter />

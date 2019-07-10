@@ -1,12 +1,7 @@
 <!--components/orderCard/orderCard.wxml-->
 <view class='card wrapper' bindtap='goDetail' hover-stop-propagation hover-class='card-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
   <view class='head row jc-between ai-center'>
-    <text class='theme-color' wx:if="{{item.status==1}}">待使用</text>
-    <text class='state state1' wx:if="{{item.status==0}}">待付款</text>
-    <text class='state state2' wx:if="{{item.status==2}}">待评价</text>
-    <text class='state state3' wx:if="{{item.status==3}}">已完成</text>
-    <text class='state state4' wx:if="{{item.status==-1 || item.status==-2}}">已取消</text>
-    <text class='theme-color' wx:if="{{item.status==4}}">拼团中</text>
+    <text class="{{statusClass[item.status] || 'state-normal'}}">{{statusText[item.status]}}</text>
     <text class='money bold'>¥{{item.price}}</text>
   </view>
   <view class='line-separator-h'></view>

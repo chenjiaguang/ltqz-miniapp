@@ -9,14 +9,19 @@
   font-size: 30rpx;
 }
 
-.state {
-  color: #666;
-}
-
 /* .state0 {
   color: #64b631;
 } */
 
+.state-normal{
+  color: #666;
+}
+.state-red{
+  color: #f24724;
+}
+.state-orange{
+  color: #FF9500;
+}
 .state1 {
   color: #f24724;
 }

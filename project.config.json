@@ -50,7 +50,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 28,
+			"current": 20,
 			"list": [
 				{
 					"id": -1,
@@ -192,10 +192,10 @@
 					"scene": null
 				},
 				{
-					"id": 21,
+					"id": 20,
 					"name": "活动详情",
 					"pathName": "pages/goodsdetail/goodsdetail",
-					"query": "id=70",
+					"query": "id=117",
 					"scene": null
 				},
 				{

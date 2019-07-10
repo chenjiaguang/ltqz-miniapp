@@ -24,8 +24,11 @@ Page({
     valid_etime: '',
     session: [],
     currentSession: null,
+    currentSubSession: null,
     currentTickets: [],
+    subSessions: [],
     selectedTickets: [],
+    selectedSessions: [],
     selectedTicketLength: 0,
     refund: false,
     include_bx: '', // 不包含保险：0，包含保险：1
@@ -59,9 +62,21 @@ Page({
           }
         }
       })
-      data.contact = shouldFill.concat([{name: 'gender', value: '', label: '性别'}])
+      data.contact = shouldFill
     }
-    data.selectedTickets = data.currentTickets.filter(item => item.num > 0)
+    if (data.type == 1) { // 活动，已购买的票
+      data.selectedTickets = data.currentTickets.filter(item => item.num > 0)
+    } else if (data.type == 2) { // 非活动，已购买的商品
+      data.selectedSessions = [data.session[data.currentSession]]
+      data.selectedSessions.forEach(item => {
+        if (data.subSessions && data.subSessions.length) {
+          const sub = data.subSessions.filter(item => item.num > 0)[0]
+          item.subName = sub.name
+          item.subId = sub.id
+          item.subNum = sub.num
+        }
+      })
+    }
     this.setData(data)
     this.fetchBuyfors() // 获取常用联系人
     this.setBuyforsWrapperHeight() // 设置选择联系人弹窗高度为扳平高度
@@ -124,7 +139,7 @@ Page({
     let fillForm = []
     if (form && form.key) {
       for( let key in form.key) {
-        fillForm.push({name: form.key[key], label: key, value: ''})
+        fillForm.push({name: key, label: key, value: '', type: form.key[key]})
       }
     }
     return fillForm
@@ -231,7 +246,7 @@ Page({
 
   submitOrder: function () {
     console.log('submitOrder')
-    const { id, fromUid, fill_info, fill_form, selectedTickets, contact, buy_for, submitting, clause_checked, saletype, tuan_id, totalPrice} = this.data
+    const { type, id, fromUid, fill_info, fill_form, selectedTickets, selectedSessions, contact, buy_for, submitting, clause_checked, saletype, tuan_id, totalPrice} = this.data
     const contactEmptyItem = contact.filter(item => !item.value)
 
     if (fill_info && (!buy_for || (buy_for && !buy_for.length))) { // 联系人信息不完整
@@ -242,7 +257,7 @@ Page({
       return false
     } else if (contactEmptyItem && contactEmptyItem.length) { // 需要填写出行人信息 且 没有选中的出行人
       wx.showToast({
-        title: contactEmptyItem[0].name == 'gender' ? '请选择联系人性别' : ('请填写联系人' + contactEmptyItem[0].label),
+        title: contactEmptyItem[0].type == 'gender' ? '请选择联系人性别' : ('请填写联系人' + contactEmptyItem[0].label),
         icon: 'none'
       })
       return false
@@ -267,18 +282,25 @@ Page({
     })
     storageHelper.setStorage('orderContact', JSON.stringify(_obj))
     // 提交支付信息
-    let ticket = selectedTickets.map(item => {
-      return {id: item.id, quantity: item.num}
-    })
+    let ticket = null
+    if (type == 1) { // 活动
+      ticket = selectedTickets.map(item => {
+        return {id: item.id, quantity: item.num}
+      })
+    } else if (type == 2) { // 非活动
+      ticket = {}
+      let selected = selectedSessions[0]
+      ticket.id = selected.id
+      ticket.quantity = selected.subNum
+      ticket.style_id = selected.subId
+    }
     let buy_for_ids = buy_for.map(item => item.id)
     const tuanid = saletype == 2 ? (tuan_id || 0) : null
 
     let rData = {
-      product_id: id,
+      id: id,
       ticket: ticket,
       traveler_ids: buy_for_ids,
-      // name: contact.name.value,
-      // phone: contact.phone.value,
       fenxiao_user_id: fromUid,
       tuan_id: tuanid,
       total_price: totalPrice,

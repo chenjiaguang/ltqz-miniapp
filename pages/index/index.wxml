@@ -13,7 +13,7 @@
     <view class='theme-header'><text class='theme-header-title'>热门主题</text><text class='theme-header-tip'>提前领 最高<text style="color:#F24724">省¥50</text></text></view>
     <ft-theme themes="{{themes}}" catchthemetap="themeTap" />
   </view>
-  <ft-sale-box wx:if="{{activitys && activitys[0]}}" sales="{{activitys}}" />
+  <ft-sale-box wx:if="{{sales && sales[0]}}" sales="{{sales}}" />
   <view wx:if="{{hots && hots[0]}}" class='hot-box'>
     <view class='hot-header'><view class='left-line line-separator-h'></view><view class='hot-icon theme-bg'><image class='hot-icon-image' src="/assets/images/top_hot.png" mode="aspectFit"></image></view><text class='hot-header-title'>热卖TOP榜</text><view class='right-line line-separator-h'></view></view>
     <activity-card wx:for="{{hots}}" wx:for-item="activity" wx:for-index="aidx" wx:key="id" activity="{{activity}}" catchactivitytap="goodsTap" />

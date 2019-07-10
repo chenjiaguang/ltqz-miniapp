@@ -74,10 +74,21 @@
       <view wx:if="{{join_users && join_users.length && join_users.length >= 6}}" class='more-user' style="position:relative;z-index:0"><view class='dot'></view><view class='dot'></view><view class='dot'></view></view>
     </view>
   </view>
-  <!-- 活动主办方信息 -->
+  <!-- 主办方信息 -->
   <view class='sponsor-box'>
     <view class='block-separator'></view>
-    <view class='sponsor-header'><text>活动主办方</text><text wx:if="{{shop.type_pic_url}}" style="font-size:26rpx;color:#999;" catchtap="viewBusinessCertification">查看商家资质<text class='next-icon lutufont lutu-next2' style="margin-left:26rpx;"></text></text></view>
+    <!-- 活动 -->
+    <view wx:if="{{type == 1}}" class='sponsor-header'>
+      <text>活动主办方</text>
+      <!-- todo:商家经营主体 -->
+      <!-- <text wx:if="{{shop.type_pic_url}}" style="font-size:26rpx;color:#999;" catchtap="viewBusinessCertification">查看商家资质<text class='next-icon lutufont lutu-next2' style="margin-left:26rpx;"></text></text> -->
+    </view>
+    <!-- 非活动 -->
+    <view wx:if="{{type == 2}}" class='sponsor-header'>
+      <text>商家名片</text>
+      <!-- todo:商家经营主体 -->
+      <!-- <text wx:if="{{shop.type_pic_url}}" style="font-size:26rpx;color:#999;" catchtap="viewBusinessCertification">查看商家资质<text class='next-icon lutufont lutu-next2' style="margin-left:26rpx;"></text></text> -->
+    </view>
     <view class='line-separator-h'></view>
     <view class='sponsor-overview' catchtap="viewBusiness">
       <image class='sponsor-avatar' src="{{shop.logo_url}}" mode="aspectFill"></image>
@@ -85,6 +96,7 @@
         <view class='sponsor-title'>{{shop.name}}</view>
         <view class='sponsor-intro'>{{shop.introduce}}</view>
         <view class='activity-and-score'>
+          <!-- todo:商品数量字段确认 -->
           <view class='activity-num'>商品数量<text class='theme-color' style="margin-left:10rpx">{{shop.huodong_num}}</text></view>
           <view class='line-separator-v' style="height:28rpx;background:#D8D8D8;"></view>
           <view class='activity-score'>商家评分<text class='theme-color' style="margin-left:10rpx">{{shop.rate}}</text></view>
@@ -161,10 +173,16 @@
           <view class='tip-arrow'></view>
         </view>
         <view class='kefu-and-collect'>
-          <button open-type="contact" class='kefu' hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
+          <!-- 自营 -->
+          <button wx:if="{{shop && shop.nature == 1}}" open-type="contact" class='kefu' hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
             <text class='kefu-icon theme-color lutufont lutu-kefu'></text>
             <text class='kefu-text'>客服</text>
           </button>
+          <!-- 第三方 -->
+          <view wx:if="{{shop && shop.nature == 2}}" catchtap="makePhoneCall" data-phone="{{shop.phone}}" class='tel' hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
+            <text class='tel-icon theme-color lutufont lutu-tel3'></text>
+            <text class='tel-text'>电话</text>
+          </view>
           <view class='collect' catchtap="collectTap" hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
             <text class="collect-icon theme-color lutufont{{is_collect ? ' lutu-collected' : ' lutu-collect'}}"></text>
             <text class='collect-text'>{{is_collect ? '已收藏' : '收藏'}}</text>
@@ -191,9 +209,15 @@
           <view class='tip-arrow'></view>
         </view>
         <view class='kefu-and-collect'>
-          <view class='kefu' hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
+          <!-- 自营 -->
+          <button wx:if="{{shop && shop.nature == 1}}" open-type="contact" class='kefu' hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
             <text class='kefu-icon theme-color lutufont lutu-kefu'></text>
             <text class='kefu-text'>客服</text>
+          </button>
+          <!-- 第三方 -->
+          <view wx:if="{{shop && shop.nature == 2}}" catchtap="makePhoneCall" data-phone="{{shop.phone}}" class='tel' hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
+            <text class='tel-icon theme-color lutufont lutu-tel3'></text>
+            <text class='tel-text'>电话</text>
           </view>
           <view class='collect' catchtap="collectTap" hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
             <text class="collect-icon theme-color lutufont{{is_collect ? ' lutu-collected' : ' lutu-collect'}}"></text>
@@ -230,10 +254,16 @@
           <view class='tip-arrow'></view>
         </view>
         <view class='kefu-and-collect'>
-          <button open-type="contact" class='kefu' hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
+          <!-- 自营 -->
+          <button wx:if="{{shop && shop.nature == 1}}" open-type="contact" class='kefu' hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
             <text class='kefu-icon theme-color lutufont lutu-kefu'></text>
             <text class='kefu-text'>客服</text>
           </button>
+          <!-- 第三方 -->
+          <view wx:if="{{shop && shop.nature == 2}}" catchtap="makePhoneCall" data-phone="{{shop.phone}}" class='tel' hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
+            <text class='tel-icon theme-color lutufont lutu-tel3'></text>
+            <text class='tel-text'>电话</text>
+          </view>
           <view class='collect' catchtap="collectTap" hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
             <text class="collect-icon theme-color lutufont{{is_collect ? ' lutu-collected' : ' lutu-collect'}}"></text>
             <text class='collect-text'>{{is_collect ? '已收藏' : '收藏'}}</text>
@@ -252,5 +282,5 @@
   </ft-bottom-box>
 </view>
 <draw-poster id="c-draw-poster" />
-<shopping-view wx:if="{{status == 1 && session && session.length > 0 && type == 1}}" id="c-shopping-view" session="{{session}}" timestamp="{{goodsTimestamp}}" catchnextstep="nextTap" />
-<shopping-view2 wx:if="{{status == 1 && session && session.length > 0 && type == 2}}" id="c-shopping-view" session="{{session}}" timestamp="{{goodsTimestamp}}" catchnextstep="nextTap" />
+<shopping-view wx:if="{{status == 1 && session && session.length > 0 && type == 1}}" id="c-shopping-view" remain-count="{{person_remain_count}}" session="{{session}}" timestamp="{{goodsTimestamp}}" catchnextstep="nextTap" />
+<shopping-view2 wx:if="{{status == 1 && session && session.length > 0 && type == 2}}" id="c-shopping-view" remain-count="{{person_remain_count}}" session="{{session}}" timestamp="{{goodsTimestamp}}" catchnextstep="nextTap" />

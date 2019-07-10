@@ -8,7 +8,6 @@ let navHeight = 0
 if (app.globalData.customNav && app.globalData.customNav.navHeight) {
   navHeight = app.globalData.customNav.navHeight
 }
-// todo 添加购买须知后滚动切换tab有bug，需修复
 Page({
   name: 'goodsdetail',
   /**
@@ -409,7 +408,7 @@ Page({
       let phone = storageHelper.getStorage('uphone')
       if (phone) {
         let _obj = contactJson ? JSON.parse(contactJson): {}
-        _obj.phone = phone
+        _obj['手机'] = phone
         storageHelper.setStorage('orderContact', JSON.stringify(_obj))
         this.setData({
           orderContact: _obj
@@ -420,7 +419,7 @@ Page({
             if (res.data.phone) { // 有电话才设置
               storageHelper.setStorage('uphone', res.data.phone)
               let _obj = contactJson ? JSON.parse(contactJson): {}
-              _obj.phone = res.data.phone
+              _obj['手机'] = res.data.phone
               storageHelper.setStorage('orderContact', JSON.stringify(_obj))
               this.setData({
                 orderContact: _obj
@@ -442,7 +441,7 @@ Page({
         if (res.error == 0) {
           const contactJson = storageHelper.getStorage('orderContact')
           let _obj = contactJson ? JSON.parse(contactJson): {}
-          _obj.phone = res.data.phoneNumber
+          _obj['手机'] = res.data.phoneNumber
           storageHelper.setStorage('orderContact', JSON.stringify(_obj))
           this.setData({
             orderContact: _obj
@@ -520,13 +519,29 @@ Page({
   },
 
   nextTap: function (e) {
-    const { saletype, currentSession, currentTickets, selectedTicketLength, totalPrice } = e.detail
-    const { id, tuanId: tuan_id, fromUid, fill_info, fill_form, title, valid_btime, valid_etime, address, session, sale_type, refund = false, include_bx } = this.data
-    let data = JSON.parse(JSON.stringify({ id, fromUid, fill_info, fill_form, title, address, valid_btime, valid_etime, session, sale_type, saletype, selectedTicketLength: selectedTicketLength[saletype], currentSession: currentSession[saletype], currentTickets: currentTickets[saletype], refund, include_bx, totalPrice: totalPrice[saletype], tuan_id }))
-    storageHelper.setStorage('orderSubmitJson', JSON.stringify(data))
+    const { saletype, currentSession, currentSubSession, currentTickets, subSessions, selectedTicketLength, totalPrice } = e.detail
+    const { type, id, tuanId: tuan_id, fromUid, fill_info, fill_form, title, valid_btime, valid_etime, address, session, sale_type, refund = false, include_bx, hx_rule } = this.data
+    let dataObj = {type, id, fromUid, fill_info, fill_form, title, address, valid_btime, valid_etime, session, sale_type, saletype, selectedTicketLength: selectedTicketLength[saletype], currentSession: currentSession[saletype], refund, include_bx, totalPrice: totalPrice[saletype], tuan_id, hx_rule}
+    if (type == 1) { // 活动
+      dataObj.currentTickets = currentTickets[saletype]
+    } else if (type == 2) { // 非活动
+      dataObj.currentSubSession = currentSubSession[saletype]
+      dataObj.subSessions = subSessions[saletype]
+    }
+    let dataJson = JSON.stringify(dataObj)
+    storageHelper.setStorage('orderSubmitJson', dataJson)
     wx.navigateTo({
       url: '/pages/ordersubmit/ordersubmit'
     })
+  },
+
+  makePhoneCall: function (e) {
+    let {phone} = e.currentTarget.dataset
+    if (phone) {
+      wx.makePhoneCall({
+        phoneNumber: phone.toString()
+      })
+    }
   },
 
   qgTimeout: function () {

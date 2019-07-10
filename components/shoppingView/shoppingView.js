@@ -7,6 +7,7 @@ Component({
    * 组件的属性列表
    */
   properties: {
+    remainCount: null,
     session: {
       type: Array,
       value: [],
@@ -25,7 +26,7 @@ Component({
             it.type.qg_price = util.formatMoney(it.type.qg_price).money
           })
         })
-        this.initSession(session)
+        this.initSession(session, this.data.saletype)
       }
     },
     timestamp: {
@@ -47,7 +48,7 @@ Component({
               it.type.qg_price = util.formatMoney(it.type.qg_price).money
             })
           })
-          this.initSession(session)
+          this.initSession(session, this.data.saletype)
         }
       }
     }
@@ -83,83 +84,148 @@ Component({
    * 组件的方法列表
    */
   methods: {
-    sessionTap: function (e) {
-      const { status, idx } = e.currentTarget.dataset
-      const { currentSession, saletype } = this.data
-      const session = JSON.parse(JSON.stringify(this.data.session))
-      if (status === 'disabled' || currentSession[saletype] === idx) { // 售罄 或 点击的是当前的场次
-        return false
-      }
-      const tickets = session[idx].ticket.map(item => Object.assign({}, item, { num: 0 }))
-      let _obj = {}
-      _obj['selectedTicketLength.' + saletype] = 0
-      _obj['totalPrice.' + saletype] = 0
-      _obj['currentSession.' + saletype] = idx
-      _obj['currentTickets.' + saletype] = tickets
-      this.setData(_obj)
-    },
-    initSession: function (session) {
-      console.log('initSession')
-      let _session = JSON.parse(JSON.stringify(session))
-      let current = null
-      let selected = []
-      const {stockObj, saletype} = this.data
-      for (let i = 0; i < _session.length; i++) {
-        if (_session[i][stockObj[saletype]] === 0) {
+    searchFirstAble: function (session, stockObj, saletype) { // 自动寻找第一个可购买的款式
+      let ableSessionIdx = null
+      let ableTicketIdx = null
+      for (let i = 0; i < session.length; i++) {
+        if (session[i][stockObj[saletype]] === 0) { // 没有库存不可选
           continue
         }
+        // if (saletype == 3 && this.data.remainCount == 0 ) { // 抢购模式 且 剩余数量为0
+        //   continue
+        // }
         let valid = false
-        let tickets = _session[i].ticket
+        let tickets = session[i].ticket
         for (let j = 0; j < tickets.length; j++) {
           if (tickets[j][stockObj[saletype]] === 0) {
             continue
           }
+          ableTicketIdx = j
           valid = true
+          break
         }
         if (valid) {
-          current = i
+          ableSessionIdx = i
           break
         }
       }
-      if (current !== null) {
-        selected = _session[current].ticket.map(item => Object.assign({}, item, { num: 0 }))
+      if (saletype == 3 && this.data.remainCount == 0 ) { // 抢购模式 且 剩余数量为0, limit表示是否限制购买
+        return {ableSessionIdx, ableTicketIdx, limit: true }
       }
+      return {ableSessionIdx, ableTicketIdx, limit: false}
+    },
+    sessionTap: function (e) {
+      const { status, idx } = e.currentTarget.dataset
+      const { currentSession, saletype, remainCount } = this.data
+      const session = JSON.parse(JSON.stringify(this.data.session))
+      if (status === 'disabled' || currentSession[saletype] === idx) { // 售罄 或 点击的是当前的场次
+        return false
+      }
+      // if (saletype == 3 && remainCount == 0) { // 抢购模式 且 剩余数量为0
+      //   return false
+      // }
+      this.initSession(session, saletype, idx)
+      // const tickets = session[idx].ticket.map(item => Object.assign({}, item, { num: 0 }))
+      // let _obj = {}
+      // _obj['selectedTicketLength.' + saletype] = 0
+      // _obj['totalPrice.' + saletype] = 0
+      // _obj['currentSession.' + saletype] = idx
+      // _obj['currentTickets.' + saletype] = tickets
+      // this.setData(_obj)
+    },
+    initSession: function (session, saletype, idx, subIdx) {
+      let _session = JSON.parse(JSON.stringify(session))
+      let selected = []
+      const {singlePriceObj, stockObj} = this.data
+      let idxObj = this.searchFirstAble(_session, stockObj, saletype)
+      let {ableSessionIdx, ableTicketIdx, limit} = idxObj
+      ableSessionIdx = idx == 0 ? idx : (idx || ableSessionIdx)
+
+      let selectedTicketLength = { 1: 0, 2: 0, 3: 0 }
+      let totalPrice = { 1: 0, 2: 0, 3: 0 }
+      let currentSession = { 1: null, 2: null, 3: null }
+      let currentTickets = { 1: [], 2: [], 3: [] }
+
+      if (ableSessionIdx !== null) {
+        selected = _session[ableSessionIdx].ticket.map(item => Object.assign({}, item, { num: 0 }))
+      }
+      if (!limit) { // 未限制购买，则可以初始化选择一个
+        const subIndex = subIdx || ableTicketIdx
+        const initNum = 1
+        let singlePrice = 0
+
+        if (subIndex !== null) {
+          singlePrice = selected[subIndex].type[singlePriceObj[saletype]]
+          selected[subIndex].num = initNum
+        }
+
+        selectedTicketLength[saletype] = initNum
+        totalPrice[saletype] = parseFloat((initNum * singlePrice / 100).toFixed(2))
+      }
+
+      currentSession[saletype] = ableSessionIdx
+      currentTickets[saletype] = selected
+
+      this.setData({
+        saletype: saletype,
+        selectedTicketLength,
+        totalPrice,
+        currentSession,
+        currentTickets
+      })
+
       // if (selected && selected.length === 0) {
       //   console.log('selected', selected)
       //   selected[0].num = 1
       //   let _obj = {}
       //   _obj.selectedTicketLength = {1: 1, 2: 1}
       //   _obj.totalPrice = {1: parseFloat((selected[0].type.price * 1 / 100).toFixed(2)), 2: parseFloat((selected[0].type.pt_price * 1 / 100).toFixed(2))}
-      //   _obj.currentSession = { 1: current, 2: current },
+      //   _obj.currentSession = { 1: ableSessionIdx, 2: ableSessionIdx },
       //   _obj.currentTickets = { 1: selected, 2: selected }
       //   this.setData(_obj)
       // } else {
       //   this.setData({
       //     selectedTicketLength: { 1: 0, 2: 0 },
       //     totalPrice: { 1: 0, 2: 0 },
-      //     currentSession: { 1: current, 2: current },
+      //     currentSession: { 1: ableSessionIdx, 2: ableSessionIdx },
       //     currentTickets: { 1: selected, 2: selected }
       //   })
       // }
       
-      this.setData({
-        selectedTicketLength: { 1: 0, 2: 0, 3: 0 },
-        totalPrice: { 1: 0, 2: 0, 3: 0 },
-        currentSession: { 1: current, 2: current, 3: current },
-        currentTickets: { 1: selected, 2: selected, 3: selected }
-      })
+      // this.setData({
+      //   selectedTicketLength: { 1: 0, 2: 0, 3: 0 },
+      //   totalPrice: { 1: 0, 2: 0, 3: 0 },
+      //   currentSession: { 1: current, 2: current, 3: current },
+      //   currentTickets: { 1: selected, 2: selected, 3: selected }
+      // })
     },
     countTicket: function (e) {
-      const { stockObj, singlePriceObj, saletype } = this.data
+      const { stockObj, singlePriceObj, saletype, remainCount } = this.data
       let tickets = JSON.parse(JSON.stringify(this.data.currentTickets[saletype]))
       let selectedTicketLen = 0
       let total = 0
       const { type, idx } = e.currentTarget.dataset
       let ticket = tickets[idx]
-      let disabled = ticket[stockObj[saletype]] === 0 || (ticket.num <= 0 && type === 'minus') || (ticket[stockObj[saletype]] && ticket.num >= ticket[stockObj[saletype]] && type === 'add')
-      if (disabled) {
+      if (ticket[stockObj[saletype]] === 0) { // 没有库存
         return false
       }
+      if (ticket.num <= 0 && type === 'minus') { // 点击的是减号，且当前小于或等于0
+        return false
+      }
+      if (ticket[stockObj[saletype]] && ticket.num >= ticket[stockObj[saletype]] && type === 'add') { // 有库存限制 且 点击的是加号 且 当前大于或等于库存
+        return false
+      }
+      if (saletype == 3 && (remainCount == 0 || remainCount && subS.num >= remainCount && type === 'add')) { // 抢购模式 且 （抢购剩余为0 或 当前大于等于抢购限制）
+        wx.showToast({
+          title: '您已经达到限购上限了，留点给其他用户吧~',
+          icon: 'none'
+        })
+        return false
+      }
+      // let disabled = ticket[stockObj[saletype]] === 0 || (ticket.num <= 0 && type === 'minus') || (ticket[stockObj[saletype]] && ticket.num >= ticket[stockObj[saletype]] && type === 'add')
+      // if (disabled) {
+      //   return false
+      // }
       tickets.forEach((item, index) => {
         selectedTicketLen += index === idx ? (item.num + (type === 'minus' ? -1 : 1)) : item.num
         const singlePrice = item.type[singlePriceObj[saletype]]
@@ -174,26 +240,23 @@ Component({
     },
 
     toggleSession: function (e) {
-      console.log('toggleSession', e)
-      const { saletype, currentSession } = this.data
+      const { saletype } = this.data
       let _saletype = saletype
       if (e && e.currentTarget.dataset.saletype) { // 用于区分团购时点击的是 “单独购买” 还是 “发起拼团” 还是 “商品抢购”
         _saletype = e.currentTarget.dataset.saletype
       }
-      let _obj = {}
       if (_saletype != saletype) { // 点击的购买方式不同时，清空原选择数据
-        const current_session = currentSession[_saletype]
-        const session = JSON.parse(JSON.stringify(this.data.session))
-        const tickets = session[current_session].ticket.map(item => Object.assign({}, item, { num: 0 }))
-        _obj['selectedTicketLength.' + _saletype] = 0
-        _obj['totalPrice.' + _saletype] = 0
-        _obj['currentSession.' + _saletype] = 0
-        _obj['currentTickets.' + _saletype] = tickets
+        this.initSession(this.data.session, _saletype)
+        // const current_session = currentSession[_saletype]
+        // const session = JSON.parse(JSON.stringify(this.data.session))
+        // const tickets = session[current_session].ticket.map(item => Object.assign({}, item, { num: 0 }))
+        // _obj['selectedTicketLength.' + _saletype] = 0
+        // _obj['totalPrice.' + _saletype] = 0
+        // _obj['currentSession.' + _saletype] = 0
+        // _obj['currentTickets.' + _saletype] = tickets
       }
       const ftModal = this.selectComponent('#c-ft-modal')
       ftModal && ftModal.toggle && ftModal.toggle()
-      _obj.saletype = _saletype
-      this.setData(_obj)
     },
 
     order: function () {

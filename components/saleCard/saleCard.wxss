@@ -3,6 +3,7 @@
 
 .wrapper{
   padding: 32rpx 0;
+  background: #FFFFFF;
 }
 
 .tags{

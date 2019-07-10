@@ -23,14 +23,7 @@ Page({
     //   { name: '主题8', id: '8', image: 'http://i1.bvimg.com/685753/b9ba96284fff562b.jpg', maskText: '14.5万人关注', tags: [] }
     // ],
     themes: [], // 主题
-    // activitys: [
-    //   { title: '天天免费', content: '爆款商品0元购', link: '/pages/goodsdetail/goodsdetail?id=19', icon: 'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2229346952,2661940409&fm=27&gp=0.jpg', bg: 'green'},
-    //   { title: '天天免费', content: '爆款商品0元购', link: '/pages/goodsdetail/goodsdetail?id=19', icon: 'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2229346952,2661940409&fm=27&gp=0.jpg'},
-    //   { title: '天天免费', content: '爆款商品0元购', link: '/pages/goodsdetail/goodsdetail?id=19', icon: 'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2229346952,2661940409&fm=27&gp=0.jpg'},
-    //   { title: '限时抢购', content: '精品好物低价抢', link: '/pages/goodsdetail/goodsdetail?id=19', icon: 'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2229346952,2661940409&fm=27&gp=0.jpg'},
-    //   { title: '体验券/优惠券', content: '热门活动超值体验', link: '', icon: 'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2229346952,2661940409&fm=27&gp=0.jpg'}
-    // ],
-    activitys: [], // 营销活动
+    sales: [], // 营销活动
     hots: [], // 爆款
     news: [], // 新品
     recommendations: [], // 推荐
@@ -121,9 +114,12 @@ Page({
         const cates = res.data.class.map(item => {
           return {id: item.id, name: item.name, image: item.icon_url}
         })
+
+        let sales = res.data.subject
         let hots = []
         let news = []
         let recommend = res.data.recommend
+        
         if (recommend && recommend.top && recommend.top.length) { // 热卖
           hots = recommend.top
         }
@@ -146,6 +142,7 @@ Page({
           banners,
           subBanners,
           cates,
+          sales,
           hots,
           news
         })

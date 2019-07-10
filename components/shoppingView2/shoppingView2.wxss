@@ -104,7 +104,7 @@
   box-sizing: border-box;
 }
 .ticket-name{
-  width: 260rpx;
+  flex: 1;
   padding-right: 12rpx;
   flex-shrink: 0;
   font-size: 30rpx;
@@ -162,11 +162,10 @@
   color: #D8D8D8;
 }
 .stock-text{
-  width: 90rpx;
   text-align: right;
   font-size: 30rpx;
   color: #333;
-  margin-left: 16rpx;
+  margin: 0 16rpx;
 }
 .stock-text.disabled{
   color: #999999;

@@ -4,7 +4,7 @@ Component({
    * 组件的属性列表
    */
   properties: {
-    // merchant.natrue: 1自营|2第三方
+    // merchant.nature: 1自营|2第三方
     merchant: {
       type: Object,
       value: {}

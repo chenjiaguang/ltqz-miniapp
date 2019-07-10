@@ -10,6 +10,7 @@ Page({
     navTitle: '商家详情',
     id: '',
     name: '',
+    nature: '', // nature: 1自营|2第三方
     introduce: '',
     rate: 0,
     rate_num: 0,

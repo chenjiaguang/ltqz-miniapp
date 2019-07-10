@@ -490,6 +490,18 @@ page{
   padding: 0;
   margin: 0;
 }
+.tel{
+  width: 92rpx;
+  height: 88%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 6rpx;
+  background: #ffffff;
+  padding: 0;
+  margin: 0;
+}
 .collect{
   width: 92rpx;
   height: 88%;
@@ -498,6 +510,11 @@ page{
   justify-content: center;
   align-items: center;
   border-radius: 6rpx;
+}
+.tel-icon{
+  font-size: 36rpx;
+  line-height: 36rpx;
+  margin: 4rpx 0;
 }
 .kefu-icon{
   font-size: 36rpx;
@@ -510,6 +527,11 @@ page{
   margin: 4rpx 0;
 }
 .kefu-text{
+  font-size: 24rpx;
+  line-height: 32rpx;
+  color: #999999;
+}
+.tel-text{
   font-size: 24rpx;
   line-height: 32rpx;
   color: #999999;
