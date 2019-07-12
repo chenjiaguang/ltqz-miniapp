@@ -41,7 +41,6 @@ Component({
   methods: {
     codeInput: function (e) {
       let { value, cursor } = e.detail
-      console.log('codeInput', value, cursor)
       this.setData({
         cursor: cursor,
         codeStr: value
@@ -54,7 +53,6 @@ Component({
     },
     onFocus: function (e) {
       let { focus, codeStr} = this.data
-      console.log('onFocus', codeStr, focus)
       if (focus) return false
       this.setData({
         focus: true

@@ -21,7 +21,7 @@
               <view class="minus-btn{{ticket.num <= 0 ? ' disabled' : ''}}" catchtap="countTicket" data-type="minus" data-idx="{{idx}}">
                 <text class="lutufont lutu-jian{{ticket.num <= 0 ? ' disabled' : ''}}"></text>
               </view>
-              <view class='choose-num'><text class="choose-num-text{{ticket.num <= 0 ? ' disabled' : ''}}">{{ticket.num}}</text></view>
+              <view class='choose-num'><text class="choose-num-text{{ticket.num <= 0 ? ' disabled' : ''}}">{{ticket.num || 0}}</text></view>
               <view class="add-btn{{(ticket[stockObj[saletype]] == 0 || (ticket[stockObj[saletype]] && ticket[stockObj[saletype]] <= ticket.num)) ? ' disabled' : ' theme-bg theme-border-color'}}" catchtap="countTicket" data-type="add" data-idx="{{idx}}">
                 <text class="lutufont lutu-jia{{(ticket[stockObj[saletype]] == 0 || (ticket[stockObj[saletype]] && ticket[stockObj[saletype]] <= ticket.num)) ? ' disabled' : ''}}"></text>
               </view>

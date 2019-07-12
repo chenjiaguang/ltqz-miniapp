@@ -112,7 +112,6 @@ Page({
   },
 
   genderChange: function(e) {
-    console.log('genderChange', e)
     let {
       value
     } = e.detail

@@ -23,7 +23,6 @@ Component({
    */
   methods: {
     draw: function (drawSuccess) { // drawSuccess在生成图片成功时会回调，并传入图片临时地址
-      console.log('draw')
       this.setData({
         drawing: true
       }, () => {
@@ -51,7 +50,6 @@ Component({
       }).exec()
     },
     canvasError: function () {
-      console.log('canvasError')
       this.setData({
         drawing: false
       }, () => {
@@ -255,9 +253,7 @@ Component({
         for (let b = 0; b < row.length; b++) {
           ctx.fillText(row[b], alignObj[textData.textAlign] == 'center' ? (textData.left + textData.width / 2) : textData.left + textData.paddingLeft + textData.borderLeftWidth, textData.top + textData.paddingTop + textData.borderTopWidth + textData.lineHeight * (b + (1 / 2)), textData.width)
         }
-        console.log('row', row)
       } else {
-        console.log('not_row')
         ctx.fillText(textData.dataset.text, alignObj[textData.textAlign] == 'center' ? (textData.left + textData.width / 2) : textData.left + textData.paddingLeft + textData.borderLeftWidth, textData.top + textData.paddingTop + textData.borderTopWidth + textData.lineHeight / 2, textData.width)
       }
       ctx.restore()
@@ -348,7 +344,6 @@ Component({
             _obj.leftNum = leftNum
           }
           _obj.qrcode = data.miniqr
-          console.log('ddff')
           this.setData(_obj, dataSuccess)
         }
       }).catch(err => {
@@ -368,34 +363,28 @@ Component({
     },
     drawElements: function (ctx, eles, idx, drawEnd) {
       const {type, text} = eles[idx].dataset
-      console.log('drawElements', eles, idx, type, text)
       let nextFunc = null
       if (idx == eles.length - 1) {
-        console.log('ddd')
         nextFunc = () => {
           drawEnd(ctx)
         }
       } else {
-        console.log('eee')
         nextFunc = () => {
           this.drawElements(ctx, eles, idx + 1, drawEnd)
         }
       }
       if (type == 'text') { // 画文字
-        console.log('text')
         this.drawText(ctx, eles[idx], nextFunc)
       } else if (type == 'image') { // 画图片
-        console.log('image')
+        
       }
     },
     elementsDrawEnd: function (ctx) {
-      console.log('elementsDrawEnd')
       ctx.draw(true, () => {
 
       })
     },
     startDraw: function (page, huodong_id, tuan_id) {
-      console.log('startDraw')
       if (this.data.drawing) {
         return false
       }

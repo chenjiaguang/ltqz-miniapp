@@ -1,8 +1,8 @@
 <!--ftcomponents/ftSaleBox/ftSaleBox.wxml-->
 <view class="wrapper wrapper{{sales.length}}">
   <view wx:for="{{sales}}" wx:for-item="sale" wx:for-index="idx" wx:key="id" class="sale-item sale-item{{sales.length}}{{idx === 0 ? ' first' : ''}}" style="background-color:{{sale.bg || ((sales.length == 3 || sales.length == 5) ? bgColors2[idx] : bgColors1[idx])}}" catchtap="saleTap" data-sale="{{sale}}">
-    <view class="sale-title sale-title{{sales.length}}">{{sale.title}}</view>
-    <view class="sale-content sale-content{{sales.length}}">{{sale.subtitle}}</view>
+    <view class="sale-title sale-title{{sales.length}}{{idx === 0 ? ' first' : ''}}">{{sale.title}}</view>
+    <view class="sale-content sale-content{{sales.length}}{{idx === 0 ? ' first' : ''}}">{{sale.subtitle}}</view>
     <image wx:if="{{sale.icon_url}}" class="sale-icon sale-icon{{sales.length}}{{idx === 0 ? ' first' : ''}}" src="{{sale.icon_url}}" mode="aspectFit"></image>
   </view>
 </view>

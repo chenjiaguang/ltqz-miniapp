@@ -11,6 +11,7 @@
     "ft-cates": "../../ftcomponents/ftCates/ftCates",
     "ft-theme": "../../ftcomponents/ftTheme/ftTheme",
     "ft-sale-box": "../../ftcomponents/ftSaleBox/ftSaleBox",
+    "ft-loader": "../../ftcomponents/ftLoader/ftLoader",
     "ft-list-footer": "../../ftcomponents/ftListFooter/ftListFooter",
     "ft-bubble": "../../ftcomponents/ftBubble/ftBubble",
     "ft-modal": "../../ftcomponents/ftModal/ftModal",

@@ -147,7 +147,6 @@ Page({
 
   fetchBuyfors: function () {
     util.request('/traveler/list').then(res => {
-      console.log('fetchBuyfors', res)
       if (res.error == 0 && res.data) {
         this.setData({
           buyfors: res.data
@@ -158,7 +157,6 @@ Page({
 
   updateBuyfors: function (id) {
     util.request('/traveler/list').then(res => {
-      console.log('updateBuyfors', res)
       if (res.error == 0 && res.data) {
         let _buyfors = res.data
         let {buyfors} = this.data
@@ -222,19 +220,15 @@ Page({
           confirmText: '继续支付',
           confirmColor,
           success: res => {
-            console.log('success')
             if (res.confirm) {
-              console.log('confirm')
               this.pay(id, paydata)
             } else {
-              console.log('cancel')
               wx.redirectTo({
                 url: '/pages/orderdetail/orderdetail?id=' + id,
               })
             }
           },
           fail: res => {
-            console.log('fail')
             wx.redirectTo({
               url: '/pages/orderdetail/orderdetail?id=' + id,
             })
@@ -245,7 +239,6 @@ Page({
   },
 
   submitOrder: function () {
-    console.log('submitOrder')
     const { type, id, fromUid, fill_info, fill_form, selectedTickets, selectedSessions, contact, buy_for, submitting, clause_checked, saletype, tuan_id, totalPrice} = this.data
     const contactEmptyItem = contact.filter(item => !item.value)
 
@@ -311,7 +304,6 @@ Page({
       submitting: true
     })
     util.request('/order/commit', rData).then(res => {
-      console.log('/order/commit', res)
       if (res.error == 0 && res.data) { // 提交订单成功
         this.updatePrePageData() // 提交订单成功则刷新页面
         this.setData({
@@ -365,7 +357,6 @@ Page({
   },
 
   changeClause: function () {
-    console.log('changeClause')
     const { clause_checked} = this.data
     this.setData({
       clause_checked: !clause_checked
@@ -399,12 +390,10 @@ Page({
   },
 
   cancelChangeBuyfor: function () {
-    console.log('cancelChangeBuyfor')
     this.toggleBuyfor()
   },
 
   confirmChangeBuyfor: function () {
-    console.log('confirmChangeBuyfor')
     const {buyfors, include_bx} = this.data
     let bfs = buyfors.filter(item => item.checked)
     let _obj = {}
@@ -416,7 +405,6 @@ Page({
       _obj.buy_for_text = text
     }
     _obj.buy_for = bfs
-    console.log('_obj', _obj)
     this.setData(_obj, () => {
       this.toggleBuyfor()
     })

@@ -64,7 +64,6 @@ Component({
       }).exec()
     },
     canvasError: function () {
-      console.log('canvasError')
       this.setData({
         drawing: false
       }, () => {
@@ -392,9 +391,7 @@ Component({
         this.triggerEvent('statuschange', { fetching: this.data.fetching, drawing: this.data.drawing })
       })
       util.request('/product/share', rData).then(res => {
-        console.log('getPosterData', res)
         if (res.data) {
-          console.log('_obj', _obj)
           let data = res.data
           let _obj = {}
           _obj.saleType = data.sale_type
@@ -404,7 +401,6 @@ Component({
           _obj.hTip = (data.sale_type == 2 && tuan_id) ? '发起了拼团，邀请你参与拼团~' : '发现了一个宝贝，想要跟你分享~'
           _obj.banner = data.cover_url
           _obj.title = data.title
-          console.log('_obj', _obj)
           let price = ''
           if (data.sale_type == 1) { // 普通
             price = util.formatMoney(data.min_price).showMoney
@@ -430,7 +426,6 @@ Component({
             _obj.leftNum = leftNum
           }
           _obj.qrcode = data.miniqr
-          console.log('_obj', _obj)
           this.setData(_obj, dataSuccess)
         }
       }).catch(err => {
@@ -480,7 +475,6 @@ Component({
     },
     initShare: function () {
       const { title, banner, huodongId, tuanId, fenxiao_price, uid, saleType, hName } = this.data
-      console.log('initShare', title, banner, huodongId)
       if (title && banner && huodongId) { // 存在数据
         let path = ''
         if (huodongId && tuanId) { // 分享团

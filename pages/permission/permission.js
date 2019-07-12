@@ -113,7 +113,6 @@ Page({
   },
 
   getUserInfo: function(e) {
-    console.log('getUserInfo', e)
     if (e.detail.errMsg === 'getUserInfo:ok') {
       this.setData({
         authUserInfo: true
@@ -198,7 +197,6 @@ Page({
   },
 
   userLogin: function(logingInfo) {
-    console.log('userInfo', logingInfo)
     // 这里写登录逻辑（通过将signature、encryptedData、iv等信息发送给后端完成登录）
     // 模拟
     this.setData({
@@ -208,10 +206,8 @@ Page({
     let rData = Object.assign({}, {
       code: this.code
     }, logingInfo)
-    console.log('rData', rData)
     // return false
     util.request('/login', rData).then(res => {
-      console.log('/login_res')
       if ((res.error === 0 || res.error === '0') && res.data) {
         const app = getApp()
         const {
@@ -243,7 +239,6 @@ Page({
         })
       }
     }).catch(err => {
-      console.log('/login_err', err)
       if (err.error == 1 && this.data.showType === 'update_token') {
         this.login()
         this.setData({

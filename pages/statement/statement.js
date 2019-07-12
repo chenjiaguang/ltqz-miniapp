@@ -87,7 +87,6 @@ Page({
     }
     const url = urlMap[type]
     util.request(url).then(res => {
-      console.log('res', res)
       if (res.error == 0 && res.data) {
         let content = res.data
         let arrEntities = { 'lt': '<', 'gt': '>', 'nbsp': ' ', 'amp': '&', 'quot': '"', 'mdash': '——', 'ldquo': '“', 'rdquo': '”' }

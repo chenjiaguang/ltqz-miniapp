@@ -6,22 +6,13 @@ const util = require('../../utils/util.js')
 Page({
   name: 'index',
   data: {
+    pageFetched: false, // 时候已经获取过/home接口的数据（无论成功或失败都设置为true，以去掉ftloader）
     refreshing: false,
     refreshed: false,
     collected: false,
     banners: [], // 主banner
     subBanners: [], // 副banner
     cates: [], // 分类
-    // themes: [
-    //   { name: '主题1', id: '1', image: 'http://i1.bvimg.com/685753/b9ba96284fff562b.jpg', maskText: '14.5万人关注', tags: ['新品', '爆款'] },
-    //   { name: '主题2', id: '2', image: 'http://i1.bvimg.com/685753/b9ba96284fff562b.jpg', maskText: '2万人已购买', tags: ['爆款'] },
-    //   { name: '主题3', id: '3', image: 'http://i1.bvimg.com/685753/b9ba96284fff562b.jpg', maskText: '', tags: [] },
-    //   { name: '主题4', id: '4', image: 'http://i1.bvimg.com/685753/b9ba96284fff562b.jpg', maskText: '14.5万人关注', tags: [] },
-    //   { name: '主题5', id: '5', image: 'http://i1.bvimg.com/685753/b9ba96284fff562b.jpg', maskText: '14.5万人关注', tags: [] },
-    //   { name: '主题6', id: '6', image: 'http://i1.bvimg.com/685753/b9ba96284fff562b.jpg', maskText: '14.5万人关注', tags: [] },
-    //   { name: '主题7', id: '7', image: 'http://i1.bvimg.com/685753/b9ba96284fff562b.jpg', maskText: '14.5万人关注', tags: [] },
-    //   { name: '主题8', id: '8', image: 'http://i1.bvimg.com/685753/b9ba96284fff562b.jpg', maskText: '14.5万人关注', tags: [] }
-    // ],
     themes: [], // 主题
     sales: [], // 营销活动
     hots: [], // 爆款
@@ -147,6 +138,8 @@ Page({
           news
         })
       }
+    }).finally(res => {
+      this.setData({pageFetched: true})
     })
   },
   fetchRecommandGoods: function (pn) {

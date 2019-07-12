@@ -1,10 +1,8 @@
 <!--index.wxml-->
-<ft-pull-to-refresh refreshing="{{refreshing}}" refreshed="{{refreshed}}" bindrefresh="onPullDownRefresh">
-  <ft-custom-nav slot="header" hideDist="422rpx" fixed />
-  <!-- <view class='page-top-padding'></view> -->
+<ft-pull-to-refresh wx:if="{{pageFetched}}" refreshing="{{refreshing}}" refreshed="{{refreshed}}" bindrefresh="onPullDownRefresh">
+  <ft-custom-nav slot="header" hideDist="{{(banners && banners[0] ? 422 : 0) + (subBanners && subBanners[0] ? 180 : 0)}}rpx" fixed="{{(banners && banners[0]) || (subBanners && subBanners[0])}}" />
   <view slot="body" class="page-index">
   <view wx:if="{{(banners && banners[0]) || (subBanners && subBanners[0])}}" class='banner-wrapper'>
-    <!-- <ft-custom-nav hideDist="211" fixed /> -->
     <ft-banners wx:if="{{banners && banners[0]}}" banners="{{banners}}" height="422rpx" spacing="{{0}}" border-radius="0" indicator-color="rgba(0,0,0,0.5)" indicator-currunt-color="rgba(0,0,0,1)" previous-margin="{{0}}" next-margin="{{0}}" catchtap="bannerTap" />
     <ft-banners wx:if="{{subBanners && subBanners[0]}}" banners="{{subBanners}}" height="180rpx" spacing="{{0}}" border-radius="0" indicator-color="rgba(0,0,0,0.5)" indicator-currunt-color="rgba(0,0,0,1)" previous-margin="{{0}}" next-margin="{{0}}" catchtap="bannerTap" />
   </view>
@@ -26,10 +24,9 @@
     <view class='recommendation-header'><view class='left-line line-separator-h'></view><view class='recommendation-icon theme-bg'><image class='recommendation-icon-image' src="/assets/images/thumb_white.png" mode="aspectFit"></image></view><text class='recommendation-header-title'>为您推荐</text><view class='right-line line-separator-h'></view></view>
     <activity-card wx:for="{{recommendations}}" wx:for-item="activity" wx:for-index="aidx" wx:key="id" activity="{{activity}}" catchactivitytap="goodsTap" />
   </view>
-  <!-- <view class="" hover-class="none" hover-stop-propagation="false">
-    水电费说
-  </view>
-  <sale-card wx:for="{{recommendations}}" wx:for-item="sale" wx:for-index="sidx" wx:key="id" sale="{{sale}}" catchsaletap="goodsTap" /> -->
   <ft-list-footer loaded="{{recommendationLoaded}}" loading="{{recommendationLoading}}" page="{{recommendationPage}}" show-no-more no-more-text="{{(recommendations && recommendations[0]) ? '没有更多了' : '暂时没有活动'}}" />
   </view>
 </ft-pull-to-refresh>
+<view wx:else class="unload-page">
+  <ft-loader />
+</view>

@@ -20,9 +20,9 @@
       </view>
       <view class='overview-bottom-item'>
         <view class='overview-bottom-header'>
-          <text>发布活动数</text>
+          <text>发布商品数</text>
         </view>
-        <view class='overview-bottom-amount bold'>{{data.huodong_num}}</view>
+        <view class='overview-bottom-amount bold'>{{data.product_num}}</view>
       </view>
     </view>
   </view>

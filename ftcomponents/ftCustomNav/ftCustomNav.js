@@ -1,7 +1,15 @@
 // ftcomponents/ftCustomNav/ftCustomNav.js
 const app = getApp()
-const navInfo = app.globalData.customNav
-console.log('navInfo', navInfo)
+
+let systemInfo = app.globalData.systemInfo || wx.getSystemInfoSync()
+let MenuButtonInfo = app.globalData.MenuButtonInfo || wx.getMenuButtonBoundingClientRect()
+
+const statusBarHeight = systemInfo.statusBarHeight
+const menuTopSpace = MenuButtonInfo.top - statusBarHeight
+const menuHeight = MenuButtonInfo.height
+const navBoxHeight = menuTopSpace * 2 + MenuButtonInfo.height // 导航胶囊上下分别留6px的间隔
+const navUseableWidth = MenuButtonInfo.left - 20
+const navWrapperHeight = statusBarHeight + navBoxHeight
 Component({
   /**
    * 组件的属性列表
@@ -69,17 +77,15 @@ Component({
     showNav: true,
     showBack: false,
     showHome: false,
-    useable: navInfo.useable,
-    statusBarHeight: navInfo.statusBarHeight,
-    navBoxHeight: navInfo.navBoxHeight,
-    menuHeight: navInfo.menuHeight,
-    useableWidth: navInfo.useableWidth,
-    navHeight: navInfo.navHeight
+    statusBarHeight: statusBarHeight,
+    navBoxHeight: navBoxHeight,
+    menuHeight: menuHeight,
+    useableWidth: navUseableWidth,
+    navHeight: navWrapperHeight
   },
 
   attached: function () {
     const pages = getCurrentPages()
-    console.log('attached', pages)
     if (pages.length > 1) {
       this.setData({
         showBack: true,
@@ -99,10 +105,13 @@ Component({
   methods: {
     initObserver(dist) {
       if (dist) {
-        let top = dist - navInfo.navHeight
+        let top = dist - this.data.navHeight
         this.setData({
           observeDist: top
         })
+        if (this.observer) {
+          this.clearObserver()
+        }
         this.observer = this.createIntersectionObserver()
         this.observer.relativeToViewport().observe(".intersection-dot", (res) => {
           const showNav = res.intersectionRatio == 0
@@ -112,7 +121,7 @@ Component({
           })
         })
       } else {
-        this.clearObserver()()
+        this.clearObserver()
       }
     },
     clearObserver() {
@@ -127,14 +136,12 @@ Component({
       })
     },
     goHome: function () {
-      console.log('goHome')
       wx.switchTab({
         url: '/pages/index/index'
       })
     }
   },
   ready () {
-    console.log('ready')
     let val = this.data.hideDist
     let dist = 0
     const systemInfo = wx.getSystemInfoSync()

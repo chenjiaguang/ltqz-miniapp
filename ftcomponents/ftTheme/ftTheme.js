@@ -42,7 +42,6 @@ Component({
    */
   methods: {
     themeTap: function (e) {
-      console.log('themeTap', e)
       const {theme} = e.currentTarget.dataset
       this.triggerEvent('themetap', { theme})
     }

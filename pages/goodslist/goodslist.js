@@ -90,7 +90,6 @@ Page({
   },
 
   bannerTap: function (e) {
-    console.log('bannerTap', e)
     const { item } = e.detail
     if (item && item.path) {
       wx.navigateTo({
@@ -100,9 +99,7 @@ Page({
   },
 
   activityTap: function (e) {
-    console.log('activityTap', e)
     const { id } = e.detail
-    console.log('id', id)
     if (id) {
       wx.navigateTo({
         url: '/pages/goodsdetail/goodsdetail?id=' + id
@@ -127,7 +124,6 @@ Page({
       pn: pn
     }
     util.request('/product/list', rData).then(res => {
-      console.log('/product/list', res)
       if (res.error == 0 && res.data) {
         let {
           list,

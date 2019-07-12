@@ -1,16 +1,12 @@
-// components/shareButton/shareButton.js
+// ftcomponents/ftLoader/ftLoader.js
 Component({
   /**
    * 组件的属性列表
    */
   properties: {
-    profit: {
+    length: {
       type: Number,
-      value: 0
-    },
-    showPrice: {
-      type: Boolean,
-      value: false
+      value: 16
     }
   },
 
@@ -18,15 +14,13 @@ Component({
    * 组件的初始数据
    */
   data: {
-
+    barArr: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
   },
 
   /**
    * 组件的方法列表
    */
   methods: {
-    btnTap: function () {
-      this.triggerEvent('share')
-    }
+
   }
 })

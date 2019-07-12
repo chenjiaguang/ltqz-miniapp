@@ -111,23 +111,6 @@ Page({
 
   },
 
-  // onPageScroll: function (e) {
-  //   // console.log('onPageScroll', e.scrollTop)
-  //   const {
-  //     top_fixed
-  //   } = this.data
-  //   if (e.scrollTop <= 0 && top_fixed) {
-  //     console.log('ddd')
-  //     this.setData({
-  //       top_fixed: false
-  //     })
-  //   } else if (e.scrollTop > 0 && !top_fixed) {
-  //     console.log('eee')
-  //     this.setData({
-  //       top_fixed: true
-  //     })
-  //   }
-  // },
   tabTap: function(e) {
     let {
       idx

@@ -34,7 +34,6 @@ Component({
    */
   methods: {
     collectedChange: function (collected) {
-      console.log('collectedChange', collected)
       let _obj = {}
       if (this.taped) {
         if (!this.bgAnimation) {

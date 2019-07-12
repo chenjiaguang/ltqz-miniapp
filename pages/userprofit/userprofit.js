@@ -108,7 +108,6 @@ Page({
   },
 
   entranceTap: function(e) {
-    console.log('entranceTap', e)
     const {
       path,
       phone

@@ -32,7 +32,6 @@ Component({
               id: ''
             })
             fileUpload.upload(item).then((res) => {
-              console.log('fileUpload',res)
               let i = this.data.list.findIndex(function(value, index, arr) {
                 return value.tempId == tempId;
               })
@@ -46,7 +45,6 @@ Component({
           this.setData({
             list: list
           })
-          console.log('chooseImage', res)
         }
       })
     },

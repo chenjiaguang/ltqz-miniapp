@@ -42,7 +42,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
-    // console.log('util.formatDateTime', util.formatDateTime("yyyy.MM.dd", new Date()))
+    
   },
 
   /**
@@ -112,14 +112,12 @@ Page({
   },
 
   goUserInfo: function() {
-    console.log('goUserInfo')
     wx.navigateTo({
       url: '/pages/userinfo/userinfo'
     })
   },
 
   goOrder: function(e) {
-    console.log('goOrder', e)
     const {
       type
     } = e.currentTarget.dataset
@@ -130,14 +128,12 @@ Page({
   },
 
   goProfit: function() {
-    console.log('goProfit')
     wx.navigateTo({
       url: '/pages/userprofit/userprofit'
     })
   },
 
   entranceTap: function(e) {
-    console.log('entranceTap', e)
     const {
       path,
       phone

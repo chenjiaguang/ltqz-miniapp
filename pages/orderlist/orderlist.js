@@ -267,7 +267,6 @@ Page({
   },
 
   refresh() {
-    console.log('refresh')
     this.setData({
       [`index`]: 0,
       [`tabs[0].page`]: {

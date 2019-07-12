@@ -206,7 +206,6 @@ function onRefreshing(newValue, oldValue, ins, itemIns) {
       transform: 'translateY(' + state.iconDist + 'px)',
     "-webkit-transform": 'translateY(' + state.iconDist + 'px)'
     })
-    console.log('state.wrapper', state.wrapper)
     if (state.platform === 'android' || state.platform === 'devtools') { // 安卓或开发工具
       state.wrapper.addClass('transition')
       state.wrapper.setStyle({

@@ -15,6 +15,7 @@
   border-radius: 12rpx;
   position: relative;
   float: left;
+  overflow: hidden;
 }
 .sale-item1.first{
   width: 686rpx;
@@ -35,12 +36,29 @@
   font-weight: bold;
   color: #333;
   padding-bottom: 6rpx;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
 }
 
 .sale-content{
   font-size: 24rpx;
   line-height: 32rpx;
+  margin-right: 80rpx;
   color: #999;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+.sale-content3.first{
+  margin-right: 0;
+}
+
+.sale-content5.first{
+  margin-right: 0;
 }
 
 .sale-icon{

@@ -101,7 +101,7 @@ Component({
     sessionTap: function (e) {
       const { idx } = e.currentTarget.dataset
       const { showSession, currentSession, saletype, stockObj } = this.data
-      if (showSession[currentSession[saletype]][stockObj[saletype]] == 0 || currentSession[saletype] === idx) { // 没有库存 或 点击的是当前的款式
+      if (showSession[idx][stockObj[saletype]] == 0 || currentSession[saletype] === idx) { // 没有库存 或 点击的是当前的款式
         return false
       }
       // if (saletype == 3 && this.data.remainCount == 0) { // 抢购模式 且 剩余数量为0
@@ -155,7 +155,10 @@ Component({
       let _subSessions = []
       let idxObj = this.searchFirstAble(_session, stockObj, saletype)
       let {ableSessionIdx, limit} = idxObj
-      let current = idx == 0 ? idx : (idx || ableSessionIdx)
+      let current = (idx == 0) ? idx : (idx || ableSessionIdx)
+      if (!(idx || idx === 0) && _session.length > 1) { // 如果idx不存在，则说明不是主动点击，该情况如果场次不止一个，则重置ableSessionIdx为null
+        current = null
+      }
 
       let selectedTicketLength = { 1: 0, 2: 0, 3: 0 }
       let totalPrice = { 1: 0, 2: 0, 3: 0 }
@@ -167,14 +170,23 @@ Component({
         _subSessions = _session[current].sub.map(item => Object.assign({}, item, { num: 0 }))
       }
 
-      if (!limit) { // 未限制购买，则可以初始化选择一个
-        const subIndex = subIdx || 0
-        const initNum = 1
-        const singlePrice = _session[current][singlePriceObj[saletype]]
-        _subSessions[subIndex].num = initNum
+      if (current !== null && !limit) { // 已有选择款式 且 未限制购买，则可以初始化选择一个
+
+        let subIndex = (subIdx === 0) ? subIdx : (subIdx || ((_subSessions && _subSessions.length) ? 0 : null))
+        // 如果已选择的款式不止一个二级款式 且 不是手动选择的，则重置subIndex为null
+        if (_subSessions.length > 1 && !(subIdx || subIdx === 0)) {
+          subIndex = null
+        }
+        // 初始选择个数initNum
+        console.log('subIndex', subIdx, subIndex, _subSessions, current)
+        const initNum = subIndex === null ? 0 : 1
+        if (subIndex !== null) {
+          const singlePrice = _session[current][singlePriceObj[saletype]]
+          _subSessions[subIndex].num = initNum
+          totalPrice[saletype] = parseFloat((initNum * singlePrice / 100).toFixed(2))
+        }
 
         selectedTicketLength[saletype] = initNum
-        totalPrice[saletype] = parseFloat((initNum * singlePrice / 100).toFixed(2))
         currentSubSession[saletype] = subIndex
       }
       
@@ -191,14 +203,27 @@ Component({
       })
     },
     countTicket: function (e) {
-      const { stockObj, singlePriceObj, saletype, currentSession } = this.data
+      const { stockObj, singlePriceObj, saletype, currentSession, currentSubSession, selectedTicketLength } = this.data
+      if (currentSession[saletype] === null) { // 未选中一级规格
+        wx.showToast({
+          title: '请选择商品',
+          icon: 'none'
+        })
+        return false
+      }
       let session = JSON.parse(JSON.stringify(this.data.showSession[currentSession[saletype]]))
       let subSessions = JSON.parse(JSON.stringify(this.data.subSessions[saletype]))
+      if (subSessions && subSessions.length > 0 && currentSubSession[saletype] === null) { // 有二级规格，但未选中
+        wx.showToast({
+          title: '请选择商品',
+          icon: 'none'
+        })
+        return false
+      }
       let selectedTicketLen = 0
       let total = 0
       const { type, idx } = e.currentTarget.dataset
       let subS = subSessions[idx]
-      console.log('subS', subS, idx)
       if (session[stockObj[saletype]] === 0) { // 没有库存
         return false
       }
@@ -208,7 +233,7 @@ Component({
       if (session[stockObj[saletype]] && subS.num >= session[stockObj[saletype]] && type === 'add') { // 有库存限制 且 点击的是加号 且 当前大于或等于库存
         return false
       }
-      if (saletype == 3 && (this.data.remainCount == 0 || this.data.remainCount && subS.num >= this.data.remainCount && type === 'add')) { // 抢购模式 且 （抢购剩余为0 或 当前大于等于抢购限制）
+      if (saletype == 3 && (this.data.remainCount == 0 || this.data.remainCount && selectedTicketLength[saletype] >= this.data.remainCount && type === 'add')) { // 抢购模式 且 （抢购剩余为0 或 当前大于等于抢购限制）
         wx.showToast({
           title: '您已经达到限购上限了，留点给其他用户吧~',
           icon: 'none'

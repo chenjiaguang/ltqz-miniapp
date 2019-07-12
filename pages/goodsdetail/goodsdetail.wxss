@@ -235,6 +235,21 @@ page{
   align-items: center;
   font-size: 32rpx;
 }
+.sponsor-header-text{
+  flex: 1;
+  font-size: 32rpx;
+  line-height: 32rpx;
+}
+.identification-icon{
+  width: 38rpx;
+  height: 28rpx;
+  margin-right: 4rpx;
+}
+.identification-text{
+  font-size: 26rpx;
+  line-height: 26rpx;
+  color: #666666;
+}
 
 .sponsor-box{
   background: #fff;
@@ -570,6 +585,10 @@ button.join-btn.disabled{
   flex-shrink: 0;
   flex-grow: 0;
   box-sizing: border-box;
+}
+.single-join-disabled{
+  background-color: #C1C1C1 !important;
+  color: #FFFFFF !important;
 }
 .join-price{
   font-size: 26rpx;

@@ -86,7 +86,6 @@ Page({
   },
 
   activityTap: function (e) {
-    console.log('activityTap', e)
     const { id } = e.detail
     if (id) {
       wx.navigateTo({
@@ -96,7 +95,6 @@ Page({
   },
 
   viewComment: function () {
-    console.log('viewComment')
     if (this.data.id) {
       wx.navigateTo({
         url: '/pages/commentlist/commentlist?sid=' + this.data.id
@@ -131,7 +129,6 @@ Page({
       pn: pn
     }
     util.request('/product/list', rData).then(res => {
-      console.log('/product/list', res)
       if (res.error == 0 && res.data) {
         let {
           list,

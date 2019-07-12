@@ -29,7 +29,7 @@ const getBtnText = (type, sale_type, status, qg_status) => {
         '8': '立即报名'
       }
       btnText = textObj[qg_status]
-      btnDisabled = status != 1 && qg_status != 2
+      btnDisabled = status != 1 || qg_status != 2
     }
   } else if (type == 2) { // 非活动
     if ((sale_type == 1 || sale_type == 2) || (sale_type == 3 && qg_status != 2 && qg_status != 3)) { // 普通活动 或 拼团 或 抢购模式下（非抢购中、非抢光）
@@ -59,7 +59,7 @@ const getBtnText = (type, sale_type, status, qg_status) => {
         '8': '已抢光'
       }
       btnText = textObj[qg_status]
-      btnDisabled = status != 1 && qg_status != 2
+      btnDisabled = status != 1 || qg_status != 2
     }
   }
   return {btnText, btnDisabled}
@@ -86,7 +86,7 @@ const getCardText = (type, sale_type, status, qg_status) => {
       statusDisabled = status != 1
       if (sale_type == 3 && qg_status == 1) {
         statusText = '预热中'
-        statusDisabled = status != 1 && qg_status != 2
+        statusDisabled = status != 1
       }
     } else if (sale_type == 3 && (qg_status == 2 || qg_status == 3)) {
       const textObj = {
@@ -100,7 +100,7 @@ const getCardText = (type, sale_type, status, qg_status) => {
         '8': '已结束'
       }
       statusText = textObj[qg_status]
-      statusDisabled = status != 1 &&  status != 2
+      statusDisabled = status != 1 || qg_status != 2
     }
   } else if (type == 2) {
     if ((sale_type == 1 || sale_type == 2) || (sale_type == 3 && qg_status != 2 && qg_status != 3)) {
@@ -120,7 +120,7 @@ const getCardText = (type, sale_type, status, qg_status) => {
       statusDisabled = status != 1
       if (sale_type == 3 && qg_status == 1) {
         statusText = '预热中'
-        statusDisabled = status != 1 && qg_status != 2
+        statusDisabled = status != 1
       }
     } else if (sale_type == 3 && (qg_status == 2 || qg_status == 3)) {
       const textObj = {
@@ -134,7 +134,7 @@ const getCardText = (type, sale_type, status, qg_status) => {
         '8': '已售罄'
       }
       statusText = textObj[qg_status]
-      statusDisabled = status != 1 &&  status != 2
+      statusDisabled = status != 1 || qg_status != 2
     }
   }
   return {statusText, statusDisabled}

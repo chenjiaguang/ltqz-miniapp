@@ -79,15 +79,21 @@
     <view class='block-separator'></view>
     <!-- 活动 -->
     <view wx:if="{{type == 1}}" class='sponsor-header'>
-      <text>活动主办方</text>
-      <!-- todo:商家经营主体 -->
-      <!-- <text wx:if="{{shop.type_pic_url}}" style="font-size:26rpx;color:#999;" catchtap="viewBusinessCertification">查看商家资质<text class='next-icon lutufont lutu-next2' style="margin-left:26rpx;"></text></text> -->
+      <text class="sponsor-header-text">活动主办方</text>
+      <!-- todo:商家经营主体:1 个人认证 | 2 企业认证 | 3 其他阻止认证 -->
+      <block wx:if="{{shop && shop.type}}">
+        <image class="identification-icon" src="/assets/images/identification_icon.png" mode="aspectFit" />
+        <text class="identification-text">{{identificationText[shop.type]}}</text>
+      </block>
     </view>
     <!-- 非活动 -->
     <view wx:if="{{type == 2}}" class='sponsor-header'>
-      <text>商家名片</text>
-      <!-- todo:商家经营主体 -->
-      <!-- <text wx:if="{{shop.type_pic_url}}" style="font-size:26rpx;color:#999;" catchtap="viewBusinessCertification">查看商家资质<text class='next-icon lutufont lutu-next2' style="margin-left:26rpx;"></text></text> -->
+      <text class="sponsor-header-text">商家名片</text>
+      <!-- todo:商家经营主体:1 个人认证 | 2 企业认证 | 3 其他阻止认证 -->
+      <block wx:if="{{shop && shop.type}}">
+        <image class="identification-icon" src="/assets/images/identification_icon.png" mode="aspectFit" />
+        <text class="identification-text">{{identificationText[shop.type]}}</text>
+      </block>
     </view>
     <view class='line-separator-h'></view>
     <view class='sponsor-overview' catchtap="viewBusiness">
@@ -96,8 +102,7 @@
         <view class='sponsor-title'>{{shop.name}}</view>
         <view class='sponsor-intro'>{{shop.introduce}}</view>
         <view class='activity-and-score'>
-          <!-- todo:商品数量字段确认 -->
-          <view class='activity-num'>商品数量<text class='theme-color' style="margin-left:10rpx">{{shop.huodong_num}}</text></view>
+          <view class='activity-num'>商品数量<text class='theme-color' style="margin-left:10rpx">{{shop.product_num}}</text></view>
           <view class='line-separator-v' style="height:28rpx;background:#D8D8D8;"></view>
           <view class='activity-score'>商家评分<text class='theme-color' style="margin-left:10rpx">{{shop.rate}}</text></view>
         </view>
@@ -227,7 +232,7 @@
         <view class='join-btn-wrapper'>
         <!-- 可报名且用户电话存在 或 不可报名 -->
           <view class='join-btn-wrapper' style="padding-right:0" wx:if="{{status != 1 || (status == 1 && orderContact)}}">
-            <button wx:if="{{status == 1 && orderContact}}" class="join-btn single-join theme-bg-secondary" style="border-top-right-radius:0;border-bottom-right-radius:0" disabled="{{status != 1}}" catchtap="showShoppingView" data-saletype="1">
+            <button class="join-btn single-join{{status != 1 ? ' single-join-disabled' : ' theme-bg-secondary'}}" style="border-top-right-radius:0;border-bottom-right-radius:0" disabled="{{status != 1}}" catchtap="showShoppingView" data-saletype="1">
               <view class='join-price' wx:if="{{show_min_origin_price > 0}}">¥{{show_min_price}}</view>
               <view class='join-price' wx:if="{{show_min_origin_price <= 0}}">免费</view>
               <view class='join-text'>单独购买</view>

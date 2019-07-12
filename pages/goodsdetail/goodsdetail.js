@@ -3,11 +3,15 @@ import util from '../../utils/util.js'
 import storageHelper from '../../utils/storageHelper.js'
 import statusHelper from '../../utils/statusHelper'
 
-const app =  getApp()
 let navHeight = 0
-if (app.globalData.customNav && app.globalData.customNav.navHeight) {
-  navHeight = app.globalData.customNav.navHeight
-}
+const app =  getApp()
+let systemInfo = app.globalData.systemInfo || wx.getSystemInfoSync()
+let MenuButtonInfo = app.globalData.MenuButtonInfo || wx.getMenuButtonBoundingClientRect()
+
+const statusBarHeight = systemInfo.statusBarHeight
+const menuTopSpace = MenuButtonInfo.top - statusBarHeight
+const navBoxHeight = menuTopSpace * 2 + MenuButtonInfo.height
+navHeight = statusBarHeight + navBoxHeight
 Page({
   name: 'goodsdetail',
   /**
@@ -65,7 +69,8 @@ Page({
     contact: '',
     session: [],
     localPoster: '',
-    orderContact: null
+    orderContact: null,
+    identificationText: {1: '个人认证', 2: '企业认证', 3: '其他组织认证'}
   },
 
   scrollpoint: {},
@@ -159,9 +164,7 @@ Page({
   },
 
   initBtnText: function (activity) {
-    console.log('44444')
     const btnTextObj = statusHelper.getBtnText(activity.type, activity.sale_type, activity.status, activity.qg_status)
-    console.log('55555')
     this.setData(btnTextObj)
   },
 
@@ -170,7 +173,6 @@ Page({
     util.request('/product/detail', rData).then(res => {
       if (res.error == 0 && res.data) {
         // 处理展示详情内容
-        console.log('11111')
         let arrEntities = { 'lt': '<', 'gt': '>', 'nbsp': ' ', 'amp': '&', 'quot': '"', 'mdash': '——', 'ldquo': '“', 'rdquo': '”', '#39': "'", 'ensp': '' }
         res.data.content = res.data.content.replace(/\n/ig, '').replace(/\t/ig, '').replace(/<img/ig, '<img style="max-width:100%;height:auto;display:block"').replace(/<section/ig, '<div').replace(/\/section>/ig, '/div>')
         // 处理时间格式
@@ -190,7 +192,6 @@ Page({
         res.data.goods_status_data = JSON.parse(JSON.stringify({ id, type, sale_type, price_num, spell_num, status, qg_status, remain_qg, show_min_price, show_min_origin_price, show_min_pt_price, show_min_qg_price, qg_btime, qg_etime, qg_max_limit, total_qg_count, is_book_remind }))
         res.data.goodsLoaded = true
         res.data.goodsTimestamp = new Date().getTime()
-        console.log('22222')
         if (res.data.tuan && res.data.tuan.length > 0) {
           res.data.groupList = res.data.tuan.map(item => {
             return {
@@ -203,7 +204,6 @@ Page({
             }
           })
         }
-        console.log('33333')
         this.initBtnText(res.data)
         this.setData(res.data, () => {
           this.setData({
@@ -239,7 +239,6 @@ Page({
 
   changeTab: function (e) {
     const { idx, scrollid } = e.currentTarget.dataset
-    console.log('changeTab', idx, scrollid)
     const systemInfo = wx.getSystemInfoSync()
     const rpx = systemInfo.windowWidth / 750
     const query = wx.createSelectorQuery()
@@ -282,7 +281,6 @@ Page({
       this.setData({tabFixed})
     })
     wx.createIntersectionObserver().relativeToViewport(tabContentObserveRect).observe('#goods-content', (res) => {
-      console.log('#goods-content', systemInfo.windowHeight, res)
       if (res.intersectionRatio > 0) {
         const { tabindex: currentTab } = res.dataset
         this.setData({ currentTab })

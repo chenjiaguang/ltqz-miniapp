@@ -183,7 +183,6 @@ Page({
     })
     util.request('/order/pay', {id}).then(res => {
       if (res.error == 0 && res.data) {
-        console.log('res.data', res.data)
         const { nonceStr, paySign, signType, timeStamp} = res.data
         wx.requestPayment({
           timeStamp,

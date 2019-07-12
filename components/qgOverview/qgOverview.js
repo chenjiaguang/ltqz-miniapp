@@ -100,7 +100,6 @@ Component({
       })
       wx.vibrateShort()
       util.request('/product/qg_remind', rData).then(res => {
-        console.log('/product/qg_remind', res)
         let _obj = {}
         _obj.remindRequesting = false
         if (res.error == 0) {

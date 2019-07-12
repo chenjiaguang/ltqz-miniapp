@@ -42,7 +42,6 @@ Component({
    */
   methods: {
     viewImages: function(e) {
-      console.log('viewImages', e)
       const {
         idx
       } = e.currentTarget.dataset

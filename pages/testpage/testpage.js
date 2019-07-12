@@ -68,7 +68,6 @@ Page({
   },
   
   pullToRefresh: function () {
-    console.log('pullToRefresh')
     wx.showToast({
       title: 'refreshing',
       icon: 'none'

@@ -15,6 +15,6 @@
         <button class="lutufont lutu-home icon icon-{{color === '#ffffff' ? 'black' : 'white'}}{{showNav ? ' show' : ' hide'}}" style="width:{{menuHeight}}px;height:{{menuHeight}}px;line-height:{{menuHeight}}px;color:{{color}}"></button>
       </view>
     </view>
-    <view class="title{{showHideChanged ? (showNav ? ' show' : ' hide') : (hideDist ? ' hide' : ' show')}}">{{title}}</view>
+    <view class="title{{showHideChanged ? (showNav ? ' show' : ' hide') : ((hideDist && fixed) ? ' hide' : ' show')}}">{{title}}</view>
   </view>
 </view>

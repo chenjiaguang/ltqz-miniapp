@@ -105,7 +105,6 @@ Component({
       })
     },
     animationFinish: function (e) {
-      console.log('animationFinish', e.detail)
       this.setData({
         marginCurrent: e.detail.current
       })

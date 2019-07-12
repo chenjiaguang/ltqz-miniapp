@@ -133,30 +133,37 @@ Component({
       // _obj['currentTickets.' + saletype] = tickets
       // this.setData(_obj)
     },
-    initSession: function (session, saletype, idx, subIdx) {
+    initSession: function (session, saletype, idx) { // session 场次信息 | saletype 拉起的是什么模式 | 是否有
       let _session = JSON.parse(JSON.stringify(session))
       let selected = []
       const {singlePriceObj, stockObj} = this.data
       let idxObj = this.searchFirstAble(_session, stockObj, saletype)
       let {ableSessionIdx, ableTicketIdx, limit} = idxObj
-      ableSessionIdx = idx == 0 ? idx : (idx || ableSessionIdx)
+      
+      ableSessionIdx = (idx == 0) ? idx : (idx || ableSessionIdx)
+      // if (!(idx || idx === 0) && _session.length > 1) { // 如果idx不存在，则说明不是主动点击，该情况如果场次不止一个，则重置ableSessionIdx为null
+      //   ableSessionIdx = null
+      // }
 
       let selectedTicketLength = { 1: 0, 2: 0, 3: 0 }
       let totalPrice = { 1: 0, 2: 0, 3: 0 }
       let currentSession = { 1: null, 2: null, 3: null }
       let currentTickets = { 1: [], 2: [], 3: [] }
-
-      if (ableSessionIdx !== null) {
+      if (ableSessionIdx !== null) { // 已有选择场次
         selected = _session[ableSessionIdx].ticket.map(item => Object.assign({}, item, { num: 0 }))
       }
-      if (!limit) { // 未限制购买，则可以初始化选择一个
-        const subIndex = subIdx || ableTicketIdx
-        const initNum = 1
+      if (ableSessionIdx !== null && !limit) { // 已有选择场次 且 未限制购买，则可以初始化选择一个
+        // 如果已选择的场次不止一张票，则重置ableTicketIdx为null
+        if (selected.length > 1) {
+          ableTicketIdx = null
+        }
+        // 初始选择个数initNum
+        const initNum = (ableTicketIdx === null) ? 0 : 1
         let singlePrice = 0
 
-        if (subIndex !== null) {
-          singlePrice = selected[subIndex].type[singlePriceObj[saletype]]
-          selected[subIndex].num = initNum
+        if (ableTicketIdx !== null) {
+          singlePrice = selected[ableTicketIdx].type[singlePriceObj[saletype]]
+          selected[ableTicketIdx].num = initNum
         }
 
         selectedTicketLength[saletype] = initNum
@@ -175,7 +182,6 @@ Component({
       })
 
       // if (selected && selected.length === 0) {
-      //   console.log('selected', selected)
       //   selected[0].num = 1
       //   let _obj = {}
       //   _obj.selectedTicketLength = {1: 1, 2: 1}
@@ -200,7 +206,7 @@ Component({
       // })
     },
     countTicket: function (e) {
-      const { stockObj, singlePriceObj, saletype, remainCount } = this.data
+      const { stockObj, singlePriceObj, saletype, remainCount, selectedTicketLength } = this.data
       let tickets = JSON.parse(JSON.stringify(this.data.currentTickets[saletype]))
       let selectedTicketLen = 0
       let total = 0
@@ -215,7 +221,7 @@ Component({
       if (ticket[stockObj[saletype]] && ticket.num >= ticket[stockObj[saletype]] && type === 'add') { // 有库存限制 且 点击的是加号 且 当前大于或等于库存
         return false
       }
-      if (saletype == 3 && (remainCount == 0 || remainCount && subS.num >= remainCount && type === 'add')) { // 抢购模式 且 （抢购剩余为0 或 当前大于等于抢购限制）
+      if (saletype == 3 && (remainCount == 0 || remainCount && selectedTicketLength[saletype] >= remainCount && type === 'add')) { // 抢购模式 且 （抢购剩余为0 或 当前大于等于抢购限制）
         wx.showToast({
           title: '您已经达到限购上限了，留点给其他用户吧~',
           icon: 'none'

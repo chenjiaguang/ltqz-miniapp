@@ -18,6 +18,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    console.log('options', options)
     if (options.title) {
       wx.setNavigationBarTitle({
         title: options.title
@@ -95,7 +96,6 @@ Page({
     })
     util.request('/home/subject', { id, pn }).then(res => {
       if (res.error == 0 && res.data) {
-        console.log('res', res)
         let {
           list,
           page
@@ -129,6 +129,5 @@ Page({
         url: '/pages/merchantdetail/merchantdetail?id=' + id
       })
     }
-    console.log('merchantTap',)
   }
 })
