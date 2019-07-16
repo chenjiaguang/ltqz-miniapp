@@ -26,7 +26,11 @@
   <qg-overview wx:if="{{sale_type == 3 && (qg_status == 1 || qg_status == 2 || qg_status == 3)}}" goods-status-data="{{goods_status_data}}" />
   <!-- 活动信息概览 -->
   <view class='sub-overview'>
-    <view wx:if="{{type == 1 && valid_btime && valid_etime}}" class='state-block-wrapper'>
+    <view wx:for="{{subOverview}}" wx:for-index="idx" wx:for-item="so" wx:key="text" class='state-block-wrapper'>
+      <view wx:if="{{idx !== 0}}" class='line-separator-h'></view>
+      <view class='state-block' catchtap="viewLocation" data-lnglat="{{so.lnglat}}"><image class='left-icon' mode="aspectFit" src="{{so.img}}"></image><text class='state-block-text'>{{so.text}}</text><text wx:if="{{so.lnglat && so.lnglat[0] && so.lnglat[1]}}" class='right-icon lutufont lutu-next2'></text></view>
+    </view>
+    <!-- <view wx:if="{{type == 1 && valid_btime && valid_etime}}" class='state-block-wrapper'>
       <view class='state-block'><image class='left-icon' mode="aspectFit" src="/assets/images/time_jointime.png"></image><text class='state-block-text'>活动日期：{{valid_btime}} 至 {{valid_etime}}</text></view>
     </view>
     <view wx:if="{{dead_line}}" class='state-block-wrapper'>
@@ -50,7 +54,7 @@
       <view class='state-block'><image class='left-icon' mode="aspectFit" src="/assets/images/chengtuan.png"></image><text class='state-block-text'>{{limit_num}}</text></view>
     </view>
     <block wx:if="{{note && note[0]}}">
-      <view wx:for="{{note}}" wx:key="*this" class='note-box'>
+      <view wx:for="{{note}}" wx:key="*this" class='state-block-wrapper note-box'>
         <view class='line-separator-h'></view>
         <view class='state-block'><image class='left-icon' mode="aspectFit" src="/assets/images/beizhu.png"></image><text class='state-block-text' style="white-space:normal">{{item}}</text></view>
       </view>
@@ -62,7 +66,7 @@
     <view wx:if="{{!refund}}" class='state-block-wrapper'>
       <view class='line-separator-h'></view>
       <view class='state-block'><image class='left-icon' mode="aspectFit" src="/assets/images/tuikuan.png"></image><text class='state-block-text'>本次活动不支持退款</text></view>
-    </view>
+    </view> -->
   </view>
   <!-- 参加活动人数 -->
   <view wx:if="{{join_num && join_num > 0}}" class='join-box'>

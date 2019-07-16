@@ -1,8 +1,10 @@
 <!--components/starBox/starBox.wxml-->
 <view class="star-wrapper{{showStar ? ' show' : ''}}">
-  <view class='star-item' wx:for="{{stars}}" wx:for-item="star" wx:for-index="idx" wx:key="key" style="width:{{size}}rpx;height:{{size}}rpx;margin-left:{{idx === 0 ? 0 : 1}}px;background:{{emptyColor}}" catchtap="setStar" data-score="{{idx + 1}}">
-    <view class='star-bg theme-star-bg' style="width:{{star.rate * 100}}%"></view>
-    <image class='star-image' src="./empty_star.png" bindload="imageComplete" binderror="imageComplete" mode="aspectFill"></image>
+  <view class='star-item' wx:for="{{stars}}" wx:for-item="star" wx:for-index="idx" wx:key="key" style="width:{{size}}rpx;height:{{size}}rpx;margin-left:{{idx === 0 ? 0 : 1}}px;" catchtap="setStar" data-score="{{idx + 1}}">
+    <view class='star-bg' style="width:{{star.rate * 100}}%">
+      <image class="star-image" src="./fill_star.svg" mode="aspectFill" style="width:{{size}}rpx;height:{{size}}rpx" />
+    </view>
+    <image class='star-image' src="./empty_star.svg" bindload="imageComplete" binderror="imageComplete" mode="aspectFill"></image>
   </view>
-  <view wx:if="{{showScoreText}}" class='score-text theme-star-color' style="font-size:{{size}}rpx"><text style="padding-top:1rpx">{{scoreText}}</text></view>
+  <view wx:if="{{showScoreText}}" class='score-text theme-star-color'><text style="font-size:{{size}}rpx;padding-top:1rpx">{{scoreText}}</text></view>
 </view>

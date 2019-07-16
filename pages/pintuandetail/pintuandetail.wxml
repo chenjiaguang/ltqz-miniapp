@@ -5,8 +5,8 @@
     <image class='goods-cover' src="{{product.cover_url}}" mode="aspectFill"></image>
     <view class='goods-content flex1 column'>
       <text class='goods-title bold'>{{product.title}}</text>
-      <text class='goods-time'>{{product.valid_btime}} 至 {{product.valid_etime}}</text>
-      <text class='goods-location'>{{product.address}}</text>
+      <text wx:if="{{product.valid_btime && product.valid_etime}}" class='goods-time'>{{product.valid_btime}} 至 {{product.valid_etime}}</text>
+      <text wx:if="{{product.address}}" class='goods-location'>{{product.address}}</text>
     </view>
     <text class='lutufont lutu-next2'></text>
   </view>

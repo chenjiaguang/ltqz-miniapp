@@ -8,27 +8,49 @@
 }
 .sale-item{
   width: 336rpx;
-  height: 144rpx;
+  padding-top: 144rpx;
   box-sizing: border-box;
-  padding: 20rpx;
   margin: 0 14rpx 14rpx 0;
   border-radius: 12rpx;
   position: relative;
   float: left;
+  overflow: visible;
+  z-index: 1;
+}
+.sale-item.first{
+  z-index: 2;
+}
+.sale-item-content{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  padding: 20rpx;
+  left: 0;
+  top: 0;
+  box-sizing: border-box;
+  border-radius: 12rpx;
   overflow: hidden;
 }
-.sale-item1.first{
-  width: 686rpx;
-  height: 144rpx
+.sale-item-single{
+  width: 98%;
+  height: 144rpx;
 }
-.sale-item3.first{
-  width: 336rpx;
-  height: 302rpx;
+/* .sale-item3.first{
+  width: 48%;
+  padding-top: 43.1428%;
 }
 .sale-item5.first{
-  width: 336rpx;
+  width: 48%;
+  padding-top: 43.1428%;
+} */
+.sale-item-content2.first{
+  width: 100%;
   height: 302rpx;
 }
+/* .sale-item-content6.first{
+  width: 100%;
+  height: 302rpx;
+} */
 
 .sale-title{
   font-size: 32rpx;
@@ -53,13 +75,13 @@
   overflow: hidden;
 }
 
-.sale-content3.first{
+.sale-content2.first{
   margin-right: 0;
 }
 
-.sale-content5.first{
+/* .sale-content6.first{
   margin-right: 0;
-}
+} */
 
 .sale-icon{
   width: 60rpx;
@@ -68,15 +90,15 @@
   right: 20rpx;
   bottom: 25rpx;
 }
-.sale-icon3.first{
+.sale-icon2.first{
   width: 96rpx;
   height: 96rpx;
   right: 40rpx;
   bottom: 40rpx;
 }
-.sale-icon5.first{
+/* .sale-icon6.first{
   width: 96rpx;
   height: 96rpx;
   right: 40rpx;
   bottom: 40rpx;
-}
+} */

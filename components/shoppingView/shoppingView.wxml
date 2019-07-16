@@ -2,15 +2,46 @@
 <ft-modal id="c-ft-modal" hide-cancel mode="1">
   <view slot="bottom" class="session-context">
     <view class='session-box'>
-      <view class='session-header'>选择场次</view>
-      <scroll-view scroll-x class='sessions'>
-        <view wx:for="{{session}}" wx:for-index="idx" wx:for-item="ss" wx:key="id" class="session{{idx == 0 ? ' first' : ''}}{{(idx + 1) == session.length ? ' last' : ''}}{{ss[stockObj[saletype]] == 0 ? ' session-disabled' : ((ss[stockObj[saletype]] == null || ss[stockObj[saletype]] > 20) ? ' session-ample' : ' session-normal')}}{{currentSession[saletype] == idx ? ' theme-bg-50' : ''}}" catchtap="sessionTap" data-status="{{ss[stockObj[saletype]] == 0 ? 'disabled' : ((ss[stockObj[saletype]] == null || ss[stockObj[saletype]] > 20) ? 'ample' : 'normal')}}" data-idx="{{idx}}">
-          <view class='session-content'>
-            <view class='session-content-text'>{{ss.name}}</view>
+      <view class="big-sessions">
+        <view class='session-header'>场次</view>
+        <scroll-view scroll-x class='sessions'>
+          <view wx:for="{{session}}" wx:for-index="idx" wx:for-item="ss" wx:key="id" class="session{{idx == 0 ? ' first' : ''}}{{(idx + 1) == session.length ? ' last' : ''}}{{ss[stockObj[saletype]] == 0 ? ' session-disabled' : ((ss[stockObj[saletype]] == null || ss[stockObj[saletype]] > 20) ? ' session-ample' : ' session-normal')}}{{currentSession[saletype] == idx ? ' theme-bg-50' : ''}}" catchtap="sessionTap" data-status="{{ss[stockObj[saletype]] == 0 ? 'disabled' : ((ss[stockObj[saletype]] == null || ss[stockObj[saletype]] > 20) ? 'ample' : 'normal')}}" data-idx="{{idx}}">
+            <view class='session-content'>
+              <view class='session-content-text'>{{ss.name}}</view>
+            </view>
+          </view>
+        </scroll-view>
+      </view>
+      <view class="sub-sessions{{currentTickets[saletype] && currentTickets[saletype].length ? ' show' : ' hide'}}">
+        <view class='line-separator-h'></view>
+        <view class='ticket-header' style="padding-top:32rpx">票种</view>
+        <scroll-view scroll-x class='sessions'>
+          <view wx:for="{{currentTickets[saletype]}}" wx:for-index="idx" wx:for-item="ss" wx:key="id" class="session session-normal{{idx == 0 ? ' first' : ''}}{{(idx + 1) == currentTickets[saletype].length ? ' last' : ''}}{{ss[stockObj[saletype]] == 0 ? ' session-disabled' : ((ss[stockObj[saletype]] == null || ss[stockObj[saletype]] > 20) ? ' session-ample' : ' session-normal')}}{{currentSubSession[saletype] == idx ? ' theme-bg-50' : ''}}" catchtap="subSessionTap" data-idx="{{idx}}">
+            <view class='session-content'>
+              <view class='session-content-text'>{{ss.type.name}}</view>
+            </view>
+          </view>
+        </scroll-view>
+        <view class='line-separator-h'></view>
+        <view style="height:40rpx"></view>
+        <view class='ticket-item'>
+          <view class='ticket-name'>选择数量</view>
+          <view class="stock-text{{currentTickets[saletype][currentSubSession[saletype]][stockObj[saletype]] == 0 ? ' disabled' : ''}}">{{currentTickets[saletype][currentSubSession[saletype]][stockObj[saletype]] == 0 ? '售罄' : ((currentTickets[saletype][currentSubSession[saletype]][stockObj[saletype]] == null || currentTickets[saletype][currentSubSession[saletype]][stockObj[saletype]] > 20) ? '库存充足' : ('库存' + currentTickets[saletype][currentSubSession[saletype]][stockObj[saletype]]) + '件')}}</view>
+          <view class='ticket-buttons'>
+            <view class="minus-btn{{currentTickets[saletype][currentSubSession[saletype]].num <= 0 ? ' disabled' : ''}}" catchtap="countTicket" data-type="minus" data-idx="{{currentSubSession[saletype]}}">
+              <text class="lutufont lutu-jian{{currentTickets[saletype][currentSubSession[saletype]].num <= 0 ? ' disabled' : ''}}"></text>
+            </view>
+            <view class='choose-num'><text class="choose-num-text{{currentTickets[saletype][currentSubSession[saletype]].num <= 0 ? ' disabled' : ''}}">{{currentTickets[saletype][currentSubSession[saletype]].num || 0}}</text></view>
+            <view class="add-btn{{(currentTickets[saletype][currentSubSession[saletype]][stockObj[saletype]] == 0 || (currentTickets[saletype][currentSubSession[saletype]][stockObj[saletype]] && currentTickets[saletype][currentSubSession[saletype]][stockObj[saletype]] <= currentTickets[saletype][currentSubSession[saletype]].num)) ? ' disabled' : ' theme-bg theme-border-color'}}" catchtap="countTicket" data-type="add" data-idx="{{currentSubSession[saletype]}}">
+              <text class="lutufont lutu-jia{{(currentTickets[saletype][currentSubSession[saletype]][stockObj[saletype]] == 0 || (currentTickets[saletype][currentSubSession[saletype]][stockObj[saletype]] && currentTickets[saletype][currentSubSession[saletype]][stockObj[saletype]] <= currentTickets[saletype][currentSubSession[saletype]].num)) ? ' disabled' : ''}}"></text>
+            </view>
+            <!-- <view class="stock-text{{showSession[currentSession[saletype]][stockObj[saletype]] == 0 ? ' disabled' : ''}}">({{showSession[currentSession[saletype]][stockObj[saletype]] == 0 ? '售罄' : ((showSession[currentSession[saletype]][stockObj[saletype]] == null || showSession[currentSession[saletype]][stockObj[saletype]] > 20) ? '充足' : ('余' + showSession[currentSession[saletype]][stockObj[saletype]]))}})</view> -->
           </view>
         </view>
-      </scroll-view>
-      <block wx:if="{{currentTickets[saletype] && currentTickets[saletype].length}}">
+      </view>
+      <view style="height:40rpx"></view>
+
+      <!-- <block wx:if="{{currentTickets[saletype] && currentTickets[saletype].length}}">
         <view class='line-separator-h'></view>
         <view class='ticket-header' style="padding-top:32rpx">选择数量</view>
         <scroll-view scroll-y class='ticket-box'>
@@ -30,7 +61,7 @@
           </view>
           <view style="height:40rpx"></view>
         </scroll-view>
-      </block>
+      </block> -->
     </view>
     <view class='line-separator-h' style="transform-origin:50% 100%"></view>
     <view class='next-step-button'>

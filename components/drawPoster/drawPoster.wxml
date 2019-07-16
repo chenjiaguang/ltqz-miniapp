@@ -42,6 +42,7 @@
 </view>
 <ft-modal wx:if="{{!hideComponent}}" id="c-ft-modal" hide-cancel mode="1">
   <view slot="top" id="top-wrapper" class="top-wrapper" catchtap="hidePoster">
+    <view style="width:100%;height:{{navWrapperHeight}}px"></view>
     <view wx:if="{{!localPoster}}" class='loading-image'><text>正在生成图片...</text></view>
     <image wx:if="{{localPoster}}" class='poster' src="{{localPoster}}" style="width:{{posterWidth ? (posterWidth + 'px') : '88%'}};height:{{posterHeight ? (posterHeight + 'px') : '88%'}}" mode="aspectFit" catchtap="stopPropagation"></image>
   </view>

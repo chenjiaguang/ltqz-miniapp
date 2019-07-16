@@ -25,6 +25,16 @@ Page({
     this.setData({
       id: options.id
     })
+    const pages = getCurrentPages()
+    const prePage = pages[pages.length - 2]
+    if (prePage && prePage.provideCode) {
+      const code = prePage.provideCode()
+      if (code) {
+        this.setData({
+          code
+        })
+      }
+    }
   },
 
   /**

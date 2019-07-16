@@ -28,12 +28,12 @@
           <view class='ticket-name'>选择数量</view>
           <view class="stock-text{{showSession[currentSession[saletype]][stockObj[saletype]] == 0 ? ' disabled' : ''}}">{{showSession[currentSession[saletype]][stockObj[saletype]] == 0 ? '售罄' : ((showSession[currentSession[saletype]][stockObj[saletype]] == null || showSession[currentSession[saletype]][stockObj[saletype]] > 20) ? '库存充足' : ('库存' + showSession[currentSession[saletype]][stockObj[saletype]]) + '件')}}</view>
           <view class='ticket-buttons'>
-            <view class="minus-btn{{subSessions[saletype][currentSubSession[saletype]].num <= 0 ? ' disabled' : ''}}" catchtap="countTicket" data-type="minus" data-idx="{{currentSubSession[saletype]}}">
-              <text class="lutufont lutu-jian{{subSessions[saletype][currentSubSession[saletype]].num <= 0 ? ' disabled' : ''}}"></text>
+            <view class="minus-btn{{selectedTicketLength[saletype] <= 0 ? ' disabled' : ''}}" catchtap="countTicket" data-type="minus" data-idx="{{currentSubSession[saletype]}}">
+              <text class="lutufont lutu-jian{{selectedTicketLength[saletype] <= 0 ? ' disabled' : ''}}"></text>
             </view>
-            <view class='choose-num'><text class="choose-num-text{{subSessions[saletype][currentSubSession[saletype]].num <= 0 ? ' disabled' : ''}}">{{subSessions[saletype][currentSubSession[saletype]].num || 0}}</text></view>
-            <view class="add-btn{{(showSession[currentSession[saletype]][stockObj[saletype]] == 0 || (showSession[currentSession[saletype]][stockObj[saletype]] && showSession[currentSession[saletype]][stockObj[saletype]] <= subSessions[saletype][currentSubSession[saletype]].num)) ? ' disabled' : ' theme-bg theme-border-color'}}" catchtap="countTicket" data-type="add" data-idx="{{currentSubSession[saletype]}}">
-              <text class="lutufont lutu-jia{{(showSession[currentSession[saletype]][stockObj[saletype]] == 0 || (showSession[currentSession[saletype]][stockObj[saletype]] && showSession[currentSession[saletype]][stockObj[saletype]] <= subSessions[saletype][currentSubSession[saletype]].num)) ? ' disabled' : ''}}"></text>
+            <view class='choose-num'><text class="choose-num-text{{selectedTicketLength[saletype] <= 0 ? ' disabled' : ''}}">{{selectedTicketLength[saletype] || 0}}</text></view>
+            <view class="add-btn{{(showSession[currentSession[saletype]][stockObj[saletype]] == 0 || (showSession[currentSession[saletype]][stockObj[saletype]] && showSession[currentSession[saletype]][stockObj[saletype]] <= selectedTicketLength[saletype])) ? ' disabled' : ' theme-bg theme-border-color'}}" catchtap="countTicket" data-type="add" data-idx="{{currentSubSession[saletype]}}">
+              <text class="lutufont lutu-jia{{(showSession[currentSession[saletype]][stockObj[saletype]] == 0 || (showSession[currentSession[saletype]][stockObj[saletype]] && showSession[currentSession[saletype]][stockObj[saletype]] <= selectedTicketLength[saletype])) ? ' disabled' : ''}}"></text>
             </view>
             <!-- <view class="stock-text{{showSession[currentSession[saletype]][stockObj[saletype]] == 0 ? ' disabled' : ''}}">({{showSession[currentSession[saletype]][stockObj[saletype]] == 0 ? '售罄' : ((showSession[currentSession[saletype]][stockObj[saletype]] == null || showSession[currentSession[saletype]][stockObj[saletype]] > 20) ? '充足' : ('余' + showSession[currentSession[saletype]][stockObj[saletype]]))}})</view> -->
           </view>

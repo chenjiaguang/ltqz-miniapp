@@ -6,10 +6,10 @@
   </view>
   <view class='line-separator-h'></view>
   <activity-content data="{{item}}" />
-  <view wx:if="{{item.status==0||item.status==1||item.status==2 || item.status==4}}">
+  <view wx:if="{{item.status == 0 || item.status == 1 || item.status == 2 || item.status == 4 || item.status == 5}}">
     <view class='line-separator-h'></view>
-    <view class='foot row jc-end ai-center' >
-      <view class='btn btn-online theme-bg' wx:if="{{item.status==1}}" catchtap='goTicket' hover-stop-propagation>电子票</view>
+    <view class='foot row jc-end ai-center'>
+      <view class='btn btn-online theme-bg' wx:if="{{item.status == 1 || item.status == 5}}" catchtap='goTicket' hover-stop-propagation>电子票</view>
       <view class='btn btn-pay' wx:if="{{item.status==0}}" catchtap='goPay' hover-stop-propagation>立即支付</view>
       <view class='btn btn-comment' wx:if="{{item.status==2}}" catchtap='goComment' hover-stop-propagation>去评价</view>
       <view class='btn btn-comment' wx:if="{{item.status==4}}" catchtap='shareTap' hover-stop-propagation>邀请好友</view>

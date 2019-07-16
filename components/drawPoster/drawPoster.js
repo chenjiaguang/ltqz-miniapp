@@ -1,5 +1,15 @@
 // components/drawPoster/drawPoster.js
 import util from '../../utils/util.js'
+const app = getApp()
+
+let systemInfo = app.globalData.systemInfo || wx.getSystemInfoSync()
+let MenuButtonInfo = app.globalData.MenuButtonInfo || wx.getMenuButtonBoundingClientRect()
+
+const statusBarHeight = systemInfo.statusBarHeight
+const menuTopSpace = MenuButtonInfo.top - statusBarHeight
+const menuHeight = MenuButtonInfo.height
+const navBoxHeight = menuTopSpace * 2 + menuHeight // 导航胶囊上下分别留6px的间隔
+const navWrapperHeight = statusBarHeight + navBoxHeight
 
 Component({
   /**
@@ -16,6 +26,7 @@ Component({
    * 组件的初始数据
    */
   data: {
+    navWrapperHeight,
     fetching: false, // 是否正在拉取数据
     drawing: false, // 是否正在画图
     huodongId: '',
@@ -288,6 +299,7 @@ Component({
                   if (rect) { // #top-wrapper有可能时隐藏状态的，所以做此判断
                     let width = 0
                     let height = 0
+                    rect.height = rect.height - 44
                     const posterRatio = this.posterWidth / this.posterHeight
                     const topWrapperRatio = rect.width / rect.height
                     if (posterRatio < topWrapperRatio) {

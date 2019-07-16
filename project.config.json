@@ -50,7 +50,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 20,
+			"current": 28,
 			"list": [
 				{
 					"id": -1,
@@ -143,10 +143,10 @@
 					"scene": null
 				},
 				{
-					"id": 12,
+					"id": 13,
 					"name": "商助-首页",
 					"pathName": "pages/businessassistant/businessassistant",
-					"query": "id=1",
+					"query": "id=5",
 					"scene": null
 				},
 				{
@@ -247,10 +247,10 @@
 					"scene": null
 				},
 				{
-					"id": -1,
+					"id": 28,
 					"name": "主题商家",
 					"pathName": "pages/thememerchant/thememerchant",
-					"query": "",
+					"query": "id=6",
 					"scene": null
 				}
 			]

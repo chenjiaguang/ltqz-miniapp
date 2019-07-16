@@ -5,9 +5,11 @@
 .session-context{
   border-radius: 12rpx 12rpx 0 0;
   background: #fff;
-  padding: 62rpx 0 0;
+  /* padding: 62rpx 0 0; */
+  overflow: hidden;
 }
 .sessions{
+  min-height: 202rpx;
   width: 100%;
   font-size: 0;
   white-space: nowrap;
@@ -162,11 +164,10 @@
   color: #D8D8D8;
 }
 .stock-text{
-  width: 90rpx;
   text-align: right;
   font-size: 30rpx;
   color: #333;
-  margin-left: 16rpx;
+  margin: 0 16rpx;
 }
 .stock-text.disabled{
   color: #999999;
@@ -214,4 +215,22 @@
 button.next-btn.disabled{
   background: #B8B8B8;
   color: #fff;
+}
+.big-sessions{
+  position: relative;
+  z-index: 2;
+  background: #FFFFFF;
+  padding-top: 62rpx;
+}
+.sub-sessions{
+  position: relative;
+  z-index: 1;
+  transition: transform 0.3s ease-in-out;
+}
+.sub-sessions.show{
+  transform: translateY(0);
+}
+.sub-sessions.hide{
+  transform: translateY(-300rpx);
+  display: block;
 }

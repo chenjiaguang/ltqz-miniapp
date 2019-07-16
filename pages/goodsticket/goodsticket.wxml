@@ -3,9 +3,9 @@
 <view class='page-goodsticket'>
   <view class='info-wrapper'>
     <view class='top-info'>
-      <image class="qr-code{{(status == 2 || status == 3) ? ' disabled' : ''}}" src="{{qr_code_url}}" mode="aspectFit"></image>
+      <image class="qr-code{{(status == 2 || status == 3 || status == -1 || status == 5) ? ' disabled' : ''}}" src="{{qr_code_url}}" mode="aspectFit"></image>
       <view wx:if="{{status == 2 || status == 3}}" class='checked-icon'><text>已核销</text></view>
-      <view wx:elif="{{status == -1}}" class='checked-icon'><text>已失效</text></view>
+      <view wx:elif="{{status == -1 || status == 5}}" class='checked-icon'><text>已失效</text></view>
       <!-- 未核销暂不显示 -->
       <!-- <view wx:elif="{{status === 0 || status === '0' || status == 1}}" class='checked-icon'><text>未核销</text></view> -->
       <!-- <view class='line-info'><text>过期时间：</text><text>{{deadline || ''}}</text></view> -->

@@ -7,7 +7,7 @@ let MenuButtonInfo = app.globalData.MenuButtonInfo || wx.getMenuButtonBoundingCl
 const statusBarHeight = systemInfo.statusBarHeight
 const menuTopSpace = MenuButtonInfo.top - statusBarHeight
 const menuHeight = MenuButtonInfo.height
-const navBoxHeight = menuTopSpace * 2 + MenuButtonInfo.height // 导航胶囊上下分别留6px的间隔
+const navBoxHeight = menuTopSpace * 2 + menuHeight // 导航胶囊上下分别留6px的间隔
 const navUseableWidth = MenuButtonInfo.left - 20
 const navWrapperHeight = statusBarHeight + navBoxHeight
 Component({

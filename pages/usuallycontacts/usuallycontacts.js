@@ -6,7 +6,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-    navTitle: '出行人信息',
+    navTitle: '常用信息',
     loaded: false,
     contacts: [],
   },

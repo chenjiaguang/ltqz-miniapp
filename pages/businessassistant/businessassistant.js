@@ -64,10 +64,10 @@ Page({
       let other_entrances = this.data.other_entrances
       other_entrances[0].title = other_entrances[0].title.split('（')[0] + '（' + res.data.product_num + '）'
       other_entrances[1].title = other_entrances[1].title.split('（')[0] + '（' + res.data.rate_num + '）'
-      this.setData({
-        data: res.data,
-        other_entrances: other_entrances
-      })
+      let _obj = {}
+      _obj.data = res.data
+      _obj.other_entrances = other_entrances
+      this.setData(_obj)
     }).catch(err => {
       console.log('err', err)
     })
@@ -123,10 +123,19 @@ Page({
             id: this.data.id,
             qr_code: e.result
           }).then(res => {
-            wx.showToast({
-              title: '核销成功',
-              icon: 'none'
-            })
+            if (res.error == 0) {
+              wx.showToast({
+                title: '核销成功',
+                icon: 'none'
+              })
+            } else {
+              if (res.msg) {
+                wx.showToast({
+                  title: res.msg,
+                  icon: 'none'
+                })
+              }
+            }
           }).catch(err => {
             console.log('err', err)
           })
@@ -159,5 +168,9 @@ Page({
         url: path
       })
     }
+  },
+
+  provideCode: function () {
+    return (this.data.data && this.data.data.hx_code) ? this.data.data.hx_code : ''
   }
 })

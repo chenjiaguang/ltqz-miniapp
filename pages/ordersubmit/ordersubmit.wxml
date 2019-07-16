@@ -24,7 +24,7 @@
       <view wx:if="{{hx_rule}}" class="hx-rule">{{hx_rule}}</view>
       <view class='amount'>{{selectedTicketLength}}件</view>
       <view class='ticket-info'>
-        <view wx:for="{{selectedSessions}}" wx:for-index="idx" wx:for-item="session" wx:key="id" class='ticket-item'>{{session.name}}{{session.subName ? ('（' + session.subName + '）') : ''}}x{{subSessions[currentSubSession].num}}{{(idx + 1) === subSessions.length ? '' : '，'}}</view>
+        <view wx:for="{{selectedSessions}}" wx:for-index="idx" wx:for-item="session" wx:key="id" class='ticket-item'>{{session.name}}{{session.subName ? ('（' + session.subName + '）') : ''}}x{{session.num}}{{(idx + 1) === selectedSessions.length ? '' : '，'}}</view>
       </view>
       <view wx:if="{{address}}" class='address'>{{address}}</view>
       <view wx:if="{{!refund || include_bx === 1 || include_bx === '1'}}" class='tags-box'>
@@ -66,7 +66,7 @@
           <text class="gender-icon lutufont lutu-next"></text>
         </view>
       </picker>
-      <input wx:else class='contact-item-input' type="{{item.type || 'text'}}" value="{{contact[index].value}}" placeholder-class="input-placeholder" type="text" placeholder="请填写联系人{{item.label}}" bindinput="contactInput" data-idx="{{index}}"></input>
+      <input wx:else class='contact-item-input' type="{{item.type || 'text'}}" value="{{contact[index].value}}" placeholder-class="input-placeholder" type="text" placeholder="请填写{{item.label}}" bindinput="contactInput" data-idx="{{index}}"></input>
     </view>
   </view>
   <view class='clause-box' catchtap="changeClause">

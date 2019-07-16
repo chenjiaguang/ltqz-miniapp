@@ -108,14 +108,6 @@ Component({
       //   return false
       // }
       this.initSession(showSession, saletype, idx)
-      // const subS = showSession[idx].sub.map(item => Object.assign({}, item, { num: 0 }))
-      // let _obj = {}
-      // _obj['selectedTicketLength.' + saletype] = 0
-      // _obj['totalPrice.' + saletype] = 0
-      // _obj['currentSession.' + saletype] = idx
-      // _obj['currentSubSession.' + saletype] = 0
-      // _obj['subSessions.' + saletype] = subS
-      // this.setData(_obj)
     },
     subSessionTap: function (e) {
       const { idx } = e.currentTarget.dataset
@@ -124,30 +116,6 @@ Component({
         return false
       }
       this.initSession(showSession, saletype, currentSession[saletype], idx)
-      // const _subSessions = subSessions[saletype]
-      // _subSessions.forEach(item => {
-      //   item.num = 0
-      // })
-      // let _obj = {}
-      // _obj['selectedTicketLength.' + saletype] = 0
-      // _obj['totalPrice.' + saletype] = 0
-      // _obj['currentSubSession.' + saletype] = idx
-      // _obj['subSessions.' + saletype] = _subSessions
-      // this.setData(_obj)
-      // const { status, idx } = e.currentTarget.dataset
-      // const { currentSession, saletype } = this.data
-      // const session = JSON.parse(JSON.stringify(this.data.showSession))
-      // if (status === 'disabled' || currentSession[saletype] === idx) { // 售罄 或 点击的是当前的款式
-      //   return false
-      // }
-      // const subS = session[idx].sub.map(item => Object.assign({}, item, { num: 0 }))
-      // let _obj = {}
-      // _obj['selectedTicketLength.' + saletype] = 0
-      // _obj['totalPrice.' + saletype] = 0
-      // _obj['currentSession.' + saletype] = idx
-      // _obj['currentSubSession.' + saletype] = 0
-      // _obj['subSessions.' + saletype] = subS
-      // this.setData(_obj)
     },
     initSession: function (session, saletype, idx, subIdx) {
       let _session = JSON.parse(JSON.stringify(session))
@@ -156,9 +124,9 @@ Component({
       let idxObj = this.searchFirstAble(_session, stockObj, saletype)
       let {ableSessionIdx, limit} = idxObj
       let current = (idx == 0) ? idx : (idx || ableSessionIdx)
-      if (!(idx || idx === 0) && _session.length > 1) { // 如果idx不存在，则说明不是主动点击，该情况如果场次不止一个，则重置ableSessionIdx为null
-        current = null
-      }
+      // if (!(idx || idx === 0) && _session.length > 1) { // 如果idx不存在，则说明不是主动点击，该情况如果场次不止一个，则重置current为null
+      //   current = null
+      // }
 
       let selectedTicketLength = { 1: 0, 2: 0, 3: 0 }
       let totalPrice = { 1: 0, 2: 0, 3: 0 }
@@ -167,23 +135,23 @@ Component({
       let subSessions = { 1: [], 2: [], 3: [] }
 
       if (current !== null) {
-        _subSessions = _session[current].sub.map(item => Object.assign({}, item, { num: 0 }))
+        _subSessions = _session[current].sub.map(item => Object.assign({}, item, {num: 0}))
       }
 
       if (current !== null && !limit) { // 已有选择款式 且 未限制购买，则可以初始化选择一个
-
+        let singlePrice = _session[current][singlePriceObj[saletype]]
         let subIndex = (subIdx === 0) ? subIdx : (subIdx || ((_subSessions && _subSessions.length) ? 0 : null))
         // 如果已选择的款式不止一个二级款式 且 不是手动选择的，则重置subIndex为null
         if (_subSessions.length > 1 && !(subIdx || subIdx === 0)) {
           subIndex = null
         }
         // 初始选择个数initNum
-        console.log('subIndex', subIdx, subIndex, _subSessions, current)
-        const initNum = subIndex === null ? 0 : 1
-        if (subIndex !== null) {
-          const singlePrice = _session[current][singlePriceObj[saletype]]
-          _subSessions[subIndex].num = initNum
+        const initNum = _subSessions.length == 0 ? 1 : (subIndex === null ? 0 : 1)
+        if (initNum !== 0) {
           totalPrice[saletype] = parseFloat((initNum * singlePrice / 100).toFixed(2))
+        }
+        if (subIndex !== null) {
+          _subSessions[subIndex].num = initNum
         }
 
         selectedTicketLength[saletype] = initNum
@@ -220,17 +188,15 @@ Component({
         })
         return false
       }
-      let selectedTicketLen = 0
       let total = 0
       const { type, idx } = e.currentTarget.dataset
-      let subS = subSessions[idx]
       if (session[stockObj[saletype]] === 0) { // 没有库存
         return false
       }
-      if (subS.num <= 0 && type === 'minus') { // 点击的是减号，且当前小于或等于0
+      if (selectedTicketLength[saletype] <= 0 && type === 'minus') { // 点击的是减号，且当前小于或等于0
         return false
       }
-      if (session[stockObj[saletype]] && subS.num >= session[stockObj[saletype]] && type === 'add') { // 有库存限制 且 点击的是加号 且 当前大于或等于库存
+      if (session[stockObj[saletype]] && selectedTicketLength[saletype] >= session[stockObj[saletype]] && type === 'add') { // 有库存限制 且 点击的是加号 且 当前大于或等于库存
         return false
       }
       if (saletype == 3 && (this.data.remainCount == 0 || this.data.remainCount && selectedTicketLength[saletype] >= this.data.remainCount && type === 'add')) { // 抢购模式 且 （抢购剩余为0 或 当前大于等于抢购限制）
@@ -240,16 +206,22 @@ Component({
         })
         return false
       }
-      subSessions.forEach((item, index) => {
-        selectedTicketLen += index === idx ? (item.num + (type === 'minus' ? -1 : 1)) : item.num
-        const singlePrice = session[singlePriceObj[saletype]]
-        total += index === idx ? ((item.num + (type === 'minus' ? -1 : 1)) * singlePrice) : (item.num * singlePrice)
-      })
-      let num = subS.num + (type === 'minus' ? -1 : 1)
+      // subSessions.forEach((item, index) => {
+      //   selectedTicketLen += index === idx ? (item.num + (type === 'minus' ? -1 : 1)) : item.num
+      //   const singlePrice = session[singlePriceObj[saletype]]
+      //   total += index === idx ? ((item.num + (type === 'minus' ? -1 : 1)) * singlePrice) : (item.num * singlePrice)
+      // })
+
+      let num = selectedTicketLength[saletype] + (type === 'minus' ? -1 : 1)
+      const singlePrice = session[singlePriceObj[saletype]]
+      total = num * singlePrice
+
       let _obj = {}
-      _obj['selectedTicketLength.' + saletype] = selectedTicketLen
+      _obj['selectedTicketLength.' + saletype] = num
       _obj['totalPrice.' + saletype] = parseFloat((total / 100).toFixed(2))
-      _obj['subSessions.' + saletype + '[' + idx + '].num'] = num
+      if (idx) {
+        _obj['subSessions.' + saletype + '[' + idx + '].num'] = num
+      }
       this.setData(_obj)
     },
 

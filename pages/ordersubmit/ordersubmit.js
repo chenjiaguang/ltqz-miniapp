@@ -57,7 +57,7 @@ Page({
       let shouldFill = this.getFillForm(data.fill_form)
       shouldFill.forEach(item => {
         for (let key in contactObj) {
-          if (item.name === key && contactObj[key]) {
+          if ((key === '姓名' || key === '手机') && item.name === key && contactObj[key]) { // 只有手机和姓名使用上次使用的字段，其他不设置
             item.value = contactObj[key]
           }
         }
@@ -69,11 +69,11 @@ Page({
     } else if (data.type == 2) { // 非活动，已购买的商品
       data.selectedSessions = [data.session[data.currentSession]]
       data.selectedSessions.forEach(item => {
+        item.num = data.selectedTicketLength
         if (data.subSessions && data.subSessions.length) {
           const sub = data.subSessions.filter(item => item.num > 0)[0]
           item.subName = sub.name
           item.subId = sub.id
-          item.subNum = sub.num
         }
       })
     }
@@ -250,7 +250,7 @@ Page({
       return false
     } else if (contactEmptyItem && contactEmptyItem.length) { // 需要填写出行人信息 且 没有选中的出行人
       wx.showToast({
-        title: contactEmptyItem[0].type == 'gender' ? '请选择联系人性别' : ('请填写联系人' + contactEmptyItem[0].label),
+        title: contactEmptyItem[0].type == 'gender' ? '请选择性别' : ('请填写' + contactEmptyItem[0].label),
         icon: 'none'
       })
       return false
@@ -284,7 +284,7 @@ Page({
       ticket = {}
       let selected = selectedSessions[0]
       ticket.id = selected.id
-      ticket.quantity = selected.subNum
+      ticket.quantity = selected.num
       ticket.style_id = selected.subId
     }
     let buy_for_ids = buy_for.map(item => item.id)

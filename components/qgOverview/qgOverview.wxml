@@ -11,7 +11,7 @@
           <text class="price-head">抢购价：</text>
           <text wx:if="{{goodsStatusData.show_min_qg_price && goodsStatusData.show_min_qg_price > 0}}" class="price-sign">¥</text>
           <text wx:if="{{goodsStatusData.show_min_qg_price && goodsStatusData.show_min_qg_price > 0}}" class="price-num">{{goodsStatusData.show_min_qg_price}}</text>
-          <text wx:if="{{goodsStatusData.price_num > 1}}" class="price-qi">起</text>
+          <text wx:if="{{goodsStatusData.price_num > 1 && goodsStatusData.show_min_qg_price}}" class="price-qi">起</text>
           <text wx:if="{{!(goodsStatusData.show_min_qg_price && goodsStatusData.show_min_qg_price > 0)}}" class="price-free">免费</text>
         </view>
       </view>

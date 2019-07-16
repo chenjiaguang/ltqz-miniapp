@@ -174,7 +174,7 @@ page{
   color: #333;
 }
 .gender-picker.empty{
-  color: #999;
+  color: #CCCCCC;
 }
 .gender-icon{
   font-size: 28rpx;

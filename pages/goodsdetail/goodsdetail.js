@@ -204,6 +204,7 @@ Page({
             }
           })
         }
+        res.data.subOverview = this.getSubOverview(res.data)
         this.initBtnText(res.data)
         this.setData(res.data, () => {
           this.setData({
@@ -300,6 +301,44 @@ Page({
     })
   },
 
+  getSubOverview: function (data) {
+    let {type, valid_btime, valid_etime, hx_rule, dead_line, address, address_position, jh_address, jh_address_position, min_age, max_age, limit_num, note, include_bx, refund} = data
+    let arr = []
+    if (type && valid_btime && valid_etime) {
+      arr.push({img: '/assets/images/time_jointime.png', text: `活动日期：${valid_btime} 至 ${valid_etime}`})
+    }
+    if (dead_line) {
+      arr.push({img: '/assets/images/time_deadline.png', text: `报名截止时间：${dead_line}`})
+    }
+    if (hx_rule) {
+      arr.push({img: '/assets/images/hx_rule_icon.png', text: `核销有效期：${hx_rule}`})
+    }
+    if (address) {
+      arr.push({img: '/assets/images/huodong_location.png', text: `活动地点：${address}`, isAddress: true, lnglat: address_position})
+    }
+    if (jh_address) {
+      arr.push({img: '/assets/images/jihe_location.png', text: `集合地点：${jh_address}`, isAddress: true, lnglat: jh_address_position})
+    }
+    if (min_age) {
+      arr.push({img: '/assets/images/nianling.png', text: `适合年龄段：${min_age == -1 ? '不限年龄' : (min_age + ' ~ ' + max_age + '岁')}`})
+    }
+    if (limit_num) {
+      arr.push({img: '/assets/images/chengtuan.png', text: limit_num})
+    }
+    if (note && note[0]) {
+      note.forEach(item => {
+        arr.push({img: '/assets/images/beizhu.png', text: item})
+      })
+    }
+    if (include_bx == 1) {
+      arr.push({img: '/assets/images/baoxian.png', text: '本次活动费用包含保险'})
+    }
+    if (!refund) {
+      arr.push({img: '/assets/images/tuikuan.png', text: '本次活动不支持退款'})
+    }
+    return arr
+  },
+
   stopPropagation: function () {
     return false
   },
@@ -322,7 +361,7 @@ Page({
   },
 
   viewLocation: function (e) {
-    const lnglat = this.data[e.currentTarget.dataset.ele]
+    const {lnglat} = e.currentTarget.dataset
     if (lnglat && lnglat[0] && lnglat[1]) {
       wx.openLocation({
         latitude: parseFloat(lnglat[1]),
@@ -495,6 +534,11 @@ Page({
             })
           }
           storageHelper.setStorage('goodsCollected', true)
+        } else { // 取消收藏
+          wx.showToast({
+            title: '取消收藏成功',
+            icon: 'none'
+          })
         }
         const collected = is_collect
         this.setData({
