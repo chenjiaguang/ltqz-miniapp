@@ -1,8 +1,8 @@
 /* pages/ordersubmit/ordersubmit.wxss */
 
-page{
+/* page{
   background: #F5F5F5;
-}
+} */
 .page-ordersubmit{
   background: #F5F5F5;
 }
@@ -239,6 +239,10 @@ page{
 .total-amout{
   font-size: 46rpx;
   color: #F24724;
+}
+.btn-form{
+  display: block;
+  flex: 1;
 }
 .submit-btn{
   flex: 1;

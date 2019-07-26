@@ -1,8 +1,9 @@
 <!--pages/goodsdetail/goodsdetail.wxml-->
-<ft-custom-nav hideDist="735rpx" fixed title="{{navTitle}}" />
+<ft-custom-nav title="{{navTitle}}" />
 <view class='page-goodsdetail'>
   <view class='banner-wrapper'>
-    <image class='cover' src="{{cover_url}}" mode="aspectFill"></image>
+    <ft-banners wx:if="{{banners && banners[0]}}" banners="{{banners}}" indicator-type="2" height="625rpx" spacing="{{0}}" border-radius="0" previous-margin="{{0}}" next-margin="{{0}}" catchtap="bannerTap" />
+    <image wx:else class='cover' src="{{product_cover_url || cover_url}}" mode="aspectFill"></image>
     <!-- 获取到数据后才展示分享图片，因为分享图片的回调函数中需要用到若干活动数据 -->
     <view wx:if="{{goodsLoaded && uid && fenxiao_price}}" class='share-wrapper'>
       <share-button profit="{{fenxiao_price}}" show-price catchshare="shareBtnTap" />
@@ -25,48 +26,30 @@
   <!-- 抢购模块 -->
   <qg-overview wx:if="{{sale_type == 3 && (qg_status == 1 || qg_status == 2 || qg_status == 3)}}" goods-status-data="{{goods_status_data}}" />
   <!-- 活动信息概览 -->
-  <view class='sub-overview'>
+  <view wx:if="{{subOverview && subOverview.length}}" class="sub-overview-box">
+    <view class='block-separator'></view>
+    <view class='sub-overview-header'><text>购买必看</text></view>
+    <view class='sub-overview'>
     <view wx:for="{{subOverview}}" wx:for-index="idx" wx:for-item="so" wx:key="text" class='state-block-wrapper'>
-      <view wx:if="{{idx !== 0}}" class='line-separator-h'></view>
+      <view class='line-separator-h'></view>
       <view class='state-block' catchtap="viewLocation" data-lnglat="{{so.lnglat}}"><image class='left-icon' mode="aspectFit" src="{{so.img}}"></image><text class='state-block-text'>{{so.text}}</text><text wx:if="{{so.lnglat && so.lnglat[0] && so.lnglat[1]}}" class='right-icon lutufont lutu-next2'></text></view>
-    </view>
-    <!-- <view wx:if="{{type == 1 && valid_btime && valid_etime}}" class='state-block-wrapper'>
-      <view class='state-block'><image class='left-icon' mode="aspectFit" src="/assets/images/time_jointime.png"></image><text class='state-block-text'>活动日期：{{valid_btime}} 至 {{valid_etime}}</text></view>
-    </view>
-    <view wx:if="{{dead_line}}" class='state-block-wrapper'>
-      <view class='line-separator-h'></view>
-      <view class='state-block'><image class='left-icon' mode="aspectFit" src="/assets/images/time_deadline.png"></image><text class='state-block-text'>报名截止时间：{{dead_line}}</text></view>
-    </view>
-    <view wx:if="{{address}}" class='state-block-wrapper'>
-      <view class='line-separator-h'></view>
-      <view class='state-block' catchtap="viewLocation" data-ele="address_position"><image class='left-icon' mode="aspectFit" src="/assets/images/huodong_location.png"></image><text class='state-block-text'>活动地点：{{address}}</text><text wx:if="{{address_position && address_position[0]}}" class='right-icon lutufont lutu-next2'></text></view>
-    </view>
-    <view wx:if="{{jh_address}}" class='state-block-wrapper'>
-      <view class='line-separator-h'></view>
-      <view class='state-block' catchtap="viewLocation" data-ele="jh_address_position"><image class='left-icon' mode="aspectFit" src="/assets/images/jihe_location.png"></image><text class='state-block-text'>集合地点：{{jh_address}}</text><text wx:if="{{jh_address_position && jh_address_position[0]}}" class='right-icon lutufont lutu-next2'></text></view>
-    </view>
-    <view wx:if="{{min_age}}" class='state-block-wrapper'>
-      <view class='line-separator-h'></view>
-      <view class='state-block'><image class='left-icon' mode="aspectFit" src="/assets/images/nianling.png"></image><text class='state-block-text'>适合年龄段：{{min_age == -1 ? '不限年龄' : (min_age + ' ~ ' + max_age + '岁')}}</text></view>
-    </view>
-    <view wx:if="{{limit_num}}" class='state-block-wrapper'>
-      <view class='line-separator-h'></view>
-      <view class='state-block'><image class='left-icon' mode="aspectFit" src="/assets/images/chengtuan.png"></image><text class='state-block-text'>{{limit_num}}</text></view>
-    </view>
-    <block wx:if="{{note && note[0]}}">
-      <view wx:for="{{note}}" wx:key="*this" class='state-block-wrapper note-box'>
-        <view class='line-separator-h'></view>
-        <view class='state-block'><image class='left-icon' mode="aspectFit" src="/assets/images/beizhu.png"></image><text class='state-block-text' style="white-space:normal">{{item}}</text></view>
       </view>
-    </block>
-    <view wx:if="{{include_bx == 1}}" class='state-block-wrapper'>
-      <view class='line-separator-h'></view>
-      <view class='state-block'><image class='left-icon' mode="aspectFit" src="/assets/images/baoxian.png"></image><text class='state-block-text'>本次活动费用{{(include_bx == 1) ? '' : '不'}}包含保险</text></view>
     </view>
-    <view wx:if="{{!refund}}" class='state-block-wrapper'>
-      <view class='line-separator-h'></view>
-      <view class='state-block'><image class='left-icon' mode="aspectFit" src="/assets/images/tuikuan.png"></image><text class='state-block-text'>本次活动不支持退款</text></view>
-    </view> -->
+  </view>
+  <view wx:if="{{show_fx_banner}}" class="partner-box">
+    <view class='block-separator'></view>
+    <view class="partner-box-content-wrapper">
+      <view class="partner-box-content theme-bg-fifth" catchtap="bePartner">
+        <view class="partner-box-left">
+          <text class="theme-color" style="font-size:32rpx;line-height:42rpx;font-weight:bold">申请成为合伙人</text>
+          <text class="theme-color" style="font-size:28rpx;line-height:38rpx">自购省钱，分享赚钱</text>
+        </view>
+        <view class="partner-box-right">
+          <text style="font-size:26rpx;line-height:26rpx">了解更多</text>
+          <text class='right-icon lutufont lutu-next2' style="color:#ADAAAB;margin-left:26rpx"></text>
+        </view>
+      </view>
+    </view>
   </view>
   <!-- 参加活动人数 -->
   <view wx:if="{{join_num && join_num > 0}}" class='join-box'>
@@ -84,7 +67,7 @@
     <!-- 活动 -->
     <view wx:if="{{type == 1}}" class='sponsor-header'>
       <text class="sponsor-header-text">活动主办方</text>
-      <!-- todo:商家经营主体:1 个人认证 | 2 企业认证 | 3 其他阻止认证 -->
+      <!-- 商家经营主体:1 个人认证 | 2 企业认证 | 3 其他组织认证 -->
       <block wx:if="{{shop && shop.type}}">
         <image class="identification-icon" src="/assets/images/identification_icon.png" mode="aspectFit" />
         <text class="identification-text">{{identificationText[shop.type]}}</text>
@@ -93,7 +76,7 @@
     <!-- 非活动 -->
     <view wx:if="{{type == 2}}" class='sponsor-header'>
       <text class="sponsor-header-text">商家名片</text>
-      <!-- todo:商家经营主体:1 个人认证 | 2 企业认证 | 3 其他阻止认证 -->
+      <!-- 商家经营主体:1 个人认证 | 2 企业认证 | 3 其他组织认证 -->
       <block wx:if="{{shop && shop.type}}">
         <image class="identification-icon" src="/assets/images/identification_icon.png" mode="aspectFit" />
         <text class="identification-text">{{identificationText[shop.type]}}</text>
@@ -172,123 +155,7 @@
       </view>
     </view>
   </view>
-  <!-- 普通商品底部按钮 sale_type为1（普通商品）或者 (sale_type为3（抢购商品）且不是抢购中且不是已售罄) -->
-  <ft-bottom-box wx:if="{{sale_type == 1 || (sale_type == 3 && qg_status != 2 && qg_status != 3) }}" box-height="{{102}}" bg="#FFFFFF">
-    <view class='bottom-button'>
-      <view class='line-separator-h' style="transform-origin:50% 100%;background:#D8D8D8"></view>
-      <view class='bottom-button-content'>
-        <view class="first-collect-tip{{showCollectTip ? ' show' : ''}}">
-          <view class='tip-body'>已收藏的商品，可以在我的-我的收藏中查看哦！</view>
-          <view class='tip-arrow'></view>
-        </view>
-        <view class='kefu-and-collect'>
-          <!-- 自营 -->
-          <button wx:if="{{shop && shop.nature == 1}}" open-type="contact" class='kefu' hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
-            <text class='kefu-icon theme-color lutufont lutu-kefu'></text>
-            <text class='kefu-text'>客服</text>
-          </button>
-          <!-- 第三方 -->
-          <view wx:if="{{shop && shop.nature == 2}}" catchtap="makePhoneCall" data-phone="{{shop.phone}}" class='tel' hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
-            <text class='tel-icon theme-color lutufont lutu-tel3'></text>
-            <text class='tel-text'>电话</text>
-          </view>
-          <view class='collect' catchtap="collectTap" hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
-            <text class="collect-icon theme-color lutufont{{is_collect ? ' lutu-collected' : ' lutu-collect'}}"></text>
-            <text class='collect-text'>{{is_collect ? '已收藏' : '收藏'}}</text>
-          </view>
-        </view>
-        <!-- 可报名且用户电话存在 或 不可报名 -->
-        <view class='join-btn-wrapper'>
-          <button wx:if="{{status != 1 || (status == 1 && orderContact)}}" class="join-btn{{status != 1 ? ' disabled' : ' theme-bg'}}" disabled="{{status != 1}}" catchtap="showShoppingView" data-saletype="1">
-            <view class='join-text' style="font-size:34rpx;line-height:46rpx">{{btnText}}</view>
-          </button>
-          <!-- 可报名且用户电话不存在 -->
-          <button wx:if="{{status == 1 && !orderContact}}" class="join-btn theme-bg" open-type='getPhoneNumber' bindgetphonenumber="initContact"><text class='join-text' style="font-size:34rpx;line-height:46rpx">立即报名</text></button>
-        </view>
-      </view>
-    </view>
-  </ft-bottom-box>
-  <!-- 拼团商品底部按钮 -->
-  <ft-bottom-box wx:if="{{sale_type == 2}}" box-height="{{102}}" bg="#FFFFFF">
-    <view class='bottom-button'>
-      <view class='line-separator-h' style="transform-origin:50% 100%;background:#D8D8D8"></view>
-      <view class='bottom-button-content'>
-        <view class="first-collect-tip{{showCollectTip ? ' show' : ''}}">
-          <view class='tip-body'>已收藏的商品，可以在我的-我的收藏中查看哦！</view>
-          <view class='tip-arrow'></view>
-        </view>
-        <view class='kefu-and-collect'>
-          <!-- 自营 -->
-          <button wx:if="{{shop && shop.nature == 1}}" open-type="contact" class='kefu' hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
-            <text class='kefu-icon theme-color lutufont lutu-kefu'></text>
-            <text class='kefu-text'>客服</text>
-          </button>
-          <!-- 第三方 -->
-          <view wx:if="{{shop && shop.nature == 2}}" catchtap="makePhoneCall" data-phone="{{shop.phone}}" class='tel' hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
-            <text class='tel-icon theme-color lutufont lutu-tel3'></text>
-            <text class='tel-text'>电话</text>
-          </view>
-          <view class='collect' catchtap="collectTap" hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
-            <text class="collect-icon theme-color lutufont{{is_collect ? ' lutu-collected' : ' lutu-collect'}}"></text>
-            <text class='collect-text'>收藏</text>
-          </view>
-        </view>
-        <view class='join-btn-wrapper'>
-        <!-- 可报名且用户电话存在 或 不可报名 -->
-          <view class='join-btn-wrapper' style="padding-right:0" wx:if="{{status != 1 || (status == 1 && orderContact)}}">
-            <button class="join-btn single-join{{status != 1 ? ' single-join-disabled' : ' theme-bg-secondary'}}" style="border-top-right-radius:0;border-bottom-right-radius:0" disabled="{{status != 1}}" catchtap="showShoppingView" data-saletype="1">
-              <view class='join-price' wx:if="{{show_min_origin_price > 0}}">¥{{show_min_price}}</view>
-              <view class='join-price' wx:if="{{show_min_origin_price <= 0}}">免费</view>
-              <view class='join-text'>单独购买</view>
-            </button>
-            <button class="join-btn{{status != 1 ? ' disabled' : ' theme-bg'}}" style="border-top-left-radius:0;border-bottom-left-radius:0" disabled="{{status != 1}}" catchtap="showShoppingView" data-saletype="2">
-              <view class='join-price' wx:if="{{status == 1 && show_min_pt_price > 0}}">¥{{show_min_pt_price}}</view>
-              <view class='join-price' wx:if="{{status == 1 && show_min_pt_price <= 0}}">免费</view>
-              <view class='join-text'>发起拼团</view>
-            </button>
-          </view>
-          <!-- 可报名且用户电话不存在 -->
-          <button wx:if="{{status == 1 && !orderContact}}" class="join-btn theme-bg" open-type='getPhoneNumber' bindgetphonenumber="initContact"><text class='join-text' style="font-size:34rpx;line-height:46rpx">立即报名</text></button>
-        </view>
-      </view>
-    </view>
-  </ft-bottom-box>
-  <!-- 抢购底部按钮 -->
-  <ft-bottom-box wx:if="{{sale_type == 3 && (qg_status == 2 || qg_status == 3) }}" box-height="{{102}}" bg="#FFFFFF">
-    <view class='bottom-button'>
-      <view class='line-separator-h' style="transform-origin:50% 100%;background:#D8D8D8"></view>
-      <view class='bottom-button-content'>
-        <view class="first-collect-tip{{showCollectTip ? ' show' : ''}}">
-          <view class='tip-body'>已收藏的商品，可以在我的-我的收藏中查看哦！</view>
-          <view class='tip-arrow'></view>
-        </view>
-        <view class='kefu-and-collect'>
-          <!-- 自营 -->
-          <button wx:if="{{shop && shop.nature == 1}}" open-type="contact" class='kefu' hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
-            <text class='kefu-icon theme-color lutufont lutu-kefu'></text>
-            <text class='kefu-text'>客服</text>
-          </button>
-          <!-- 第三方 -->
-          <view wx:if="{{shop && shop.nature == 2}}" catchtap="makePhoneCall" data-phone="{{shop.phone}}" class='tel' hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
-            <text class='tel-icon theme-color lutufont lutu-tel3'></text>
-            <text class='tel-text'>电话</text>
-          </view>
-          <view class='collect' catchtap="collectTap" hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
-            <text class="collect-icon theme-color lutufont{{is_collect ? ' lutu-collected' : ' lutu-collect'}}"></text>
-            <text class='collect-text'>{{is_collect ? '已收藏' : '收藏'}}</text>
-          </view>
-        </view>
-        <!-- 可报名且用户电话存在 或 不可报名 -->
-        <view class='join-btn-wrapper'>
-          <button wx:if="{{status != 1 || (status == 1 && orderContact)}}" class="join-btn{{(status != 1 || (status == 1 && qg_status == 3)) ? ' disabled' : ' theme-bg'}}" disabled="{{status != 1 || (status == 1 && qg_status == 3)}}" catchtap="showShoppingView" data-saletype="3">
-            <view class='join-text' style="font-size:34rpx;line-height:46rpx">{{btnText}}</view>
-          </button>
-          <!-- 可报名且用户电话不存在 -->
-          <button wx:if="{{status == 1 && !orderContact}}" class="join-btn theme-bg" open-type='getPhoneNumber' bindgetphonenumber="initContact"><text class='join-text' style="font-size:34rpx;line-height:46rpx">立即抢购</text></button>
-        </view>
-      </view>
-    </view>
-  </ft-bottom-box>
+  <goods-detail-bottom-button wx:if="{{goodsLoaded}}" btndata="{{bottomButtonData}}" timestamp="{{goodsTimestamp}}" bindnext="showShoppingView" />
 </view>
 <draw-poster id="c-draw-poster" />
 <shopping-view wx:if="{{status == 1 && session && session.length > 0 && type == 1}}" id="c-shopping-view" remain-count="{{person_remain_count}}" session="{{session}}" timestamp="{{goodsTimestamp}}" catchnextstep="nextTap" />

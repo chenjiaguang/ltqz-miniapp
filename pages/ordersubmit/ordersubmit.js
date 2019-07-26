@@ -238,8 +238,10 @@ Page({
     })
   },
 
-  submitOrder: function () {
+  submitOrder: function (e) {
     const { type, id, fromUid, fill_info, fill_form, selectedTickets, selectedSessions, contact, buy_for, submitting, clause_checked, saletype, tuan_id, totalPrice} = this.data
+    const {formId} = e.detail
+    console.log('formId', formId)
     const contactEmptyItem = contact.filter(item => !item.value)
 
     if (fill_info && (!buy_for || (buy_for && !buy_for.length))) { // 联系人信息不完整
@@ -297,7 +299,7 @@ Page({
       fenxiao_user_id: fromUid,
       tuan_id: tuanid,
       total_price: totalPrice,
-      form_id: fill_form ? fill_form.id : '',
+      form_id: formId,
       form: form
     }
     this.setData({

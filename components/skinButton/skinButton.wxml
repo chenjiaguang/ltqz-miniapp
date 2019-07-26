@@ -1,0 +1,4 @@
+<!--components/skinButton/skinButton.wxml-->
+<button class="wrapper" use-skin="{{useSkin}}" type="{{type}}" disabled="{{disabled}}" form-type="{{formType}}" hover-class="{{hoverClass}}" hover-stop-propagation="{{hoverStopPropagation}}" hover-start-time="{{hoverStartTime}}" hover-stay-time="{{hoverStayTime}}" app-parameter="{{appParameter}}" bindgetuserinfo="{{bindgetuserinfo}}" bindcontact="{{bindcontact}}" bindgetphonenumber="{{bindgetphonenumber}}" binderror="btnError" bindopensetting="{{bindopensetting}}" bindlaunchapp="{{bindlaunchapp}}" catchtap="btnTap" style="background:{{background}}">
+  <slot></slot>
+</button>

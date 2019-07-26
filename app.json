@@ -33,19 +33,21 @@
     "pages/commentmanager/commentmanager",
     "pages/testpage/testpage",
     "pages/thememerchant/thememerchant",
-    "pages/themegoods/themegoods"
+    "pages/themegoods/themegoods",
+    "pages/userfxgoods/userfxgoods",
+    "pages/fxusuallyquestion/fxusuallyquestion"
   ],
   "window": {
     "navigationStyle": "custom",
     "backgroundTextStyle": "dark",
     "navigationBarBackgroundColor": "#FFFFFF",
-    "backgroundColor": "#FFFFFF",
-    "navigationBarTitleText": "范团精选",
+    "backgroundColor": "#F5F5F5",
+    "navigationBarTitleText": "范团亲子",
     "navigationBarTextStyle": "black"
   },
   "tabBar": {
     "color": "#999999",
-    "selectedColor": "#FF9500",
+    "selectedColor": "#00D8E7",
     "backgroundColor": "#FFFFFF",
     "borderStyle": "black",
     "position": "bottom",

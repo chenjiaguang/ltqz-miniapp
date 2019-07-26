@@ -26,8 +26,6 @@ Component({
    * 组件的初始数据
    */
   data: {
-    statusText: '',
-    statusDisabled: false,
     priceText: '',
     isFree: false,
     hasMore: false

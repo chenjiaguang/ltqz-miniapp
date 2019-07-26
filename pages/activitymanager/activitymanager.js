@@ -1,18 +1,13 @@
 // pages/activitymanager/activitymanager.js
 const util = require('../../utils/util.js')
-const app = getApp()
-let themeColor = '#FFFFFF'
-if (app) {
-  themeColor = app.globalData.themeColor
-}
+
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    navTitle: '活动管理',
-    navBg: themeColor || '#FFFFFF',
+    navTitle: '商品管理',
     id: '',
     list: [],
     page: null,

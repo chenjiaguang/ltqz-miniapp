@@ -1,8 +1,8 @@
 /* pages/imagepage/imagepage.wxss */
 
-page{
+/* page{
   background: #F5F5F5;
-}
+} */
 .page-imagepage{
   background: #F5F5F5;
 }

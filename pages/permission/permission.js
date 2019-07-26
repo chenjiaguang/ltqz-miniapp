@@ -138,6 +138,7 @@ Page({
         nickName
       }
       const successCallback = (authSetting) => {
+        this.authGetting = false // 授权完成后重置正在授权为false
         if (authSetting['scope.userInfo'] && authSetting['scope.userLocation']) {
           this.userLogin(logingInfo)
         } else if (!authSetting['scope.userInfo']) {
@@ -188,6 +189,10 @@ Page({
           })
         }
       }
+      if (this.authGetting) { // 如果正在获取授权，不重复获取
+        return false
+      }
+      this.authGetting = true
       authManager.getAuthSetting(successCallback) // 更新授权情况(storage)
     } else {
       this.setData({
@@ -199,6 +204,9 @@ Page({
   userLogin: function(logingInfo) {
     // 这里写登录逻辑（通过将signature、encryptedData、iv等信息发送给后端完成登录）
     // 模拟
+    if (this.loging) { // 判断是否正在调用登录接口，避免重复调用登录接口后提示code已使用的问题
+      return false
+    }
     this.setData({
       authUserInfo: true,
       authUserLocation: true
@@ -206,8 +214,9 @@ Page({
     let rData = Object.assign({}, {
       code: this.code
     }, logingInfo)
-    // return false
+    this.loging = true
     util.request('/login', rData).then(res => {
+      this.loging = false
       if ((res.error === 0 || res.error === '0') && res.data) {
         const app = getApp()
         const {
@@ -239,6 +248,7 @@ Page({
         })
       }
     }).catch(err => {
+      this.loging = false
       if (err.error == 1 && this.data.showType === 'update_token') {
         this.login()
         this.setData({

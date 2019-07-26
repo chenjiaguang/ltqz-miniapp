@@ -23,7 +23,7 @@
 		}
 	},
 	"compileType": "miniprogram",
-	"libVersion": "2.7.3",
+	"libVersion": "2.7.7",
 	"appid": "wx1e538beb2007bee7",
 	"projectname": "%E8%B7%AF%E9%80%94%E4%BA%B2%E5%AD%90",
 	"debugOptions": {
@@ -50,7 +50,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 28,
+			"current": 20,
 			"list": [
 				{
 					"id": -1,
@@ -195,7 +195,7 @@
 					"id": 20,
 					"name": "活动详情",
 					"pathName": "pages/goodsdetail/goodsdetail",
-					"query": "id=117",
+					"query": "id=150",
 					"scene": null
 				},
 				{
@@ -251,6 +251,27 @@
 					"name": "主题商家",
 					"pathName": "pages/thememerchant/thememerchant",
 					"query": "id=6",
+					"scene": null
+				},
+				{
+					"id": 29,
+					"name": "模拟更新",
+					"pathName": "pages/index/index",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "推广商品",
+					"pathName": "pages/userfxgoods/userfxgoods",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": 31,
+					"name": "常见问题",
+					"pathName": "pages/statement/statement",
+					"query": "type=4",
 					"scene": null
 				}
 			]

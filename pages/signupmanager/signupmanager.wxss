@@ -71,11 +71,13 @@
   color: #ccc;
 }
 
-.lutu-tel2 {
+.lutu-tel4 {
   padding-left: 20rpx;
   padding-top: 20rpx;
   padding-bottom: 20rpx;
-  font-size: 70rpx;
+  font-size: 74rpx;
+  line-height: 74rpx;
+  font-weight: normal;
   align-self: center;
 }
 
@@ -85,15 +87,25 @@
   left: 0;
   right: 0;
 }
-
+.btn-wrapper{
+  height: 142rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .btn {
   font-size: 36rpx;
   color: #fff;
-  height: 100rpx;
+  width: 580rpx;
+  height: 82rpx;
+  border-radius: 41rpx;
   text-align: center;
-  line-height: 100rpx;
+  line-height: 82rpx;
 }
 
 .bottom {
   background-color: #fff;
+}
+.income-view{
+  background-color: #FFFFFF;
 }

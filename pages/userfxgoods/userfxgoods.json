@@ -1,0 +1,11 @@
+{
+  "navigationBarTitleText": "推广商品",
+  "usingComponents": {
+    "ft-custom-nav": "../../ftcomponents/ftCustomNav/ftCustomNav",
+    "draw-poster": "../../components/drawPoster/drawPoster",
+    "goods-card": "../../components/goodsCard/goodsCard",
+    "ft-iphone-bottom-adapter": "../../ftcomponents/ftIphoneBottomAdapter/ftIphoneBottomAdapter",
+    "ft-list-loader": "../../ftcomponents/ftListLoader/ftListLoader",
+    "ft-list-footer": "../../ftcomponents/ftListFooter/ftListFooter"
+  }
+}

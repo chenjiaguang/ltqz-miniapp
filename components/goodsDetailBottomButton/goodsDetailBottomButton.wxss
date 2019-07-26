@@ -1,0 +1,174 @@
+/* components/orderDetailBottomButton/orderDetailBottomButton.wxss */
+@import "../../app.wxss";
+
+.bottom-button-content{
+  display: flex;
+  height: 100rpx;
+  background: #fff;
+  position: relative;
+  overflow: visible;
+}
+.first-collect-tip{
+  width: 394rpx;
+  overflow: hidden;
+  position: absolute;
+  left: 32rpx;
+  bottom: 100rpx;
+  z-index: -1;
+  visibility: hidden;
+  opacity: 0;
+  transform: translateY(-24%);
+  transition: opacity 300ms, transform 300ms;
+}
+.first-collect-tip.show{
+  visibility: visible;
+  opacity: 1;
+  transform: translateY(0);
+}
+.tip-body{
+  height: 106rpx;
+  padding: 0 30rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(50,50,51,0.85);
+  border-radius: 8rpx;
+  margin-bottom: 18rpx;
+  font-size: 30rpx;
+  line-height: 32rpx;
+  color: #fff;
+  text-align: center;
+}
+.tip-arrow{
+  width: 0;
+  height: 0;
+  border-top-color: rgba(50,50,51,0.85);
+  border-right-color: transparent;
+  border-bottom-color: transparent;
+  border-left-color: transparent;
+  border-style: solid;
+  border-top-width: 18rpx;
+  border-right-width: 14rpx;
+  border-bottom-width: 18rpx;
+  border-left-width: 14rpx;
+  position: absolute;
+  left: 120rpx;
+  bottom: -18rpx;
+}
+.kefu-and-collect{
+  width: 240rpx;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.kefu{
+  width: 92rpx;
+  height: 88%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 6rpx;
+  background: #ffffff;
+  padding: 0;
+  margin: 0;
+}
+.tel{
+  width: 92rpx;
+  height: 88%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 6rpx;
+  background: #ffffff;
+  padding: 0;
+  margin: 0;
+}
+.collect{
+  width: 92rpx;
+  height: 88%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 6rpx;
+}
+.tel-icon{
+  color: #888;
+  font-size: 36rpx;
+  line-height: 36rpx;
+  margin: 4rpx 0;
+}
+.kefu-icon{
+  color: #888;
+  font-size: 36rpx;
+  line-height: 36rpx;
+  margin: 4rpx 0;
+}
+.collect-icon{
+  color: #888;
+  font-size: 36rpx;
+  line-height: 36rpx;
+  margin: 4rpx 0;
+}
+.kefu-text{
+  font-size: 24rpx;
+  line-height: 32rpx;
+  color: #333;
+}
+.tel-text{
+  font-size: 24rpx;
+  line-height: 32rpx;
+  color: #333;
+}
+.collect-text{
+  font-size: 24rpx;
+  line-height: 32rpx;
+  color: #333;
+}
+.join-btn-wrapper{
+  padding-right: 32rpx;
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+.join-btn{
+  height: 78rpx;
+  flex: 1;
+  border: none;
+  border-radius: 39rpx;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.join-btn:after, .join-btn:before{
+  display: none;
+}
+button.join-btn.disabled{
+  background: #B8B8B8;
+  color: #fff;
+}
+.single-join{
+  flex-basis: 240rpx;
+  flex-shrink: 0;
+  flex-grow: 0;
+  box-sizing: border-box;
+}
+.single-join-disabled{
+  background-color: #C1C1C1 !important;
+  color: #FFFFFF !important;
+}
+.join-price{
+  font-size: 26rpx;
+  line-height: 36rpx;
+  font-weight: normal;
+}
+.join-text{
+  font-size: 28rpx;
+  line-height: 34rpx;
+  font-weight: normal;
+}

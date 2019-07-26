@@ -422,7 +422,7 @@ Component({
             price = util.formatMoney(data.min_qg_price).showMoney
           }
           _obj.price = price
-          _obj.fenxiao_price = util.formatMoney(data.fenxiao_price).showMoney
+          _obj.fenxiao_price = data.fenxiao_price
           _obj.pintuan = data.spell_num
           _obj.joinNumber = data.join_num
           _obj.joinUsers = []

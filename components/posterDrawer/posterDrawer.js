@@ -328,7 +328,7 @@ Component({
           _obj.banner = data.cover_url
           _obj.title = data.title
           _obj.price = util.formatMoney(data.sale_type == 1 ? data.min_price : data.min_pt_price).showMoney
-          _obj.fenxiao_price = util.formatMoney(data.fenxiao_price).showMoney
+          _obj.fenxiao_price = data.fenxiao_price
           _obj.pintuan = data.spell_num
           _obj.joinNumber = data.join_num
           _obj.joinUsers = []

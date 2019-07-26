@@ -1,38 +1,41 @@
 <!--pages/signupmanager/signupmanager.wxml-->
-<ft-custom-nav title="{{navTitle}}" bg="{{navBg}}" color="#ffffff" />
+<ft-custom-nav title="{{navTitle}}" />
 <view class='container'>
+  <view class="block-separator"></view>
   <view class='head row ai-center'>
     <text class='usernum'>报名人数：{{join_num}}</text>
     <text>预计收入：￥{{js_price}}</text>
   </view>
-
   <ft-list-loader visible="{{!page}}" />
-  <block wx:for="{{list}}" wx:key='order_id'>
-    <view class='line-separator-h'></view>
-    <view class='row box' hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}" bindtap='tapItem'>
-      <image src="{{item.user.avatar}}" class='avatar' />
-      <view class='column flex1'>
-        <text class='username'>{{item.user.nick_name}}</text>
-        <text class='content'>{{item.content}}</text>
-        <view wx:if="{{item.traveler_infos && item.traveler_infos.length}}" class='travelers-box'>
-          <view class='travelers' wx:for="{{item.traveler_infos}}" wx:for-item="traveler" wx:for-index="idx" wx:key="id">
-            <text class='traneler-name'>{{traveler.name}}</text>
-            <text class='traneler-gender'>{{genderText[traveler.sex]}}</text>
-            <text class='traneler-idcard'>{{traveler.id_number}}</text>
+  <view class="income-view">
+    <block wx:for="{{list}}" wx:key='order_id'>
+      <view wx:if="{{index !== 0}}" class='line-separator-h' style="width:686rpx;margin:0 auto;"></view>
+      <view wx:else class="block-separator"></view>
+      <view class='row box' hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}" bindtap='tapItem'>
+        <image src="{{item.user.avatar}}" class='avatar' />
+        <view class='column flex1'>
+          <text class='username'>{{item.user.nick_name}}</text>
+          <text class='content'>{{item.content}}</text>
+          <view wx:if="{{item.traveler_infos && item.traveler_infos.length}}" class='travelers-box'>
+            <view class='travelers' wx:for="{{item.traveler_infos}}" wx:for-item="traveler" wx:for-index="idx" wx:key="id">
+              <text class='traneler-name'>{{traveler.name}}</text>
+              <text class='traneler-gender'>{{genderText[traveler.sex]}}</text>
+              <text class='traneler-idcard'>{{traveler.id_number}}</text>
+            </view>
+          </view>
+          <view class='row' style="margin-top:6rpx;">
+            <text wx:if="{{item.status==2||item.status==3}}" class='state state1'>已核销</text>
+            <text wx:else class='state theme-color theme-border-color'>未核销</text>
           </view>
         </view>
-        <view class='row' style="margin-top:6rpx;">
-          <text wx:if="{{item.status==2||item.status==3}}" class='state state1'>已核销</text>
-          <text wx:else class='state theme-color theme-border-color'>未核销</text>
-        </view>
+        <view class='lutufont lutu-tel4 theme-color' hover-stop-propagation catchtap='callPhone' data-phone='{{item.phone}}'></view>
       </view>
-      <view class='lutufont lutu-tel2 theme-color' hover-stop-propagation catchtap='callPhone' data-phone='{{item.phone}}'></view>
-    </view>
-  </block>
-  <ft-list-footer loaded="{{!!page}}" loading="{{loading}}" page="{{page}}" show-no-more />
-  <ft-iphone-bottom-adapter />
-  <view class='fixed-box column'>
-    <view class='btn theme-bg' bindtap='goDetail'>查看活动详情</view>
-    <ft-iphone-bottom-adapter class="bottom" />
+    </block>
   </view>
+  <ft-list-footer loaded="{{!!page}}" loading="{{loading}}" page="{{page}}" show-no-more />
+  <ft-bottom-box box-height="{{142}}">
+    <view class="btn-wrapper">
+      <view class='btn theme-linear-gradient-137' bindtap='goDetail'>查看活动详情</view>
+    </view>
+  </ft-bottom-box>
 </view>

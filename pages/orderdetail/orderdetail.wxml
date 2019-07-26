@@ -1,7 +1,7 @@
 <!--pages/orderdetail/orderdetail.wxml-->
 <ft-custom-nav title="{{navTitle}}" />
 <view class='page-orderdetail'>
-  <view class="left-time{{(countdown > 0 && countdown_text) ? ' show' : ''}}"><text>{{countdown_text}}</text></view>
+  <view class="left-time theme-bg-85{{(countdown > 0 && countdown_text) ? ' show' : ''}}" style="top:{{navWrapperHeight}}px"><text>{{countdown_text}}</text></view>
   
   <view class='row goods' bindtap='goGoodsDetail'>
     <image class='goods-cover' src="{{product.cover_url}}" mode="aspectFill"></image>
@@ -97,10 +97,10 @@
     <view class='bottom-button-height'></view>
     <ft-iphone-bottom-adapter />
     <view class='bottom-button'>
-      <view wx:if="{{order.status == 0}}" class="bottom-button-inner-height pay{{repaying ? ' disabled' : ' theme-bg'}}" catchtap="repay">
+      <view wx:if="{{order.status == 0}}" class="bottom-button-inner-height pay{{repaying ? ' disabled' : ' theme-linear-gradient-137'}}" catchtap="repay">
         <text>立即支付</text>
       </view>
-      <view wx:if="{{order.status == 1 || order.status == 2 || order.status == 3 || order.status == 5}}" class='bottom-button-inner-height ticket theme-bg' bindtap='goGoodsTicket'>
+      <view wx:if="{{order.status == 1 || order.status == 2 || order.status == 3 || order.status == 5}}" class='bottom-button-inner-height ticket theme-linear-gradient-137' bindtap='goGoodsTicket'>
         <text>查看电子票</text>
       </view>
       <ft-iphone-bottom-adapter />

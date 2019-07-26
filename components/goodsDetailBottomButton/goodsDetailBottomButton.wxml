@@ -1,0 +1,67 @@
+<!--components/orderDetailBottomButton/orderDetailBottomButton.wxml-->
+<ft-bottom-box box-height="{{102}}" bg="#FFFFFF">
+  <view class='bottom-button'>
+    <view class='line-separator-h' style="transform-origin:50% 100%;background:#D8D8D8"></view>
+    <view class='bottom-button-content'>
+      <view class="first-collect-tip{{showCollectTip ? ' show' : ''}}">
+        <view class='tip-body'>已收藏的商品，可以在我的-我的收藏中查看哦！</view>
+        <view class='tip-arrow'></view>
+      </view>
+      <view class='kefu-and-collect'>
+        <!-- 自营 -->
+        <button wx:if="{{btndata.shop && btndata.shop.nature == 1}}" open-type="contact" class='kefu' hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
+          <text class="kefu-icon lutufont lutu-kefu"></text>
+          <text class="kefu-text">客服</text>
+        </button>
+        <!-- 第三方 -->
+        <view wx:if="{{btndata.shop && btndata.shop.nature == 2}}" catchtap="makePhoneCall" data-phone="{{btndata.shop.phone}}" class='tel' hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
+          <text class="tel-icon lutufont lutu-tel3"></text>
+          <text class="tel-text">电话</text>
+        </view>
+        <view class='collect' catchtap="collectTap" hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
+          <text class="collect-icon lutufont{{collected ? ' lutu-collected theme-color' : ' lutu-collect'}}"></text>
+          <text class="collect-text">{{collected ? '已收藏' : '收藏'}}</text>
+        </view>
+      </view>
+      <block wx:if="{{btndata.sale_type == 1 || (btndata.sale_type == 3 && btndata.qg_status != 2 && btndata.qg_status != 3)}}">
+        <!-- 可报名且用户电话存在 或 不可报名 -->
+        <view class='join-btn-wrapper'>
+          <button wx:if="{{btndata.status != 1 || (btndata.status == 1 && orderContact)}}" class="join-btn{{btndata.status != 1 ? ' disabled' : ' theme-linear-gradient-h'}}" disabled="{{btndata.status != 1}}" catchtap="showShoppingView" data-saletype="1">
+            <view class='join-text' style="font-size:34rpx;line-height:46rpx">{{btndata.btnText}}</view>
+          </button>
+          <!-- 可报名且用户电话不存在 -->
+          <button wx:if="{{btndata.status == 1 && !orderContact}}" class="join-btn theme-linear-gradient-h" open-type='getPhoneNumber' bindgetphonenumber="initContact"><text class='join-text' style="font-size:34rpx;line-height:46rpx">立即报名</text></button>
+        </view>
+      </block>
+      <block wx:if="{{btndata.sale_type == 2}}">
+        <view class='join-btn-wrapper'>
+        <!-- 可报名且用户电话存在 或 不可报名 -->
+          <view class='join-btn-wrapper' style="padding-right:0" wx:if="{{btndata.status != 1 || (btndata.status == 1 && orderContact)}}">
+            <button class="join-btn single-join{{btndata.status != 1 ? ' single-join-disabled' : ' theme-bg-third'}}" style="border-top-right-radius:0;border-bottom-right-radius:0" disabled="{{btndata.status != 1}}" catchtap="showShoppingView" data-saletype="1">
+              <view class='join-price' wx:if="{{btndata.show_min_price > 0}}">¥{{btndata.show_min_price}}</view>
+              <view class='join-price' wx:if="{{btndata.show_min_price <= 0}}">免费</view>
+              <view class='join-text'>单独购买</view>
+            </button>
+            <button class="join-btn{{btndata.status != 1 ? ' disabled' : ' theme-linear-gradient-h'}}" style="border-top-left-radius:0;border-bottom-left-radius:0" disabled="{{btndata.status != 1}}" catchtap="showShoppingView" data-saletype="2">
+              <view class='join-price' wx:if="{{btndata.status == 1 && btndata.show_min_pt_price > 0}}">¥{{btndata.show_min_pt_price}}</view>
+              <view class='join-price' wx:if="{{btndata.status == 1 && btndata.show_min_pt_price <= 0}}">免费</view>
+              <view class='join-text'>发起拼团</view>
+            </button>
+          </view>
+          <!-- 可报名且用户电话不存在 -->
+          <button wx:if="{{btndata.status == 1 && !orderContact}}" class="join-btn theme-linear-gradient-h" open-type='getPhoneNumber' bindgetphonenumber="initContact"><text class='join-text' style="font-size:34rpx;line-height:46rpx">立即报名</text></button>
+        </view>
+      </block>
+      <block wx:if="{{btndata.sale_type == 3 && (btndata.qg_status == 2 || btndata.qg_status == 3)}}">
+        <!-- 可报名且用户电话存在 或 不可报名 -->
+        <view class='join-btn-wrapper'>
+          <button wx:if="{{btndata.status != 1 || (btndata.status == 1 && orderContact)}}" class="join-btn{{(btndata.status != 1 || (btndata.status == 1 && btndata.qg_status == 3)) ? ' disabled' : ' theme-linear-gradient-h'}}" disabled="{{btndata.status != 1 || (btndata.status == 1 && btndata.qg_status == 3)}}" catchtap="showShoppingView" data-saletype="3">
+            <view class='join-text' style="font-size:34rpx;line-height:46rpx">{{btndata.btnText}}</view>
+          </button>
+          <!-- 可报名且用户电话不存在 -->
+          <button wx:if="{{btndata.status == 1 && !orderContact}}" class="join-btn theme-linear-gradient-h" open-type='getPhoneNumber' bindgetphonenumber="initContact"><text class='join-text' style="font-size:34rpx;line-height:46rpx">立即抢购</text></button>
+        </view>
+      </block>
+    </view>
+  </view>
+</ft-bottom-box>

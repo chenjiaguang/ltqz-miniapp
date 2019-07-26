@@ -90,6 +90,7 @@ Page({
   fetchOrder: function (id) {
     util.request('/order/detail', {id}).then(res => {
       if (res.error == 0 && res.data) {
+        let navWrapperHeight = this.data.navWrapperHeight || 0
         res.data.ticket_text = res.data.ticket.map((item) => {
           return item.name + '×' + item.quantity
         }).join(',')
@@ -107,6 +108,15 @@ Page({
           clearInterval(this.countdownTimer)
         }
         if (res.data.remain_time) {
+          let app = getApp()
+          let systemInfo = app.globalData.systemInfo || wx.getSystemInfoSync()
+          let MenuButtonInfo = app.globalData.MenuButtonInfo || wx.getMenuButtonBoundingClientRect()
+
+          const statusBarHeight = systemInfo.statusBarHeight
+          const menuTopSpace = MenuButtonInfo.top - statusBarHeight
+          const menuHeight = MenuButtonInfo.height
+          const navBoxHeight = menuTopSpace * 2 + menuHeight // 导航胶囊上下分别留6px的间隔
+          navWrapperHeight = statusBarHeight + navBoxHeight
           countdown = res.data.remain_time
           countdown_text = '剩余支付时间' + this.secondToMinute(res.data.remain_time)
           this.countdownTimer = setInterval(this.startCountdown, 1000)
@@ -126,7 +136,8 @@ Page({
           product: product,
           order: res.data,
           traveler_infos: res.data.traveler_infos,
-          contact_info: contact_info
+          contact_info: contact_info,
+          navWrapperHeight
         })
       }
     }).catch(err => { })

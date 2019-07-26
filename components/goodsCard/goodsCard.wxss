@@ -1,0 +1,109 @@
+/* components/goodsCard/goodsCard.wxss */
+@import "../../app.wxss";
+
+.wrapper{
+  background: #FFFFFF;
+}
+.content{
+  padding: 30rpx 32rpx;
+  display: flex;
+}
+.cover{
+  display: block;
+  width: 190rpx;
+  height: 190rpx;
+  border-radius: 8rpx;
+  margin-right: 24rpx;
+}
+.right-box{
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.title{
+  font-size: 32rpx;
+  line-height: 40rpx;
+  color: #333333;
+  word-break: break-all;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+.price{
+  font-size: 30rpx;
+  line-height: 38rpx;
+  color: #999999;
+  padding-top: 10rpx;
+  display: flex;
+}
+.price-sign{
+  margin-right: 6rpx;
+}
+.flex-view{
+  flex: 1;
+}
+.fx-box{
+  padding-top: 14rpx;
+  min-height: 36rpx;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-sizing: content-box;
+}
+.fx-price-icon{
+  width: 60rpx;
+  height: 36rpx;
+  position: relative;
+  overflow: visible;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-right: 9rpx;
+  box-sizing: border-box;
+  margin-right: 20rpx;
+}
+.fx-price-icon-bg{
+  display: block;
+  font-size: 36rpx;
+  line-height: 36rpx;
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1;
+}
+.fx-price-icon-text{
+  font-size: 24rpx;
+  line-height: 24rpx;
+  color: #FFFFFF;
+  position: relative;
+  z-index: 2;
+}
+.fx-price{
+  flex: 1;
+  font-size: 36rpx;
+  line-height: 36rpx;
+  color: #F24724;
+  display: flex;
+}
+
+.fx-btn{
+  height: 36rpx;
+  padding: 0 8rpx;
+  display: flex;
+  align-items: center;
+  border-radius: 4rpx;
+}
+.share-icon{
+  font-size: 30rpx;
+  line-height: 30rpx;
+  color: #999999;
+  margin-right: 10rpx;
+}
+.share-text{
+  font-size: 30rpx;
+  line-height: 30rpx;
+  color: #999999;
+}

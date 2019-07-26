@@ -21,12 +21,15 @@
     <view class="empty-btn theme-border-color theme-color" data-id="{{item.product_id}}" catchtap='deleteItem'>删除</view>
   </view>
   <view wx:else>
-    <activity-card2 activity="{{item.data}}" top-border="{{index !== 0}}" catchactivitytap="activityTap" catchactivitytap="{{status==0?'goDetail':'clickCheck'}}" data-index='{{index}}' data-id='{{item.data.id}}'/>
+    <view class="block-separator"></view>
+    <activity-card2 activity="{{item.data}}" catchactivitytap="activityTap" catchactivitytap="{{status==0?'goDetail':'clickCheck'}}" data-index='{{index}}' data-id='{{item.data.id}}'/>
     <image wx:if="{{status==1&&!item.checked}}" class='radio-icon' mode="aspectFit" src="/assets/images/radio_0.png" catchtap='clickCheck' data-index='{{index}}'></image>
     <image wx:if="{{status==1&&item.checked}}" class='radio-icon' mode="aspectFit" src="/assets/images/radio_1.png" catchtap='clickCheck' data-index='{{index}}'></image>
   </view>
   
 </view>
-<ft-list-footer loaded="{{!!page}}" loading="{{loading}}" page="{{page}}" show-no-more />
+<ft-list-footer loaded="{{page && list && list.length}}" loading="{{loading}}" page="{{page}}" show-no-more />
+<image wx:if="{{page && list && !list.length}}" class='empty-img' src='/assets/images/empty_collection.png' />
+<text wx:if="{{page && list && !list.length}}" class='empty-text'>暂时没有您收藏的商品，快去收藏吧~</text>
 <ft-iphone-bottom-adapter />
 <view class='cancel-btn theme-bg' wx:if="{{showDelBtn}}" catchtap='deleteItem'>取消收藏</view>

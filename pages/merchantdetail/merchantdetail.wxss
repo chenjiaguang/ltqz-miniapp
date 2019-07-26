@@ -1,8 +1,8 @@
 /* pages/merchantdetail/merchantdetail.wxss */
 
-page{
+/* page{
   background: #FFFFFF;
-}
+} */
 .page-goodsdetail{
   background: #FFFFFF;
 }

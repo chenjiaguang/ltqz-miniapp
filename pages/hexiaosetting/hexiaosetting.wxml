@@ -1,12 +1,18 @@
 <!--pages/hexiaosetting/hexiaosetting.wxml-->
-<ft-custom-nav title="{{navTitle}}" bg="{{navBg}}" color="#ffffff" />
+<ft-custom-nav title="{{navTitle}}" />
+<view class="block-separator"></view>
 <view class='card column'>
-  <view class='main-box row'>
+  <view class='main-box'>
     <text class='title bold'>核销密码</text>
+    <view class="password-box row" catchtap="onFocus">
+      <view wx:for="{{codeArr}}" wx:key="*this" class="password-item">
+        <text class="password-text">{{code[index]}}</text>
+      </view>
+    </view>
     <view class='column flex1 ai-stretch'>
-      <input class='input' placeholder='请输入核销密码' maxlength='4' value="{{code}}" type='number' bindinput="codeInput"/>
+      <input class='input' placeholder='请输入核销密码' adjust-position="{{false}}" maxlength="{{maxLength}}" focus="{{focus}}" value="{{code}}" type='number' bindinput="codeInput"  bindfocus='onFocus' bindblur='onBlur' />
       <text class='tip'>须是4位数字的格式，按此方式不区分具体核销人员，只区分主办方，且各主办方核销码不一样，请根据实际使用</text>
     </view>
   </view>
-  <view class='btn theme-bg' bindtap='submit'>保存修改</view>
 </view>
+<view class='btn theme-linear-gradient-137' bindtap='submit'>保存</view>

@@ -1,6 +1,6 @@
 <!--components/goodsDetailStatus/goodsDetailStatus.wxml-->
 <!-- 普通商品 或 抢购商品（非抢购中、非抢光） -->
-<view wx:if="{{goodsStatusData.sale_type == 1 || (goodsStatusData.sale_type == 3 && goodsStatusData.qg_status != 2 && goodsStatusData.qg_status != 3)}}" class="wrapper theme-linear-gradient-170-reverse">
+<view wx:if="{{goodsStatusData.sale_type == 1 || (goodsStatusData.sale_type == 3 && goodsStatusData.qg_status != 2 && goodsStatusData.qg_status != 3)}}" class="wrapper theme-linear-gradient-secondary-h">
   <view wx:if="{{!isFree}}" class='actual-price'><text style="font-size:38rpx;padding-top:10rpx;margin-right:6rpx">¥</text><text>{{priceText}}</text><text wx:if="{{hasMore}}" class='text-qi'>起</text></view>
   <view wx:if="{{isFree}}" class='free-price'>免费</view>
   <view wx:if="{{goodsStatusData.show_min_origin_price && goodsStatusData.show_min_origin_price > 0}}" class='origin-price'>
@@ -9,7 +9,7 @@
   <view class="status{{goodsStatusData.status == 1 ? ' status-able' : ' status-other'}}">{{statusText}}</view>
 </view>
 <!-- 团购商品 -->
-<view wx:if="{{goodsStatusData.sale_type == 2}}" class="wrapper theme-linear-gradient-170-reverse">
+<view wx:if="{{goodsStatusData.sale_type == 2}}" class="wrapper theme-linear-gradient-secondary-h">
   <view wx:if="{{!isFree}}" class='actual-price'><text style="font-size:38rpx;padding-top:10rpx;margin-right:6rpx">¥</text><text>{{priceText}}</text><text wx:if="{{hasMore}}" class='text-qi'>起</text></view>
   <view wx:if="{{isFree}}" class='free-price'>免费</view>
   <view wx:if="{{goodsStatusData.show_min_origin_price && goodsStatusData.show_min_origin_price > 0}}" class='origin-price'>
@@ -19,10 +19,10 @@
   <view class="status{{goodsStatusData.status == 1 ? ' status-able' : ' status-other'}}">{{statusText}}</view>
 </view>
 <!-- 抢购商品（抢购中、已抢光） -->
-<view wx:if="{{goodsStatusData.sale_type == 3 && (goodsStatusData.qg_status == 2 || goodsStatusData.qg_status == 3)}}" class="wrapper" style="background-color:#FF3B30">
+<view wx:if="{{goodsStatusData.sale_type == 3 && (goodsStatusData.qg_status == 2 || goodsStatusData.qg_status == 3)}}" class="wrapper theme-bg-fourth">
   <view class='shadow-box'>
-    <view class='shadow2 theme-bg'></view>
-    <view class='shadow1 theme-linear-gradient-h-reverse'></view>
+    <view class='shadow2 theme-bg-secondary'></view>
+    <view class='shadow1 theme-linear-gradient-secondary-h'></view>
   </view>
   <view wx:if="{{!isFree}}" class='actual-price'><text style="font-size:38rpx;padding-top:10rpx;margin-right:6rpx">¥</text><text>{{priceText}}</text><text wx:if="{{hasMore}}" class='text-qi'>起</text></view>
   <view wx:if="{{isFree}}" class='free-price'>免费</view>
@@ -31,11 +31,11 @@
     <text>¥{{goodsStatusData.show_min_origin_price}}</text>
   </view>
   <view wx:if="{{remainTimeText && !timeout}}" class="count-down-box">
-    <view class="count-down-text">距结束还剩</view>
-    <view class="count-down-text">{{remainTimeText}}</view>
+    <view class="count-down-text theme-color">距结束还剩</view>
+    <view class="count-down-text theme-color">{{remainTimeText}}</view>
   </view>
   <view wx:elif="{{timeout}}" class="count-down-box">
-    <view class="count-down-text">抢购已结束</view>
+    <view class="count-down-text theme-color">抢购已结束</view>
   </view>
 </view>
     

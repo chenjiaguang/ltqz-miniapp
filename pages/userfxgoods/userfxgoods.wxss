@@ -1,0 +1,17 @@
+/* pages/userfxgoods/userfxgoods.wxss */
+.empty-box{
+  overflow: hidden;
+}
+.empty-image{
+  width: 230rpx;
+  height: 230rpx;
+  display: block;
+  margin: 230rpx auto 0;
+}
+.empty-tip{
+  font-size: 26rpx;
+  line-height: 38rpx;
+  padding-top: 48rpx;
+  color: #999;
+  text-align: center;
+}

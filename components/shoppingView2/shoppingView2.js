@@ -111,8 +111,15 @@ Component({
     },
     subSessionTap: function (e) {
       const { idx } = e.currentTarget.dataset
-      const { showSession, currentSession, currentSubSession, saletype } = this.data
+      const { showSession, currentSession, currentSubSession, saletype, remainCount } = this.data
       if (currentSubSession[saletype] === idx) { // 点击的是当前的规格
+        return false
+      }
+      if (saletype == 3 && remainCount == 0) { // 抢购模式 且 抢购剩余为0
+        wx.showToast({
+          title: '您已经达到限购上限了，留点给其他用户吧~',
+          icon: 'none'
+        })
         return false
       }
       this.initSession(showSession, saletype, currentSession[saletype], idx)

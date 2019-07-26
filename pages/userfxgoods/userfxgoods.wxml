@@ -1,0 +1,10 @@
+<!--pages/userfxgoods/userfxgoods.wxml-->
+<ft-custom-nav title="{{navTitle}}" />
+<ft-list-loader visible="{{!page || !page.pn}}" />
+<goods-card wx:for="{{list}}" wx:key="id" goods="{{item}}" bindgoodstap="goodsTap" bindshare="shareGoods" />
+<view wx:if="{{loaded && (!list || !list[0])}}" class='empty-box'>
+  <image class='empty-image' src="/assets/images/fenxiao_empty.png" mode="aspectFit"></image>
+  <view class='empty-tip'>暂时没有分销商品，快去分享吧~</view>
+</view>
+<ft-list-footer loaded="{{loaded}}" loading="{{loading}}" page="{{page}}" show-no-more="{{list && list[0]}}" />
+<draw-poster id="c-draw-poster" />

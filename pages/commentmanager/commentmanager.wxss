@@ -1,7 +1,7 @@
 /* pages/commentmanager/commentmanager.wxss */
 page {
   height: 100%;
-  background-color: #fff !important;
+  /* background-color: #fff !important; */
   display: flex;
   flex-direction: column;
 }

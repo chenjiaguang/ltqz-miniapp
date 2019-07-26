@@ -1,8 +1,8 @@
 /* pages/selectuser/selectuser.wxss */
 
 .card {
-  padding-top: 24rpx;
-  padding-bottom: 24rpx;
+  padding: 24rpx 30rpx 24rpx 44rpx;
+  margin: 0;
 }
 
 .head {

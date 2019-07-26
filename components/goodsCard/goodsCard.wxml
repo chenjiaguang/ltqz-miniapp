@@ -1,0 +1,32 @@
+<!--components/goodsCard/goodsCard.wxml-->
+<view class="wrapper" catchtap="boxTap" hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
+  <view wx:if="{{topBorder}}" class="line-separator"></view>
+  <view class="content">
+    <image class="cover" src="{{goods.product_cover_url || goods.cover_url}}" mode="aspectFill" />
+    <view class="right-box">
+      <view class="title">{{goods.title}}</view>
+      <view class="price">
+        <view wx:if="{{!isFree}}" class="price-sign">¥</view>
+        <view class='actual-price'>{{priceText}}</view>
+        <view wx:if="{{hasMore}}" class='actual-price-qi'>起</view>
+      </view>
+      <view class="flex-view"></view>
+      <view class="fx-box">
+        <view class="fx-price-icon">
+          <text class="fx-price-icon-bg lutufont lutu-tag theme-color"></text>
+          <text class="fx-price-icon-text">赚</text>
+        </view>
+        <view class="fx-price">
+          <view wx:if="{{goods.fenxiao_price && goods.fenxiao_price !== '0'}}" class="fx-price-sign">¥</view>
+          <view class='fx-price-num'>{{goods.fenxiao_price}}</view>
+        </view>
+        <view class="fx-btn" catchtap="shareTap" hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
+          <text class="share-icon lutufont lutu-share2"></text>
+          <text class="share-text">分享赚</text>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view wx:if="{{bottomBorder}}" class="line-separator"></view>
+</view>
+  

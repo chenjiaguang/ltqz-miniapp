@@ -1,10 +1,6 @@
 // pages/mine/mine.js
 const util = require('../../utils/util.js')
-const app = getApp()
-let themeColor = '#FFFFFF'
-if (app) {
-  themeColor = app.globalData.themeColor
-}
+
 Page({
   name: "mine",
   /**
@@ -12,25 +8,39 @@ Page({
    */
   data: {
     navTitle: '我的',
-    navBg: themeColor || '#FFFFFF',
     user: null,
+    levelText: {
+      1: '初级合伙人',
+      2: '中级合伙人',
+      3: '高级合伙人'
+    },
     fx_apply_entrance: false,
     be_partner_entrance: {
-      title: '成为合伙人',
+      icon: 'lutufont lutu-apply',
+      title: '申请成为合伙人',
       path: '/pages/bepartner/bepartner'
     },
+    userfxgoods_entrance: {
+      icon: 'lutufont lutu-fenxiao2',
+      title: '推广商品',
+      path: '/pages/userfxgoods/userfxgoods'
+    },
     assistant_entrance: {
+      icon: 'lutufont lutu-assistant',
       title: '商家助手',
       path: '/pages/selectuser/selectuser'
     },
     other_entrances: [{
+        icon: 'lutufont lutu-collection',
         title: '我的收藏',
         path: '/pages/collection/collection'
       }, {
+        icon: 'lutufont lutu-usuallyinfo',
         title: '常用信息',
         path: '/pages/usuallycontacts/usuallycontacts'
       },
       {
+        icon: 'lutufont lutu-kefu',
         title: '联系客服',
         path: '',
         phone: '400-4504-2626'

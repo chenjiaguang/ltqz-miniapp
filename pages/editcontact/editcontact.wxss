@@ -1,8 +1,8 @@
 /* pages/editcontact/editcontact.wxss */
 
-page {
+/* page {
   background: #f5f5f5;
-}
+} */
 .red{
   color: #FF3B30;
 }
@@ -11,7 +11,8 @@ page {
 }
 
 .info-box {
-  margin-bottom: 60rpx;
+  margin: 0;
+  padding: 0 40rpx;
 }
 
 .info-item {
@@ -65,13 +66,13 @@ page {
 }
 
 .btn {
-  margin-left: 4%;
-  margin-right: 4%;
+  width: 580rpx;
   text-align: center;
   height: 82rpx;
   line-height: 82rpx;
   border-radius: 41rpx;
   box-sizing: border-box;
+  margin: 44rpx auto 0;
 }
 
 .save-btn {
@@ -86,8 +87,8 @@ page {
 }
 
 .del-btn {
-  margin-top: 24rpx;
   border: 2rpx solid;
+  margin-top: 24rpx;
 }
 
 .save-btn.disabled {
@@ -96,6 +97,6 @@ page {
 }
 
 .line-separator-h {
-  margin-right: -30rpx;
+  margin-right: -40rpx;
   width: unset;
 }

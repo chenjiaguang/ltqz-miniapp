@@ -2,11 +2,15 @@
 @import "../../app.wxss";
 
 .wrapper {
+  margin: 0;
+  border-radius: 0;
+  padding: 0;
 }
 
 .head {
   height: 88rpx;
   font-size: 30rpx;
+  padding: 0 32rpx;
 }
 
 /* .state0 {
@@ -19,9 +23,6 @@
 .state-red{
   color: #f24724;
 }
-.state-orange{
-  color: #FF9500;
-}
 .state1 {
   color: #f24724;
 }
@@ -31,11 +32,12 @@
 }
 
 .line-separator-h {
-  margin-right: -30rpx;
+  /* margin-right: -30rpx; */
   width: unset;
 }
 
 .foot {
+  padding: 0 32rpx;
   height: 95rpx;
 }
 
@@ -62,10 +64,11 @@
 
 .btn-pay {
   color: #fff;
-  background-color: #ff9500;
 }
 
 .btn-comment {
   color: #fff;
-  background-color: #ff9500;
+}
+.content-wrapper{
+  padding: 0 32rpx;
 }

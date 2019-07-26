@@ -17,7 +17,7 @@ Component({
   properties: {
     title: {
       type: String,
-      value: '范团精选'
+      value: '范团亲子'
     },
     fixed: {
       type: Boolean,
@@ -44,6 +44,10 @@ Component({
     bg: {
       type: String,
       value: '#ffffff'
+    },
+    fixedAdapterBg: {
+      type: String,
+      value: 'transparent'
     },
     hideDist: {
       type: String,

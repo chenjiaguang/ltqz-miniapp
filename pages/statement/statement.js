@@ -11,7 +11,8 @@ Page({
     typeTitle: {
       1: '用户须知',
       2: '免责声明',
-      3: '拼团规则'
+      3: '拼团规则',
+      4: '常见问题'
     },
     content: ''
   },
@@ -19,7 +20,7 @@ Page({
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function (options) { // option.type(1:用户须知，2:免责声明)
+  onLoad: function (options) { // option.type(1:用户须知，2:免责声明，3:拼团规则，4:分销常见问题)
     const title = this.data.typeTitle[options.type]
     wx.setNavigationBarTitle({
       title: title || ''
@@ -83,7 +84,8 @@ Page({
     const urlMap = {
       1: '/article/agreement',
       2: '/article/disclaimer',
-      3: '/article/pt_rule'
+      3: '/article/pt_rule',
+      4: '/article/fx_faq'
     }
     const url = urlMap[type]
     util.request(url).then(res => {

@@ -1,26 +1,30 @@
 <!--pages/mine/mine.wxml-->
-<ft-custom-nav title="{{navTitle}}" bg="{{navBg}}" color="#ffffff" />
+<ft-custom-nav title="{{navTitle}}" />
 <view class='page-mine'>
-  <view class='user-info theme-bg row center' catchtap="goUserInfo">
+  <view class='user-info row center' catchtap="goUserInfo">
     <image class="avatar" src="{{user.avatar}}" />
     <view class='user-intro'>
       <view class='user-name-box'>
         <text class='user-name'>{{user.nick_name}}</text>
       </view>
-      <view class='user-tag-box row' wx:if="{{user.sex>0}}">
-        <text class='user-tag' wx:if="{{user.sex==1}}">潮爸</text>
-        <text class='user-tag' wx:if="{{user.sex==2}}">辣妈</text>
+      <view wx:if="{{user && user.fenxiao && user.fenxiao.user_level}}" class='user-tag-box row'>
+        <text class='user-tag'>{{levelText[user.fenxiao.user_level]}}</text>
       </view>
     </view>
     <text class="lutufont lutu-next2"></text>
   </view>
+  <view class="block-separator"></view>
   <view class='other-list'>
     <view class='card order-box'>
       <view class='order-header'>
+        <text class="order-header-icon lutufont lutu-order"></text>
         <text class='title'>我的订单</text>
-        <text catchtap="goOrder" data-type="0" class='view-detail'>查看全部订单<text class="lutufont lutu-next2"></text></text>
+        <view catchtap="goOrder" data-type="0" class='view-detail'>
+          <text>查看全部订单</text>
+          <text class="order-header-next lutufont lutu-next2"></text>
+        </view>
       </view>
-      <view class='line-separator-h'></view>
+      <view class='line-separator-h' style="margin:0 0 0 32rpx"></view>
       <view class='order-type'>
         <view class='type-item' catchtap="goOrder" data-type='1' hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
           <view class='order-type-icon-box'>
@@ -53,10 +57,14 @@
       </view>
     </view>
     <view wx:if="{{user.fenxiao}}" class='card profit-box'>
+      <view class="block-separator"></view>
       <view class='profit-header'>
+        <text class="profit-header-icon lutufont lutu-fenxiao"></text>
         <text class='title'>推广收益<text class='unit'> (元)</text></text>
-        <text catchtap="goProfit" data-type="0" class='view-detail'>查看详情<text class="lutufont lutu-next2"></text></text>
-
+        <view catchtap="goProfit" data-type="0" class='view-detail'>
+          <text>查看详情</text>
+          <text class="profit-header-next lutufont lutu-next2"></text>
+        </view>
       </view>
       <view class='profit-sum bold'>
         <text>￥</text>
@@ -79,16 +87,28 @@
           <view class='profit-overview-amount bold'>{{user.fenxiao.can_remit}}</view>
         </view>
       </view>
+      <view class='line-separator-h'></view>
+      <ft-entrance title="{{userfxgoods_entrance.title}}" spacing="0 32rpx 0 24rpx" extra-data="{{userfxgoods_entrance}}" catchtap="entranceTap">
+        <view slot="icon" class="entrance-icon {{userfxgoods_entrance.icon}}"></view>
+      </ft-entrance>
     </view>
-    <view wx:if="{{user&&!user.fenxiao&&fx_apply_entrance}}" class='card-nopadding be-partner'>
-      <ft-entrance title="{{be_partner_entrance.title}}" extra-data="{{be_partner_entrance}}" catchtap="entranceTap" />
+    <view wx:if="{{user && !user.fenxiao && fx_apply_entrance}}" class='card be-partner'>
+      <view class="block-separator"></view>
+      <ft-entrance title="{{be_partner_entrance.title}}" spacing="0 32rpx 0 24rpx" extra-data="{{be_partner_entrance}}" catchtap="entranceTap">
+        <view slot="icon" class="entrance-icon {{be_partner_entrance.icon}}"></view>
+      </ft-entrance>
     </view>
-    <view wx:if="{{user&&user.shop&&user.shop.length}}" class='card-nopadding business-entrance'>
-      <ft-entrance title="{{assistant_entrance.title}}" extra-data="{{assistant_entrance}}" catchtap="entranceTap" />
+    <view wx:if="{{user && user.shop && user.shop.length}}" class='card business-entrance'>
+      <view class="block-separator"></view>
+      <ft-entrance title="{{assistant_entrance.title}}" spacing="0 32rpx 0 24rpx" extra-data="{{assistant_entrance}}" catchtap="entranceTap">
+        <view slot="icon" class="entrance-icon {{assistant_entrance.icon}}"></view>
+      </ft-entrance>
     </view>
-    <view class='card-nopadding other-entrances'>
-      <ft-entrance wx:for="{{other_entrances}}" wx:for-index="idx" wx:for-item="entrance" wx:key="title" title="{{entrance.title}}" top-border="{{idx !== 0}}" extra-data="{{entrance}}" catchtap="entranceTap" subTitle="{{entrance.phone}}" nextIcon="{{!entrance.phone}}"
-      />
+    <view class='card other-entrances'>
+      <view class="block-separator"></view>
+      <ft-entrance wx:for="{{other_entrances}}" wx:for-index="idx" wx:for-item="entrance" wx:key="title" title="{{entrance.title}}" top-border="{{idx !== 0}}" spacing="0 32rpx 0 24rpx" border-margin="0 0 0 30rpx" extra-data="{{entrance}}" catchtap="entranceTap" subTitle="{{entrance.phone}}" nextIcon="{{!entrance.phone}}">
+        <view slot="icon" class="entrance-icon {{entrance.icon}}"></view>
+      </ft-entrance>
     </view>
   </view>
 </view>

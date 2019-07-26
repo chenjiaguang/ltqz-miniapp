@@ -1,36 +1,70 @@
 .theme-bg{
-  background-color: #FF5650 !important;
+  background-color: #FF2266 !important;
 }
 .theme-bg-secondary{
-  background-color: #FF8641 !important;
+  background-color: #DB88F1 !important;
+}
+.theme-bg-third{
+  background-color: #333333 !important;
+}
+.theme-bg-fourth{
+  background-color: #FFEAFB !important;
+}
+.theme-bg-fifth{
+  background-color: #FFF2F6 !important;
 }
 .theme-bg-10{
-  background-color: rgba(255,86,80, 0.1) !important;
+  background-color: rgba(255, 34, 102, 0.1) !important;
 }
 .theme-bg-20{
-  background-color: rgba(255,86,80, 0.2) !important;
+  background-color: rgba(255, 34, 102, 0.2) !important;
+}
+.theme-bg-50{
+  background-color: rgba(255, 34, 102, 0.5) !important;
 }
 .theme-bg-65{
-  background-color: rgba(255,86,80, 0.65) !important;
+  background-color: rgba(255, 34, 102, 0.65) !important;
 }
 .theme-bg-85{
-  background-color: rgba(255,86,80, 0.85) !important;
+  background-color: rgba(255, 34, 102, 0.85) !important;
 }
 .theme-color{
-  color: #FF5650 !important;
+  color: #FF2266 !important;
 }
 .theme-star-bg{
-  background-color: #FF5650 !important;
+  background-color: #FF2266 !important;
 }
 .theme-star-color{
-  color: #FF5650 !important;
+  color: #FF2266 !important;
 }
 .theme-border-color{
-  border-color: #FF5650 !important;
+  border-color: #FF2266 !important;
 }
 .theme-linear-gradient-h{
-  background-image: linear-gradient(to right, #FFFFFF, #FF5650) !important;
+  background-image: linear-gradient(to right, #FF5433, #FF2266) !important;
+}
+.theme-linear-gradient-secondary-h{
+  background-image: linear-gradient(to right, #F60493, #CD57EB) !important;
+}
+.theme-linear-gradient-h-reverse{
+  background-image: linear-gradient(to right, #FF2266, #FF5433) !important;
 }
 .theme-linear-gradient-v{
-  background-image: linear-gradient(to bottom, #FFFFFF, #FF5650) !important;
+  background-image: linear-gradient(to bottom, #FF5433, #FF2266) !important;
+}
+/* 170deg的渐变 */
+.theme-linear-gradient-170{
+  background-image: linear-gradient(170deg, #FF5433, #FF2266) !important;
+}
+/* 170deg的反向渐变 */
+.theme-linear-gradient-170-reverse{
+  background-image: linear-gradient(170deg, #FF2266, #FF5433) !important;
+}
+/* 137deg的渐变 */
+.theme-linear-gradient-137{
+  background-image: linear-gradient(137deg, #FF5433, #FF2266) !important;
+}
+/* 137deg的反向渐变 */
+.theme-linear-gradient-137-reverse{
+  background-image: linear-gradient(137deg, #FF2266, #FF5433) !important;
 }

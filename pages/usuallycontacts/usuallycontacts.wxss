@@ -1,5 +1,6 @@
 .add-box{
-  border-radius: 12rpx;
+  border-radius: 0;
+  margin: 0;
 }
 
 .lutu-add2 {
@@ -47,6 +48,5 @@
 }
 
 .contacts-card{
-  margin-top: 16rpx;
   background: #FFFFFF;
 }

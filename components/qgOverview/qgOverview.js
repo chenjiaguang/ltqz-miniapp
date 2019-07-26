@@ -50,11 +50,10 @@ Component({
       if (!data || !data.qg_btime) {
         return false
       }
-      if (data.remain_qg && data.remain_qg > 0) {
+      if (data.start_qg && data.start_qg > 0) {
         const remind_min = 15
         const remind_second = remind_min * 60
-        const time = (data.remain_qg - remind_second) * 1000
-        console.log('time', time)
+        const time = (data.start_qg - remind_second) * 1000
         if (time > 0) {
           this.remindAble = true
           if (this.timer) {
@@ -82,11 +81,11 @@ Component({
       })
     },
     remindTap: function (e) {
-      const {goodsStatusData: {remain_qg}, remindRequesting, qgRemind} = this.data
+      const {goodsStatusData: {start_qg}, remindRequesting, qgRemind} = this.data
       if (remindRequesting) {
         return false
       }
-      if (remain_qg && remain_qg > 0 && !qgRemind && this.remindAble) { // 未设置提醒 且 距开始抢购不足15分钟
+      if (start_qg && start_qg > 0 && !qgRemind && !this.remindAble) { // 未设置提醒 且 距开始抢购不足15分钟
         wx.showToast({
           title: '距开抢不足15分钟了，准备开抢吧~',
           icon: 'none',

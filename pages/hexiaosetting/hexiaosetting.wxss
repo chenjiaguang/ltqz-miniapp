@@ -1,5 +1,13 @@
 /* pages/hexiaosetting/hexiaosetting.wxss */
+.card{
+  margin: 0;
+  padding: 0 88rpx;
+  border-radius: 0;
+}
 .main-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   margin-top: 42rpx;
   margin-bottom: 60rpx;
 }
@@ -11,12 +19,22 @@
 }
 
 .input {
-  height: 54rpx;
+  /* height: 54rpx;
   border-radius: 8rpx;
   border: 1rpx solid #D8D8D8;
   margin-bottom: 27rpx;
   padding-left: 14rpx;
-  font-size: 28rpx;
+  font-size: 28rpx; */
+  position: fixed;
+  width: 0;
+  height: 0;
+  margin: 0;
+  padding: 0;
+  left: -100%;
+  top: 0;
+  z-index: -1;
+  visibility: hidden;
+  opacity: 0;
 }
 
 .input-placeholder {
@@ -26,15 +44,37 @@
 .tip {
   font-size: 24rpx;
   color: #999;
+  margin-top: 44rpx;
 }
 
 .btn {
+  width: 580rpx;
   height: 82rpx;
   background-color: #64b631;
   font-size: 36rpx;
-  border-radius: 8rpx;
+  border-radius: 41rpx;
   color: #fff;
   text-align: center;
   line-height: 82rpx;
-  margin-bottom: 60rpx;
+  margin: 30rpx auto 0;
+}
+
+.password-box{
+  overflow: hidden;
+  margin-top: 34rpx;
+}
+.password-item{
+  width: 80rpx;
+  height: 80rpx;
+  box-sizing: border-box;
+  border: 1px solid #D8D8D8;
+  border-radius: 4rpx;
+  font-size: 42rpx;
+  line-height: 42rpx;
+  color: #333333;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10rpx 19rpx;
 }

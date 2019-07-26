@@ -1,7 +1,8 @@
 <!--pages/userprofit/userprofit.wxml-->
-<ft-custom-nav title="{{navTitle}}" bg="{{navBg}}" color="#ffffff" />
+<ft-custom-nav title="{{navTitle}}" />
 <view class='page-userprofit column ai-stretch'>
-  <view class='top-bg-box theme-bg'></view>
+  <view class="block-separator"></view>
+  <!-- <view class='top-bg-box theme-bg'></view> -->
   <view class='main-box'>
     <view class='card overview-box'>
       <view class='all-profit column ai-center'>
@@ -9,7 +10,7 @@
           <text>总收益</text>
           <text class='unit'> (元)</text>
         </view>
-        <view class='money bold'>{{total}}</view>
+        <view class='money bold'>{{total || 0}}</view>
         <view class='line-separator-h'></view>
         <view class='shortcut-box'>
           <view class='shortcut-item'>
@@ -17,14 +18,14 @@
               <text>已解冻收益</text>
               <text class='unit'> (元)</text>
             </view>
-            <view class='shortcut-amount bold'>{{unfreeze_remit}}</view>
+            <view class='shortcut-amount bold'>{{unfreeze_remit || 0}}</view>
           </view>
           <view class='shortcut-item'>
             <view class='shortcut-header'>
               <text>待解冻收益</text>
               <text class='unit'> (元)</text>
             </view>
-            <view class='shortcut-amount bold'>{{freeze_remit}}</view>
+            <view class='shortcut-amount bold'>{{freeze_remit || 0}}</view>
           </view>
         </view>
       </view>

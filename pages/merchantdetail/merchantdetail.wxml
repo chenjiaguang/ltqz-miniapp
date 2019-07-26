@@ -27,7 +27,7 @@
   <view class='block-separator'></view>
   <view class='activity-box'>
     <view class='activity-header'>
-      <text>全部活动{{(page && page.total && page.total > 0) ? ('(' + page.total + ')') : ''}}</text>
+      <text>全部活动{{(activityPage && activityPage.total && activityPage.total > 0) ? ('(' + activityPage.total + ')') : ''}}</text>
     </view>
     <view class='line-separator-h'></view>
     <ft-list-loader visible="{{!activityLoaded}}" />

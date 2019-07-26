@@ -1,6 +1,7 @@
 <!--pages/businessassistant/businessassistant.wxml-->
-<ft-custom-nav title="{{navTitle}}" bg="{{navBg}}" color="#ffffff" />
+<ft-custom-nav title="{{navTitle}}" />
 <view class='page-businessassistant'>
+  <view class="block-separator"></view>
   <view class='card overview'>
     <view class='overview-top'>
       <image class='business-avatar' mode="aspectFill" src="{{data.logo_url}}"></image>
@@ -9,7 +10,7 @@
         <view class='business-intro'>{{data.introduce}}</view>
       </view>
     </view>
-    <view class='line-separator-h'></view>
+    <!-- <view class='line-separator-h'></view> -->
     <view class='overview-bottom row center'>
       <view class='overview-bottom-item'>
         <view class='overview-bottom-header'>
@@ -26,18 +27,21 @@
       </view>
     </view>
   </view>
+  <view class="block-separator"></view>
   <view class='hexiao-box row'>
     <view class='hexiao-btn row center' catchtap="scanHexiaoCode" hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
-      <text class='lutufont lutu-scan'></text>
+      <text class='lutufont lutu-scan2 theme-color'></text>
     </view>
     <view class='hexiao-set-entrance'>
-      <ft-entrance title="{{data.hx_code?hexiao_entrance.title + data.hx_code:'去设置自助核销码'}}" extra-data="{{hexiao_entrance}}" catchtap="entranceTapHx" />
+      <ft-entrance height="96rpx" title="{{data.hx_code?hexiao_entrance.title + data.hx_code:'去设置自助核销码'}}" extra-data="{{hexiao_entrance}}" catchtap="entranceTapHx" />
     </view>
   </view>
-  <view class='card-nopadding other-entrance-box'>
-    <ft-entrance title="{{other_entrances[0].title}}" top-border="{{false}}" extra-data="{{other_entrances[0]}}" catchtap="entranceTap" />
-    <ft-entrance title="{{other_entrances[1].title}}" top-border="{{true}}" extra-data="{{other_entrances[1]}}" catchtap="entranceTap">
-      <ft-star-box size="{{30}}" score="{{data.rate}}"/>
+  <view class="block-separator"></view>
+  <view class='card other-entrance-box'>
+    <ft-entrance height="96rpx" title="{{other_entrances[0].title}}" extra-data="{{other_entrances[0]}}" catchtap="entranceTap" />
+    <view class="block-separator"></view>
+    <ft-entrance height="96rpx" title="{{other_entrances[1].title}}" extra-data="{{other_entrances[1]}}" catchtap="entranceTap">
+      <ft-star-box slot="content" size="{{30}}" score="{{data.rate}}"/>
     </ft-entrance>
   </view>
 </view>

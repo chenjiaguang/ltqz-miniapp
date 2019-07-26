@@ -1,7 +1,7 @@
 /**index.wxss**/
 
 page{
-  /* background: #FFFFFF !important; */
+  background: #F5F5F5;
 }
 .page-index{
   background: #FFFFFF;

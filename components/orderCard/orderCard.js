@@ -32,10 +32,10 @@ Component({
       '-2': 'state-normal',
       '-1': 'state-normal',
       '0': 'state-red',
-      '1': 'state-orange',
+      '1': 'theme-color',
       '2': 'state-normal',
       '3': 'state-normal',
-      '4': 'state-orange',
+      '4': 'theme-color',
       '5': 'state-normal'
     }
   },

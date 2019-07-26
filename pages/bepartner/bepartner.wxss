@@ -21,10 +21,10 @@
   line-height: 80rpx;
 }
 
-.line-separator-h {
+/* .line-separator-h {
   margin-right: -30rpx;
   width: unset;
-}
+} */
 
 .btn {
   height: 82rpx;
@@ -74,4 +74,135 @@
   margin-right: 4%;
   margin-top: 32rpx;
   margin-bottom: 32rpx;
+}
+
+
+.page-bepartner{
+  overflow: hidden;
+}
+.banner{
+  border-radius: 8rpx;
+  display: block;
+  width: 698rpx;
+  height: 330rpx;
+  margin: 26rpx auto 0;
+}
+.condition-box{
+  margin: 20rpx 26rpx 0;
+  border-radius: 8rpx;
+  background: #FFFFFF;
+}
+.condition-header{
+  padding: 13rpx 32rpx;
+  font-size: 32rpx;
+  line-height: 44rpx;
+  color: #333333;
+  font-weight: bold;
+}
+.condition-content{
+  padding: 20rpx 0;
+}
+.condition-item{
+  padding: 0 32rpx;
+  display: flex;
+}
+.condition-text{
+  font-size: 30rpx;
+  line-height: 42rpx;
+  word-break: break-all;
+}
+.condition-icon{
+  font-size: 30rpx;
+  line-height: 42rpx;
+  margin-left: 14rpx;
+}
+.condition-icon.lutu-duihao{
+  color: #5BB63F;
+}
+.condition-icon.lutu-chahao{
+  color: #FF1468;
+}
+.statement-wrapper{
+  padding: 5rpx 0;
+  margin: 20rpx 26rpx 12rpx;
+  border-radius: 8rpx;
+  background: #FFFFFF;
+}
+.statement-box{
+  padding: 30rpx 0 20rpx;
+}
+.statement-header{
+  padding: 0 32rpx 20rpx;
+  font-size: 30rpx;
+  line-height: 38rpx;
+  text-align: center;
+}
+.statement-content{
+  padding: 0 32rpx;
+  font-size: 28rpx;
+  line-height: 36rpx;
+  color: #333;
+}
+
+.apply-btn-wrapper{
+  height: 142rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.apply-btn{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 580rpx;
+  height: 82rpx;
+  font-size: 32rpx;
+  line-height: 44rpx;
+  border-radius: 41rpx;
+  color: #FFFFFF;
+}
+.apply-btn.disabled{
+  background: #D8D8D8;
+}
+
+.apply-modal{
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.apply-box{
+  border-radius: 4rpx;
+  background: #FFFFFF;
+  width: 540rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+}
+
+.confirm-btn{
+  width: 480rpx;
+  height: 82rpx;
+  border-radius: 41rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 32rpx;
+  line-height: 44rpx;
+  color: #FFFFFF;
+  margin: 26rpx 0;
+}
+.confirm-btn.disabled{
+  background: #D8D8D8;
+}
+.apply-box-title{
+  font-size: 36rpx;
+  line-height: 94rpx;
+  text-align: center;
+}
+.card{
+  margin: 0;
+  width: 100%;
+  box-sizing: border-box;
 }

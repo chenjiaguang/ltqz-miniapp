@@ -39,9 +39,9 @@ Component({
       type: String,
       value: '308rpx'
     },
-    indicatorPos: {
+    indicatorType: { // 1:微信默认的样式|2:页码样式
       type: String,
-      value: 'in'
+      value: 1
     },
     indicatorColor: {
       type: String,
@@ -78,7 +78,8 @@ Component({
    */
   data: {
     marginCurrent: 0,
-    current: 0
+    current: 0,
+    indicatorCurrent: 0
   },
 
   ready: function () {
@@ -101,6 +102,7 @@ Component({
         })
       }
       this.setData({
+        indicatorCurrent: e.detail.current,
         marginCurrent: e.detail.current
       })
     },

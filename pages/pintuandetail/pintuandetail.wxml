@@ -38,7 +38,7 @@
       <view wx:if="{{is_join && status == 1}}" class='button-box'>
         <view class="share-pentyouquan{{sharing ? ' disabled' : ''}}" catchtap="savePoster">
           <text class='lutufont lutu-pengyouquan'></text>
-          <text>保存海报</text>
+          <text>分享到朋友圈</text>
         </view>
         <button open-type='share' class="share-weixinhaoyou{{!canShareFriend ? ' disabled' : ''}}" disabled="{{!canShareFriend}}">
           <text class='lutufont lutu-weixin'></text>
@@ -104,4 +104,4 @@
 <view class='line-separator-h'></view>
 <draw-poster id="c-draw-poster" catchstatuschange="drawPosterChange" hide-component />
 <shopping-view wx:if="{{product.status == 1 && product.session && product.session.length > 0 && type == 1}}" id="c-shopping-view" remain-count="{{person_remain_count}}" session="{{product.session}}" timestamp="{{pintuanTimestamp}}" catchnextstep="nextTap" />
-<shopping-view wx:if="{{product.status == 1 && product.session && product.session.length > 0 && type == 2}}" id="c-shopping-view" remain-count="{{person_remain_count}}" session="{{product.session}}" timestamp="{{pintuanTimestamp}}" catchnextstep="nextTap" />
+<shopping-view2 wx:if="{{product.status == 1 && product.session && product.session.length > 0 && type == 2}}" id="c-shopping-view" remain-count="{{person_remain_count}}" session="{{product.session}}" timestamp="{{pintuanTimestamp}}" catchnextstep="nextTap" />

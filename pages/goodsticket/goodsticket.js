@@ -109,7 +109,9 @@ Page({
       submitting: true
     })
     util.request('/order/consume', rData).then(res => {
-      if (res.error == 0 && res.data) { // 请求接口成功
+      console.log('/order/consume', res)
+      if (res.error == 0) { // 请求接口成功
+        console.log('success')
         wx.showToast({
           title: '核销成功',
           icon: 'none'
@@ -124,16 +126,31 @@ Page({
         this.updateOrder(this.options.id)
         ctx.close()
       } else {
+        if (res.error == 1) { // 核销码错误，则仅仅清除以输入等核销码
+          ctx.clearCode()
+        } else { // 否则关闭核销弹窗
+          ctx.close()
+        }
         if (res.msg) {
           wx.showToast({
             title: res.msg,
-            icon: 'none'
+            icon: 'none',
+            duration: 3000
           })
         }
       }
     }).catch(err => {
-      if (err.error == 1) {
+      if (err.error == 1) { // 核销码错误，则仅仅清除以输入等核销码
         ctx.clearCode()
+      } else { // 否则关闭核销弹窗
+        ctx.close()
+      }
+      if (err.msg) {
+        wx.showToast({
+          title: err.msg,
+          icon: 'none',
+          duration: 3000
+        })
       }
     }).finally(res => {
       this.setData({

@@ -1,6 +1,6 @@
 <!--index.wxml-->
 <ft-pull-to-refresh wx:if="{{pageFetched}}" refreshing="{{refreshing}}" refreshed="{{refreshed}}" bindrefresh="onPullDownRefresh">
-  <ft-custom-nav slot="header" hideDist="{{(banners && banners[0] ? 422 : 0) + (subBanners && subBanners[0] ? 180 : 0)}}rpx" fixed="{{(banners && banners[0]) || (subBanners && subBanners[0])}}" />
+  <ft-custom-nav slot="header" />
   <view slot="body" class="page-index">
   <view wx:if="{{(banners && banners[0]) || (subBanners && subBanners[0])}}" class='banner-wrapper'>
     <ft-banners wx:if="{{banners && banners[0]}}" banners="{{banners}}" height="422rpx" spacing="{{0}}" border-radius="0" indicator-color="rgba(0,0,0,0.5)" indicator-currunt-color="rgba(0,0,0,1)" previous-margin="{{0}}" next-margin="{{0}}" catchtap="bannerTap" />

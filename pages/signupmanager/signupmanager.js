@@ -1,10 +1,5 @@
 // pages/signupmanager/signupmanager.js
 const util = require('../../utils/util.js')
-const app = getApp()
-let themeColor = '#FFFFFF'
-if (app) {
-  themeColor = app.globalData.themeColor
-}
 
 Page({
 
@@ -13,7 +8,6 @@ Page({
    */
   data: {
     navTitle: '报名详情',
-    navBg: themeColor || '#FFFFFF',
     genderText: {
       0: '保密',
       1: '男',

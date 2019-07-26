@@ -55,7 +55,6 @@
   z-index: 1;
   transform: translateY(-100%);
   transition: transform 300ms;
-  background-color: rgba(100,182,49,0.85);
 }
 
 .left-time.show{
@@ -119,8 +118,9 @@
   height: 126rpx;
 }
 .bottom-button-inner-height{
+  width: 580rpx;
   height: 82rpx;
-  margin: 14rpx 32rpx 30rpx;
+  margin: 14rpx auto 30rpx;
   font-size: 32rpx;
   color: #fff;
   display: flex;

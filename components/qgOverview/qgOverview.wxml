@@ -2,7 +2,7 @@
 <view class="wrapper">
   <view class="block-separator"></view>
   <view class="box" hover-class="none" hover-stop-propagation="false">
-    <view class="header">限时抢购</view>
+    <view class="header theme-color">限时抢购</view>
     <!-- 预热中 -->
     <view wx:if="{{goodsStatusData.qg_status == 1}}" class="content">
       <view class="tip-box">
@@ -42,6 +42,6 @@
       </view>
     </view>
   </view>
-  <view class="block-separator"></view>
+  <!-- <view class="block-separator"></view> -->
 </view>
   

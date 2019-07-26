@@ -8,8 +8,8 @@ let store = require('/store/index.js')
 App({
   globalData: {
     userInfo: null,
-    themeColor: '#FF9500', // 设置主题色
-    themeModalConfirmColor: '#108EE9',
+    themeColor: '#FF2266', // 设置主题色
+    themeModalConfirmColor: '#F24724',
     systemInfo: wx.getSystemInfoSync(),
     MenuButtonInfo: wx.getMenuButtonBoundingClientRect()
   },

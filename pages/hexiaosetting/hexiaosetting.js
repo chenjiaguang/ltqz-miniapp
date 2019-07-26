@@ -1,10 +1,5 @@
 // pages/hexiaosetting/hexiaosetting.js
 const util = require('../../utils/util.js')
-const app = getApp()
-let themeColor = '#FFFFFF'
-if (app) {
-  themeColor = app.globalData.themeColor
-}
 
 Page({
 
@@ -13,8 +8,11 @@ Page({
    */
   data: {
     navTitle: '核销码设置',
-    navBg: themeColor || '#FFFFFF',
     id: '',
+    maxLength: 4,
+    focus: false,
+    codeArr: [],
+    cursor: 0,
     code: ''
   },
 
@@ -22,6 +20,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
+    this.initCodeBox()
     this.setData({
       id: options.id
     })
@@ -31,7 +30,7 @@ Page({
       const code = prePage.provideCode()
       if (code) {
         this.setData({
-          code
+          code: code.toString()
         })
       }
     }
@@ -85,9 +84,34 @@ Page({
   onShareAppMessage: function() {
 
   },
-  codeInput: function(e) {
+  initCodeBox: function () {
+    const { maxLength} = this.data
+    let arr = []
+    for (let i = 0; i < maxLength; i++) {
+      arr.push(i)
+    }
     this.setData({
-      code: e.detail.value
+      codeArr: arr
+    })
+  },
+  codeInput: function (e) {
+    let { value, cursor } = e.detail
+    this.setData({
+      cursor: cursor,
+      code: value
+    })
+  },
+  onFocus: function (e) {
+    let { focus} = this.data
+    console.log('onFocus', focus)
+    if (focus) return false
+    this.setData({
+      focus: true
+    })
+  },
+  onBlur: function (e) {
+    this.setData({
+      focus: false
     })
   },
   submit() {

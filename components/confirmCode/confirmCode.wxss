@@ -15,6 +15,11 @@
   width: 620rpx;
   border-radius: 8rpx;
   padding: 16rpx 32rpx 40rpx;
+  transform: translateY(0);
+  transition: transform 300ms;
+}
+.confirm-box.focused{
+  transform: translateY(-50%);
 }
 .title{
   font-size: 28rpx;
@@ -50,7 +55,7 @@
   position: absolute;
   width: 0;
   height: 0;
-  left: -200%;
+  left: 0;
   bottom: 0;
   z-index: -1;
   visibility: hidden;

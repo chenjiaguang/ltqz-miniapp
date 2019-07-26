@@ -1,9 +1,5 @@
 /* pages/collection/collection.wxss */
 
-page {
-  background-color: #fff;
-}
-
 .overview {
   position: relative;
   width: 100%;
@@ -60,6 +56,23 @@ page {
   border: 1px solid;
   text-align: center;
   font-size: 28rpx;
+}
+
+.empty-img {
+  width: 138rpx;
+  height: 122rpx;
+  margin-top: 248rpx;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+
+.empty-text {
+  margin-top: 39rpx;
+  color: #999;
+  font-size: 26rpx;
+  display: block;
+  text-align: center;
 }
 
 .cancel-btn {

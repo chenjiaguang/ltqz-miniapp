@@ -1,8 +1,8 @@
 /* pages/goodsticket/goodsticket.wxss */
 
-page{
+/* page{
   background: #F5F5F5;
-}
+} */
 .page-goodsticket{
   background: #F5F5F5;
 }

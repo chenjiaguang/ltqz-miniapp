@@ -1,44 +1,47 @@
 <!--pages/userprofit/userprofit.wxml-->
-<ft-custom-nav title="{{navTitle}}" bg="{{navBg}}" color="#ffffff" />
+<ft-custom-nav title="{{navTitle}}" />
 <view class='page-userprofit column ai-stretch'>
-  <view class='top-bg-box theme-bg'></view>
+  <view class="block-separator"></view>
   <view class='main-box'>
     <view class='card overview-box'>
       <view class='all-profit column ai-center'>
         <view class='title row ai-center'>
           <text>总收益</text>
-          <text class='unit'> (元)</text>
+          <text class='unit'>(元)</text>
         </view>
-        <view class='money bold'>{{total}}</view>
-        <view class='line-separator-h'></view>
+        <view class='money bold'>{{show_total}}</view>
+        <view class='line-separator-h custom-separator'></view>
         <view class='shortcut-box'>
           <view class='shortcut-item'>
             <view class='shortcut-header'>
               <text>已提现收益</text>
-              <text class='unit'> (元)</text>
+              <text class='unit'>(元)</text>
             </view>
-            <view class='shortcut-amount bold'>{{has_remit}}</view>
+            <view class='shortcut-amount bold'>{{show_has_remit}}</view>
           </view>
           <view class='shortcut-item'>
             <view class='shortcut-header'>
               <text>可提现收益</text>
-              <text class='unit'> (元)</text>
+              <text class='unit'>(元)</text>
             </view>
-            <view class='shortcut-amount bold'>{{can_remit}}</view>
+            <view class='shortcut-amount bold'>{{show_can_remit}}</view>
           </view>
           <view class='shortcut-item'>
-            <view class='shortcut-header'>
+            <view class='shortcut-header' catchtap="questionTap">
               <text>待解冻收益</text>
-              <text class='unit'> (元)</text>
+              <text class='unit'>(元)</text>
+              <text class='question-icon lutufont lutu-question'></text>
             </view>
-            <view class='shortcut-amount bold'>{{freeze_remit}}</view>
+            <view class='shortcut-amount bold'>{{show_freeze_remit}}</view>
           </view>
         </view>
       </view>
     </view>
-    <view class='card-nopadding entrance-box'>
-      <ft-entrance wx:for="{{entrances}}" wx:for-index="idx" wx:for-item="entrance" wx:key="title" title="{{entrance.title}}" top-border="{{idx !== 0}}" extra-data="{{entrance}}" catchtap="entranceTap" />
+    <view class="block-separator"></view>
+    <view class='card entrance-box'>
+      <ft-entrance wx:for="{{entrances}}" wx:for-index="idx" wx:for-item="entrance" wx:key="title" spacing="0 56rpx" title="{{entrance.title}}" sub-title="{{entrance.subTitle}}" border-margin="0 26rpx 0 56rpx" top-border="{{idx !== 0}}" extra-data="{{entrance}}" catchtap="entranceTap" />
     </view>
-    <view class="withdraw-btn {{withdraw?'theme-bg':'disabled'}}" catchtap="requestCash" >申请提现</view>
+    <view class="withdraw-btn {{withdraw ? 'theme-linear-gradient-137' : 'disabled'}}" catchtap="requestCash" >申请提现</view>
+    <view wx:if="{{tip_min_tx_amount}}" class="withdraw-tip">*每次提现金额不得低于{{tip_min_tx_amount}}元</view>
   </view>
 </view>

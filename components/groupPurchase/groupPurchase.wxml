@@ -35,10 +35,10 @@
             <view wx:if="{{remainTimeText && remainTimeText[item.id]}}" class='remain-time'>{{remainTimeText[item.id]}}</view>
           </view>
         </view>
-        <view class='right theme-linear-gradient-170-reverse theme-border-color' catchtap="groupTap" data-ele="{{item}}"><text>去拼团</text></view>
+        <view class='right theme-linear-gradient-137 theme-border-color' catchtap="groupTap" data-ele="{{item}}"><text>去拼团</text></view>
       </view>
     </view>
     <view style="height:16rpx"></view>
-    <view class='block-separator'></view>
+    <!-- <view class='block-separator'></view> -->
   </block>
 </view>

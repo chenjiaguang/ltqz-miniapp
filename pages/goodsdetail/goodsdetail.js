@@ -18,7 +18,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-    navTitle: '活动详情',
+    navTitle: '商品详情',
     tabFixed: false,
     navHeight: navHeight,
     goodsLoaded: false, // 是否已加载数据
@@ -103,7 +103,6 @@ Page({
     }
     this.fetchGoods(id)
     this.fetchComment(id)
-    this.getOrderContact()
     this.fetchUserInfo()
   },
 
@@ -163,11 +162,6 @@ Page({
     }
   },
 
-  initBtnText: function (activity) {
-    const btnTextObj = statusHelper.getBtnText(activity.type, activity.sale_type, activity.status, activity.qg_status)
-    this.setData(btnTextObj)
-  },
-
   fetchGoods: function (id) {
     let rData = {id}
     util.request('/product/detail', rData).then(res => {
@@ -175,11 +169,12 @@ Page({
         // 处理展示详情内容
         let arrEntities = { 'lt': '<', 'gt': '>', 'nbsp': ' ', 'amp': '&', 'quot': '"', 'mdash': '——', 'ldquo': '“', 'rdquo': '”', '#39': "'", 'ensp': '' }
         res.data.content = res.data.content.replace(/\n/ig, '').replace(/\t/ig, '').replace(/<img/ig, '<img style="max-width:100%;height:auto;display:block"').replace(/<section/ig, '<div').replace(/\/section>/ig, '/div>')
+        
         // 处理时间格式
         res.data.valid_btime = res.data.valid_btime ? util.formatDateTimeDefault('d', res.data.valid_btime) : ''
         res.data.valid_etime = res.data.valid_etime ? util.formatDateTimeDefault('d', res.data.valid_etime) : ''
         // 价格处理(String -> Number，分润，最小价格)
-        res.data.fenxiao_price = util.formatMoney(res.data.fenxiao_price).showMoney
+        // res.data.fenxiao_price = util.formatMoney(res.data.fenxiao_price).showMoney
         res.data.min_price = util.formatMoney(res.data.min_price).money
         res.data.show_min_price = util.formatMoney(res.data.min_price).showMoney
         res.data.min_origin_price = util.formatMoney(res.data.min_origin_price).money
@@ -188,8 +183,17 @@ Page({
         res.data.show_min_pt_price = util.formatMoney(res.data.min_pt_price).showMoney
         res.data.min_qg_price = util.formatMoney(res.data.min_qg_price).money
         res.data.show_min_qg_price = util.formatMoney(res.data.min_qg_price).showMoney
-        const { id, type, sale_type, price_num, spell_num, status, qg_status, remain_qg, show_min_price, show_min_origin_price, show_min_pt_price, show_min_qg_price, qg_btime, qg_etime, qg_max_limit, total_qg_count, is_book_remind } = res.data
-        res.data.goods_status_data = JSON.parse(JSON.stringify({ id, type, sale_type, price_num, spell_num, status, qg_status, remain_qg, show_min_price, show_min_origin_price, show_min_pt_price, show_min_qg_price, qg_btime, qg_etime, qg_max_limit, total_qg_count, is_book_remind }))
+        const { id, type, sale_type, price_num, spell_num, status, qg_status, remain_qg, start_qg, show_min_price, show_min_origin_price, show_min_pt_price, show_min_qg_price, qg_btime, qg_etime, qg_max_limit, total_qg_count, is_book_remind } = res.data
+        res.data.goods_status_data = JSON.parse(JSON.stringify({ id, type, sale_type, price_num, spell_num, status, qg_status, remain_qg, start_qg, show_min_price, show_min_origin_price, show_min_pt_price, show_min_qg_price, qg_btime, qg_etime, qg_max_limit, total_qg_count, is_book_remind }))
+        if (res.data.product_img_urls && res.data.product_img_urls.length) {
+          res.data.banners = res.data.product_img_urls.map(item => {
+            return {image: item}
+          })
+        } else if (res.data.product_cover_url) {
+          res.data.banners = [{image: res.data.product_cover_url}]
+        } else if (res.data.cover_url) {
+          res.data.banners = [{image: res.data.cover_url}]
+        }
         res.data.goodsLoaded = true
         res.data.goodsTimestamp = new Date().getTime()
         if (res.data.tuan && res.data.tuan.length > 0) {
@@ -205,7 +209,7 @@ Page({
           })
         }
         res.data.subOverview = this.getSubOverview(res.data)
-        this.initBtnText(res.data)
+        this.initBottomData(res.data)
         this.setData(res.data, () => {
           this.setData({
             content: this.data.content.replace(/\t\t\t/gi, '')
@@ -218,7 +222,7 @@ Page({
   },
 
   fetchComment: function (pid) {
-    let rData = { product_id: pid, type: '1', pn: 1 }
+    let rData = { product_id: pid, pn: 1 }
     util.request('/rate/list', rData).then(res => {
       if (res.error == 0 && res.data) {
         let {list, page, avg_score} = res.data
@@ -249,25 +253,8 @@ Page({
       const scrollPos = res[0].top + res[1].scrollTop - (90 * rpx) - this.data.navHeight
       wx.pageScrollTo({
         scrollTop: scrollPos + 1,
-        duration: 0,
-        complete: res => {
-          // setTimeout(() => {
-          //   this.setData({
-          //     currentTab: idx
-          //   })
-          // }, 100)
-          
-          
-        }
+        duration: 0
       })
-      // this.setData({
-      //   currentTab: idx
-      // })
-      // wx.nextTick(() => {
-      //   this.setData({
-      //     currentTab: idx
-      //   })
-      // })
     })
   },
 
@@ -304,19 +291,19 @@ Page({
   getSubOverview: function (data) {
     let {type, valid_btime, valid_etime, hx_rule, dead_line, address, address_position, jh_address, jh_address_position, min_age, max_age, limit_num, note, include_bx, refund} = data
     let arr = []
-    if (type && valid_btime && valid_etime) {
+    if (type && type == 1 && valid_btime && valid_etime) {
       arr.push({img: '/assets/images/time_jointime.png', text: `活动日期：${valid_btime} 至 ${valid_etime}`})
     }
     if (dead_line) {
-      arr.push({img: '/assets/images/time_deadline.png', text: `报名截止时间：${dead_line}`})
+      arr.push({img: '/assets/images/time_deadline.png', text: `${type == 1 ? '报名' : ''}截止时间：${dead_line}`})
     }
     if (hx_rule) {
       arr.push({img: '/assets/images/hx_rule_icon.png', text: `核销有效期：${hx_rule}`})
     }
-    if (address) {
+    if (type == 1 && address) {
       arr.push({img: '/assets/images/huodong_location.png', text: `活动地点：${address}`, isAddress: true, lnglat: address_position})
     }
-    if (jh_address) {
+    if (type == 1 && jh_address) {
       arr.push({img: '/assets/images/jihe_location.png', text: `集合地点：${jh_address}`, isAddress: true, lnglat: jh_address_position})
     }
     if (min_age) {
@@ -331,10 +318,10 @@ Page({
       })
     }
     if (include_bx == 1) {
-      arr.push({img: '/assets/images/baoxian.png', text: '本次活动费用包含保险'})
+      arr.push({img: '/assets/images/baoxian.png', text: `${type == 1 ? '本次活动' : '本商品'}费用包含保险`})
     }
     if (!refund) {
-      arr.push({img: '/assets/images/tuikuan.png', text: '本次活动不支持退款'})
+      arr.push({img: '/assets/images/tuikuan.png', text: `${type == 1 ? '本次活动' : '本商品'}不支持退款`})
     }
     return arr
   },
@@ -345,11 +332,11 @@ Page({
 
   showShoppingView: function (e) {
     this.setData({
-      tuanId: e.currentTarget.dataset.saletype == 2 ? 0 : null
+      tuanId: e.detail.saletype == 2 ? 0 : null
     })
     const shoppingView = this.selectComponent('#c-shopping-view')
     if (shoppingView && shoppingView.toggleSession) {
-      shoppingView.toggleSession(e)
+      shoppingView.toggleSession({currentTarget:{dataset:{saletype: e.detail.saletype}}})
     }
   },
 
@@ -434,64 +421,8 @@ Page({
       poster.startDraw(id)
     }
   },
-
-  getOrderContact: function () {
-    const contactJson = storageHelper.getStorage('orderContact')
-    if (contactJson) {
-      this.setData({
-        orderContact: JSON.parse(contactJson)
-      })
-    } else {
-      let phone = storageHelper.getStorage('uphone')
-      if (phone) {
-        let _obj = contactJson ? JSON.parse(contactJson): {}
-        _obj['手机'] = phone
-        storageHelper.setStorage('orderContact', JSON.stringify(_obj))
-        this.setData({
-          orderContact: _obj
-        })
-      } else {
-        util.request('/user/detail').then(res => {
-          if (res.error == 0 && res.data) { // 获取用户信息成功
-            if (res.data.phone) { // 有电话才设置
-              storageHelper.setStorage('uphone', res.data.phone)
-              let _obj = contactJson ? JSON.parse(contactJson): {}
-              _obj['手机'] = res.data.phone
-              storageHelper.setStorage('orderContact', JSON.stringify(_obj))
-              this.setData({
-                orderContact: _obj
-              })
-            }
-          }
-        })
-      }
-    }
-  },
-
-  initContact: function (e) {
-    const { iv, encryptedData } = e.detail
-    if (iv && encryptedData) {
-      util.request('/common/decrypt', {
-        iv: iv,
-        encryptedData: encryptedData,
-      }).then(res => {
-        if (res.error == 0) {
-          const contactJson = storageHelper.getStorage('orderContact')
-          let _obj = contactJson ? JSON.parse(contactJson): {}
-          _obj['手机'] = res.data.phoneNumber
-          storageHelper.setStorage('orderContact', JSON.stringify(_obj))
-          this.setData({
-            orderContact: _obj
-          }, () => {
-            console.log('感谢您的授权，继续操作报名吧')
-          })
-        }
-      }).catch(err => { })
-    }
-  },
   
   groupTap: function (e) {
-    const shoppingView = this.selectComponent('#c-shopping-view')
     if (e.detail.isJoin) {
       wx.showToast({
         title: '您正在参与这个团哦～',
@@ -502,62 +433,10 @@ Page({
     this.setData({
       tuanId: e.detail.tuanId
     })
+    const shoppingView = this.selectComponent('#c-shopping-view')
     if (shoppingView && shoppingView.toggleSession) {
       shoppingView.toggleSession({currentTarget: {dataset: {saletype: '2'}}})
     }
-  },
-
-  collectTap: function () {
-    const {id, goodsLoaded, is_collect, collectting} = this.data
-    if (!goodsLoaded || collectting) { // 未获取数据成功 或 正在操作，则点击收藏无效
-      return false
-    }
-    const url = is_collect ? '/collect/delete' : '/collect/add'
-    const rData = is_collect ? { ids: [id] } : { product_id: id}
-    this.setData({
-      collectting: true
-    })
-    wx.vibrateShort()
-    util.request(url, rData).then(res => {
-      if (res.error == 0) {
-        if (!is_collect) { // 收藏成功
-          const goodsCollected = storageHelper.getStorage('goodsCollected')
-          if (!goodsCollected) {
-            this.setData({
-              showCollectTip: true
-            })
-            setTimeout(this.hideCollectTip, 3000)
-          } else {
-            wx.showToast({
-              title: '收藏成功',
-              icon: 'none'
-            })
-          }
-          storageHelper.setStorage('goodsCollected', true)
-        } else { // 取消收藏
-          wx.showToast({
-            title: '取消收藏成功',
-            icon: 'none'
-          })
-        }
-        const collected = is_collect
-        this.setData({
-          is_collect: !collected
-        })
-      }
-    }).catch(err => {
-
-    }).finally(res => {
-      this.setData({
-        collectting: false
-      })
-    })
-  },
-
-  hideCollectTip: function () {
-    this.setData({
-      showCollectTip: false
-    })
   },
 
   nextTap: function (e) {
@@ -577,16 +456,31 @@ Page({
     })
   },
 
-  makePhoneCall: function (e) {
-    let {phone} = e.currentTarget.dataset
-    if (phone) {
-      wx.makePhoneCall({
-        phoneNumber: phone.toString()
-      })
-    }
+  initBottomData: function (data) {
+    let _obj = {}
+    _obj.id = data.id
+    _obj.type = data.type
+    _obj.sale_type = data.sale_type
+    _obj.status = data.status
+    _obj.qg_status = data.qg_status
+    _obj.is_collect = data.is_collect
+    _obj.shop = data.shop
+    _obj.show_min_price = data.show_min_price
+    _obj.show_min_origin_price = data.show_min_origin_price
+    _obj.show_min_pt_price = data.show_min_pt_price
+    _obj.show_min_qg_price = data.show_min_qg_price
+    const btnTextObj = statusHelper.getBtnText(data.type, data.sale_type, data.status, data.qg_status)
+    _obj = Object.assign({}, _obj, btnTextObj)
+    this.setData({bottomButtonData: _obj})
   },
 
   qgTimeout: function () {
     this.fetchGoods(this.options.id)
+  },
+
+  bePartner: function () {
+    wx.navigateTo({
+      url: '/pages/bepartner/bepartner'
+    })
   }
 })

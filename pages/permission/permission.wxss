@@ -9,9 +9,9 @@
   text-align: center;
 }
 
-page {
+/* page {
   background: #fff;
-}
+} */
 
 .page-permission {
   background: #fff;

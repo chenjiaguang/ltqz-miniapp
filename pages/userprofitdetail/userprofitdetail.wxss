@@ -7,10 +7,17 @@
   align-self: stretch;
   height: 282rpx;
 }
-
-.main-box {
-  margin-top: -259rpx;
+.card{
+  margin: 0;
+  border-radius: 0;
 }
+.overview-box{
+  padding: 0 56rpx;
+}
+
+/* .main-box {
+  margin-top: -259rpx;
+} */
 
 .title {
   margin-top: 36rpx;

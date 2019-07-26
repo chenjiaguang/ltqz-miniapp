@@ -1,5 +1,5 @@
 <!--pages/commentmanager/commentmanager.wxml-->
-<ft-custom-nav title="{{navTitle}}" color="{{navColor}}" bg="{{navBg}}" />
+<ft-custom-nav title="{{navTitle}}" />
 
 <view class="page-body">
   <view class="header header2">

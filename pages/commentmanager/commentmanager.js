@@ -8,8 +8,6 @@ Page({
    */
   data: {
     navTitle: '评价管理',
-    navColor: '#ffffff',
-    navBg: '#ffffff',
     index: 0,
     tabs: [{
       title: '全部',
@@ -28,7 +26,7 @@ Page({
       loaded: false,
       loading: false
     }],
-    showGoods: false,
+    showGoods: true,
     showTicket: false,
     top_fixed: false,
 
@@ -41,27 +39,6 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) { // options.sid(shop_id，传入商家id则请求商家的评论)、options.pid(product_id，传入商品id则请求商品的评论)、options.type(type，商品类型，活动为1)
-    const app = getApp()
-    if (app.globalData.themeColor) {
-      wx.setNavigationBarColor({
-        frontColor: '#ffffff',
-        backgroundColor: app.globalData.themeColor
-      })
-      this.setData({
-        navColor: '#ffffff',
-        navBg: app.globalData.themeColor,
-        tabCurrentColor: app.globalData.themeColor
-      })
-    } else {
-      wx.setNavigationBarColor({
-        frontColor: '#000000',
-        backgroundColor: '#ffffff'
-      })
-      this.setData({
-        navColor: '#000000',
-        navBg: '#ffffff',
-      })
-    }
     this.options = options // 把options保存下来
     this.tabTap({currentTarget: {dataset: {idx: 0}}})
   },

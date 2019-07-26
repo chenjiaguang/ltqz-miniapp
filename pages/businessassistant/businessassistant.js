@@ -1,10 +1,6 @@
 // pages/businessassistant/businessassistant.js
 const util = require('../../utils/util.js')
-const app = getApp()
-let themeColor = '#FFFFFF'
-if (app) {
-  themeColor = app.globalData.themeColor
-}
+
 Page({
 
   /**
@@ -12,7 +8,6 @@ Page({
    */
   data: {
     navTitle: '商家助手',
-    navBg: themeColor || '#FFFFFF',
     id: '',
     data: null,
     hexiao_entrance: {
@@ -20,7 +15,7 @@ Page({
       path: '/pages/hexiaosetting/hexiaosetting'
     },
     other_entrances: [{
-        title: '活动管理',
+        title: '商品管理',
         path: '/pages/activitymanager/activitymanager'
       },
       {

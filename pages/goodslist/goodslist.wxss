@@ -1,6 +1,6 @@
 /* pages/goodslist/goodslist.wxss */
 
-page{
+.page-goodslist{
   background: #FFFFFF;
 }
 .empty-box{

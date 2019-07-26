@@ -11,21 +11,22 @@
         <view class="header-tip draw-text" data-text="{{hTip}}">{{hTip}}</view>
       </view>
     </view> -->
+    <view class="share-from draw-text" data-text="{{'来自 ' + hName + ' 的分享'}}">{{'来自 ' + hName + ' 的分享'}}</view>
     <image class='banner draw-image' src="{{banner}}" mode="aspectFill"></image>
     <view class='title draw-text' data-text="{{title}}" data-maxline="{{2}}" data-maxlength="{{20}}">{{title}}</view>
     <view class='price draw-text' data-text="{{price > 0 ? ('¥' + price) : '免费'}}">
       <text>{{price > 0 ? ('¥' + price) : '免费'}}</text>
-      <view wx:if="{{saleType == 2 && pintuan && pintuan > 0}}" class='pintuan-tag draw-fill draw-text' data-text="{{pintuan + '人拼团价'}}">{{pintuan}}人拼团价</view>
-      <view wx:if="{{saleType == 3}}" class='pintuan-tag draw-fill draw-text' data-text="限时抢购">限时抢购</view>
+      <view wx:if="{{saleType == 2 && pintuan && pintuan > 0}}" class='pintuan-tag theme-border-color theme-color draw-stroke draw-text' data-text="{{pintuan + '人拼团价'}}">{{pintuan}}人拼团价</view>
+      <view wx:if="{{saleType == 3}}" class='pintuan-tag theme-border-color theme-color draw-stroke draw-text' data-text="限时抢购">限时抢购</view>
     </view>
-    <view wx:if="{{joinNumber && joinNumber > 0}}" class='join-num draw-text' data-text="{{'累计' + joinNumber + '人报名'}}">累计{{joinNumber}}人报名</view>
+    <!-- <view wx:if="{{joinNumber && joinNumber > 0}}" class='join-num draw-text' data-text="{{'累计' + joinNumber + '人报名'}}">累计{{joinNumber}}人报名</view> -->
     <view wx:if="{{joinUsers && joinUsers.length}}" class='join-user-box'>
       <view wx:for="{{joinUsers}}" class='join-user-item' wx:key="id">
         <image class='join-user-avatar draw-image' src="{{item.avatar || '/assets/images/empty_join_user.png'}}" mode="{{item.avatar ? 'aspectFill' : 'aspectFit'}}" data-islocal="{{!item.avatar}}"></image>
-        <view wx:if="{{index === 0 && item.avatar}}" class='master draw-fill draw-text' data-text="团长">团长</view>
+        <view wx:if="{{index === 0 && item.avatar}}" class='master theme-bg draw-fill draw-text' data-text="团长">团长</view>
       </view>
     </view>
-    <view wx:if="{{joinUsers && joinUsers.length && leftNum}}" class='left-num draw-stroke draw-text' data-text="{{'仅剩' + leftNum + '个名额'}}">仅剩{{leftNum}}个名额</view>
+    <view wx:if="{{joinUsers && joinUsers.length && leftNum}}" class='left-num theme-border-color theme-color draw-stroke draw-text' data-text="{{'仅剩' + leftNum + '个名额'}}">仅剩{{leftNum}}个名额</view>
     <view class='logo-and-qrcode'>
       <image class='logo draw-image' src="/assets/images/draw_logo.png" mode="aspectFit" data-islocal="{{true}}"></image>
       <view class='qrcode-box'>

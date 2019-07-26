@@ -1,6 +1,5 @@
 {
-  "navigationBarTitleText": "活动详情",
-  "backgroundColor": "#F5F5F5",
+  "navigationBarTitleText": "商品详情",
   "backgroundColorTop": "#F5F5F5",
   "backgroundColorBottom": "#FFFFFF",
   "usingComponents": {
@@ -9,14 +8,12 @@
     "share-button": "../../components/shareButton/shareButton",
     "ft-star-box": "../../ftcomponents/ftStarBox/ftStarBox",
     "comment-box": "../../components/commentBox/commentBox",
-    "ft-bubble": "../../ftcomponents/ftBubble/ftBubble",
     "draw-poster": "../../components/drawPoster/drawPoster",
     "goods-detail-status": "../../components/goodsDetailStatus/goodsDetailStatus",
+    "goods-detail-bottom-button": "../../components/goodsDetailBottomButton/goodsDetailBottomButton",
     "shopping-view": "../../components/shoppingView/shoppingView",
     "shopping-view2": "../../components/shoppingView2/shoppingView2",
     "group-purchase": "../../components/groupPurchase/groupPurchase",
-    "qg-overview": "../../components/qgOverview/qgOverview",
-    "ft-bottom-box": "../../ftcomponents/ftBottomBox/ftBottomBox",
-    "ft-iphone-bottom-adapter": "../../ftcomponents/ftIphoneBottomAdapter/ftIphoneBottomAdapter"
+    "qg-overview": "../../components/qgOverview/qgOverview"
   }
 }

@@ -9,7 +9,7 @@
       </view>
     </view>
     <view class='slide-box'>
-      <view class='slide-block' style="background:{{tabCurrentColor}};transform:translateX({{(0.5 + index) * (750/tabs.length)}}rpx);width:68rpx;height:6rpx;margin-left:-34rpx"></view>
+      <view class='slide-block' style="background:{{tabCurrentColor}};transform:translateX({{(0.5 + index) * (750/tabs.length)}}rpx);width:68rpx;height:6rpx;border-radius:4rpx;margin-left:-34rpx"></view>
     </view>
     <view class='line-separator-h'></view>
   </view>

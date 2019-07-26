@@ -3,7 +3,14 @@ Component({
   /**
    * 组件的属性列表
    */
+  options: {
+    multipleSlots: true // 在组件定义时的选项中启用多slot支持
+  },
   properties: {
+    height: {
+      type: String,
+      value: '78rpx'
+    },
     required: {
       type: Boolean,
       value: false
@@ -62,7 +69,11 @@ Component({
     },
     spacing: {
       type: String,
-      value: '30rpx'
+      value: '0 32rpx'
+    },
+    borderMargin: {
+      type: String,
+      value: '0'
     }
   },
 

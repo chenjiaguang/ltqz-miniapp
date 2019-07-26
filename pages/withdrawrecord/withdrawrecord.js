@@ -1,10 +1,5 @@
 // pages/withdrawrecord/withdrawrecord.js 提现记录
 const util = require('../../utils/util.js')
-const app = getApp()
-let themeColor = '#FFFFFF'
-if (app) {
-  themeColor = app.globalData.themeColor
-}
 
 Page({
 
@@ -13,7 +8,6 @@ Page({
    */
   data: {
     navTitle: '提现记录',
-    navBg: themeColor || '#FFFFFF',
     list: null,
     page: null,
     loading: false

@@ -1,8 +1,8 @@
 /* pages/paysuccess/paysuccess.wxss */
 
-page{
+/* page{
   background: #FFFFFF;
-}
+} */
 .page-paysuccess{
   background: #FFFFFF;
   padding: 160rpx 32rpx;

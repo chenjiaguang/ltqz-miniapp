@@ -41,7 +41,7 @@ Page({
   onShareAppMessage: function () {
     const { cover_url } = this.data
     return {
-      title: '范团精选-最好的成长在路上',
+      title: '范团亲子-精选你的有范生活',
       path: '/pages/index/index'
     }
   },
@@ -106,7 +106,7 @@ Page({
           return {id: item.id, name: item.name, image: item.icon_url}
         })
 
-        let sales = res.data.subject
+        let sales = res.data.subject || []
         let hots = []
         let news = []
         let recommend = res.data.recommend

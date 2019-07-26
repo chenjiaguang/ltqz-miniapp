@@ -297,8 +297,8 @@ Page({
   },
   nextTap: function (e) {
     const { saletype, currentSession, currentSubSession, currentTickets, subSessions, selectedTicketLength, totalPrice} = e.detail
-    const { type, product_id: id, id: tuan_id, fromUid, product: { title, valid_btime, valid_etime, address, session, sale_type, refund = false, include_bx }, hx_rule } = this.data
-    let dataObj = {type, id, fromUid, title, address, valid_btime, valid_etime, session, sale_type, saletype, selectedTicketLength: selectedTicketLength[saletype], currentSession: currentSession[saletype], refund, include_bx, totalPrice: totalPrice[saletype], tuan_id, hx_rule}
+    const { type, product_id: id, id: tuan_id, fromUid, product: { fill_info, fill_form, title, valid_btime, valid_etime, address, session, sale_type, refund = false, include_bx }, hx_rule } = this.data
+    let dataObj = {type, id, fromUid, fill_info, fill_form, title, address, valid_btime, valid_etime, session, sale_type, saletype, selectedTicketLength: selectedTicketLength[saletype], currentSession: currentSession[saletype], refund, include_bx, totalPrice: totalPrice[saletype], tuan_id, hx_rule}
     if (type == 1) { // 活动
       dataObj.currentTickets = currentTickets[saletype]
     } else if (type == 2) { // 非活动

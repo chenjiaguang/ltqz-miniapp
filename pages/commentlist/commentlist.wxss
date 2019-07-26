@@ -1,11 +1,11 @@
 /* pages/commentmanager/commentmanager.wxss */
 page {
   height: 100%;
-  background-color: #fff !important;
+  /* background-color: #fff !important; */
 }
 
 .page-commentlist {
-  background: #fff;
+  background: #FFFFFF;
 }
 
 .overview {

@@ -7,27 +7,38 @@ Page({
    */
   data: {
     navTitle: '申请合伙人',
-    user: null
+    user: null,
+    condition: [],
+    can_apply: false,
+    fenxiao_user_status: '', // -1已拉黑|0正在审批|1已通过|2不是分销员(未通过)
+    btnText: {
+      '-1': '立即申请',
+      0: '等候审批...',
+      1: '立即申请',
+      2: '立即申请'
+    },
+    loaded: false,
+    submitting: false // 是否正在请求申请
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
-
+    this.getApplyInfo()
   },
 
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function() {
-    util.request('/user/detail').then(res => {
-      this.setData({
-        user: res.data
-      })
-    }).catch(err => {
-      console.log('err', err)
-    })
+    // util.request('/user/detail').then(res => {
+    //   this.setData({
+    //     user: res.data
+    //   })
+    // }).catch(err => {
+    //   console.log('err', err)
+    // })
   },
 
   /**
@@ -71,13 +82,25 @@ Page({
   onShareAppMessage: function() {
 
   },
-  apply() {
+
+  apply (e) {
+    console.log('e', e)
+    this.setData({
+      submitting: true
+    })
     util.request('/user/become_fenxiao', {
       phone: this.data.user.phone,
+      form_id: e.detail.formId
     }).then(res => {
-      util.backAndToast('申请信息提交成功，请等待审核')
+      if (res.err0r == 0) {
+        util.backAndToast('申请信息提交成功，请等待审核')
+      }
     }).catch(err => {
       console.log('err', err)
+    }).finally(res => {
+      this.setData({
+        submitting: false
+      })
     })
   },
 
@@ -94,5 +117,55 @@ Page({
         console.log('err', err)
       })
     }
+  },
+
+  showApplyModal: function () {
+    let {loaded, can_apply, fenxiao_user_status} = this.data
+    if (!loaded) { // 数据未获取完成
+      return false
+    }
+    if (!can_apply) {
+      wx.showToast({
+        title: '您未达到申请条件',
+        icon: 'none'
+      })
+      return false
+    }
+    if (fenxiao_user_status == -1) {
+      wx.showToast({
+        title: '由于您违反了范团精选平台用户协议，已失去申请成为合伙人的资格',
+        icon: 'none',
+        duration: 3000
+      })
+      return false
+    } else if (fenxiao_user_status == 1) {
+      wx.showToast({
+        title: '您已经是合伙人了，可以在“我的”页面查看相关信息哦~',
+        icon: 'none',
+        duration: 3000
+      })
+      return false
+    }
+    if (fenxiao_user_status != 2) { // fenxiao_user_status: 2表示不是分销员
+      return false
+    }
+    const ftModal = this.selectComponent('#c-ft-modal')
+    ftModal && ftModal.toggle && ftModal.toggle()
+  },
+
+  stopPropagation: function () {
+    return false
+  },
+
+  getApplyInfo: function () {
+    util.request('/fenxiao/apply_info').then(res => {
+      if (res.error == 0 && res.data) {
+        let _obj = res.data
+        _obj.loaded = true
+        this.setData(_obj)
+      }
+    }).catch(err => {
+      console.log('err', err)
+    })
   }
 })

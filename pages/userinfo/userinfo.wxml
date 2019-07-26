@@ -1,5 +1,6 @@
 <!--pages/userinfo/userinfo.wxml-->
 <ft-custom-nav title="{{navTitle}}" />
+<view class="block-separator" hover-class="none" hover-stop-propagation="false"></view>
 <view class='card'>
   <view class='item row ai-center jc-between'>
     <text class='title'>头像</text>
@@ -25,10 +26,10 @@
     <picker range="{{genderRange}}" range-key="title" bindchange="genderChange" class='value flex1' value="{{user.sex==2?1:0}}">
       <view class='row ai-center jc-end'>
         <text class='sex-text input-placeholder' wx:if="{{user.sex==0}}">请选择性别</text>
-        <text class='sex-text' wx:else>{{gender_text[user.sex]}}</text>
+        <text class='value sex-text' wx:else>{{gender_text[user.sex]}}</text>
         <text class='lutufont lutu-next2'></text>
       </view>
     </picker>
   </view>
 </view>
-<view class="btn theme-bg" catchtap="save">保存</view>
+<view class="btn theme-linear-gradient-137" catchtap="save">保存</view>
