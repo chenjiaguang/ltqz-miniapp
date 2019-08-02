@@ -9,10 +9,10 @@ Page({
   data: {
     navTitle: '',
     banners: [],
-    activitys: [],
-    activityLoaded: false,
-    activityLoading: false,
-    activityPage: {}
+    list: [],
+    loaded: false,
+    loading: false,
+    page: {}
   },
 
   /**
@@ -71,10 +71,10 @@ Page({
    */
   onReachBottom: function () {
     const {
-      activityPage
+      page
     } = this.data
-    if (activityPage && !activityPage.is_end) {
-      this.fetchGoods(this.options.id, parseInt(activityPage.pn) + 1)
+    if (page && !page.is_end) {
+      this.fetchGoods(this.options.id, parseInt(page.pn) + 1)
     }
   },
 
@@ -84,7 +84,7 @@ Page({
   onShareAppMessage: function () {
     const { cover_url } = this.data
     return {
-      title: '给你分享了范团亲子的' + (this.options.title || '') + '，快来看看有没有适合你的吧~',
+      title: '给你分享了范团精选的' + (this.options.title || '') + '，快来看看有没有适合你的吧~',
       path: '/pages/goodslist/goodslist?id=' + this.options.id + (this.options.title ? ('&title=' + this.options.title) : '')
     }
   },
@@ -98,7 +98,7 @@ Page({
     }
   },
 
-  activityTap: function (e) {
+  goodsTap: function (e) {
     const { id } = e.detail
     if (id) {
       wx.navigateTo({
@@ -109,15 +109,14 @@ Page({
 
   fetchGoods: function (id, pn) {
     const {
-      activityLoading,
-      activitys,
-      activityPage
+      loading,
+      page
     } = this.data
-    if (activityLoading || (activityPage && activityPage.is_end && pn !== 1)) { // 正在加载 或 最后一页并且不是刷新
+    if (loading || (page && page.is_end && pn !== 1)) { // 正在加载 或 最后一页并且不是刷新
       return false
     }
     this.setData({
-      activityLoading: true
+      loading: true
     })
     let rData = {
       home_class: id,
@@ -136,18 +135,18 @@ Page({
           item.min_qg_price = util.formatMoney(item.min_qg_price).showMoney
         })
         let _obj = {}
-        _obj.activityLoaded = true
-        _obj.activityPage = page
+        _obj.loaded = true
+        _obj.page = page
         if (res.data.home_class_banner) {
           _obj['banners[0].image'] = res.data.home_class_banner
         }
         if (pn === 1) { // 刷新
-          _obj.activitys = list
+          _obj.list = list
         } else {
-          let oldLen = this.data.activitys.length
+          let oldLen = this.data.list.length
           let newLen = list.length
           for (let i = 0; i < newLen; i++) {
-            _obj['activitys[' + (oldLen + i) + ']'] = list[i]
+            _obj['list[' + (oldLen + i) + ']'] = list[i]
           }
         }
         this.setData(_obj)
@@ -156,7 +155,7 @@ Page({
       console.log('catch')
     }).finally(res => {
       this.setData({
-        activityLoading: false
+        loading: false
       })
       wx.stopPullDownRefresh()
     })

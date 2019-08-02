@@ -1,0 +1,18 @@
+/* ftcomponents/ftDragAndDrop/ftDragAndDrop.wxss */
+.item{
+  position: relative;
+  background: #FFFFFF;
+  transition: transform 200ms;
+}
+.item.actived{
+  transform: scale(1, 1);
+  box-shadow: 0 0 10rpx 1rpx rgba(0,0,0,0.5);
+  z-index: 9999;
+  transition: unset !important;
+}
+.drag-btn{
+  position: absolute;
+  height: 100%;
+  top: 0;
+  right: 0;
+}

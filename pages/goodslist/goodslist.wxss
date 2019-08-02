@@ -1,7 +1,7 @@
 /* pages/goodslist/goodslist.wxss */
 
 .page-goodslist{
-  background: #FFFFFF;
+  /* background: #FFFFFF; */
 }
 .empty-box{
   overflow: hidden;

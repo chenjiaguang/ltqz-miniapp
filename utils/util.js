@@ -182,6 +182,22 @@ const request = (url, data, config = {}) => {
             return
           }
         }
+        if (res.data && (res.data.error === 0 || res.data.error === '0') && token) { // 绑定分销员
+          const fenxiaoid_unbind = storageHelper.getStorage('fenxiaoid_unbind')
+          if (fenxiaoid_unbind) {
+            const fenxiaoid_binded = storageHelper.getStorage('fenxiaoid_binded')
+            if (fenxiaoid_unbind != fenxiaoid_binded) {
+              request('/fenxiao/bind_parent', {parent_id: fenxiaoid_unbind}, {dontToast: true}).then(res => {
+                console.log('bindfenxiao', res)
+                if (res.error === 0 || res.error === '0') {
+                  storageHelper.setStorage('fenxiaoid_binded', fenxiaoid_unbind)
+                }
+              })
+            } else {
+              storageHelper.setStorage('fenxiaoid_unbind', '')
+            }
+          }
+        }
         setTimeout(() => {
           resolve(res.data || res)
         }, 0)

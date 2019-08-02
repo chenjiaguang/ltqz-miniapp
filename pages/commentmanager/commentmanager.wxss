@@ -111,8 +111,8 @@ page {
 }
 
 .empty-img {
-  height: 152rpx;
-  width: 125rpx;
+  height: 140rpx;
+  width: 150rpx;
   margin-top: 248rpx;
   margin-left: auto;
   margin-right: auto;

@@ -26,7 +26,7 @@ Page({
     idcard: '',
     sex: '',
     saving: false,
-    deleting: false,
+    deleting: false
   },
 
   /**
@@ -127,9 +127,10 @@ Page({
       genderPickerRange,
       idcard,
       sex,
-      requireidcard
+      requireidcard,
+      saving
     } = this.data
-    if ((!idcard && requireidcard) || !name || !sex) {
+    if ((!idcard && requireidcard) || !name || !sex || saving) {
       return false
     }
     let rData = {

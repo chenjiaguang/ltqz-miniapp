@@ -122,7 +122,7 @@ Page({
           this.countdownTimer = setInterval(this.startCountdown, 1000)
         }
         let traveler_name_text = ''
-        if (product && product.include_bx != 1) { // 不包含保险时生成出行人名字字符串
+        if (product && !product.include_bx) { // 不包含保险时生成出行人名字字符串
           traveler_name_text = res.data.traveler_infos.map(item => item.productTraveler.name).join('，')
         }
         let contact_info = []

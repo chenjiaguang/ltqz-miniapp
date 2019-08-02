@@ -34,7 +34,7 @@
 }
 
 .tickets {
-  display: block;
+  display: flex;
   color: #333;
   font-size: 24rpx;
   line-height: 24rpx;
@@ -43,7 +43,16 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-
+.tickets-name{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.tickets-num{
+  flex: 1;
+  color: #F24724;
+  margin-left: 14rpx;
+}
 .location {
   display: block;
   color: #999;

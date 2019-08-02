@@ -1,0 +1,115 @@
+/* eslint-disable */
+function longPress(e, ins) {
+  var dataset = e.instance.getDataset()
+  var state = e.instance.getState()
+  var index = dataset.index
+  var rect = dataset.rect
+  var rects = dataset.rects
+
+  state.ele = ins.selectComponent('.item' + index)
+  state.ele.addClass('actived')
+  state.startPulling = true
+  state.pullStartY = e.touches[0].clientY
+  state.distance = 0
+  state.sort = index
+  state.sortArea = []
+  rects.forEach(function (rt, idx) {
+    if (idx === state.sort) {
+      return
+    }
+    if (idx === 0) {
+      state.sortArea.push({up: [-99999, rects[idx].top + rects[idx].height / 2], down: [rects[idx].top + rects[idx].height / 2, rects[idx + 1].top + rects[idx + 1].height / 2]})
+    } else if (idx === rects.length - 1) {
+      state.sortArea.push({up: [rects[idx - 1].top + rects[idx - 1].height / 2, rects[idx].top + rects[idx].height / 2], down: [rects[idx].top + rects[idx].height / 2, 99999]})
+    } else {
+      state.sortArea.push({up: [rects[idx - 1].top + rects[idx - 1].height / 2, rects[idx].top + rects[idx].height / 2], down: [rects[idx].top + rects[idx].height / 2, rects[idx + 1].top + rects[idx + 1].height / 2]})
+    }
+  })
+  console.log('longPress', index, rect, e.touches[0].clientY)
+}
+
+function touchStart(e, ins) {
+  // var dataset = e.instance.getDataset()
+  // var state = e.instance.getState()
+  // var ele = dataset.ele
+  // var index = dataset.index
+  // var rect = dataset.rect
+  // state.startMoving = false
+  // state.pullMoveY = 0
+  // state.timeStamp = e.timeStamp
+  // state.lastDistance = 0
+  // state.able = ((ele === 'top' && dataset.topReached) || (ele === 'bottom' && dataset.bottomReached)) && ((ele === 'top' && dataset.topTouchHide) || (ele === 'bottom' && dataset.bottomTouchHide))
+  // if (state.able) {
+  //   state.startPulling = true
+  //   state.pullStartX = e.touches[0].clientX
+  //   state.pullStartY = e.touches[0].clientY
+  //   state.distance = 0
+  //   e.instance.removeClass("transition")
+  // }
+}
+
+function touchMove(e, ins) {
+  var dataset = e.instance.getDataset()
+  var state = e.instance.getState()
+  var ele = dataset.ele
+  var rect = dataset.rect
+  var rects = dataset.rects
+  if (!state.startPulling || !state.ele) {
+    return true
+  }
+
+  state.pullMoveY = e.touches[0].clientY
+  state.distance = state.pullMoveY - state.pullStartY
+  state.ele.setStyle({
+    transform: 'translateY(' + state.distance + 'px)',
+    "-webkit-transform": 'translateY(' + state.distance + 'px)'
+  })
+  // function sortFunc(a, b) {
+  //   return a.sort - b.sort
+  // }
+  // var listRects = rects.sort(sortFunc)
+  // state.disableArea = [rects[state.sort - 1] ? (rect.height - rects[state.sort - 1].height / 2) : Number.NEGATIVE_INFINITY, rects[state.sort + 1] ? (rect.height + rects[state.sort + 1].height / 2) : Number.POSITIVE_INFINITY]
+  var area = state.sortArea.map(function (item) {
+    return state.distance > 0 ? item.down : item.up
+  })
+  var newSort = null
+  var newPos = area.filter(function(item, idx) {
+    if (state.distance + rect.top > item[0] && state.distance + rect.top < item[1] && idx !== state.sort) {
+      newSort = idx
+      return true
+    }
+  })
+  // ins.callMethod('consss', {s: state.sortArea, a: area})
+  // console.log('area', state.sortArea, area)
+  if (newPos[0]) { // 如果存在新的位置，则表示已经滑动到别的模块位置
+    console.log('newPos', newSort)
+  }
+  return false
+}
+
+function touchEnd(e, ins) {
+  var dataset = e.instance.getDataset()
+  var state = e.instance.getState()
+  var accSpeed = state.lastDistance / (e.timeStamp - state.timeStamp) / (e.timeStamp - state.timeStamp)
+  state.active = false
+  state.ele.removeClass('actived')
+  if (!state.startPulling) {
+    return
+  }
+  state.startPulling = false
+  state.startMoving = false
+  var duration = parseInt((state.distance / dataset.height) * 200)
+  if ((state.distance > dataset.height / 2) || (accSpeed > 0.0012 && state.direction > 0)) { // 0.0012是加速度临界点，大于这个加速度就关闭
+    ins.callMethod('hide', {duration})
+  } else {
+    ins.callMethod('show', {duration})
+  }
+}
+
+module.exports = {
+  longPress: longPress,
+  touchStart: touchStart,
+  touchMove: touchMove,
+  touchEnd: touchEnd
+}
+/* eslint-enable */

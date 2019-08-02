@@ -10,6 +10,8 @@ const menuHeight = MenuButtonInfo.height
 const navBoxHeight = menuTopSpace * 2 + menuHeight // 导航胶囊上下分别留6px的间隔
 const navUseableWidth = MenuButtonInfo.left - 20
 const navWrapperHeight = statusBarHeight + navBoxHeight
+const env = app.globalData.env
+MenuButtonInfo.radius = Math.ceil(MenuButtonInfo.height / 2)
 Component({
   /**
    * 组件的属性列表
@@ -17,7 +19,7 @@ Component({
   properties: {
     title: {
       type: String,
-      value: '范团亲子'
+      value: '范团精选'
     },
     fixed: {
       type: Boolean,
@@ -76,6 +78,7 @@ Component({
    * 组件的初始数据
    */
   data: {
+    env: env,
     observeDist: 0,
     showHideChanged: false,
     showNav: true,
@@ -85,7 +88,8 @@ Component({
     navBoxHeight: navBoxHeight,
     menuHeight: menuHeight,
     useableWidth: navUseableWidth,
-    navHeight: navWrapperHeight
+    navHeight: navWrapperHeight,
+    MenuButtonInfo: MenuButtonInfo
   },
 
   attached: function () {

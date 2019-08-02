@@ -28,6 +28,12 @@
 .theme-bg-85{
   background-color: rgba(255, 34, 102, 0.85) !important;
 }
+.theme-bg-shopping-view{
+  background-color: #FF6875 !important;
+}
+.theme-color-shopping-view{
+  color: #FFFFFF !important;
+}
 .theme-color{
   color: #FF2266 !important;
 }

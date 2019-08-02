@@ -34,11 +34,11 @@ Page({
     is_collect: false,
     showCollectTip: false,
     groupList: [],
-    fenxiao_price: 0, // 分享赚fenxiao_price，如果为0或不存在，则分享按钮为普通样式，否则为分享赚xxx样式
+    fenxiao_price: '', // 分享赚fenxiao_price，如果为0或不存在，则分享按钮为普通样式，否则为分享赚xxx样式
     cover_url: '',
     title: '',
     desc: '',
-    include_bx: '',
+    include_bx: false,
     min_price: 0,
     min_origin_price: 0,
     min_pt_price: 0,
@@ -46,7 +46,7 @@ Page({
     show_min_origin_price: 0,
     show_min_pt_price: 0,
     price_num: 1,
-    status: '', // 0为失效或已删除|1为报名中|2为已满额未截止|3为已截止未满额|4为已截止且满额|5为已结束 // 非活动 -3为手动下架|-2为审核中|-1为审核失败|0为未上架|1为出售中|6已售空
+    status: '', // 0为失效或已删除|1为销售中|2为已满额未截止|3为已截止未满额|4为已截止且满额|5为已结束 // 非活动 -3为手动下架|-2为审核中|-1为审核失败|0为未上架|1为出售中|6已售空
     valid_btime: '',
     valid_etime: '',
     dead_line: '',
@@ -169,7 +169,7 @@ Page({
         // 处理展示详情内容
         let arrEntities = { 'lt': '<', 'gt': '>', 'nbsp': ' ', 'amp': '&', 'quot': '"', 'mdash': '——', 'ldquo': '“', 'rdquo': '”', '#39': "'", 'ensp': '' }
         res.data.content = res.data.content.replace(/\n/ig, '').replace(/\t/ig, '').replace(/<img/ig, '<img style="max-width:100%;height:auto;display:block"').replace(/<section/ig, '<div').replace(/\/section>/ig, '/div>')
-        
+
         // 处理时间格式
         res.data.valid_btime = res.data.valid_btime ? util.formatDateTimeDefault('d', res.data.valid_btime) : ''
         res.data.valid_etime = res.data.valid_etime ? util.formatDateTimeDefault('d', res.data.valid_etime) : ''
@@ -301,10 +301,10 @@ Page({
       arr.push({img: '/assets/images/hx_rule_icon.png', text: `核销有效期：${hx_rule}`})
     }
     if (type == 1 && address) {
-      arr.push({img: '/assets/images/huodong_location.png', text: `活动地点：${address}`, isAddress: true, lnglat: address_position})
+      arr.push({img: '/assets/images/huodong_location.png', text: `活动地点：${address}`, isAddress: true, lnglat: address_position, address: `${address}`})
     }
     if (type == 1 && jh_address) {
-      arr.push({img: '/assets/images/jihe_location.png', text: `集合地点：${jh_address}`, isAddress: true, lnglat: jh_address_position})
+      arr.push({img: '/assets/images/jihe_location.png', text: `集合地点：${jh_address}`, isAddress: true, lnglat: jh_address_position, address: `${jh_address}`})
     }
     if (min_age) {
       arr.push({img: '/assets/images/nianling.png', text: `适合年龄段：${min_age == -1 ? '不限年龄' : (min_age + ' ~ ' + max_age + '岁')}`})
@@ -317,7 +317,7 @@ Page({
         arr.push({img: '/assets/images/beizhu.png', text: item})
       })
     }
-    if (include_bx == 1) {
+    if (include_bx) {
       arr.push({img: '/assets/images/baoxian.png', text: `${type == 1 ? '本次活动' : '本商品'}费用包含保险`})
     }
     if (!refund) {
@@ -348,11 +348,15 @@ Page({
   },
 
   viewLocation: function (e) {
-    const {lnglat} = e.currentTarget.dataset
+    const {lnglat, address} = e.currentTarget.dataset
     if (lnglat && lnglat[0] && lnglat[1]) {
       wx.openLocation({
         latitude: parseFloat(lnglat[1]),
-        longitude: parseFloat(lnglat[0])
+        longitude: parseFloat(lnglat[0]),
+        address: address,
+        success: res => {
+          console.log('success', res)
+        }
       })
     }
   },

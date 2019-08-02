@@ -2,11 +2,12 @@
 <ft-custom-nav title="{{navTitle}}" />
 <view class='page-goodslist'>
   <ft-banners wx:if="{{banners && banners[0]}}" banners="{{banners}}" height="320rpx" spacing="{{0}}" border-radius="0" indicator-color="#999" indicator-currunt-color="#01CEB3" previous-margin="{{0}}" next-margin="{{0}}" catchtap="bannerTap" />
-  <activity-card2 wx:for="{{activitys}}" wx:for-index="idx" wx:for-item="activity" wx:key="id" activity="{{activity}}" top-border="{{idx !== 0}}" catchactivitytap="activityTap" />
-  <view wx:if="{{activityLoaded && (!activitys || !activitys[0])}}" class='empty-box'>
+  <ft-list-loader visible="{{!loaded}}" />
+  <activity-card2 wx:for="{{list}}" wx:for-index="idx" wx:for-item="goods" wx:key="id" activity="{{goods}}" top-border="{{idx !== 0}}" catchactivitytap="goodsTap" />
+  <view wx:if="{{loaded && (!list || !list[0])}}" class='empty-box'>
     <image class='empty-image' src="/assets/images/empty_cate.png" mode="aspectFit"></image>
     <view class='empty-tip'>我们正在努力上架此类别的内容哦，敬请期待~</view>
   </view>
-  <ft-list-footer loading="{{activityLoading}}" page="{{activityPage}}" show-no-more="{{activitys && activitys[0]}}" no-more-text="{{(activitys && activitys[0]) ? '没有更多了' : '我们正在努力上架此类别的内容哦，敬请期待~'}}" />
+  <ft-list-footer loading="{{loading}}" page="{{page}}" show-no-more="{{list && list[0]}}" no-more-text="{{(list && list[0]) ? '没有更多了' : '我们正在努力上架此类别的内容哦，敬请期待~'}}" />
   <ft-iphone-bottom-adapter />
 </view>

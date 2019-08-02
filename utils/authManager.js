@@ -12,10 +12,16 @@ const isJsonString = str => {
 }
 
 const authManager = {
-  getAuthSetting: function (successCall) {
+  getAuthSetting: function (successCall, failCall, completeCall) {
     wx.getSetting({
       success: res => {
         successCall(res.authSetting)
+      },
+      fail: res => {
+        failCall && failCall(res)
+      },
+      complete: res => {
+        completeCall && completeCall(res)
       }
     })
   }

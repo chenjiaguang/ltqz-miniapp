@@ -32,7 +32,7 @@
     <view class='sub-overview'>
     <view wx:for="{{subOverview}}" wx:for-index="idx" wx:for-item="so" wx:key="text" class='state-block-wrapper'>
       <view class='line-separator-h'></view>
-      <view class='state-block' catchtap="viewLocation" data-lnglat="{{so.lnglat}}"><image class='left-icon' mode="aspectFit" src="{{so.img}}"></image><text class='state-block-text'>{{so.text}}</text><text wx:if="{{so.lnglat && so.lnglat[0] && so.lnglat[1]}}" class='right-icon lutufont lutu-next2'></text></view>
+      <view class='state-block' catchtap="viewLocation" data-lnglat="{{so.lnglat}}" data-address="{{so.address}}"><image class='left-icon' mode="aspectFit" src="{{so.img}}"></image><text class='state-block-text'>{{so.text}}</text><text wx:if="{{so.lnglat && so.lnglat[0] && so.lnglat[1]}}" class='right-icon lutufont lutu-next2'></text></view>
       </view>
     </view>
   </view>

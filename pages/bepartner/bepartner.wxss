@@ -159,10 +159,11 @@
   font-size: 32rpx;
   line-height: 44rpx;
   border-radius: 41rpx;
-  color: #FFFFFF;
+  color: #FFFFFF !important;
 }
 .apply-btn.disabled{
-  background: #D8D8D8;
+  background: #D8D8D8 !important;
+  color: #FFFFFF !important;
 }
 
 .apply-modal{
@@ -190,11 +191,12 @@
   align-items: center;
   font-size: 32rpx;
   line-height: 44rpx;
-  color: #FFFFFF;
+  color: #FFFFFF !important;
   margin: 26rpx 0;
 }
 .confirm-btn.disabled{
   background: #D8D8D8;
+  color: #FFFFFF !important;
 }
 .apply-box-title{
   font-size: 36rpx;

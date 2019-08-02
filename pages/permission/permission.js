@@ -20,6 +20,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
+    console.log('onload')
     authManager.getAuthSetting((authSetting) => {
       if (!!authSetting['scope.userInfo'] && !!authSetting['scope.userLocation']) {
         // token过期或不存在token时进入的该页面，则不显示授权相关信息，直接重新登录
@@ -113,6 +114,10 @@ Page({
   },
 
   getUserInfo: function(e) {
+    if (this.timeStamp) {
+      return false
+    }
+    this.timeStamp = e.timeStamp
     if (e.detail.errMsg === 'getUserInfo:ok') {
       this.setData({
         authUserInfo: true
@@ -137,11 +142,16 @@ Page({
         gender,
         nickName
       }
-      const successCallback = (authSetting) => {
+      if (this.loging) {
+        return false
+      }
+      const success = (authSetting) => {
         this.authGetting = false // 授权完成后重置正在授权为false
         if (authSetting['scope.userInfo'] && authSetting['scope.userLocation']) {
+          this.timeStamp = 0
           this.userLogin(logingInfo)
         } else if (!authSetting['scope.userInfo']) {
+          this.timeStamp = 0
           wx.showModal({
             content: '需要获取您的公开信息(头像、昵称等),请授权后继续使用', //提示的内容
             showCancel: false,
@@ -154,7 +164,13 @@ Page({
           wx.authorize({
             scope: 'scope.userLocation',
             success: () => {
+              this.setData({
+                authUserLocation: true
+              })
               this.userLogin(logingInfo)
+            },
+            complete: () => {
+              this.timeStamp = 0
             }
           })
           this.setData({
@@ -169,6 +185,7 @@ Page({
               if (res.confirm) {
                 wx.openSetting({
                   success: (res) => {
+                    this.timeStamp = 0
                     const authSetting = res.authSetting
                     let _obj = {}
                     _obj.authUserInfo = !!authSetting['scope.userInfo']
@@ -177,24 +194,39 @@ Page({
                     if (authSetting['scope.userInfo'] && authSetting['scope.userLocation']) {
                       this.userLogin(logingInfo)
                     }
+                  },
+                  complete: () => {
+                    this.timeStamp = 0
                   }
                 })
               } else if (res.cancel) {
                 console.log('用户点击取消')
+                this.timeStamp = 0
+              } else {
+                this.timeStamp = 0
               }
+            },
+            fail: () => {
+              this.timeStamp = 0
             }
           })
           this.setData({
             authUserLocation: false
           })
+        } else {
+          this.timeStamp = 0
         }
+      }
+      const fail = () => {
+        this.timeStamp = 0
       }
       if (this.authGetting) { // 如果正在获取授权，不重复获取
         return false
       }
       this.authGetting = true
-      authManager.getAuthSetting(successCallback) // 更新授权情况(storage)
+      authManager.getAuthSetting(success, fail) // 更新授权情况(storage)
     } else {
+      this.timeStamp = 0
       this.setData({
         authUserInfo: false
       })
@@ -216,9 +248,7 @@ Page({
     }, logingInfo)
     this.loging = true
     util.request('/login', rData).then(res => {
-      this.loging = false
       if ((res.error === 0 || res.error === '0') && res.data) {
-        const app = getApp()
         const {
           token,
           id,
@@ -244,8 +274,13 @@ Page({
             _obj['showRelaunchHome.' + permissionBackName] = true
             const app = getApp()
             app.store.setState(_obj)
+          },
+          complete: () => {
+            this.loging = false
           }
         })
+      } else {
+        this.loging = false
       }
     }).catch(err => {
       this.loging = false

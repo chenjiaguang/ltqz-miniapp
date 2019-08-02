@@ -178,7 +178,7 @@
   align-items: flex-end;
 }
 .logo{
-  width: 293rpx;
+  width: 184rpx;
   height: 80rpx;
 }
 .qrcode{
@@ -290,6 +290,14 @@
   line-height: 32rpx;
   color: #FF3B30;
   text-align: center;
+  transition: height 200ms;
+  overflow: hidden;
+}
+.share-tip.hide{
+  height: 0;
+}
+.share-tip.show{
+  height: 32rpx;
 }
 .bottom-content{
   width: 100%;

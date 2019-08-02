@@ -3,7 +3,7 @@
   <view wx:if="{{topBorder}}" class='line-separator-h' style="margin:{{borderMargin}}"></view>
   <view class='entrance-box' style="padding:{{spacing}};height:{{height}}">
     <slot name="icon"></slot>
-    <image wx:if="{{image}}" class='entrance-image' style="width:{{imageSize}}rpx;height:{{imageSize}}rpx" src="{{image}}" mode='aspectFit'></image>
+    <image wx:if="{{image}}" class='entrance-image' style="width:{{imageSize}}rpx;height:{{imageSize}}rpx;margin-right:{{imageSpacing}}rpx" src="{{image}}" mode='aspectFit'></image>
     <text wx:if="{{required}}" class='ft-icon c-icon-xinghao'></text>
     <text class='entrance-title' style="{{titleStyle}}">{{title}}</text>
     <text wx:if="{{subTitle}}" class='entrance-sub-title'>{{subTitle}}</text>

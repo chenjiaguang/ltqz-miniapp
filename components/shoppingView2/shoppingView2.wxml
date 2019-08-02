@@ -1,11 +1,11 @@
 <!--components/shoppingView/shoppingView.wxml-->
-<ft-modal id="c-ft-modal" hide-cancel mode="1">
+<ft-modal id="c-ft-modal" hide-cancel bottom-touch-hide mode="1">
   <view slot="bottom" class="session-context">
     <view class='session-box'>
       <view class="big-sessions">
         <view class='session-header'>选择商品</view>
         <scroll-view scroll-x class='sessions'>
-          <view wx:for="{{showSession}}" wx:for-index="idx" wx:for-item="ss" wx:key="id" class="session{{idx == 0 ? ' first' : ''}}{{(idx + 1) == showSession.length ? ' last' : ''}}{{ss[stockObj[saletype]] == 0 ? ' session-disabled' : ((ss[stockObj[saletype]] == null || ss[stockObj[saletype]] > 20) ? ' session-ample' : ' session-normal')}}{{currentSession[saletype] == idx ? ' theme-bg-50' : ''}}" catchtap="sessionTap" data-status="{{ss[stockObj[saletype]] == 0 ? 'disabled' : ((ss[stockObj[saletype]] == null || ss[stockObj[saletype]] > 20) ? 'ample' : 'normal')}}" data-idx="{{idx}}">
+          <view wx:for="{{showSession}}" wx:for-index="idx" wx:for-item="ss" wx:key="id" class="session{{idx == 0 ? ' first' : ''}}{{(idx + 1) == showSession.length ? ' last' : ''}}{{ss[stockObj[saletype]] == 0 ? ' session-disabled' : ((ss[stockObj[saletype]] == null || ss[stockObj[saletype]] > 20) ? ' session-ample' : ' session-normal')}}{{currentSession[saletype] == idx ? ' theme-bg-shopping-view theme-color-shopping-view' : ''}}" catchtap="sessionTap" data-status="{{ss[stockObj[saletype]] == 0 ? 'disabled' : ((ss[stockObj[saletype]] == null || ss[stockObj[saletype]] > 20) ? 'ample' : 'normal')}}" data-idx="{{idx}}">
             <view class='session-content'>
               <view class='session-content-text'>{{ss.name}}</view>
             </view>
@@ -16,7 +16,7 @@
         <view class='line-separator-h'></view>
         <view class='ticket-header' style="padding-top:32rpx">选择商品</view>
         <scroll-view scroll-x class='sessions'>
-          <view wx:for="{{subSessions[saletype]}}" wx:for-index="idx" wx:for-item="ss" wx:key="id" class="session session-normal{{idx == 0 ? ' first' : ''}}{{(idx + 1) == subSessions[saletype].length ? ' last' : ''}}{{currentSubSession[saletype] == idx ? ' theme-bg-50' : ''}}" catchtap="subSessionTap" data-idx="{{idx}}">
+          <view wx:for="{{subSessions[saletype]}}" wx:for-index="idx" wx:for-item="ss" wx:key="id" class="session session-normal{{idx == 0 ? ' first' : ''}}{{(idx + 1) == subSessions[saletype].length ? ' last' : ''}}{{currentSubSession[saletype] == idx ? ' theme-bg-shopping-view theme-color-shopping-view' : ''}}" catchtap="subSessionTap" data-idx="{{idx}}">
             <view class='session-content'>
               <view class='session-content-text'>{{ss.name}}</view>
             </view>

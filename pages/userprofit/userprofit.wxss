@@ -1,6 +1,4 @@
 /* pages/userprofit/userprofit.wxss */
-.page-userprofit {
-}
 
 .card{
   margin: 0;

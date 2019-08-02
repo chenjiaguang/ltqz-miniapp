@@ -116,7 +116,7 @@ Component({
             this.setData({
               orderContact: _obj
             }, () => {
-              console.log('感谢您的授权，继续操作报名吧')
+              console.log('感谢您的授权，继续操作吧')
             })
           }
         }).catch(err => { })

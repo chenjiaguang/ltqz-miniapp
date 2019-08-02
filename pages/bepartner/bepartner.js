@@ -88,16 +88,25 @@ Page({
     this.setData({
       submitting: true
     })
+    this.toggleModal()
     util.request('/user/become_fenxiao', {
       phone: this.data.user.phone,
       form_id: e.detail.formId
     }).then(res => {
-      if (res.err0r == 0) {
-        util.backAndToast('申请信息提交成功，请等待审核')
+      if (res.error == 0) {
+        // util.backAndToast('您已申请成功，请耐心等待工作人员审核')
+        this.setData({
+          fenxiao_user_status: '0',
+          submitting: false
+        })
+        this.getApplyInfo()
+      } else {
+        this.setData({
+          submitting: false
+        })
       }
     }).catch(err => {
       console.log('err', err)
-    }).finally(res => {
       this.setData({
         submitting: false
       })
@@ -120,23 +129,24 @@ Page({
   },
 
   showApplyModal: function () {
-    let {loaded, can_apply, fenxiao_user_status} = this.data
-    if (!loaded) { // 数据未获取完成
-      return false
-    }
-    if (!can_apply) {
-      wx.showToast({
-        title: '您未达到申请条件',
-        icon: 'none'
-      })
+    let {loaded, can_apply, fenxiao_user_status, submitting} = this.data
+    if (!loaded || submitting || fenxiao_user_status === 0 || fenxiao_user_status === '0') { // 数据未获取完成 或 正在提交数据 或 正在审批
       return false
     }
     if (fenxiao_user_status == -1) {
-      wx.showToast({
-        title: '由于您违反了范团精选平台用户协议，已失去申请成为合伙人的资格',
-        icon: 'none',
-        duration: 3000
+      const app = getApp()
+      const confirmColor = app.globalData.themeModalConfirmColor || '#576B95' // #576B95是官方颜色
+      wx.showModal({
+        content: '由于您违反了范团精选平台用户协议，已失去申请成为合伙人的资格',
+        showCancel: false,
+        confirmText: '确定',
+        confirmColor
       })
+      // wx.showToast({
+      //   title: '由于您违反了范团精选平台用户协议，已失去申请成为合伙人的资格',
+      //   icon: 'none',
+      //   duration: 3000
+      // })
       return false
     } else if (fenxiao_user_status == 1) {
       wx.showToast({
@@ -146,9 +156,21 @@ Page({
       })
       return false
     }
+    
     if (fenxiao_user_status != 2) { // fenxiao_user_status: 2表示不是分销员
       return false
     }
+    if (!can_apply) {
+      wx.showToast({
+        title: '您未达到申请条件',
+        icon: 'none'
+      })
+      return false
+    }
+    this.toggleModal()
+  },
+
+  toggleModal: function () {
     const ftModal = this.selectComponent('#c-ft-modal')
     ftModal && ftModal.toggle && ftModal.toggle()
   },

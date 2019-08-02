@@ -6,6 +6,24 @@ const util = require('../../utils/util.js')
 Page({
   name: 'index',
   data: {
+    dragList: [
+      {
+        id: '1',
+        title: '水电费说了饭就善良11111'
+      },
+      {
+        id: '2',
+        title: '水电费说了饭就善良22222'
+      },
+      {
+        id: '3',
+        title: '水电费说了饭就善良33333'
+      },
+      {
+        id: '4',
+        title: '水电费说了饭就善良44444'
+      },
+    ],
     pageFetched: false, // 时候已经获取过/home接口的数据（无论成功或失败都设置为true，以去掉ftloader）
     refreshing: false,
     refreshed: false,
@@ -41,7 +59,7 @@ Page({
   onShareAppMessage: function () {
     const { cover_url } = this.data
     return {
-      title: '范团亲子-精选你的有范生活',
+      title: '范团精选-精选你的有范生活',
       path: '/pages/index/index'
     }
   },

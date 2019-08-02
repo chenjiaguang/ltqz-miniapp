@@ -27,6 +27,12 @@ function touchStart(e, ins) {
     state.iconWrapper.removeClass("transition")
     state.icon.removeClass("animation")
     state.iconWrapper.removeClass("fadeout")
+    state.icon.setStyle({
+      transform: 'rotate(0deg)',
+      '-webkit-transform': 'rotate(0deg)',
+      'animation-delay': '0',
+      '-webkit-animation-delay': '0'
+    })
 
     if (state.platform === 'android' || state.platform === 'devtools') { // 安卓或开发工具
       state.wrapper.removeClass("transition")
@@ -79,14 +85,16 @@ function touchMove(e, ins) {
         state.iconWrapper.removeClass('transition')
         state.icon.removeClass('transition')
       }
+      var rot = distExtraY / state.distThreshold / 2 * 360
+      state.rot = rot
       state.iconWrapper.setStyle({
         // top: (state.iconDist - 32) + 'px',
         transform: 'translateY(' + state.iconDist + 'px)',
         "-webkit-transform": 'translateY(' + state.iconDist + 'px)'
       })
       state.icon.setStyle({
-        transform: 'rotate(' + distExtraY / state.distThreshold / 2 * 360 + 'deg)',
-        '-webkit-transform': 'rotate(' + distExtraY / state.distThreshold / 2 * 360 + 'deg)'
+        transform: 'rotate(' + state.rot + 'deg)',
+        '-webkit-transform': 'rotate(' + state.rot + 'deg)'
       })
     }
     if (state.platform === 'android' || state.platform === 'devtools') { // 安卓或开发工具
@@ -116,6 +124,12 @@ function touchEnd(e, ins) {
       // top: state.iconDist + 'px',
       transform: 'translateY(' + state.iconDist + 'px)',
       "-webkit-transform": 'translateY(' + state.iconDist + 'px)'
+    })
+    state.icon.setStyle({
+      transform: 'rotate(' + state.rot + 'deg)',
+      '-webkit-transform': 'rotate(' + state.rot + 'deg)',
+      'animation-delay': -((state.rot % 360) / 360 * 1.5) + 's',
+      '-webkit-animation-delay': -((state.rot % 360) / 360 * 1.5) + 's'
     })
     if (state.platform === 'android' || state.platform === 'devtools') { // 安卓或开发工具
       state.wrapper.addClass('transition')
@@ -161,14 +175,14 @@ function onRefreshed(newValue, oldValue, ins, itemIns) {
     
     var wrapper = state.wrapper || ins.selectComponent(".wrapper")
     var iconWrapper = state.iconWrapper || ins.selectComponent(".icon-wrapper")
-    var icon = state.icon || ins.selectComponent(".icon")
-    icon.removeClass("animation")
+    // var icon = state.icon || ins.selectComponent(".icon")
+    // icon.removeClass("animation")
     iconWrapper.addClass("transition")
     iconWrapper.addClass("fadeout")
     iconWrapper.setStyle({
       // top: '-32px',
       transform: 'translateY(-32px)',
-      "-webkit-transform": 'translateY(-32px)'
+      "-webkit-transform": 'translateY(-32px)',
     })
 
     if (state.platform === 'android' || state.platform === 'devtools') { // 安卓或开发工具

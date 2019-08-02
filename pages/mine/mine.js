@@ -16,31 +16,31 @@ Page({
     },
     fx_apply_entrance: false,
     be_partner_entrance: {
-      icon: 'lutufont lutu-apply',
+      icon: '/assets/images/user_bepartner.png',
       title: '申请成为合伙人',
       path: '/pages/bepartner/bepartner'
     },
     userfxgoods_entrance: {
-      icon: 'lutufont lutu-fenxiao2',
+      icon: '/assets/images/user_fenxiao.png',
       title: '推广商品',
       path: '/pages/userfxgoods/userfxgoods'
     },
     assistant_entrance: {
-      icon: 'lutufont lutu-assistant',
+      icon: '/assets/images/user_assistant.png',
       title: '商家助手',
       path: '/pages/selectuser/selectuser'
     },
     other_entrances: [{
-        icon: 'lutufont lutu-collection',
+        icon: '/assets/images/user_collection.png',
         title: '我的收藏',
         path: '/pages/collection/collection'
       }, {
-        icon: 'lutufont lutu-usuallyinfo',
+        icon: '/assets/images/user_usuallyinfo.png',
         title: '常用信息',
         path: '/pages/usuallycontacts/usuallycontacts'
       },
       {
-        icon: 'lutufont lutu-kefu',
+        icon: '/assets/images/user_contact.png',
         title: '联系客服',
         path: '',
         phone: '400-4504-2626'

@@ -31,6 +31,10 @@ Component({
       type: Number,
       value: 44
     },
+    imageSpacing: {
+      type: Number,
+      value: 32
+    },
     subImage: {
       type: String,
       value: ''

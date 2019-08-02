@@ -101,3 +101,8 @@
   width: 100%;
   visibility: hidden;
 }
+.env{
+  position: fixed;
+  z-index: 100;
+  background: linear-gradient(to right, #ff9569, #e92758);
+}

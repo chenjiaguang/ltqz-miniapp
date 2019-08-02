@@ -48,7 +48,7 @@
     <image wx:if="{{localPoster}}" class='poster' src="{{localPoster}}" style="width:{{posterWidth ? (posterWidth + 'px') : '88%'}};height:{{posterHeight ? (posterHeight + 'px') : '88%'}}" mode="aspectFit" catchtap="stopPropagation"></image>
   </view>
   <view slot="bottom" class="bottom-wrapper">
-    <view wx:if="{{fenxiao_price && fenxiao_price > 0}}" class='share-tip'>好友通过你的分享购买此产品，你将获得{{fenxiao_price}}元收益</view>
+    <view class="share-tip{{(fenxiao_price && fenxiao_price !== '0') ? ' show' : ' hide'}}">好友通过你的分享购买此产品，你将获得{{fenxiao_price}}元收益</view>
     <view class='bottom-content'>
       <view class='share-friends'>
         <view class="share-item-icon{{canShareFriend ? '' : ' disabled'}}">

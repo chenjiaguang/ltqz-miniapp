@@ -3,7 +3,7 @@
 <view class='container'>
   <view class="block-separator"></view>
   <view class='head row ai-center'>
-    <text class='usernum'>报名人数：{{join_num}}</text>
+    <text class='usernum'>下单人数：{{join_num}}</text>
     <text>预计收入：￥{{js_price}}</text>
   </view>
   <ft-list-loader visible="{{!page}}" />
@@ -35,7 +35,7 @@
   <ft-list-footer loaded="{{!!page}}" loading="{{loading}}" page="{{page}}" show-no-more />
   <ft-bottom-box box-height="{{142}}">
     <view class="btn-wrapper">
-      <view class='btn theme-linear-gradient-137' bindtap='goDetail'>查看活动详情</view>
+      <view class='btn theme-linear-gradient-137' bindtap='goDetail'>查看商品详情</view>
     </view>
   </ft-bottom-box>
 </view>

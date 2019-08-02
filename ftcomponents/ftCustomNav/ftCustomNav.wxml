@@ -19,3 +19,5 @@
   </view>
   <view class="line-separator-h"></view>
 </view>
+<view wx:if="{{env === 'dev'}}" class="env" style="width:{{MenuButtonInfo.width}}px;height:{{MenuButtonInfo.height}}px;top:{{MenuButtonInfo.top}}px;left:{{MenuButtonInfo.left}}px;border-radius:{{MenuButtonInfo.height / 2}}px"></view>
+  

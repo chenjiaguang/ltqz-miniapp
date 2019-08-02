@@ -7,7 +7,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-    navTitle: '报名详情',
+    navTitle: '订单详情',
     genderText: {
       0: '保密',
       1: '男',

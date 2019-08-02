@@ -1,0 +1,85 @@
+/* eslint-disable */
+
+function touchStart(e, ins) {
+  var dataset = e.instance.getDataset()
+  var state = e.instance.getState()
+  var ele = dataset.ele
+  state.startMoving = false
+  state.pullMoveY = 0
+  state.timeStamp = e.timeStamp
+  state.lastDistance = 0
+  state.able = ((ele === 'top' && dataset.topReached) || (ele === 'bottom' && dataset.bottomReached)) && ((ele === 'top' && dataset.topTouchHide) || (ele === 'bottom' && dataset.bottomTouchHide))
+  if (state.able) {
+    state.startPulling = true
+    state.pullStartX = e.touches[0].clientX
+    state.pullStartY = e.touches[0].clientY
+    state.distance = 0
+    e.instance.removeClass("transition")
+  }
+}
+
+function touchMove(e, ins) {
+  var dataset = e.instance.getDataset()
+  var state = e.instance.getState()
+  var ele = dataset.ele
+  if (!state.startPulling) {
+    return true
+  }
+  var d = ele === 'top' ? -1 : 1
+  var preY = state.pullMoveY || state.pullStartY
+  if ((e.touches[0].clientY - preY) > 0) {
+    state.direction = d * 1
+  } else {
+    state.direction = d * -1
+  }
+  state.pullMoveX = e.touches[0].clientX
+  state.pullMoveY = e.touches[0].clientY
+  var distExtraX = state.pullMoveX - state.pullStartX
+  var distExtraY = state.pullMoveY - state.pullStartY
+  if (!state.touchmove) {
+    state.active = Math.abs(distExtraY) >= Math.abs(distExtraX)
+  }
+  state.startMoving = true
+  if (state.active) {
+    state.distance = distExtraY > 0 ? distExtraY : 0
+    if (e.timeStamp - 300 > state.timeStamp) {
+      state.timeStamp = e.timeStamp
+      state.lastDistance = distExtraY > 0 ? distExtraY : 0
+    } else {
+      if (!state.lastDistance) {
+        state.lastDistance = distExtraY > 0 ? distExtraY : 0
+      }
+    }
+    e.instance.setStyle({
+      transform: 'translateY(' + state.distance + 'px)',
+      "-webkit-transform": 'translateY(' + state.distance + 'px)'
+    })
+    return false
+  }
+  return true
+}
+
+function touchEnd(e, ins) {
+  var dataset = e.instance.getDataset()
+  var state = e.instance.getState()
+  var accSpeed = state.lastDistance / (e.timeStamp - state.timeStamp) / (e.timeStamp - state.timeStamp)
+  state.active = false
+  if (!state.startPulling) {
+    return
+  }
+  state.startPulling = false
+  state.startMoving = false
+  var duration = parseInt((state.distance / dataset.height) * 200)
+  if ((state.distance > dataset.height / 2) || (accSpeed > 0.0012 && state.direction > 0)) { // 0.0012是加速度临界点，大于这个加速度就关闭
+    ins.callMethod('hide', {duration})
+  } else {
+    ins.callMethod('show', {duration})
+  }
+}
+
+module.exports = {
+  touchStart: touchStart,
+  touchMove: touchMove,
+  touchEnd: touchEnd
+}
+/* eslint-enable */

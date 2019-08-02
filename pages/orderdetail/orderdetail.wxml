@@ -50,7 +50,7 @@
     <view class='line-separator-h'></view>
     <view class='item row'>
       <text class='key'>实付金额</text>
-      <text class='value'>¥{{order.show_price}}{{(product.include_bx == 1) ? '（费用包含保险）' : ''}}</text>
+      <text class='value'>¥{{order.show_price}}{{(product.include_bx) ? '（费用包含保险）' : ''}}</text>
     </view>
     <view class='line-separator-h'></view>
     <view class='item row'>
@@ -66,7 +66,7 @@
 
   <view class='list' wx:if="{{traveler_infos && traveler_infos.length}}">
     <view class='title'>出行人信息</view>
-    <block wx:if="{{product.include_bx == 1}}">
+    <block wx:if="{{product.include_bx}}">
       <block wx:for="{{traveler_infos}}" wx:key="name">
         <view class='line-separator-h'></view>
         <view class='item row'>
@@ -75,7 +75,7 @@
         </view>
       </block>
     </block>
-    <block wx:if="{{product.include_bx != 1 && traveler_name_text}}">
+    <block wx:if="{{!product.include_bx && traveler_name_text}}">
       <view class='line-separator-h'></view>
       <view class='item row'>
         <text class='key'>{{traveler_name_text}}</text>

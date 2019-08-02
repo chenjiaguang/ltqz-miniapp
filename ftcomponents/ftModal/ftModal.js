@@ -27,6 +27,14 @@ Component({
     hideCancel: {
       type: Boolean,
       value: false
+    },
+    topTouchHide: {
+      type: Boolean,
+      value: false
+    },
+    bottomTouchHide: {
+      type: Boolean,
+      value: false
     }
   },
 
@@ -34,7 +42,11 @@ Component({
    * 组件的初始数据
    */
   data: {
-    extraBottom
+    extraBottom,
+    topReached: false,
+    bottomReached: false,
+    topHeight: 0,
+    bottomHeight: 0
   },
 
   showModal: false,
@@ -43,32 +55,79 @@ Component({
    * 组件的方法列表
    */
   methods: {
+    initObserver() {
+      if (this.data.topTouchHide) {
+        this.observerTop = this.createIntersectionObserver()
+        this.observerTop.relativeToViewport().observe(".intersection-dot-top", (res) => {
+          if (res.intersectionRatio > 0) {
+            this.setData({
+              topReached: true,
+            })
+          } else {
+            this.setData({
+              topReached: false,
+            })
+          }
+        })
+        this.createSelectorQuery().select('.top').boundingClientRect(rect => {
+          this.setData({topHeight: rect.height})
+        }).exec()
+      }
+      if (this.data.bottomTouchHide) {
+        this.observerBottom = this.createIntersectionObserver()
+        this.observerBottom.relativeToViewport().observe(".intersection-dot-bottom", (res) => {
+          if (res.intersectionRatio > 0) {
+            this.setData({
+              bottomReached: true,
+            })
+          } else {
+            this.setData({
+              bottomReached: false,
+            })
+          }
+        })
+        this.createSelectorQuery().select('.bottom').boundingClientRect(rect => {
+          this.setData({bottomHeight: rect.height})
+        }).exec()
+      }
+    },
+    clearObserver() {
+      if (this.observerTop) {
+        this.observerTop.disconnect()
+        this.observerTop = null
+      }
+      if (this.observerBottom) {
+        this.observerBottom.disconnect()
+        this.observerBottom = null
+      }
+    },
     stopPropagation: function () {
       return false
     },
     hide: function (e) {
       this.showModal = false
+      const duration = (e && e.duration) ? e.duration : 200
       if (!this.wrapperHideAnimation) {
         this.wrapperHideAnimation = wx.createAnimation({
-          duration: 200,
+          duration: duration,
           timingFunction: 'step-end',
         })
       }
       if (!this.maskAnimation) {
         this.maskAnimation = wx.createAnimation({
-          duration: 200,
+          duration: duration,
           timingFunction: 'linear',
         })
       }
       if (!this.topAnimation) {
         this.topAnimation = wx.createAnimation({
-          duration: 200,
+          duration: duration,
           timingFunction: 'linear',
         })
       }
       if (!this.bottomAnimation) {
         this.bottomAnimation = wx.createAnimation({
-          duration: 200,
+          duration: duration,
           timingFunction: 'linear',
         })
       }
@@ -82,33 +141,34 @@ Component({
         topAnimationData: this.topAnimation.export(),
         bottomAnimationData: this.bottomAnimation.export()
       })
-      if (e && e.currentTarget.dataset.origin == 'mask') { // 如果是点击遮罩隐藏，则执行maskhide回调
+      if (e && e.currentTarget && e.currentTarget.dataset && e.currentTarget.dataset.origin == 'mask') { // 如果是点击遮罩隐藏，则执行maskhide回调
         this.triggerEvent('maskhide')
       }
     },
-    show: function () {
+    show: function (e) {
       this.showModal = true
+      const duration = (e && e.duration) ? e.duration : 200
       if (!this.wrapperShowAnimation) {
         this.wrapperShowAnimation = wx.createAnimation({
-          duration: 200,
+          duration: duration,
           timingFunction: 'step-start',
         })
       }
       if (!this.maskAnimation) {
         this.maskAnimation = wx.createAnimation({
-          duration: 200,
+          duration: duration,
           timingFunction: 'linear',
         })
       }
       if (!this.topAnimation) {
         this.topAnimation = wx.createAnimation({
-          duration: 200,
+          duration: duration,
           timingFunction: 'linear',
         })
       }
       if (!this.bottomAnimation) {
         this.bottomAnimation = wx.createAnimation({
-          duration: 200,
+          duration: duration,
           timingFunction: 'linear',
         })
       }
@@ -130,5 +190,11 @@ Component({
         this.show()
       }
     }
+  },
+  ready() {
+    this.initObserver()
+  },
+  detached() {
+    this.clearObserver()
   }
 })

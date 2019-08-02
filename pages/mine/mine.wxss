@@ -23,6 +23,9 @@
 
 .user-intro {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 .user-info .lutu-next2 {
@@ -47,25 +50,24 @@
   border-left: 1px solid #333;
 }
 
-.user-name-box {
-  margin-bottom: 13rpx;
-}
-
-.user-name {
+.user-name-box{
   font-size: 38rpx;
-  line-height: 38rpx;
+  line-height: 42rpx;
   color: #333;
   font-weight: bold;
 }
 
-.user-tag {
-  font-size: 26rpx;
-  line-height: 34rpx;
-  color: #333;
+.user-tag-box{
+  height: 36rpx;
   padding: 0 10rpx;
-  border: 1px solid #333;
-  border-radius: 8rpx;
-  margin-right: 10rpx;
+  border-radius: 18rpx;
+  font-size: 26rpx;
+  line-height: 26rpx;
+  color: #ffffff;
+  padding: 0 10rpx;
+  margin: 13rpx 0 0 0;
+  display: flex;
+  align-items: center;
 }
 
 /* .other-list {
@@ -182,6 +184,13 @@
   height: 88rpx;
   line-height: 88rpx;
   padding: 0 32rpx 0 24rpx;
+}
+
+.user-order-icon, .user-profit-icon{
+  display: block;
+  width: 36rpx;
+  height: 36rpx;
+  margin-right: 10rpx;
 }
 
 .profit-sum {

@@ -4,6 +4,7 @@
   "usingComponents": {
     "ft-custom-nav": "../../ftcomponents/ftCustomNav/ftCustomNav",
     "ft-banners": "../../ftcomponents/ftBanners/ftBanners",
+    "ft-list-loader": "../../ftcomponents/ftListLoader/ftListLoader",
     "ft-list-footer": "../../ftcomponents/ftListFooter/ftListFooter",
     "ft-iphone-bottom-adapter": "../../ftcomponents/ftIphoneBottomAdapter/ftIphoneBottomAdapter",
     "activity-card2": "../../components/activityCard2/activityCard2"

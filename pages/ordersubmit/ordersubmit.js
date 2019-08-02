@@ -31,7 +31,7 @@ Page({
     selectedSessions: [],
     selectedTicketLength: 0,
     refund: false,
-    include_bx: '', // 不包含保险：0，包含保险：1
+    include_bx: false, // 不包含保险：0，包含保险：1
     buy_for: [],
     buy_for_text: '',
     buyfors: [],
@@ -399,7 +399,7 @@ Page({
     const {buyfors, include_bx} = this.data
     let bfs = buyfors.filter(item => item.checked)
     let _obj = {}
-    if (include_bx === '0' || include_bx === 0) { // 不包含保险
+    if (!include_bx) { // 不包含保险
       let text = ''
       bfs.forEach((item, idx) => {
         text += (idx === 0) ? item.name : ('，' + item.name)
@@ -416,7 +416,7 @@ Page({
     let {idx} = e.currentTarget.dataset
     let { buyfors, include_bx} = this.data
     let _obj = {}
-    if ((include_bx === '1' || include_bx === 0) && !buyfors[idx].id_number) {
+    if (include_bx && !buyfors[idx].id_number) {
       _obj['buyfors[' + idx + '].tip'] = '请填写身份证号'
     } else {
       const checked = buyfors[idx].checked

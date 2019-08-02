@@ -165,7 +165,7 @@
 				},
 				{
 					"id": 15,
-					"name": "商助-报名详情",
+					"name": "商助-订单详情",
 					"pathName": "pages/signupmanager/signupmanager",
 					"query": "id=1&product_id=1",
 					"scene": null
@@ -195,7 +195,7 @@
 					"id": 20,
 					"name": "活动详情",
 					"pathName": "pages/goodsdetail/goodsdetail",
-					"query": "id=150",
+					"query": "id=168",
 					"scene": null
 				},
 				{

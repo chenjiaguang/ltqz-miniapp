@@ -72,7 +72,6 @@ Page({
   fetchGoods: function (pn) {
     const {
       loading,
-      list,
       page
     } = this.data
     if (loading || (page && page.is_end && pn !== 1)) { // 正在加载 或 最后一页并且不是刷新
@@ -97,7 +96,6 @@ Page({
           item.min_pt_price = util.formatMoney(item.min_pt_price).showMoney
           item.min_qg_price = util.formatMoney(item.min_qg_price).showMoney
         })
-        list = []
         let _obj = {}
         _obj.loaded = true
         _obj.page = page

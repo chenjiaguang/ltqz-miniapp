@@ -12,7 +12,9 @@ module.exports = {
     'orderContact',
     'orderSubmitJson', // 提交订单页面，所需要的数据json串
     'orderListRefresh',
-    'goodsCollected' // 是否收藏过活动，未收藏过，则在第一次收藏成功时提示其他操作
+    'goodsCollected', // 是否收藏过活动，未收藏过，则在第一次收藏成功时提示其他操作
+    'fenxiaoid_unbind', // 待绑定待分销员id
+    'fenxiaoid_binded' // 已绑定分销员id
   ],
   setStorage: function (key, value) {
     if (this.allowList.indexOf(key) === -1) { // allowList不存在,则会提醒开发者添加相应的说明
@@ -25,5 +27,8 @@ module.exports = {
       console.log('getStorage:请在allowList中添加相应的字段说明，增加易读性')
     }
     return wx.getStorageSync(key)
+  },
+  removeStorage: function (key) {
+    wx.removeStorage(key)
   }
 }

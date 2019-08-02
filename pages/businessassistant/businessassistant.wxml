@@ -14,8 +14,8 @@
     <view class='overview-bottom row center'>
       <view class='overview-bottom-item'>
         <view class='overview-bottom-header'>
-          <text>活动报名总收入</text>
-          <text class='unit'>（元）</text>
+          <text>总收入</text>
+          <text class='unit'>(元)</text>
         </view>
         <view class='overview-bottom-amount bold'>{{data.total_income}}</view>
       </view>

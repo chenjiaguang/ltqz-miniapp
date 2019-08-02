@@ -5,7 +5,7 @@ Component({
    */
   properties: {
     profit: {
-      type: Number,
+      type: String,
       value: 0
     },
     showPrice: {

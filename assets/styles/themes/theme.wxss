@@ -10,7 +10,7 @@
 9.mine.json（我的）的navigationBarBackgroundColor 和 backgroundColorTop
 10.permission.json（授权登录）的navigationBarBackgroundColor 和 backgroundColorTop 和 页面的banner图
 11.selectuser.json（选择商家帐号）的navigationBarBackgroundColor
-12.signupmanager.json（报名详情）的navigationBarBackgroundColor
+12.signupmanager.json（订单详情）的navigationBarBackgroundColor
 13.userprofit.json（收益详情）的navigationBarBackgroundColor 和 backgroundColorTop
 14.userprofitdetail.json（收益明细）的navigationBarBackgroundColor 和 backgroundColorTop
 15.withdrawrecord.json（提现记录）的navigationBarBackgroundColor */

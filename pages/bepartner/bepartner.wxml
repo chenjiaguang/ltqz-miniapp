@@ -1,6 +1,6 @@
 <!--pages/userinfo/userinfo.wxml-->
 <ft-custom-nav title="{{navTitle}}" />
-<!-- <view class='tip'>想成为范团亲子的分销合伙人，获得现金奖励吗？ 现在提交您的申请信息，我们会在1-2天内进行审核：</view>
+<!-- <view class='tip'>想成为范团精选的分销合伙人，获得现金奖励吗？ 现在提交您的申请信息，我们会在1-2天内进行审核：</view>
 <view class='card'>
   <view class='item row ai-center jc-between'>
     <text class='title'>头像</text>
@@ -51,9 +51,9 @@
     </view>
   </view>
 </view>
-<ft-bottom-box box-height="{{142}}">
+<ft-bottom-box wx:if="{{loaded}}" box-height="{{142}}">
   <view class="apply-btn-wrapper" hover-class="none" hover-stop-propagation="false">
-    <button class="apply-btn{{(can_apply && fenxiao_user_status == 2) ? ' theme-linear-gradient-137' : ' disabled'}}" catchtap="showApplyModal">
+    <button class="apply-btn{{(can_apply && fenxiao_user_status == 2 && !submitting) ? ' theme-linear-gradient-137' : ' disabled'}}" disabled="{{fenxiao_user_status === 0 || fenxiao_user_status === '0' || submitting}}" catchtap="showApplyModal">
       <text class='apply-text'>{{btnText[fenxiao_user_status] || '立即申请'}}</text>
     </button>
   </view>

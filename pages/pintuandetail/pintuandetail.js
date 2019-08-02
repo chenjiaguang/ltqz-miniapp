@@ -117,7 +117,7 @@ Page({
         if (res.data.status == 1) { // 状态为拼团中时，初始化分享到朋友圈
           const title = res.data.current_user_name + '邀请你参与拼团'
           let path = '/pages/pintuandetail/pintuandetail?id=' + id
-          if (res.data.fenxiao_price && res.data.fenxiao_price > 0) {
+          if (res.data.fenxiao_price && res.data.fenxiao_price !== '0') {
             path += ('&uid=' + res.data.current_user_id)
           }
           const imageUrl = res.data.product.cover_url
@@ -282,7 +282,7 @@ Page({
           this.setData({
             orderContact: _obj
           }, () => {
-            console.log('感谢您的授权，继续操作报名吧')
+            console.log('感谢您的授权，继续操作吧')
           })
         }
       }).catch(err => { })

@@ -14,7 +14,7 @@
   <!-- <view class='line-separator-h'></view> -->
   <view class='bottom-box'>
     <view class='usernum'>
-      <view style="font-size:26rpx;line-height:26rpx;color:#666">报名人数</view>
+      <view style="font-size:26rpx;line-height:26rpx;color:#666">下单人数</view>
       <view style="font-size:36rpx;line-height:36rpx;color:#F24724">{{activity.join_num}}</view>
     </view>
     <view class='line-separator-v'></view>

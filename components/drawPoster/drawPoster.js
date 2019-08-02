@@ -32,7 +32,7 @@ Component({
     huodongId: '',
     tuanId: '',
     localPoster: '',
-    fenxiao_price: 0,
+    fenxiao_price: '',
     canShareFriend: false,
     showHideClass: {
       1: ' hide',
@@ -57,7 +57,7 @@ Component({
       })
       this.createSelectorQuery().select('#wrapper').boundingClientRect(rect => {
         const ctx = wx.createCanvasContext('c-draw-poster', this)
-        ctx.setFillStyle('#FFFFFF')
+        ctx.fillStyle = '#FFFFFF'
         this.posterWidth = rect.width
         this.posterHeight = rect.height
         ctx.fillRect(0, 0, rect.width, rect.height)
@@ -173,7 +173,7 @@ Component({
       const eA4 = Math.PI
       ctx.arc(x4, y4, r4, sA4, eA4)
       ctx.lineTo(fillData[idx].left, fillData[idx].top + r4)
-      ctx.setFillStyle(fillData[idx].backgroundColor)
+      ctx.fillStyle = fillData[idx].backgroundColor
       ctx.closePath()
       ctx.fill()
       ctx.restore()
@@ -234,7 +234,7 @@ Component({
       const eA4 = Math.PI
       ctx.arc(x4, y4, r4, sA4, eA4)
       ctx.lineTo(strokeData[idx].left, strokeData[idx].top + r4)
-      ctx.setStrokeStyle(strokeData[idx].borderColor)
+      ctx.strokeStyle = strokeData[idx].borderColor
       ctx.closePath()
       ctx.stroke()
       ctx.restore()
@@ -253,10 +253,10 @@ Component({
     drawText: function (textData, ctx, idx, drawSuccess) {
       const alignObj = {start: 'left', center: 'center', end: 'right'}
       ctx.save()
-      ctx.setFontSize(parseInt(textData[idx].fontSize))
+      ctx.font = parseInt(textData[idx].fontSize) + 'px sans-serif'
       ctx.setTextAlign(alignObj[textData[idx].textAlign])
       ctx.setTextBaseline('middle')
-      ctx.setFillStyle(textData[idx].color)
+      ctx.fillStyle = textData[idx].color
       if (textData[idx].dataset.maxline && textData[idx].dataset.maxlength) {
         const chr = textData[idx].dataset.text
         let temp = ""
@@ -398,6 +398,7 @@ Component({
         tuanId: tuan_id || '',
         localPoster: '',
         canShareFriend: false,
+        fenxiao_price: '',
         fetching: true
       }, () => {
         this.triggerEvent('statuschange', { fetching: this.data.fetching, drawing: this.data.drawing })
@@ -411,7 +412,7 @@ Component({
           _obj.hAvatar = data.user.avatar
           _obj.hName = data.user.nick_name
           _obj.hTip = (data.sale_type == 2 && tuan_id) ? '发起了拼团，邀请你参与拼团~' : '发现了一个宝贝，想要跟你分享~'
-          _obj.banner = data.cover_url
+          _obj.banner = data.product_cover_url || data.cover_url
           _obj.title = data.title
           let price = ''
           if (data.sale_type == 1) { // 普通
