@@ -1,9 +1,9 @@
 <!--ftcomponents/ftDragAndDrop/ftDragAndDrop.wxml-->
 <wxs module="m1" src="./ftDragAndDrop.wxs"></wxs>
-<view class="wrapper">
-  <view wx:for="{{list}}" wx:key="id" class="item item{{index}}" data-index="{{index}}">
+<view class="wrapper" change:disablemove="{{m1.moveableChange}}" disablemove="{{disableMove}}" data-disablemove="{{disableMove}}">
+  <view wx:for="{{showList}}" wx:key="id" class="item item{{index}}" data-index="{{index}}">
     <view class="title">{{item.title}}</view>
-    <view class="drag-btn" bind:longpress="{{m1.longPress}}" bind:touchstart="{{m1.touchStart}}" bind:touchmove="{{m1.touchMove}}" bind:touchend="{{m1.touchEnd}}" data-index="{{index}}" data-rect="{{rects[index]}}" data-rects="{{rects}}">
+    <view class="drag-btn" bind:longpress="{{m1.longPress}}" bind:touchmove="{{m1.touchMove}}" bind:touchend="{{m1.touchEnd}}" data-index="{{index}}" data-rect="{{rects[index]}}" data-rects="{{rects}}">
       拖放
     </view>
   </view>

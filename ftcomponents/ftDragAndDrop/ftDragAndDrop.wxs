@@ -3,49 +3,66 @@ function longPress(e, ins) {
   var dataset = e.instance.getDataset()
   var state = e.instance.getState()
   var index = dataset.index
-  var rect = dataset.rect
   var rects = dataset.rects
+  var wrapper = ins.selectComponent('.wrapper')
+  var wrapperState = wrapper.getState()
+  var wrapperDataset = wrapper.getDataset()
 
   state.ele = ins.selectComponent('.item' + index)
   state.ele.addClass('actived')
-  state.startPulling = true
+  if (wrapperDataset.disablemove) {
+    state.startPulling = false
+  } else {
+    state.startPulling = true
+  }
+  if (!wrapperState.sortArr) {
+    wrapperState.sortArr = rects.map(function (rt, idx) {
+      return idx
+    })
+  }
+  wrapperState.oldSort = wrapperState.sortArr[index]
+  wrapperState.sort = wrapperState.sortArr[index]
   state.pullStartY = e.touches[0].clientY
   state.distance = 0
-  state.sort = index
   state.sortArea = []
-  rects.forEach(function (rt, idx) {
-    if (idx === state.sort) {
-      return
-    }
+  wrapperState.sortArr.forEach(function (item, idx) {
     if (idx === 0) {
-      state.sortArea.push({up: [-99999, rects[idx].top + rects[idx].height / 2], down: [rects[idx].top + rects[idx].height / 2, rects[idx + 1].top + rects[idx + 1].height / 2]})
+      var top = 0
+      var nextTop = rects[wrapperState.sortArr[idx]].height
+      var height = rects[wrapperState.sortArr[idx]].height
+      var nextHeight = rects[wrapperState.sortArr[idx + 1]].height
+      state.sortArea.push({up: [-99999, top + height / 2], down: [top + height / 2, nextTop + nextHeight / 2]})
     } else if (idx === rects.length - 1) {
-      state.sortArea.push({up: [rects[idx - 1].top + rects[idx - 1].height / 2, rects[idx].top + rects[idx].height / 2], down: [rects[idx].top + rects[idx].height / 2, 99999]})
+      var preTop = 0
+      var top = 0
+      var preHeight = rects[wrapperState.sortArr[idx - 1]].height
+      var height = rects[wrapperState.sortArr[idx]].height
+      for (var i = 0; i < idx; i++) {
+        if (i < idx - 1) {
+          preTop += rects[wrapperState.sortArr[i]].height
+        }
+        top += rects[wrapperState.sortArr[i]].height
+      }
+      state.sortArea.push({up: [preTop + preHeight / 2, top + height / 2], down: [top + height / 2, 99999]})
     } else {
-      state.sortArea.push({up: [rects[idx - 1].top + rects[idx - 1].height / 2, rects[idx].top + rects[idx].height / 2], down: [rects[idx].top + rects[idx].height / 2, rects[idx + 1].top + rects[idx + 1].height / 2]})
+      var preHeight = rects[wrapperState.sortArr[idx - 1]].height
+      var height = rects[wrapperState.sortArr[idx]].height
+      var nextHeight = rects[wrapperState.sortArr[idx + 1]].height
+      var preTop = 0
+      var top = 0
+      var nextTop = 0
+      
+      for (var i = 0; i < idx; i++) {
+        if (i < idx - 1) {
+          preTop += rects[wrapperState.sortArr[i]].height
+        }
+        top += rects[wrapperState.sortArr[i]].height
+      }
+      nextTop = top + height
+      state.sortArea.push({up: [preTop + preHeight / 2, top + height / 2], down: [top + height / 2, nextTop + nextHeight / 2]})
     }
   })
-  console.log('longPress', index, rect, e.touches[0].clientY)
-}
-
-function touchStart(e, ins) {
-  // var dataset = e.instance.getDataset()
-  // var state = e.instance.getState()
-  // var ele = dataset.ele
-  // var index = dataset.index
-  // var rect = dataset.rect
-  // state.startMoving = false
-  // state.pullMoveY = 0
-  // state.timeStamp = e.timeStamp
-  // state.lastDistance = 0
-  // state.able = ((ele === 'top' && dataset.topReached) || (ele === 'bottom' && dataset.bottomReached)) && ((ele === 'top' && dataset.topTouchHide) || (ele === 'bottom' && dataset.bottomTouchHide))
-  // if (state.able) {
-  //   state.startPulling = true
-  //   state.pullStartX = e.touches[0].clientX
-  //   state.pullStartY = e.touches[0].clientY
-  //   state.distance = 0
-  //   e.instance.removeClass("transition")
-  // }
+  // ins.callMethod('consss', {area: state.sortArea, index: index, sortArr: wrapperState.sortArr})
 }
 
 function touchMove(e, ins) {
@@ -54,6 +71,8 @@ function touchMove(e, ins) {
   var ele = dataset.ele
   var rect = dataset.rect
   var rects = dataset.rects
+  var wrapper = ins.selectComponent('.wrapper')
+  var wrapperState = wrapper.getState()
   if (!state.startPulling || !state.ele) {
     return true
   }
@@ -64,25 +83,60 @@ function touchMove(e, ins) {
     transform: 'translateY(' + state.distance + 'px)',
     "-webkit-transform": 'translateY(' + state.distance + 'px)'
   })
-  // function sortFunc(a, b) {
-  //   return a.sort - b.sort
-  // }
-  // var listRects = rects.sort(sortFunc)
-  // state.disableArea = [rects[state.sort - 1] ? (rect.height - rects[state.sort - 1].height / 2) : Number.NEGATIVE_INFINITY, rects[state.sort + 1] ? (rect.height + rects[state.sort + 1].height / 2) : Number.POSITIVE_INFINITY]
   var area = state.sortArea.map(function (item) {
     return state.distance > 0 ? item.down : item.up
   })
   var newSort = null
+  // ins.callMethod('consss', area)
   var newPos = area.filter(function(item, idx) {
-    if (state.distance + rect.top > item[0] && state.distance + rect.top < item[1] && idx !== state.sort) {
+    var pos = state.distance > 0 ? (state.distance + rect.top + rect.height) : (state.distance + rect.top)
+    if (pos > item[0] && pos < item[1] && idx !== wrapperState.sort) {
       newSort = idx
       return true
     }
   })
-  // ins.callMethod('consss', {s: state.sortArea, a: area})
-  // console.log('area', state.sortArea, area)
-  if (newPos[0]) { // 如果存在新的位置，则表示已经滑动到别的模块位置
-    console.log('newPos', newSort)
+  if (newSort !== null && newSort !== wrapperState.sort) { // 如果存在新的位置，则表示已经滑动到别的模块位置
+    // var minIndx = newSort > wrapperState.oldSort ? wrapperState.oldSort : newSort
+    // var maxIndx = newSort > wrapperState.oldSort ? newSort : wrapperState.oldSort
+    wrapperState.sort = newSort
+    if (!wrapperState.disY) {
+      wrapperState.disY = wrapperState.sortArr.map(function () {
+        return 0
+      })
+    }
+
+
+    var arr = wrapperState.sortArr.filter(function (item, idx) {
+      return idx !== wrapperState.oldSort
+    })
+    arr.splice(wrapperState.sort, 0, wrapperState.sortArr[wrapperState.oldSort])
+    var disY = []
+    arr.forEach(function () {
+      disY.push(0)
+    })
+    arr.forEach(function (item, idx) {
+      var originY = rects[item].top
+      var calDis = 0
+      for(var i = 0; i < arr.length; i++) {
+        if (i < idx) {
+          calDis += rects[wrapperState.sortArr[i]].height
+        }
+      }
+      ins.callMethod('consss', {originY: originY, calDis: calDis, dis: (calDis - originY) })
+      disY[item] = calDis - originY
+    })
+
+    wrapperState.changeY = disY
+    var eles = ins.selectAllComponents('.item')
+    eles.forEach(function (item, idx) {
+      ins.callMethod('consss', item.getDataset())
+      if (idx !== wrapperState.oldSort) {
+        item.setStyle({
+          transform: 'translateY(' + disY[idx] + 'px)',
+          "-webkit-transform": 'translateY(' + disY[idx] + 'px)'
+        })
+      }
+    })
   }
   return false
 }
@@ -90,26 +144,53 @@ function touchMove(e, ins) {
 function touchEnd(e, ins) {
   var dataset = e.instance.getDataset()
   var state = e.instance.getState()
-  var accSpeed = state.lastDistance / (e.timeStamp - state.timeStamp) / (e.timeStamp - state.timeStamp)
-  state.active = false
   state.ele.removeClass('actived')
-  if (!state.startPulling) {
-    return
-  }
-  state.startPulling = false
-  state.startMoving = false
-  var duration = parseInt((state.distance / dataset.height) * 200)
-  if ((state.distance > dataset.height / 2) || (accSpeed > 0.0012 && state.direction > 0)) { // 0.0012是加速度临界点，大于这个加速度就关闭
-    ins.callMethod('hide', {duration})
-  } else {
-    ins.callMethod('show', {duration})
-  }
+  var wrapper = ins.selectComponent('.wrapper')
+  var wrapperState = wrapper.getState()
+  wrapperState.disY = wrapperState.changeY
+  var arr = wrapperState.sortArr.filter(function (item, idx) {
+    return idx !== wrapperState.oldSort
+  })
+  arr.splice(wrapperState.sort, 0, wrapperState.sortArr[wrapperState.oldSort])
+  var eles = ins.selectAllComponents('.item')
+  eles.forEach(function (item, idx) {
+    // ins.callMethod('consss', item.getDataset())
+    item.setStyle({
+      transform: 'translateY(' + wrapperState.disY[idx] + 'px)',
+      "-webkit-transform": 'translateY(' + wrapperState.disY[idx] + 'px)'
+    })
+  })
+  wrapperState.sortArr = arr
+  // ins.callMethod('changePos', {newIndex: state.sort, oldIndex: state.oldSort})
+  // var accSpeed = state.lastDistance / (e.timeStamp - state.timeStamp) / (e.timeStamp - state.timeStamp)
+  // state.active = false
+  // if (!state.startPulling) {
+  //   return
+  // }
+  // state.startPulling = false
+  // state.startMoving = false
+  // var duration = parseInt((state.distance / dataset.height) * 200)
+  // if ((state.distance > dataset.height / 2) || (accSpeed > 0.0012 && state.direction > 0)) { // 0.0012是加速度临界点，大于这个加速度就关闭
+  //   ins.callMethod('hide', {duration})
+  // } else {
+  //   ins.callMethod('show', {duration})
+  // }
+}
+
+function moveableChange (newValue, oldValue, ins, itemIns) {
+  var eles = ins.selectAllComponents('.item')
+  eles.forEach(function (item) {
+    item.setStyle({
+      transform: 'translateY(0px)',
+      "-webkit-transform": 'translateY(0px)'
+    })
+  })
 }
 
 module.exports = {
   longPress: longPress,
-  touchStart: touchStart,
   touchMove: touchMove,
-  touchEnd: touchEnd
+  touchEnd: touchEnd,
+  moveableChange: moveableChange
 }
 /* eslint-enable */
