@@ -1,5 +1,5 @@
 {
-  "backgroundColor": "#FFFFFF",
+  "backgroundColor": "#F5F5F5",
   "usingComponents": {
     "ft-custom-nav": "../../ftcomponents/ftCustomNav/ftCustomNav"
   }

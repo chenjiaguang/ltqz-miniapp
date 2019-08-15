@@ -15,7 +15,9 @@ Page({
     users: [],
     needUsers: 0,
     timeout: false,
-    sharing: false
+    sharing: false,
+    canShareFriend: false,
+    canSharePengyouquan: false
   },
 
   timer: null,
@@ -114,14 +116,17 @@ Page({
         res.data.created_at = util.formatDateTimeDefault('m', res.data.created_at)
         res.data.users = this.getUsers(res.data)
         res.data.pintuanTimestamp = new Date().getTime()
-        if (res.data.status == 1) { // 状态为拼团中时，初始化分享到朋友圈
-          const title = res.data.current_user_name + '邀请你参与拼团'
-          let path = '/pages/pintuandetail/pintuandetail?id=' + id
-          if (res.data.fenxiao_price && res.data.fenxiao_price !== '0') {
-            path += ('&uid=' + res.data.current_user_id)
-          }
-          const imageUrl = res.data.product.cover_url
-          this.initShare(title, path, imageUrl)
+        console.log('res.data.is_join && res.data.status == 1', res.data.is_join, res.data.status)
+        if (res.data.is_join && res.data.status == 1) { // 状态为拼团中时，初始化分享到朋友圈
+          // const title = res.data.current_user_name + '邀请你参与拼团'
+          // let path = '/pages/pintuandetail/pintuandetail?id=' + id
+          // if (res.data.fenxiao_price && res.data.fenxiao_price !== '0') {
+          //   path += ('&uid=' + res.data.current_user_id)
+          // }
+          // const imageUrl = res.data.product.cover_url
+          // this.initShare(title, path, imageUrl)
+          console.log('3333')
+          this.drawPoster(res.data.product_id, res.data.id)
         }
         this.setData(res.data)
         this.countDown(res.data)
@@ -185,30 +190,36 @@ Page({
     second = (second >= 10) ? second : ('0' + second)
     return [hour, min, second].join(':')
   },
-  initShare: function (title, path, imageUrl) {
-    this.onShareAppMessage = function () {
-      return {
-        title,
-        path,
-        imageUrl
-      }
-    }
-    this.setData({
-      canShareFriend: true
-    })
-  },
+  // initShare: function (title, path, imageUrl) {
+  //   this.onShareAppMessage = function () {
+  //     return {
+  //       title,
+  //       path,
+  //       imageUrl
+  //     }
+  //   }
+  //   this.setData({
+  //     canShareFriend: true
+  //   })
+  // },
   drawPosterChange: function (e) {
-    const {fetching, drawing} = e.detail
+    const {fetching, drawing, canShareFriend, canSharePengyouquan} = e.detail
+    console.log('canShareFriend', canShareFriend, 'canSharePengyouquan', canSharePengyouquan, )
     const sharing = fetching || drawing
-    this.setData({ sharing})
+    this.setData({ sharing, canShareFriend, canSharePengyouquan})
   },
-  savePoster: function () {
-    const { product_id, id } = this.data
+  drawPoster: function (product_id, id) {
     if (product_id && id) {
       const poster = this.selectComponent('#c-draw-poster')
-      if (poster && poster.startDrawAndSavePoster) {
-        poster.startDrawAndSavePoster(product_id, id)
+      if (poster && poster.startDraw) {
+        poster.startDraw(product_id, id, true)
       }
+    }
+  },
+  savePoster: function () {
+    const poster = this.selectComponent('#c-draw-poster')
+    if (poster && poster.savePoster) {
+      poster.savePoster()
     }
   },
   createTuan: function () {
@@ -297,8 +308,8 @@ Page({
   },
   nextTap: function (e) {
     const { saletype, currentSession, currentSubSession, currentTickets, subSessions, selectedTicketLength, totalPrice} = e.detail
-    const { type, product_id: id, id: tuan_id, fromUid, product: { fill_info, fill_form, title, valid_btime, valid_etime, address, session, sale_type, refund = false, include_bx }, hx_rule } = this.data
-    let dataObj = {type, id, fromUid, fill_info, fill_form, title, address, valid_btime, valid_etime, session, sale_type, saletype, selectedTicketLength: selectedTicketLength[saletype], currentSession: currentSession[saletype], refund, include_bx, totalPrice: totalPrice[saletype], tuan_id, hx_rule}
+    const { type, product_id: id, id: tuan_id, fromUid, product: { fill_info, fill_form, title, valid_btime, valid_etime, address, session, sale_type, can_refund = false, include_bx }, hx_rule } = this.data
+    let dataObj = {type, id, fromUid, fill_info, fill_form, title, address, valid_btime, valid_etime, session, sale_type, saletype, selectedTicketLength: selectedTicketLength[saletype], currentSession: currentSession[saletype], can_refund, include_bx, totalPrice: totalPrice[saletype], tuan_id, hx_rule}
     if (type == 1) { // 活动
       dataObj.currentTickets = currentTickets[saletype]
     } else if (type == 2) { // 非活动

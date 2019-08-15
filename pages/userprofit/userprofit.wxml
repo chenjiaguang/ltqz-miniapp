@@ -39,7 +39,9 @@
     </view>
     <view class="block-separator"></view>
     <view class='card entrance-box'>
-      <ft-entrance wx:for="{{entrances}}" wx:for-index="idx" wx:for-item="entrance" wx:key="title" spacing="0 56rpx" title="{{entrance.title}}" sub-title="{{entrance.subTitle}}" border-margin="0 26rpx 0 56rpx" top-border="{{idx !== 0}}" extra-data="{{entrance}}" catchtap="entranceTap" />
+      <ft-entrance wx:for="{{entrances}}" wx:for-index="idx" wx:for-item="entrance" wx:key="title" spacing="0 56rpx" title="{{entrance.title}}" sub-title="{{entrance.subTitle}}" border-margin="0 26rpx 0 56rpx" top-border="{{idx !== 0}}" extra-data="{{entrance}}" catchtap="entranceTap">
+        <view wx:if="{{entrance.noRead}}" slot="content" class="red-dot theme-bg"></view>
+      </ft-entrance>
     </view>
     <view class="withdraw-btn {{withdraw ? 'theme-linear-gradient-137' : 'disabled'}}" catchtap="requestCash" >申请提现</view>
     <view wx:if="{{tip_min_tx_amount}}" class="withdraw-tip">*每次提现金额不得低于{{tip_min_tx_amount}}元</view>

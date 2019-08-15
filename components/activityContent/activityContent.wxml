@@ -1,12 +1,12 @@
 
   <view class='content row'>
-    <image class='cover' src="{{data.product.cover_url}}" mode="aspectFill"></image>
+    <image class='cover' src="{{data.product.product_cover_url || data.product.cover_url}}" mode="aspectFill"></image>
     <view class='flex1' style='min-width:0'>
       <text class='title bold'>{{data.product.title}}</text>
-      <text wx:if="{{data.product.session}}" class='time'>{{data.product.session}}</text>
+      <!-- <text wx:if="{{data.product.session}}" class='time'>{{data.product.session}}</text> -->
       <view wx:for="{{data.ticket}}" wx:key="name" class='tickets'>
-        <view class="tickets-name">{{item.name}}</view>
-        <view class="tickets-num">x{{item.quantity}}</view>
+        <text class="tickets-name">{{item.name}}</text>
+        <text class="tickets-num">x{{item.quantity}}</text>
       </view>
       <text class='location'>{{data.product.address}}</text>
     </view>

@@ -30,7 +30,7 @@ Page({
     selectedTickets: [],
     selectedSessions: [],
     selectedTicketLength: 0,
-    refund: false,
+    can_refund: false,
     include_bx: false, // 不包含保险：0，包含保险：1
     buy_for: [],
     buy_for_text: '',
@@ -155,23 +155,51 @@ Page({
     })
   },
 
-  updateBuyfors: function (id) {
-    util.request('/traveler/list').then(res => {
-      if (res.error == 0 && res.data) {
-        let _buyfors = res.data
-        let {buyfors} = this.data
-        let checkedIds = buyfors.filter(item => item.checked).map(item => item.id)
-        _buyfors.forEach(item => {
-          if (checkedIds.indexOf(item.id) !== -1 || item.id === id) { // 原data中已选中 或 是当前的id
-            item.checked = true
-          }
-        })
-        this.setData({
-          buyfors: _buyfors
-        })
+  editBack: function (editBuyfor) {
+    let {buyfors, include_bx} = this.data
+    const id = editBuyfor.id
+    let hasBuyfor = false
+    let index = null
+    buyfors.forEach((item, idx) => {
+      if (item.id == id) {
+        hasBuyfor = true
+        index = idx
+      }
+    })
+    if (hasBuyfor && index !== null) {
+      buyfors[index] = editBuyfor
+      
+    } else {
+      buyfors = [editBuyfor].concat(buyfors)
+      index = 0
+    }
+    this.setData({
+      buyfors: buyfors
+    }, () => {
+      if ((include_bx && editBuyfor.id_number) || !include_bx) {
+        const event = {currentTarget: {dataset: {idx: index}}}
+        this.toggleBuyforChecked(event)
       }
     })
   },
+
+  // updateBuyfors: function (id) {
+  //   util.request('/traveler/list').then(res => {
+  //     if (res.error == 0 && res.data) {
+  //       let _buyfors = res.data
+  //       let {buyfors} = this.data
+  //       let checkedIds = buyfors.filter(item => item.checked).map(item => item.id)
+  //       _buyfors.forEach(item => {
+  //         if (checkedIds.indexOf(item.id) !== -1 || item.id === id) { // 原data中已选中 或 是当前的id
+  //           item.checked = true
+  //         }
+  //       })
+  //       this.setData({
+  //         buyfors: _buyfors
+  //       })
+  //     }
+  //   })
+  // },
 
   getBuyforFromData: function (id) {
     const {buyfors} = this.data
@@ -200,6 +228,9 @@ Page({
               url: '/pages/paysuccess/paysuccess?id=' + id,
             })
           } else {
+            wx.redirectTo({
+              url: '/pages/paysuccess/paysuccess?id=' + id,
+            })
             if (res.msg) {
               wx.showToast({
                 title: res.msg,
@@ -418,6 +449,8 @@ Page({
     let _obj = {}
     if (include_bx && !buyfors[idx].id_number) {
       _obj['buyfors[' + idx + '].tip'] = '请填写身份证号'
+      const event = {currentTarget: {dataset: {buyfor: buyfors[idx], needidcard: true}}}
+      this.editBuyfor(event)
     } else {
       const checked = buyfors[idx].checked
       _obj['buyfors[' + idx + '].checked'] = !checked

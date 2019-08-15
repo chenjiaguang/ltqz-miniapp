@@ -3,7 +3,7 @@
   <view style="height:{{boxHeight}}rpx"></view>
   <view wx:if="{{extraBottom}}" class="iphone-extra-bottom"></view>
   <view class="box-wrapper">
-    <view class="box-content" style="background-color:{{bg}}">
+    <view class="box-content" style="background-color:{{bg}};height:{{boxHeight}}rpx">
       <slot></slot>
     </view>
     <view wx:if="{{extraBottom}}" class="iphone-extra-bottom" style="background-color:{{bg}}"></view>

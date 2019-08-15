@@ -166,11 +166,12 @@
 }
 .state-block-text{
   flex: 1;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-   font-size: 28rpx;
+  /* overflow: hidden; */
+  /* white-space: nowrap; */
+  /* text-overflow: ellipsis; */
+  font-size: 28rpx;
   color: #333;
+  word-break: break-all;
 }
 
 .left-icon, .right-icon{

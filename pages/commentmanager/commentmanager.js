@@ -29,7 +29,6 @@ Page({
     showGoods: true,
     showTicket: false,
     top_fixed: false,
-
     current_reply_name: '', //回复对象的名称
     reply_focus: false, //是否在回复状态
     reply_value: '' //回复的内容

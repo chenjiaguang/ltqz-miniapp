@@ -7,9 +7,7 @@
       <view class='user-name-box'>
         <text class='user-name'>{{user.nick_name}}</text>
       </view>
-      <view wx:if="{{user && user.fenxiao && user.fenxiao.user_level}}" class='user-tag-box theme-linear-gradient-h'>
-        <text class='user-tag'>{{levelText[user.fenxiao.user_level]}}</text>
-      </view>
+      <view wx:if="{{user && user.fenxiao && user.fenxiao.user_level}}" class='user-tag-box theme-linear-gradient-h'>{{levelText[user.fenxiao.user_level]}}</view>
     </view>
     <text class="lutufont lutu-next2"></text>
   </view>
@@ -63,8 +61,9 @@
         <!-- <text class="profit-header-icon lutufont lutu-fenxiao"></text> -->
         <image class="user-profit-icon" src="/assets/images/user_profit.png" mode="aspectFill" />
         <text class='title'>推广收益<text class='unit'> (元)</text></text>
-        <view catchtap="goProfit" data-type="0" class='view-detail'>
-          <text>查看详情</text>
+        <view catchtap="goProfit" class='view-detail'>
+          <view wx:if="{{user.fenxiao.no_read_remit}}" class="red-dot theme-bg"></view>
+          <text>{{user.fenxiao.no_read_remit ? ('您有' + user.fenxiao.no_read_remit + '笔新的收益') : '查看详情'}}</text>
           <text class="profit-header-next lutufont lutu-next2"></text>
         </view>
       </view>

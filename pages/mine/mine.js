@@ -72,6 +72,15 @@ Page({
         assistant_entrance.path = '/pages/businessassistant/businessassistant?id=' + res.data.shop[0].id
       }
       if (res.data.fenxiao) {
+        if (res.data.fenxiao.no_read_remit) {
+          wx.showTabBarRedDot({
+            index: 1
+          })
+        } else {
+          wx.hideTabBarRedDot({
+            index: 1
+          })
+        }
         res.data.fenxiao.total = util.formatMoney(res.data.fenxiao.total).showMoney
         res.data.fenxiao.today_remit = util.formatMoney(res.data.fenxiao.today_remit).showMoney
         res.data.fenxiao.can_remit = util.formatMoney(res.data.fenxiao.can_remit).showMoney

@@ -91,6 +91,8 @@
   color: #333;
   margin-top: 24rpx;
   margin-bottom: 24rpx;
+  display: flex;
+  align-items: center;
 }
 
 .item-content {
@@ -124,4 +126,17 @@
   align-self: center;
   font-size: 26rpx;
   color: #999;
+}
+
+.red-dot{
+  width: 16rpx;
+  height: 16rpx;
+  border-radius: 50%;
+  margin-right: 8rpx;
+}
+
+.question-icon{
+  font-size: 26rpx;
+  color: #666666;
+  margin-left: 4rpx;
 }

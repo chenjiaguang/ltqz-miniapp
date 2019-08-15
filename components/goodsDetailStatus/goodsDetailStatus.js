@@ -19,6 +19,10 @@ Component({
         }
         this.countDown(newVal)
       }
+    },
+    uid: {
+      type: String,
+      value: ''
     }
   },
 
@@ -102,6 +106,9 @@ Component({
       }
       arr = arr.concat([hour, min, second].join(':'))
       return arr.join('')
+    },
+    shareBtnTap: function () {
+      this.triggerEvent('share')
     }
   }
 })

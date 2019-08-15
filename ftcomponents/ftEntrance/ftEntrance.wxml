@@ -6,8 +6,8 @@
     <image wx:if="{{image}}" class='entrance-image' style="width:{{imageSize}}rpx;height:{{imageSize}}rpx;margin-right:{{imageSpacing}}rpx" src="{{image}}" mode='aspectFit'></image>
     <text wx:if="{{required}}" class='ft-icon c-icon-xinghao'></text>
     <text class='entrance-title' style="{{titleStyle}}">{{title}}</text>
-    <text wx:if="{{subTitle}}" class='entrance-sub-title'>{{subTitle}}</text>
     <slot name="content"></slot>
+    <text wx:if="{{subTitle}}" class='entrance-sub-title'>{{subTitle}}</text>
     <view wx:if="{{subImage}}" class='entrance-sub-image-box'>
       <image wx:if="{{subImage}}" class='entrance-sub-image' src="{{subImage}}" mode="aspectFill"></image>
       <view wx:if="{{subMask}}" class='entrance-sub-image-mask'></view>

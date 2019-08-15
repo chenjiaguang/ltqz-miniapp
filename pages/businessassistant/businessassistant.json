@@ -3,6 +3,7 @@
   "usingComponents": {
     "ft-custom-nav": "../../ftcomponents/ftCustomNav/ftCustomNav",
     "ft-entrance": "../../ftcomponents/ftEntrance/ftEntrance",
-    "ft-star-box": "../../ftcomponents/ftStarBox/ftStarBox"
+    "ft-star-box": "../../ftcomponents/ftStarBox/ftStarBox",
+    "ft-modal": "../../ftcomponents/ftModal/ftModal"
   }
 }

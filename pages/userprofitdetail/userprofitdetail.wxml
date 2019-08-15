@@ -21,9 +21,10 @@
             <view class='shortcut-amount bold'>{{unfreeze_remit || 0}}</view>
           </view>
           <view class='shortcut-item'>
-            <view class='shortcut-header'>
+            <view class='shortcut-header' catchtap="questionTap">
               <text>待解冻收益</text>
-              <text class='unit'> (元)</text>
+              <text class='unit'>(元)</text>
+              <text class='question-icon lutufont lutu-question'></text>
             </view>
             <view class='shortcut-amount bold'>{{freeze_remit || 0}}</view>
           </view>
@@ -35,8 +36,9 @@
   <ft-list-loader visible="{{!page}}" />
   
   <block wx:for="{{list}}" wx:key="id">
+    <view class="block-separator"></view>
     <view class='card item-box column'>
-      <text class='item-title'>收益到账</text>
+      <view class='item-title'><view wx:if="{{!item.has_read}}" class="red-dot theme-bg"></view><view>收益到账</view></view>
       <view class='line-separator-h'></view>
       <text class='item-content'>{{item.desc}}</text>
       <text class='item-time'>{{item.created_at}}</text>

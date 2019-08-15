@@ -1,12 +1,16 @@
 <!--components/goodsDetailStatus/goodsDetailStatus.wxml-->
 <!-- 普通商品 或 抢购商品（非抢购中、非抢光） -->
-<view wx:if="{{goodsStatusData.sale_type == 1 || (goodsStatusData.sale_type == 3 && goodsStatusData.qg_status != 2 && goodsStatusData.qg_status != 3)}}" class="wrapper theme-linear-gradient-secondary-h">
-  <view wx:if="{{!isFree}}" class='actual-price'><text style="font-size:38rpx;padding-top:10rpx;margin-right:6rpx">¥</text><text>{{priceText}}</text><text wx:if="{{hasMore}}" class='text-qi'>起</text></view>
-  <view wx:if="{{isFree}}" class='free-price'>免费</view>
-  <view wx:if="{{goodsStatusData.show_min_origin_price && goodsStatusData.show_min_origin_price > 0}}" class='origin-price'>
+<view wx:if="{{goodsStatusData.sale_type == 1 || (goodsStatusData.sale_type == 3 && goodsStatusData.qg_status != 2 && goodsStatusData.qg_status != 3)}}" class="wrapper">
+  <view wx:if="{{!isFree}}" class='actual-price theme-color'><text style="font-size:38rpx;padding-top:10rpx;margin-right:6rpx">¥</text><text>{{priceText}}</text><text wx:if="{{hasMore}}" class='text-qi'>起</text></view>
+  <view wx:if="{{isFree}}" class='free-price theme-color'>免费</view>
+  <view wx:if="{{goodsStatusData.show_min_origin_price && goodsStatusData.show_min_origin_price > 0}}" class='origin-price' style="color:#999999">
     <text>¥{{goodsStatusData.show_min_origin_price}}</text>
   </view>
-  <view class="status{{goodsStatusData.status == 1 ? ' status-able' : ' status-other'}}">{{statusText}}</view>
+  <!-- <view class="status{{goodsStatusData.status == 1 ? ' status-able' : ' status-other'}}">{{statusText}}</view> -->
+  <view wx:if="{{uid}}" class="right-box">
+    <view class="line-separator-v" style="margin-right:28rpx;margin-top:8rpx"></view>
+    <share-button catchshare="shareBtnTap" style="margin-top:4rpx" />
+  </view>
 </view>
 <!-- 团购商品 -->
 <view wx:if="{{goodsStatusData.sale_type == 2}}" class="wrapper theme-linear-gradient-secondary-h">
@@ -36,6 +40,17 @@
   </view>
   <view wx:elif="{{timeout}}" class="count-down-box">
     <view class="count-down-text theme-color">抢购已结束</view>
+  </view>
+</view>
+<view class="overview{{(goodsStatusData.sale_type == 1 || (goodsStatusData.sale_type == 3 && goodsStatusData.qg_status != 2 && goodsStatusData.qg_status != 3)) ? ' type1' : ''}}">
+  <view class='title-and-intro-box'>
+    <view class='title-and-intro'>
+      <view class='title'>{{goodsStatusData.title}}</view>
+      <view class='intro'>{{goodsStatusData.desc}}</view>
+    </view>
+    <view wx:if="{{uid && !(goodsStatusData.sale_type == 1 || (goodsStatusData.sale_type == 3 && goodsStatusData.qg_status != 2 && goodsStatusData.qg_status != 3))}}" class='normal-share'>
+      <share-button catchshare="shareBtnTap" />
+    </view>
   </view>
 </view>
     

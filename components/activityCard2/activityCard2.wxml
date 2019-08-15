@@ -3,7 +3,7 @@
   <view wx:if="{{topBorder}}" class='line-separator-h'></view>
   <view class='wrapper-content'>
     <view class='image-box'>
-      <image class='image' src="{{activity.cover_url}}" mode="aspectFill"></image>
+      <image class='image' src="{{activity.product_cover_url || activity.cover_url}}" mode="aspectFill"></image>
       <view class="status{{statusDisabled ? ' status-other' : ' theme-bg-65'}}">{{statusText}}</view>
     </view>
     <view class='right-box'>

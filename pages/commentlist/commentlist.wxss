@@ -4,7 +4,10 @@ page {
   /* background-color: #fff !important; */
 }
 
-.page-commentlist {
+/* .page-commentlist {
+  background: #FFFFFF;
+} */
+.list-box{
   background: #FFFFFF;
 }
 

@@ -13,6 +13,18 @@ Page({
       1: '男',
       2: '女'
     },
+    statusText: { // -4为已退款|-3为手动下架|-2拼团失败|-1为失效订单|0为待付款|1为待参与|2为待评价|3已评价|4待成团|5已过期
+      '-4': '已退款',
+      '-3': '已取消',
+      '-2': '已取消',
+      '-1': '已取消',
+      '0': '',
+      '1': '待使用',
+      '2': '已核销',
+      '3': '已核销',
+      '4': '',
+      '5': ''
+    },
     id: '',
     product_id: '',
     join_num: '',
@@ -71,7 +83,11 @@ Page({
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function() {
-    this.fetchData(parseInt(this.data.page.pn) + 1)
+    const {page, loading} = this.data
+    if (!page || (page && !page.pn) || (page && page.is_end) || loading) {
+      return false
+    }
+    this.fetchData(parseInt(page.pn) + 1)
   },
 
   /**
@@ -89,12 +105,28 @@ Page({
       product_id: this.data.product_id,
       pn: pn
     }).then(res => {
+      const {genderText} = this.data
       res.data.js_price = util.formatMoney(res.data.js_price).showMoney
       res.data.list.forEach((item) => {
         item.order.js_price = util.formatMoney(item.order.js_price).showMoney
-        item.content = item.ticket.map((ticket) => {
+        // item.content = item.ticket.map((ticket) => {
+        //   return ticket.name + 'x' + ticket.quantity
+        // }).join('，') + '，共计￥' + item.order.js_price
+        item.tableContent = []
+        item.tableContent.push({title: '预计结算金额', content: '¥' + item.order.js_price})
+        item.tableContent.push({title: '已购票券', content: item.ticket.map((ticket) => {
           return ticket.name + 'x' + ticket.quantity
-        }).join('，') + '，共计￥' + item.order.js_price
+        }).join('，')})
+        if (item.traveler_infos && item.traveler_infos.length) {
+          item.traveler_infos.forEach((traveler, idx) => {
+            item.tableContent.push({title: '出行人' + (idx + 1), content: traveler.name + (genderText[traveler.sex] ? ('，' + genderText[traveler.sex]) : '') + (traveler.id_number ? ('，' + traveler.id_number) : '')})
+          })
+        }
+        if (item.form) {
+          for (let key in item.form) {
+            item.tableContent.push({title: key, content: item.form[key], isPhone: item.form[key].toString() === item.phone.toString(), c_color: item.form[key].toString() === item.phone.toString() ? '#FF296B' : ''})
+          }
+        }
       })
       if (pn == 1) {
         this.setData({

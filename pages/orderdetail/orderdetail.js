@@ -15,7 +15,9 @@ Page({
     contact_info: [],
     countdown: 0,
     countdown_text: '',
-    repaying: false
+    repaying: false,
+    canceling: false,
+    refunding: false
   },
 
   /**
@@ -101,6 +103,7 @@ Page({
         res.data.created_at = util.formatDateTimeDefault('m', res.data.created_at)
         // 处理价格
         res.data.show_price = util.formatMoney(res.data.price).showMoney
+        res.data.refund_amount = util.formatMoney(res.data.refund_amount).showMoney
         res.data.status = res.data.status.toString()
         let countdown = 0
         let countdown_text = ''
@@ -179,6 +182,152 @@ Page({
   goGoodsTicket() {
     wx.navigateTo({
       url: '/pages/goodsticket/goodsticket?id=' + this.data.order.order_id
+    })
+  },
+
+  goRefund() {
+    console.log('goRefund')
+    const {order: {can_refund, refund_all, refund_amount}, refunding} = this.data
+    if (refunding || !can_refund) {
+      return false
+    }
+    const app = getApp()
+    const confirmColor = app.globalData.themeModalConfirmColor || '#576B95' // #576B95是官方颜色
+    if (refund_all) {
+      wx.showModal({
+        title: '订单退款',
+        content: '退款后您可能会错过此商品哦，确定要退款吗？',
+        showCancel: true,
+        confirmText: '确定',
+        confirmColor,
+        success: res => {
+          if (res.confirm) {
+            this.refund()
+          }
+        }
+      })
+    } else {
+      wx.showModal({
+        title: '订单退款',
+        content: '本商品属于特价商品，退款需用户承担一定手续费，退款金额为' + refund_amount + '元，您确定要退款吗？',
+        showCancel: true,
+        confirmText: '确定',
+        confirmColor,
+        success: res => {
+          if (res.confirm) {
+            this.refund()
+          }
+        }
+      })
+    }
+  },
+  refund() {
+    console.log('refund')
+    const {order: {can_refund, order_id }, refunding} = this.data
+    if (refunding || !can_refund) {
+      return false
+    }
+    this.setData({refunding: true})
+    util.request('/order/refund', {
+      id: order_id
+    }).then(res => {
+      if (res.error == 0) { // 退款成功
+        wx.showToast({
+          title: res.msg || '退款成功，退款金额将于1-2个工作日原路退回您的付款账户',
+          icon: 'none',
+          duration: 3000
+        })
+        this.fetchOrder(this.data.order.order_id)
+        const pages = getCurrentPages()
+        for (let i = 0; i < pages.length; i++) {
+          if (pages[i].name === 'goodsdetail' && pages[i].data && pages[i].data.id && pages[i].fetchGoods) { // 刷新活动详情页信息
+            pages[i].fetchGoods(pages[i].data.id)
+          }
+          if (pages[i].name === 'orderlist') { // 更新订单列表页的信息
+            storageHelper.setStorage('orderListRefresh', '1')
+          }
+        }
+      } else {
+        if (res.msg) {
+          wx.showToast({
+            title: res.msg,
+            icon: 'none',
+            duration: 3000
+          })
+        }
+      }
+    }).catch(err => {
+      console.log('err', err)
+    }).finally(res => {
+      this.setData({refunding: false})
+    })
+  },
+
+  goCancel: function () {
+    console.log('goCancel')
+    const {canceling} = this.data
+    if (canceling) {
+      return false
+    }
+    const app = getApp()
+    const confirmColor = app.globalData.themeModalConfirmColor || '#576B95' // #576B95是官方颜色
+    wx.showModal({
+      title: '取消订单',
+      content: '取消订单后您可能会错过此商品哦，确定要取消订单吗？',
+      showCancel: true,
+      confirmText: '确定',
+      confirmColor,
+      success: res => {
+        if (res.confirm) {
+          this.cancel()
+        }
+      }
+    })
+  },
+
+  cancel: function () {
+    console.log('cancel')
+    let {canceling} = this.data
+    const status = this.data.order.status
+    const id = this.data.order.order_id
+    if (status.toString() !== '0' || canceling) { // 不是待支付状态 或 正在取消
+      return false
+    }
+    this.setData({
+      canceling: true
+    })
+    util.request('/order/cancel', {
+      id: id
+    }).then(res => {
+      if (res.error == 0) { // 成功取消
+        wx.showToast({
+          title: '订单取消成功',
+          icon: 'none'
+        })
+        this.fetchOrder(this.data.order.order_id)
+        const pages = getCurrentPages()
+        for (let i = 0; i < pages.length; i++) {
+          if (pages[i].name === 'goodsdetail' && pages[i].data && pages[i].data.id && pages[i].fetchGoods) { // 刷新活动详情页信息
+            pages[i].fetchGoods(pages[i].data.id)
+          }
+          if (pages[i].name === 'orderlist') { // 更新订单列表页的信息
+            storageHelper.setStorage('orderListRefresh', '1')
+          }
+        }
+      } else {
+        if (res.msg) {
+          wx.showToast({
+            title: res.msg,
+            icon: 'none'
+          })
+        }
+      }
+    }).catch(err => {
+      console.log('err', err)
+    }).finally(res => {
+      this.setData({
+        canceling: false
+      })
     })
   },
 

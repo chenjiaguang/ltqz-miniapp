@@ -72,7 +72,7 @@ Component({
               this.setData({
                 showCollectTip: true
               })
-              setTimeout(this.hideCollectTip, 3000)
+              setTimeout(() => this.hideCollectTip(), 3000)
             } else {
               wx.showToast({
                 title: '收藏成功',

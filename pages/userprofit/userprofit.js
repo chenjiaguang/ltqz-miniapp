@@ -7,6 +7,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    loading: false,
     navTitle: '收益详情',
     total: 0,
     show_can_remit: 0,
@@ -18,7 +19,8 @@ Page({
     entrances: [{
         title: '收益明细',
         path: '/pages/userprofitdetail/userprofitdetail',
-        subTitle: ''
+        subTitle: '',
+        noRead: 0
       },
       {
         title: '提现记录',
@@ -44,49 +46,14 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function() {
-    util.request('/fenxiao/earn_detail').then(res => {
-      let total = util.formatMoney(res.data.total)
-      let min_tx_amount = util.formatMoney(res.data.min_tx_amount)
-      let can_remit = util.formatMoney(res.data.can_remit)
-      let has_remit = util.formatMoney(res.data.has_remit)
-      let freeze_remit = util.formatMoney(res.data.freeze_remit)
-      let unfreeze_remit = util.formatMoney(res.data.unfreeze_remit)
-      let today_remit = util.formatMoney(res.data.today_remit)
-      let today_tx = util.formatMoney(res.data.today_tx)
-      let _obj = {}
-      _obj.show_total = total.showMoney
-      _obj.total = total.money
-      _obj.show_min_tx_amount = min_tx_amount.showMoney
-      _obj.min_tx_amount = min_tx_amount.money
-      if (min_tx_amount.showMoney && min_tx_amount.showMoney.indexOf('.00') !== -1) {
-        _obj.tip_min_tx_amount = min_tx_amount.showMoney.replace('.00', '')
-      }
-      _obj.show_can_remit = can_remit.showMoney
-      _obj.can_remit = can_remit.money
-      _obj.show_has_remit = has_remit.showMoney
-      _obj.has_remit = has_remit.money
-      _obj.show_freeze_remit = freeze_remit.showMoney
-      _obj.freeze_remit = freeze_remit.money
-      _obj.show_unfreeze_remit = unfreeze_remit.showMoney
-      _obj.unfreeze_remit = unfreeze_remit.money
-      _obj.show_today_remit = today_remit.showMoney
-      _obj.today_remit = today_remit.money
-      _obj.show_today_tx = today_tx.showMoney
-      _obj.today_tx = today_tx.money
-      _obj['entrances[0].subTitle'] = '今日新增' + (today_remit.showMoney || 0) + '元'
-      _obj['entrances[1].subTitle'] = '今日提现' + (today_tx.showMoney || 0) + '元'
-      _obj.withdraw = can_remit.money >= min_tx_amount.money
-      this.setData(_obj)
-    }).catch(err => {
-      console.log('err', err)
-    })
+    
   },
 
   /**
    * 生命周期函数--监听页面显示
    */
   onShow: function() {
-
+    this.fetchProfit()
   },
 
   /**
@@ -133,6 +100,57 @@ Page({
         url: path
       })
     }
+  },
+
+  fetchProfit: function () {
+    const {loading} = this.data
+    if (loading) {
+      return false
+    }
+    this.setData({
+      loading: true
+    })
+    util.request('/fenxiao/earn_detail').then(res => {
+      let total = util.formatMoney(res.data.total)
+      let min_tx_amount = util.formatMoney(res.data.min_tx_amount)
+      let can_remit = util.formatMoney(res.data.can_remit)
+      let has_remit = util.formatMoney(res.data.has_remit)
+      let freeze_remit = util.formatMoney(res.data.freeze_remit)
+      let unfreeze_remit = util.formatMoney(res.data.unfreeze_remit)
+      let today_remit = util.formatMoney(res.data.today_remit)
+      let today_tx = util.formatMoney(res.data.today_tx)
+      let _obj = {}
+      _obj.show_total = total.showMoney
+      _obj.total = total.money
+      _obj.show_min_tx_amount = min_tx_amount.showMoney
+      _obj.min_tx_amount = min_tx_amount.money
+      if (min_tx_amount.showMoney && min_tx_amount.showMoney.indexOf('.00') !== -1) {
+        _obj.tip_min_tx_amount = min_tx_amount.showMoney.replace('.00', '')
+      }
+      _obj.show_can_remit = can_remit.showMoney
+      _obj.can_remit = can_remit.money
+      _obj.show_has_remit = has_remit.showMoney
+      _obj.has_remit = has_remit.money
+      _obj.show_freeze_remit = freeze_remit.showMoney
+      _obj.freeze_remit = freeze_remit.money
+      _obj.show_unfreeze_remit = unfreeze_remit.showMoney
+      _obj.unfreeze_remit = unfreeze_remit.money
+      _obj.show_today_remit = today_remit.showMoney
+      _obj.today_remit = today_remit.money
+      _obj.show_today_tx = today_tx.showMoney
+      _obj.today_tx = today_tx.money
+      _obj['entrances[0].subTitle'] = '今日新增' + (today_remit.showMoney || 0) + '元'
+      _obj['entrances[0].noRead'] = res.data.no_read_remit || 0
+      _obj['entrances[1].subTitle'] = '今日提现' + (today_tx.showMoney || 0) + '元'
+      _obj.withdraw = can_remit.money >= min_tx_amount.money
+      this.setData(_obj)
+    }).catch(err => {
+      console.log('err', err)
+    }).finally(res => {
+      this.setData({
+        loading: false
+      })
+    })
   },
 
   requestCash: function() {

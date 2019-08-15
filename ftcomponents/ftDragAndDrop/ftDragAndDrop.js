@@ -8,10 +8,9 @@ Component({
       type: Array,
       value: [],
       observer: function (newVal, oldVal) {
-        this.initShowList(newVal)
-        // if (newVal && newVal.length && this.data.rects[0]) {
-        //   this.initRectObserver()
-        // }
+        if (newVal && newVal.length && this.data.rects[0]) {
+          this.initShowList(newVal)
+        }
       }
     }
   },
@@ -22,27 +21,18 @@ Component({
   data: {
     minTop: 0,
     showList: [],
-    rects: []
+    rects: [],
+    disableMove: true
   },
 
   /**
    * 组件的方法列表
    */
   methods: {
-    consss(data) {
-      console.log('consss', data)
-    },
-    changePos ({newIndex, oldIndex}) {
-      const {showList} = this.data
-      let arr = showList.filter((item, idx) => idx !== oldIndex)
-      arr.splice(newIndex, 0, showList[oldIndex])
-      this.initShowList(arr)
-    },
     initShowList (list) {
-      console.log('initShowList', list)
+      console.log('ddd')
       this.setData({showList: list, disableMove: true})
       wx.nextTick(() => {
-        this.setData({disableMove: false})
         this.initRectObserver()
       })
     },
@@ -62,12 +52,21 @@ Component({
             rect.top -= min_top
           })
           console.log('rectsList', rectsList)
-          this.setData({rects: rectsList, minTop: min_top})
+          this.setData({rects: rectsList, minTop: min_top, disableMove: false})
         }
       }).exec()
     },
     vibrateShort() {
       wx.vibrateShort()
+    },
+    sortChange(sortArr) {
+      console.log('sortArr', sortArr)
+    }
+  },
+
+  ready () {
+    if (this.data.list && this.data.list.length) {
+      this.initShowList(this.data.list)
     }
   }
 })

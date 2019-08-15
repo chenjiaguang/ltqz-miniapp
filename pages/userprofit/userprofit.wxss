@@ -135,3 +135,10 @@
   color: #666666;
   margin-left: 4rpx;
 }
+
+.red-dot{
+  width: 16rpx;
+  height: 16rpx;
+  border-radius: 50%;
+  margin-right: -14rpx;
+}

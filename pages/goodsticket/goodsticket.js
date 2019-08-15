@@ -27,7 +27,13 @@ Page({
     qr_code_url: '',
     checked_time: '',
     hexiao_staff: '',
-    submitting: false
+    submitting: false,
+    ticket_total: 0,
+    ticket_can_use: 0,
+    can_check: false,
+    tickets: [],
+    choosedLen: 0,
+    loaded: false
   },
 
   fetchTimer: null,
@@ -92,18 +98,81 @@ Page({
 
   },
 
+  goConfirm: function (e) {
+    const {tickets} = this.data
+    if (tickets && tickets.length > 1) { // 多张券，弹出选券弹窗
+      this.toggleTickets()
+    } else { // 一张券，则直接弹出核销码输入弹窗
+      const confirmCode = this.selectComponent('#confirm-code')
+      if (confirmCode) {
+        confirmCode.open(e)
+      }
+    }
+  },
+
+  toggleTickets: function () { // 显示/隐藏券
+    const ftModal = this.selectComponent('#c-ft-modal')
+    ftModal && ftModal.toggle && ftModal.toggle()
+  },
+
+  hideTickets: function () { // 隐藏券
+    const ftModal = this.selectComponent('#c-ft-modal')
+    ftModal && ftModal.hide && ftModal.hide()
+  },
+
+  ticketChange: function (e) { // 选择券
+    const {idx} = e.currentTarget.dataset
+    const {tickets} = this.data
+    if (tickets[idx].is_check) { // 已经核销过该券码
+      return false
+    }
+    const choosed = !tickets[idx].choosed
+    let choosedLen = tickets.filter(item => item.choosed).length
+    choosedLen += choosed ? 1 : -1
+    let _obj = {[`tickets[${idx}].choosed`]: choosed, choosedLen}
+    this.setData(_obj)
+  },
+
+  changeAllTicket: function () {
+    const {choosedLen, tickets, ticket_can_use} = this.data
+    let _obj = {}
+    _obj.choosedLen = 0
+    tickets.forEach((item, idx) => {
+      if (!item.is_check) {
+        _obj['tickets[' + idx + '].choosed'] = choosedLen != ticket_can_use
+        _obj.choosedLen += choosedLen != ticket_can_use ? 1 : 0
+      }
+    })
+    this.setData(_obj)
+  },
+
+  confirmBtnTap: function (e) { // 点击选择券页面的确认按钮
+    this.toggleTickets()
+    const confirmCode = this.selectComponent('#confirm-code')
+    if (confirmCode) {
+      confirmCode.open(e)
+    }
+  },
+
   confirmCode: function(e) {
     let {
       value,
       ctx
     } = e.detail
-    let { submitting} = this.data
-    if (submitting) {
+    let { submitting, tickets} = this.data
+    let ticket_ids = []
+    if (tickets && tickets.length === 1) { // 只有一张券
+      ticket_ids = [tickets[0].id]
+    } else if (tickets && tickets.length > 1) { // 多张券
+      ticket_ids = tickets.filter(item => item.choosed).map(item => item.id)
+    }
+    if (submitting || !tickets || !tickets.length || !ticket_ids.length) { // 正在提交 或 无券 或 无选中的券
       return false
     }
     let rData = {
       id: this.options.id,
-      hx_code: value
+      hx_code: value,
+      ticket_ids: ticket_ids
     }
     this.setData({
       submitting: true
@@ -111,19 +180,20 @@ Page({
     util.request('/order/consume', rData).then(res => {
       console.log('/order/consume', res)
       if (res.error == 0) { // 请求接口成功
-        console.log('success')
         wx.showToast({
-          title: '核销成功',
+          title: res.msg || '核销成功',
           icon: 'none'
         })
         const pages = getCurrentPages()
-        const prePage = pages[pages.length - 2]
-        if (prePage && prePage.name === 'orderdetail' && prePage.fetchOrder) { // 上个页面是订单详情页，更新订单详情页的信息
-          prePage.fetchOrder(this.options.id)
-        } else if (prePage && prePage.name === 'orderlist') { // 更新订单详情页的信息
-          storageHelper.setStorage('orderListRefresh', '1')
+        for (let i = 0; i < pages.length; i++) {
+          if (pages[i].name === 'orderdetail' && pages[i].fetchOrder && pages[i].data.order && pages[i].data.order.order_id) { // 上个页面是订单详情页，更新订单详情页的信息
+            pages[i].fetchOrder(pages[i].data.order.order_id)
+          }
+          if (pages[i].name === 'orderlist') { // 更新订单列表页的信息
+            storageHelper.setStorage('orderListRefresh', '1')
+          }
         }
-        this.updateOrder(this.options.id)
+        this.fetchOrder(this.options.id)
         ctx.close()
       } else {
         if (res.error == 1) { // 核销码错误，则仅仅清除以输入等核销码
@@ -190,6 +260,7 @@ Page({
           }
         }
         let _obj = {}
+        _obj.loaded = true
         _obj.hx_rule = res.data.hx_rule
         _obj.type = res.data.type
         _obj.order_id = res.data.order_id
@@ -203,6 +274,11 @@ Page({
         _obj.status = res.data.status
         _obj.qr_code_url = res.data.qr_code_url
         _obj.checked_time = res.data.checked_time ? util.formatDateTimeDefault('m', res.data.checked_time) : ''
+        _obj.ticket_total = res.data.ticket_total
+        _obj.ticket_can_use = res.data.ticket_can_use
+        _obj.can_check = res.data.can_check
+        _obj.choosedLen = 0
+        _obj.tickets = res.data.ticket_list.map(item => ({code: item.code, id: item.id, is_check: item.is_check, order_id: item.order_id, choosed: false}))
         this.setData(_obj)
       }
     }).catch(err => {
@@ -232,11 +308,13 @@ Page({
           }
           if (updateOtherPage) {
             const pages = getCurrentPages()
-            const prePage = pages[pages.length - 2]
-            if (prePage && prePage.name === 'orderdetail' && prePage.fetchOrder) { // 上个页面是订单详情页，更新订单详情页的信息
-              prePage.fetchOrder(id)
-            } else if (prePage && prePage.name === 'orderlist') { // 更新订单详情页的信息
-              storageHelper.setStorage('orderListRefresh', '1')
+            for (let i = 0; i < pages.length; i++) {
+              if (pages[i].name === 'orderdetail' && pages[i].fetchOrder && pages[i].data.order && pages[i].data.order.order_id) { // 上个页面是订单详情页，更新订单详情页的信息
+                pages[i].fetchOrder(pages[i].data.order.order_id)
+              }
+              if (pages[i].name === 'orderlist') { // 更新订单列表页的信息
+                storageHelper.setStorage('orderListRefresh', '1')
+              }
             }
           }
           if (status == 1 && (res.data.status == 2 || res.data.status == 3)) { // 上个状态是未核销，现在是核销
@@ -259,6 +337,11 @@ Page({
           _obj.status = res.data.status
           _obj.qr_code_url = res.data.qr_code_url
           _obj.checked_time = res.data.checked_time ? util.formatDateTimeDefault('m', res.data.checked_time) : ''
+          _obj.ticket_total = res.data.ticket_total
+          _obj.ticket_can_use = res.data.ticket_can_use
+          _obj.can_check = res.data.can_check
+          _obj.choosedLen = 0
+          _obj.tickets = res.data.ticket_list.map(item => ({code: item.code, id: item.id, is_check: item.is_check, order_id: item.order_id, choosed: false}))
           this.setData(_obj)
         }
       }

@@ -144,12 +144,21 @@ Page({
       saving: true
     })
     util.request('/traveler/edit', rData).then(res => {
-      const pages = getCurrentPages()
-      const page = pages[pages.length - 2]
-      if (page && page.name == 'ordersubmit' && page.fetchBuyfors) { // 更新提交订单页面的常用联系人信息
-        page.fetchBuyfors()
+      if (res.error == 0 && res.data) {
+        const pages = getCurrentPages()
+        const page = pages[pages.length - 2]
+        if (page && page.name == 'ordersubmit' && page.editBack) { // 更新提交订单页面的常用联系人信息
+          page.editBack(res.data)
+        }
+        util.backAndToast(res.msg || '保存成功')
+      } else {
+        if (res.msg) {
+          wx.showToast({
+            title: res.msg,
+            icon: 'none'
+          })
+        }
       }
-      util.backAndToast(res.msg || '保存成功')
     }).catch(err => {}).finally(res => {
       this.setData({
         saving: false

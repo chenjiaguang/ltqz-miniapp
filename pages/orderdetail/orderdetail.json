@@ -6,6 +6,6 @@
     "ft-custom-nav": "../../ftcomponents/ftCustomNav/ftCustomNav",
     "group-overview": "../../components/groupOverview/groupOverview",
     "draw-poster": "../../components/drawPoster/drawPoster",
-    "ft-iphone-bottom-adapter": "../../ftcomponents/ftIphoneBottomAdapter/ftIphoneBottomAdapter"
+    "ft-bottom-box": "../../ftcomponents/ftBottomBox/ftBottomBox"
   }
 }

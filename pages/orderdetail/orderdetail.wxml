@@ -37,11 +37,11 @@
         <text class='value'>{{order.hx_rule || '--'}}</text>
       </view>
     </block>
-    <view wx:if="{{order.type == 1}}" class='line-separator-h'></view>
+    <!-- <view wx:if="{{order.type == 1}}" class='line-separator-h'></view>
     <view wx:if="{{order.type == 1}}" class='item row'>
       <text class='key'>活动场次</text>
       <text class='value'>{{product.session}}</text>
-    </view>
+    </view> -->
     <view class='line-separator-h'></view>
     <view class='item row'>
       <text class='key'>购买数量</text>
@@ -93,18 +93,24 @@
       </view>
     </view>
   </view>
-  <view wx:if="{{order.status && (order.status === '0' || (order.status !== '0' && order.status !== '-1'))}}" class='bottom-button-wrapper'>
-    <view class='bottom-button-height'></view>
-    <ft-iphone-bottom-adapter />
-    <view class='bottom-button'>
-      <view wx:if="{{order.status == 0}}" class="bottom-button-inner-height pay{{repaying ? ' disabled' : ' theme-linear-gradient-137'}}" catchtap="repay">
-        <text>立即支付</text>
+  <ft-bottom-box wx:if="{{order.status === 0 || order.status === '0' || order.can_refund || order.status == 1 || order.status == 2 || order.status == 3 || order.status == 5}}" box-height="{{114}}" bg="#FFFFFF">
+    <view class="bottom-button-wrapper">
+      <view class='line-separator-h' style="width:100%;margin:0;transform-origin:50% 0"></view>
+      <view class='bottom-button'>
+        <view wx:if="{{order.status === 0 || order.status === '0'}}" class="bottom-inner-button cancel" catchtap="goCancel">
+          <text>取消订单</text>
+        </view>
+        <view wx:if="{{order.can_refund}}" class='bottom-inner-button refund' bindtap='goRefund'>
+          <text>退款</text>
+        </view>
+        <view wx:if="{{order.status === 0 || order.status === '0'}}" class="bottom-inner-button pay theme-color theme-border-color" catchtap="repay">
+          <text>立即支付</text>
+        </view>
+        <view wx:if="{{order.status == 1 || order.status == 2 || order.status == 3 || order.status == 5}}" class='bottom-inner-button ticket theme-color theme-border-color' bindtap='goGoodsTicket'>
+          <text>查看电子票</text>
+        </view>
       </view>
-      <view wx:if="{{order.status == 1 || order.status == 2 || order.status == 3 || order.status == 5}}" class='bottom-button-inner-height ticket theme-linear-gradient-137' bindtap='goGoodsTicket'>
-        <text>查看电子票</text>
-      </view>
-      <ft-iphone-bottom-adapter />
     </view>
-  </view>
+  </ft-bottom-box>
 </view>
 <draw-poster id="c-draw-poster" />

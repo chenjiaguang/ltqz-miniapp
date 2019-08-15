@@ -182,6 +182,7 @@ page {
   font-size: 32rpx;
   color: #333;
   position: relative;
+  transition: color 0.3s;
 }
 
 .current-sign {

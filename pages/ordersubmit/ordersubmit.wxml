@@ -13,8 +13,8 @@
         <view wx:for="{{selectedTickets}}" wx:for-index="idx" wx:for-item="ticket" wx:key="id" class='ticket-item'>{{ticket.type.name}}x{{ticket.num}}{{(idx + 1) === selectedTickets.length ? '' : '，'}}</view>
       </view>
       <view wx:if="{{address}}" class='address'>{{address}}</view>
-      <view wx:if="{{!refund || include_bx}}" class='tags-box'>
-        <view wx:if="{{!refund}}" class='tag-item theme-color theme-border-color'><text>本次活动不支持退票</text></view>
+      <view class='tags-box'>
+        <view class='tag-item theme-color theme-border-color'><text>本商品{{can_refund ? '' : '不'}}支持退款</text></view>
         <view wx:if="{{include_bx}}" class='tag-item theme-color theme-border-color'><text>费用中包含保险</text></view>
       </view>
     </block>
@@ -27,8 +27,8 @@
         <view wx:for="{{selectedSessions}}" wx:for-index="idx" wx:for-item="session" wx:key="id" class='ticket-item'>{{session.name}}{{session.subName ? ('（' + session.subName + '）') : ''}}x{{session.num}}{{(idx + 1) === selectedSessions.length ? '' : '，'}}</view>
       </view>
       <view wx:if="{{address}}" class='address'>{{address}}</view>
-      <view wx:if="{{!refund || include_bx}}" class='tags-box'>
-        <view wx:if="{{!refund}}" class='tag-item theme-color theme-border-color'><text>本商品不支持退票</text></view>
+      <view class='tags-box'>
+        <view class='tag-item theme-color theme-border-color'><text>本商品{{can_refund ? '' : '不'}}支持退款</text></view>
         <view wx:if="{{include_bx}}" class='tag-item theme-color theme-border-color'><text>费用中包含保险</text></view>
       </view>
     </block>

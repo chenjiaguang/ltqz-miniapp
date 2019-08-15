@@ -114,27 +114,43 @@
   color: #999;
 }
 
-.bottom-button-height{
-  height: 126rpx;
+.bottom-button-wrapper{
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
-.bottom-button-inner-height{
-  width: 580rpx;
-  height: 82rpx;
-  margin: 14rpx auto 30rpx;
-  font-size: 32rpx;
-  color: #fff;
+.bottom-button{
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 0 32rpx;
+}
+.bottom-inner-button{
+  height: 62rpx;
+  margin-left: 24rpx;
+  padding: 0 22rpx;
+  font-size: 28rpx;
+  line-height: 28rpx;
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 41rpx;
+  border-radius: 31rpx;
+  box-sizing: border-box;
+  border-width: 1px;
+  border-style: solid;
 }
-
-.bottom-button{
-  position: fixed;
-  width: 100%;
-  left: 0;
-  bottom: 0;
-  overflow: hidden;
+.bottom-inner-button:first-child{
+  margin-left: 0;
+}
+.bottom-inner-button.cancel{
+  color: #999999;
+  border-color: #999999;
+}
+.bottom-inner-button.refund{
+  color: #999999;
+  border-color: #999999;
 }
 .pay.disabled{
   background-color: #B8B8B8;

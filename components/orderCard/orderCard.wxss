@@ -43,13 +43,19 @@
 
 .btn {
   font-size: 24rpx;
-  width: 136rpx;
+  line-height: 24rpx;
   height: 50rpx;
-  line-height: 50rpx;
+  padding: 0 20rpx;
   border-radius: 25rpx;
-  text-align: center;
+  border-width: 1px;
+  border-style: solid;
   box-sizing: border-box;
-  margin-left: 15rpx;
+  margin-left: 20rpx;
+  display: flex;
+  align-items: center;
+}
+.btn:first-child{
+  margin-left: 0;
 }
 
 .btn-detail {
@@ -60,6 +66,16 @@
 
 .btn-online {
   color: #fff;
+}
+
+.btn-refund{
+  color: #999999;
+  border-color: #999999;
+}
+
+.btn-cancel{
+  color: #999999;
+  border-color: #999999;
 }
 
 .btn-pay {

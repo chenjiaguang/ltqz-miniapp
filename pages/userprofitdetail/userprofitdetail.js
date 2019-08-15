@@ -66,7 +66,11 @@ Page({
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function() {
-    this.fetchData(parseInt(this.data.page.pn) + 1)
+    const {page} = this.data
+    if (!page || (page && !page.pn) || (page && page.is_end) || loading) {
+      return false
+    }
+    this.fetchData(parseInt(page.pn) + 1)
   },
 
   /**
@@ -122,6 +126,20 @@ Page({
     if (path) {
       wx.navigateTo({
         url: path
+      })
+    }
+  },
+
+  questionTap: function () {
+    const app = getApp()
+    if (app) {
+      const confirmColor = app.globalData.themeModalConfirmColor || '#576B95' // #576B95是官方颜色
+      wx.showModal({
+        title: '待解冻收益',
+        content: '若成交的推广商品为可退商品，则合伙人的所得收益将暂存于待解冻收益中，待好友进行商品核销后，方可转入可提现收益',
+        showCancel: false,
+        confirmText: '确定',
+        confirmColor: confirmColor
       })
     }
   }

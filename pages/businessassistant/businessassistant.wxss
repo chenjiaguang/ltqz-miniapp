@@ -98,3 +98,145 @@
 .other-entrance-box {
   padding: 0;
 }
+
+.ticket-getting-tip{
+  height: 88rpx;
+  line-height: 88rpx;
+  font-size: 24rpx;
+  color: #FFFFFF;
+  background: rgba(0,0,0,0.85);
+  padding: 0 20rpx;
+  border-radius: 8rpx;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 999;
+}
+
+.tickets-wrapper{
+  background: #FFFFFF;
+  border-radius: 12rpx 12rpx 0 0;
+  overflow: hidden;
+  padding-bottom: 47rpx;
+}
+.tickets-header{
+  font-size: 34rpx;
+  line-height: 34rpx;
+  color: #ffffff;
+  height: 96rpx;
+  display: flex;
+  align-items: stretch;
+}
+.close-btn{
+  width: 30%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding-left: 56rpx;
+  box-sizing: border-box;
+}
+.choose-all-btn{
+  width: 30%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding-right: 56rpx;
+  box-sizing: border-box;
+}
+.tickets-header-title{
+  width: 40%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.tickets-sub-header{
+  font-size: 28rpx;
+  line-height: 40rpx;
+  display: flex;
+  justify-content: space-between;
+  color: #666666;
+  padding: 32rpx 52rpx 0;
+}
+.tickets-body{
+  position: relative;
+}
+.tickets-body-content{
+  height: 416rpx;
+  position: relative;
+  z-index: 1;
+}
+.tickets-item{
+  background: #FFFFFF;
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 52rpx;
+  font-size: 28rpx;
+  line-height: 76rpx;
+  color: #333333;
+}
+.shadow-top{
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 24rpx;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
+  z-index: 2;
+  pointer-events: none;
+}
+.shadow-bottom{
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 24rpx;
+  background: linear-gradient(to top, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
+  z-index: 2;
+  pointer-events: none;
+}
+/* .tickets-item.disabled{
+  background: #F8F8F8;
+} */
+.tickets-item:first-child{
+  padding-top: 12rpx;
+}
+.tickets-item:last-child{
+  padding-bottom: 12rpx;
+}
+.check-icon{
+  font-size: 36rpx;
+  line-height: 36rpx;
+  width: 36rpx;
+  height: 36rpx;
+  margin-left: 20rpx;
+}
+.check-icon.lutu-uncheck{
+  color: #999999;
+}
+.check-icon.disabled{
+  color: #E5E5E5;
+}
+
+.confirm-btn{
+  width: 308rpx;
+  height: 60rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 32rpx;
+  line-height: 32rpx;
+  box-sizing: border-box;
+  border-radius: 12rpx;
+  border-width: 1px;
+  border-style: solid;
+  font-weight: normal !important;
+  margin-top: 36rpx;
+}
+.confirm-btn.disabled{
+  background: transparent !important;
+  border-color: #999999 !important;
+  color: #999999 !important;
+}

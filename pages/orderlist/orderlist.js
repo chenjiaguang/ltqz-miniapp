@@ -224,6 +224,7 @@ Page({
       // let list = []
       res.data.list.forEach((item) => {
         item.price = util.formatMoney(item.price).showMoney
+        item.refund_amount = util.formatMoney(item.refund_amount).showMoney
         let product = item.huodong || item.vgoods
         if (product && product.valid_btime) {
           product.valid_btime = util.formatDateTimeDefault('d', product.valid_btime)
@@ -304,6 +305,7 @@ Page({
 
   shareTap: function (e) {
     const {product_id, pt_id} = e.detail
+    console.log('shareTap', product_id, pt_id)
     if (product_id && pt_id) {
       const poster = this.selectComponent('#c-draw-poster')
       if (poster && poster.startDraw) {

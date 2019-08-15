@@ -1,6 +1,7 @@
 {
   "component": true,
   "usingComponents": {
-    "ft-bubble": "../../ftcomponents/ftBubble/ftBubble"
+    "ft-bubble": "../../ftcomponents/ftBubble/ftBubble",
+    "share-button": "../../components/shareButton/shareButton"
   }
 }

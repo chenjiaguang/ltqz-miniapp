@@ -24,6 +24,7 @@
   visibility: visible;
   opacity: 1;
   transform: translateY(0);
+  z-index: 1;
 }
 .tip-body{
   height: 106rpx;
@@ -171,4 +172,16 @@ button.join-btn.disabled{
   font-size: 28rpx;
   line-height: 34rpx;
   font-weight: normal;
+}
+.status-tip-text{
+  font-size: 28rpx;
+  line-height: 78rpx;
+  height: 78rpx;
+  text-align: center;
+  position: absolute;
+  width: 100%;
+  left: 0;
+  top: 0;
+  transform: translateY(-100%);
+  color: #FFFFFF;
 }

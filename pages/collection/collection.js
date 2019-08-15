@@ -59,7 +59,11 @@ Page({
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function() {
-    this.fetchData(parseInt(this.data.page.pn) + 1)
+    const {page} = this.data
+    if (!page || (page && !page.pn) || (page && page.is_end) || loading) {
+      return false
+    }
+    this.fetchData(parseInt(page.pn) + 1)
   },
 
   /**

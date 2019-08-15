@@ -2,15 +2,15 @@
 <ft-custom-nav title="{{navTitle}}" />
 <view class='page-goodsdetail'>
   <view class='banner-wrapper'>
-    <ft-banners wx:if="{{banners && banners[0]}}" banners="{{banners}}" indicator-type="2" height="625rpx" spacing="{{0}}" border-radius="0" previous-margin="{{0}}" next-margin="{{0}}" catchtap="bannerTap" />
+    <ft-banners wx:if="{{banners && banners[0]}}" banners="{{banners}}" autoplay="{{false}}" indicator-type="2" height="625rpx" spacing="{{0}}" border-radius="0" previous-margin="{{0}}" next-margin="{{0}}" catchtap="bannerTap" />
     <image wx:else class='cover' src="{{product_cover_url || cover_url}}" mode="aspectFill"></image>
     <!-- 获取到数据后才展示分享图片，因为分享图片的回调函数中需要用到若干活动数据 -->
     <view wx:if="{{goodsLoaded && uid && fenxiao_price}}" class='share-wrapper'>
       <share-button profit="{{fenxiao_price}}" show-price catchshare="shareBtnTap" />
     </view>
   </view>
-  <goods-detail-status goods-status-data="{{goods_status_data}}" catchtimeout="qgTimeout" />
-  <view class='overview'>
+  <goods-detail-status wx:if="{{goodsLoaded}}" goods-status-data="{{goods_status_data}}" catchtimeout="qgTimeout" catchshare="shareBtnTap" uid="{{uid}}" />
+  <!-- <view class='overview'>
     <view class='title-and-intro-box'>
       <view class='title-and-intro'>
         <view class='title'>{{title}}</view>
@@ -20,7 +20,7 @@
         <share-button catchshare="shareBtnTap" />
       </view>
     </view>
-  </view>
+  </view> -->
   <!-- 拼团模块 -->
   <group-purchase wx:if="{{groupList && groupList.length > 0}}" group-list="{{groupList}}" total-num="{{tuan_join_num}}" catchpintuan="groupTap" />
   <!-- 抢购模块 -->
@@ -52,7 +52,7 @@
     </view>
   </view>
   <!-- 参加活动人数 -->
-  <view wx:if="{{join_num && join_num > 0}}" class='join-box'>
+  <!-- <view wx:if="{{join_num && join_num > 0}}" class='join-box'>
     <view class='block-separator'></view>
     <view class='join-header'><text>累计{{join_num}}人参加</text></view>
     <view class='line-separator-h'></view>
@@ -60,7 +60,7 @@
       <image wx:for="{{join_users}}" wx:for-index="idx" wx:for-item="user" wx:key="id" class='user' style="position:relative;z-index:{{join_users.length - idx}}" src="{{user.avatar}}" mode="aspectFill"></image>
       <view wx:if="{{join_users && join_users.length && join_users.length >= 6}}" class='more-user' style="position:relative;z-index:0"><view class='dot'></view><view class='dot'></view><view class='dot'></view></view>
     </view>
-  </view>
+  </view> -->
   <!-- 主办方信息 -->
   <view class='sponsor-box'>
     <view class='block-separator'></view>
@@ -118,7 +118,7 @@
         </view>
         <view class='line-separator-h'></view>
         <view class="goodsdetail-content-text">
-          <rich-text wx:if="{{content}}" nodes="{{content}}" class='rich-text'></rich-text>
+          <rich-text wx:if="{{content}}" space="nbsp" nodes="{{content}}" class='rich-text'></rich-text>
         </view>
         <view wx:if="{{!content}}" style="text-align:center;font-size:28rpx;color:#999">加载中...</view>
       </view>
@@ -130,7 +130,7 @@
           </view>
           <view class='line-separator-h'></view>
           <view class='goodsdetail-notice-detail'>
-            <rich-text wx:if="{{notice}}" nodes="{{notice}}" class='rich-text'></rich-text>
+            <rich-text wx:if="{{notice}}" space="nbsp" nodes="{{notice}}" class='rich-text'></rich-text>
           </view>
         </view>
       </view>

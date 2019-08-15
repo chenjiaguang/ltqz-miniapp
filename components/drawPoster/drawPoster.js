@@ -29,11 +29,14 @@ Component({
     navWrapperHeight,
     fetching: false, // 是否正在拉取数据
     drawing: false, // 是否正在画图
+    cardDrawing: false, // 是否正在画卡片图
     huodongId: '',
     tuanId: '',
     localPoster: '',
+    localCardPoster: '',
     fenxiao_price: '',
     canShareFriend: false,
+    canSharePengyouquan: false,
     showHideClass: {
       1: ' hide',
       2: ' show'
@@ -42,50 +45,170 @@ Component({
   },
 
   attached: function () {
-
+    // this.getPosterData(149)
   },
 
   /**
    * 组件的方法列表
    */
   methods: {
-    draw: function (drawSuccess) { // drawSuccess在生成图片成功时会回调，并传入图片临时地址
+    drawCard: function (drawSuccess) { // drawSuccess在生成图片成功时会回调，并传入图片临时地址
       this.setData({
-        drawing: true
+        cardDrawing: true
       }, () => {
-        this.triggerEvent('statuschange', { fetching: this.data.fetching, drawing: this.data.drawing })
+        this.triggerEvent('statuschange', { fetching: this.data.fetching, drawing: this.data.drawing, cardDrawing: this.data.cardDrawing, canShareFriend: this.data.canShareFriend, canSharePengyouquan: this.data.canSharePengyouquan })
       })
-      this.createSelectorQuery().select('#wrapper').boundingClientRect(rect => {
-        const ctx = wx.createCanvasContext('c-draw-poster', this)
+      this.createSelectorQuery().select('#card-wrapper').boundingClientRect(rect => {
+        const ctx = wx.createCanvasContext('c-draw-poster-card', this)
         ctx.fillStyle = '#FFFFFF'
-        this.posterWidth = rect.width
-        this.posterHeight = rect.height
+        this.cardPosterWidth = rect.width
+        this.cardPosterHeight = rect.height
         ctx.fillRect(0, 0, rect.width, rect.height)
-        this.createSelectorQuery().selectAll('.draw-image').fields({
+        this.createSelectorQuery().selectAll('.draw-image-card').fields({
           dataset: true,
           rect: true,
           size: true,
           scrollOffset: true,
           properties: ['src'],
-          computedStyle: ['borderRadius'],
+          computedStyle: ['borderRadius', 'boxShadow'],
         }, res => {
-          this.imageLen = res.length
-          this.drawImage(res, ctx, 0, drawSuccess)
+          this.drawImage(res, ctx, 0, drawSuccess, true)
         }).exec()
       }).exec()
     },
-    canvasError: function () {
+    draw: function (drawSuccess) { // drawSuccess在生成图片成功时会回调，并传入图片临时地址
       this.setData({
-        drawing: false
+        drawing: true
       }, () => {
-        this.triggerEvent('statuschange', { fetching: this.data.fetching, drawing: this.data.drawing })
+        this.triggerEvent('statuschange', { fetching: this.data.fetching, drawing: this.data.drawing, cardDrawing: this.data.cardDrawing, canShareFriend: this.data.canShareFriend, canSharePengyouquan: this.data.canSharePengyouquan })
+      })
+      this.createSelectorQuery().select('#wrapper').boundingClientRect(rect => {
+        const ctx = wx.createCanvasContext('c-draw-poster', this)
+        const grd = ctx.createLinearGradient(0, 0, 0, rect.height)
+        grd.addColorStop(0, '#F086A1')
+        grd.addColorStop(1, '#F1416A')
+
+        ctx.setFillStyle(grd)
+        ctx.fillRect(0, 0, rect.width, rect.height)
+        this.posterWidth = rect.width
+        this.posterHeight = rect.height
+        const rd = 12 / 750 * rect.width
+        const padding = 32 / 750 * rect.width
+        const lineLen1 = 22 / 750 * rect.width
+        const lineLen2 = (rect.width - padding * 2 - lineLen1 * 2) / 19
+        const circleR = lineLen2 / 2
+        ctx.save()
+        ctx.beginPath()
+        ctx.strokeStyle = 'transparent'
+        ctx.fillStyle = '#FFFFFF'
+        ctx.arc(padding + rd, padding + rd, rd, Math.PI, 3 / 2 * Math.PI)
+        ctx.lineTo(rect.width - (padding + rd), padding)
+        ctx.arc(rect.width- (padding + rd), padding + rd, rd, 3 / 2 * Math.PI, 2 * Math.PI)
+        ctx.lineTo(rect.width - padding, rect.height - padding)
+        ctx.lineTo(rect.width - padding - lineLen1, rect.height - padding)
+        for (let i = 0; i < 10; i++) {
+          if (i === 0) {
+            ctx.arc(rect.width - padding - lineLen1 - (i + 1) * circleR, rect.height - padding, circleR, 0, Math.PI, true)
+          } else {
+            ctx.lineTo(rect.width - padding - lineLen1 - i * lineLen2 - i * circleR * 2, rect.height - padding)
+            ctx.arc(rect.width - padding - lineLen1 - i * lineLen2 - (2 * i + 1) * circleR, rect.height - padding, circleR, 0, Math.PI, true)
+          }
+        }
+        ctx.lineTo(padding, rect.height - padding)
+        ctx.closePath()
+        ctx.stroke()
+        ctx.fill()
+        ctx.draw()
+        ctx.restore()
+        this.createSelectorQuery().selectAll('.draw-line').fields({
+          dataset: true,
+          rect: true,
+          size: true,
+          scrollOffset: true
+        }, res => {
+          if (!res.length) {
+            this.drawImageFunc(ctx, drawSuccess, false)
+            return false
+          }
+          this.drawLine(res, ctx, 0, drawSuccess)
+        }).exec()
+      }).exec()
+    },
+    drawShadow: function (data, ctx) {
+      if (!data || !data.boxShadow) {
+        return false
+      }
+      const reg = /^[rR][gG][Bb][Aa]?[\(]((2[0-4][0-9]|25[0-5]|[01]?[0-9][0-9]?),){2}(2[0-4][0-9]|25[0-5]|[01]?[0-9][0-9]?),?(0\.\d{1,2}|1|0)?[\)]{1}/gi
+      const string = data.boxShadow.replace(/\s+/g, '')
+      const regResult = reg.exec(string)
+      if (regResult) {
+        const color = regResult[0]
+        const areaStr = string.replace(color, '')
+        const areaArr = areaStr.split('px')
+        ctx.save()
+        ctx.shadowOffsetX = areaArr[0]
+        ctx.shadowOffsetY = areaArr[1]
+        ctx.shadowBlur = areaArr[2]
+        ctx.shadowColor = color
+      }
+    },
+    restoreShadow: function (ctx) {
+      ctx.restore()
+    },
+    hasShadow: function (data) {
+      if (!data || !data.boxShadow) {
+        return false
+      }
+      const reg = /^[rR][gG][Bb][Aa]?[\(]((2[0-4][0-9]|25[0-5]|[01]?[0-9][0-9]?),){2}(2[0-4][0-9]|25[0-5]|[01]?[0-9][0-9]?),?(0\.\d{1,2}|1|0)?[\)]{1}/gi
+      const string = data.boxShadow.replace(/\s+/g, '')
+      const regResult = reg.exec(string)
+      if (regResult) {
+        return regResult
+      } else {
+        return false
+      }
+    },
+    canvasError: function (e) {
+      let isCard = e.currentTarget.dataset.iscard
+      this.setData({
+        [isCard ? 'cardDrawing' : 'drawing']: false
+      }, () => {
+        this.triggerEvent('statuschange', { fetching: this.data.fetching, drawing: this.data.drawing, cardDrawing: this.data.cardDrawing, canShareFriend: this.data.canShareFriend, canSharePengyouquan: this.data.canSharePengyouquan })
       })
     },
-    drawImage: function (imageData, ctx, idx, drawSuccess) {
+    drawLine: function (lineData, ctx, idx, drawSuccess, isCard) {
+      ctx.save()
+      ctx.moveTo(lineData[idx].left, lineData[idx].top)
+      ctx.lineTo(lineData[idx].left + lineData[idx].width, lineData[idx].top)
+      ctx.strokeStyle = lineData[idx].dataset.color || '#CFCFCF'
+      ctx.stroke()
+      ctx.restore()
+      if ((idx + 1) == lineData.length) {
+        this.drawImageFunc(ctx, drawSuccess, isCard)
+      } else {
+        this.drawLine(lineData, ctx, idx + 1, drawSuccess, isCard)
+      }
+    },
+    drawImageFunc: function (ctx, drawSuccess, isCard) {
+      const query = isCard ? '.draw-image-card' : '.draw-image'
+      this.createSelectorQuery().selectAll(query).fields({
+        dataset: true,
+        rect: true,
+        size: true,
+        scrollOffset: true,
+        properties: ['src'],
+        computedStyle: ['borderRadius', 'boxShadow']
+      }, res => {
+        this.drawImage(res, ctx, 0, drawSuccess, isCard)
+      }).exec()
+    },
+    drawImage: function (imageData, ctx, idx, drawSuccess, isCard) {
       wx.getImageInfo({
         src: imageData[idx].src,
         success: (res) => {
-          // 按照aspectfill的方式截取
+          if (this.hasShadow(imageData[idx])) {
+            this.drawShadow(imageData[idx], ctx)
+          }
           const img_width = res.width
           const img_height = res.height
           const draw_height = imageData[idx].height
@@ -102,33 +225,51 @@ Component({
             clip_top = (img_height - clip_height) / 2
             clip_width = img_width
           }
+          let borderRadiusArr = imageData[idx].borderRadius.split(' ').map(item => {
+            if (item.indexOf('px') !== -1) {
+              return parseInt(item)
+            } else if (item.indexOf('%') !== -1) {
+              return imageData[idx].width * parseInt(item) / 100
+            }
+          })
+          const hasRadius = borderRadiusArr.filter(item => item > 0).length > 0
           const banner_clip = { clip_left, clip_top, clip_width, clip_height }
-          if (parseInt(imageData[idx].borderRadius) > 0) {
-            ctx.save()
-            ctx.beginPath()
-            ctx.arc((imageData[idx].left + (imageData[idx].width / 2)), (imageData[idx].top + (imageData[idx].height / 2)), imageData[idx].width / 2, 0, 2 * Math.PI)
-            ctx.closePath()
-            ctx.clip()
-            ctx.drawImage(imageData[idx].dataset.islocal ? imageData[idx].src : res.path, banner_clip.clip_left, banner_clip.clip_top, banner_clip.clip_width, banner_clip.clip_height, imageData[idx].left, imageData[idx].top, imageData[idx].width, imageData[idx].height)
-            ctx.restore()
+          const {left, top, width, height} = imageData[idx]
+          if (hasRadius) {
+            if (borderRadiusArr && (borderRadiusArr.length == 1 || borderRadiusArr.length == 4)) { // 仅支持1个或4个参数的情况
+              if (borderRadiusArr.length == 1) {
+                borderRadiusArr = borderRadiusArr.concat(borderRadiusArr).concat(borderRadiusArr).concat(borderRadiusArr)
+              }
+              ctx.save()
+              ctx.beginPath()
+              ctx.moveTo(left, (top + borderRadiusArr[0]))
+              ctx.arcTo(left, top, left + borderRadiusArr[0], top, borderRadiusArr[0])
+              ctx.lineTo(left + width - borderRadiusArr[1], top)
+              ctx.arcTo(left + width, top, (left + width), top + borderRadiusArr[1], borderRadiusArr[1])
+              ctx.lineTo(left + width, top + height - borderRadiusArr[2])
+              ctx.arcTo(left + width, top + height, (left + width - borderRadiusArr[2]), top + height, borderRadiusArr[2])
+              ctx.lineTo(left + borderRadiusArr[3], top + height)
+              ctx.arcTo(left, top + height, left, top + height - borderRadiusArr[3], borderRadiusArr[3])
+              ctx.closePath()
+              ctx.clip()
+              ctx.drawImage(imageData[idx].dataset.islocal ? imageData[idx].src : res.path, banner_clip.clip_left, banner_clip.clip_top, banner_clip.clip_width, banner_clip.clip_height, imageData[idx].left, imageData[idx].top, imageData[idx].width, imageData[idx].height)
+              ctx.restore()
+            }
           } else {
-            ctx.drawImage(imageData[idx].dataset.islocal ? imageData[idx].src : res.path, banner_clip.clip_left, banner_clip.clip_top, banner_clip.clip_width, banner_clip.clip_height, imageData[idx].left, imageData[idx].top, imageData[idx].width, imageData[idx].height)
+            ctx.drawImage(imageData[idx].dataset.islocal ? imageData[idx].src : res.path, banner_clip.clip_left, banner_clip.clip_top, banner_clip.clip_width, banner_clip.clip_height, left, top, width, height)
           }
           if ((idx + 1) == imageData.length) {
-            // ctx.draw(true, () => {
-            //   this.drawFillFunc(ctx, drawSuccess)
-            // })
-            this.drawFillFunc(ctx, drawSuccess)
+            this.drawFillFunc(ctx, drawSuccess, isCard)
           } else {
-            // ctx.draw(true, () => {
-            //   this.drawImage(imageData, ctx, idx + 1, drawSuccess)
-            // })
-            this.drawImage(imageData, ctx, idx + 1, drawSuccess)
+            this.drawImage(imageData, ctx, idx + 1, drawSuccess, isCard)
+          }
+          if (this.hasShadow(imageData[idx])) {
+            this.restoreShadow(ctx)
           }
         }
       })
     },
-    drawFill: function (fillData, ctx, idx, drawSuccess) {
+    drawFill: function (fillData, ctx, idx, drawSuccess, isCard) {
       let radius = {
         lt: 0,
         rt: 0,
@@ -181,15 +322,15 @@ Component({
         // ctx.draw(true, () => {
         //   this.drawStrokeFunc(ctx, drawSuccess)
         // })
-        this.drawStrokeFunc(ctx, drawSuccess)
+        this.drawStrokeFunc(ctx, drawSuccess, isCard)
       } else {
         // ctx.draw(true, () => {
         //   this.drawFill(fillData, ctx, idx + 1, drawSuccess)
         // })
-        this.drawFill(fillData, ctx, idx + 1, drawSuccess)
+        this.drawFill(fillData, ctx, idx + 1, drawSuccess, isCard)
       }
     },
-    drawStroke: function (strokeData, ctx, idx, drawSuccess) {
+    drawStroke: function (strokeData, ctx, idx, drawSuccess, isCard) {
       let radius = {
         lt: 0,
         rt: 0,
@@ -242,65 +383,95 @@ Component({
         // ctx.draw(true, () => {
         //   this.drawTextFunc(ctx, drawSuccess)
         // })
-        this.drawTextFunc(ctx, drawSuccess)
+        this.drawTextFunc(ctx, drawSuccess, isCard)
       } else {
         // ctx.draw(true, () => {
         //   this.drawStroke(strokeData, ctx, idx + 1, drawSuccess)
         // })
-        this.drawStroke(strokeData, ctx, idx + 1, drawSuccess)
+        this.drawStroke(strokeData, ctx, idx + 1, drawSuccess, isCard)
       }
     },
-    drawText: function (textData, ctx, idx, drawSuccess) {
+    drawTextThroughLine: function (data, ctx, row = 0) {
+      if (data.textDecoration && data.textDecoration.indexOf('line-through') !== -1) { // 存在line-through样式，则画删除线
+        ctx.moveTo(data.left, data.top + parseInt(data.paddingTop) + parseInt(data.borderTopWidth) + parseInt(data.lineHeight) * (row + (1 / 2)))
+        ctx.lineTo(data.left + ctx.measureText(data.dataset.text).width, data.top + parseInt(data.paddingTop) + parseInt(data.borderTopWidth) + parseInt(data.lineHeight) * (row + (1 / 2)))
+        ctx.lineWidth = 1
+        ctx.strokeStyle = data.color
+        ctx.stroke()
+      }
+    },
+    drawText: function (textData, ctx, idx, drawSuccess, isCard) {
       const alignObj = {start: 'left', center: 'center', end: 'right'}
       ctx.save()
-      ctx.font = parseInt(textData[idx].fontSize) + 'px sans-serif'
+      ctx.font = parseInt(textData[idx].fontSize) + 'px ' + textData[idx].fontFamily
       ctx.setTextAlign(alignObj[textData[idx].textAlign])
-      ctx.setTextBaseline('middle')
+      ctx.setTextBaseline(textData[idx].dataset.baseline || 'middle')
       ctx.fillStyle = textData[idx].color
-      if (textData[idx].dataset.maxline && textData[idx].dataset.maxlength) {
-        const chr = textData[idx].dataset.text
-        let temp = ""
-        let _row = []
-        for (let char of chr) {
-          if (((temp + (char)).length <= textData[idx].dataset.maxlength)) {
+      if (textData[idx].dataset.maxline) {
+        const maxLine = textData[idx].dataset.maxline
+        const width = textData[idx].width
+        let text = textData[idx].dataset.text
+        let row = []
+        let temp = ''
+        for (let char of text) {
+          if (char == '\n') {
+            row.push(temp)
+            temp = ''
+          } else if (ctx.measureText(temp + char).width <= width) {
             temp += char
           } else {
-            _row.push(temp)
+            row.push(temp)
             temp = char
           }
         }
-        _row.push(temp)
-        let row = _row.filter((item, _idx) => _idx < textData[idx].dataset.maxline)
-        if (_row.length >= textData[idx].dataset.maxline && _row[row.length - 1].length >= textData[idx].dataset.maxlength) {
-          row[row.length - 1] = row[row.length - 1] + '...'
-        }
-        if (row.length != Math.round(textData[idx].height / parseInt(textData[idx].lineHeight))) { // 实际上没有超过最大宽度，但是按照20个字一行来算确超过时，修正
-          const realRowNum = Math.round(textData[idx].height / parseInt(textData[idx].lineHeight))
-          row[realRowNum - 1] = row[realRowNum - 1] + row[realRowNum]
-          row = row.filter((item, idx) => idx < realRowNum)
+        row.push(temp)
+        if (row[maxLine]) { // 表示超出最大行数
+          row = row.filter((item, idx) => idx < maxLine)
+          if (ctx.measureText(row[maxLine - 1] + '...').width > width) {
+            row[maxLine - 1] = row[maxLine - 1].substring(0, row[maxLine - 1].length - 1) + '...'
+          }
         }
         for (let b = 0; b < row.length; b++) {
           ctx.fillText(row[b], alignObj[textData[idx].textAlign] == 'center' ? (textData[idx].left + textData[idx].width / 2) : textData[idx].left + parseInt(textData[idx].paddingLeft) + parseInt(textData[idx].borderLeftWidth), textData[idx].top + parseInt(textData[idx].paddingTop) + parseInt(textData[idx].borderTopWidth) + parseInt(textData[idx].lineHeight) * (b + (1 / 2)), textData[idx].width)
+          this.drawTextThroughLine(textData[idx], ctx, b)
+          // if (textData[idx].textDecoration.indexOf('line-through') !== -1) { // 存在line-through样式，则画删除线
+          //   ctx.moveTo(textData[idx].left, textData[idx].top + parseInt(textData[idx].paddingTop) + parseInt(textData[idx].borderTopWidth) + parseInt(textData[idx].lineHeight) * (b + (1 / 2)))
+          //   ctx.lineTo(textData[idx].left + ctx.measureText(row[b]).width, textData[idx].top + parseInt(textData[idx].paddingTop) + parseInt(textData[idx].borderTopWidth) + parseInt(textData[idx].lineHeight) * (b + (1 / 2)))
+          //   ctx.lineWidth = 1
+          //   ctx.strokeStyle = textData[idx].textDecoration.replace('line-through solid ', '')
+          //   ctx.stroke()
+          // }
         }
       } else {
         ctx.fillText(textData[idx].dataset.text, alignObj[textData[idx].textAlign] == 'center' ? (textData[idx].left + textData[idx].width / 2) : textData[idx].left + parseInt(textData[idx].paddingLeft) + parseInt(textData[idx].borderLeftWidth), textData[idx].top + parseInt(textData[idx].paddingTop) + parseInt(textData[idx].borderTopWidth) + parseInt(textData[idx].lineHeight) / 2, textData[idx].width)
+        this.drawTextThroughLine(textData[idx], ctx, 0)
+        // if (textData[idx].textDecoration.indexOf('line-through') !== -1) { // 存在line-through样式，则画删除线
+        //   ctx.moveTo(textData[idx].left, textData[idx].top + parseInt(textData[idx].paddingTop) + parseInt(textData[idx].borderTopWidth) + parseInt(textData[idx].lineHeight) / 2)
+        //   ctx.lineTo(textData[idx].left + ctx.measureText(textData[idx].dataset.text).width, textData[idx].top + parseInt(textData[idx].paddingTop) + parseInt(textData[idx].borderTopWidth) + parseInt(textData[idx].lineHeight) / 2)
+        //   ctx.lineWidth = 1
+        //   ctx.strokeStyle = textData[idx].textDecoration.replace('line-through solid ', '')
+        //   ctx.stroke()
+        // }
       }
       ctx.restore()
       this.textLen -= 1
       if ((idx + 1) == textData.length) {
+        const query = isCard ? 'c-draw-poster-card' : 'c-draw-poster'
         ctx.draw(true, () => {
           setTimeout(() => {
             wx.canvasToTempFilePath({
               x: 0,
               y: 0,
-              canvasId: 'c-draw-poster',
+              canvasId: query,
               success: res => {
-                const query = this.createSelectorQuery().select('#top-wrapper').boundingClientRect(rect => {
+                this.createSelectorQuery().select('#top-wrapper').boundingClientRect(rect => {
                   if (rect) { // #top-wrapper有可能时隐藏状态的，所以做此判断
+                    let _width = isCard ? this.cardPosterWidth : this.posterWidth
+                    let _height = isCard ? this.cardPosterHeight : this.posterHeight
                     let width = 0
                     let height = 0
                     rect.height = rect.height - 44
-                    const posterRatio = this.posterWidth / this.posterHeight
+                    const posterRatio = _width / _height
                     const topWrapperRatio = rect.width / rect.height
                     if (posterRatio < topWrapperRatio) {
                       height = rect.height * 0.88
@@ -317,19 +488,19 @@ Component({
                 }).exec()
                 let localPoster = res.tempFilePath
                 this.setData({
-                  localPoster: localPoster,
-                  drawing: false
+                  [isCard ? 'localCardPoster' : 'localPoster']: localPoster,
+                  [isCard ? 'cardDrawing' : 'drawing']: false,
+                  canSharePengyouquan: (!isCard && localPoster)
                 }, () => {
-                  this.triggerEvent('statuschange', { fetching: this.data.fetching, drawing: this.data.drawing })
-                  drawSuccess && drawSuccess(localPoster)
+                  this.triggerEvent('statuschange', { fetching: this.data.fetching, drawing: this.data.drawing, cardDrawing: this.data.cardDrawing, canShareFriend: this.data.canShareFriend, canSharePengyouquan: this.data.canSharePengyouquan })
+                  drawSuccess && drawSuccess()
                 })
               },
               fail: res => {
-                console.log('fail_res', res)
                 this.setData({
-                  drawing: false
+                  [isCard ? 'cardDrawing' : 'drawing']: false
                 }, () => {
-                  this.triggerEvent('statuschange', { fetching: this.data.fetching, drawing: this.data.drawing })
+                  this.triggerEvent('statuschange', { fetching: this.data.fetching, drawing: this.data.drawing, cardDrawing: this.data.cardDrawing, canShareFriend: this.data.canShareFriend, canSharePengyouquan: this.data.canSharePengyouquan })
                 })
               }
             }, this)
@@ -339,49 +510,52 @@ Component({
         // ctx.draw(true, () => {
         //   this.drawText(textData, ctx, idx + 1, drawSuccess)
         // })
-        this.drawText(textData, ctx, idx + 1, drawSuccess)
+        this.drawText(textData, ctx, idx + 1, drawSuccess, isCard)
       }
     },
-    drawFillFunc: function (ctx, drawSuccess) {
-      this.createSelectorQuery().selectAll('.draw-fill').fields({
+    drawFillFunc: function (ctx, drawSuccess, isCard) {
+      const query = isCard ? '.draw-fill-card' : '.draw-fill'
+      this.createSelectorQuery().selectAll(query).fields({
         rect: true,
         size: true,
         scrollOffset: true,
-        computedStyle: ['borderRadius', 'backgroundColor']
+        computedStyle: ['borderRadius', 'backgroundColor', 'verticalAlign']
       }, res => {
         if (!res.length) {
-          this.drawStrokeFunc(ctx, drawSuccess)
+          this.drawStrokeFunc(ctx, drawSuccess, isCard)
           return false
         }
-        this.drawFill(res, ctx, 0, drawSuccess)
+        this.drawFill(res, ctx, 0, drawSuccess, isCard)
       }).exec()
     },
-    drawStrokeFunc: function (ctx, drawSuccess) {
-      this.createSelectorQuery().selectAll('.draw-stroke').fields({
+    drawStrokeFunc: function (ctx, drawSuccess, isCard) {
+      const query = isCard ? '.draw-stroke-card' : '.draw-stroke'
+      this.createSelectorQuery().selectAll(query).fields({
         rect: true,
         size: true,
         scrollOffset: true,
         computedStyle: ['borderRadius', 'borderColor']
       }, res => {
         if (!res.length) { // 不存在stroke类型时，直接跳过
-          this.drawTextFunc(ctx, drawSuccess)
+          this.drawTextFunc(ctx, drawSuccess, isCard)
           return false
         }
-        this.drawStroke(res, ctx, 0, drawSuccess)
+        this.drawStroke(res, ctx, 0, drawSuccess, isCard)
       }).exec()
     },
-    drawTextFunc: function (ctx, drawSuccess) {
-      this.createSelectorQuery().selectAll('.draw-text').fields({
+    drawTextFunc: function (ctx, drawSuccess, isCard) {
+      const query = isCard ? '.draw-text-card' : '.draw-text'
+      this.createSelectorQuery().selectAll(query).fields({
         dataset: true,
         rect: true,
         size: true,
         scrollOffset: true,
-        computedStyle: ['fontSize', 'color', 'lineHeight', 'textAlign', 'paddingLeft', 'paddingTop', 'borderLeftWidth', 'borderTopWidth']
+        computedStyle: ['fontSize', 'fontFamily', 'color', 'lineHeight', 'textAlign', 'paddingLeft', 'paddingTop', 'borderLeftWidth', 'borderTopWidth', 'textDecoration']
       }, res => {
         // const arr = res.map(item => {
         //   return { fontsize: item.fontSize, dataset: item.dataset, lineHeight: item.lineHeight, color: item.color }
         // })
-        this.drawText(res, ctx, 0, drawSuccess)
+        this.drawText(res, ctx, 0, drawSuccess, isCard)
       }).exec()
     },
     getPosterData: function (huodong_id, tuan_id, dataSuccess) { // dataSuccess在成功获取后执行
@@ -397,11 +571,13 @@ Component({
         huodongId: huodong_id || '',
         tuanId: tuan_id || '',
         localPoster: '',
+        localCardPoster: '',
         canShareFriend: false,
+        canSharePengyouquan: false,
         fenxiao_price: '',
         fetching: true
       }, () => {
-        this.triggerEvent('statuschange', { fetching: this.data.fetching, drawing: this.data.drawing })
+        this.triggerEvent('statuschange', { fetching: this.data.fetching, drawing: this.data.drawing, cardDrawing: this.data.cardDrawing, canShareFriend: this.data.canShareFriend, canSharePengyouquan: this.data.canSharePengyouquan })
       })
       util.request('/product/share', rData).then(res => {
         if (res.data) {
@@ -423,6 +599,16 @@ Component({
             price = util.formatMoney(data.min_qg_price).showMoney
           }
           _obj.price = price
+          if (price) {
+            const priceArr = price.split('.')
+            _obj.priceFirst = priceArr[0] + '.'
+            _obj.priceLast = priceArr[1] || '00'
+          } else {
+            _obj.priceFirst = '免费'
+            _obj.priceLast = ''
+          }
+          _obj.originPrice = util.formatMoney(data.min_origin_price).showMoney
+          _obj.reduce_amount = util.formatMoney(data.reduce_amount).showMoney
           _obj.fenxiao_price = data.fenxiao_price
           _obj.pintuan = data.spell_num
           _obj.joinNumber = data.join_num
@@ -447,31 +633,40 @@ Component({
         this.setData({
           fetching: false
         }, () => {
-          this.triggerEvent('statuschange', { fetching: this.data.fetching, drawing: this.data.drawing })
+          this.triggerEvent('statuschange', { fetching: this.data.fetching, drawing: this.data.drawing, cardDrawing: this.data.cardDrawing, canShareFriend: this.data.canShareFriend, canSharePengyouquan: this.data.canSharePengyouquan })
         })
       })
     },
-    startDraw: function (huodong_id, tuan_id) {
-      this.showPoster()
-      const { huodongId, tuanId, localPoster } = this.data
-      if (huodong_id == huodongId && ((!tuan_id && !tuanId) || tuan_id == tuanId) && localPoster) { // 之前已经画过
+    startDraw: function (huodong_id, tuan_id, dontShowPoster) {
+      if (!dontShowPoster) {
+        this.showPoster()
+      }
+      const { huodongId, tuanId, localPoster, localCardPoster } = this.data
+      if (huodong_id == huodongId && ((!tuan_id && !tuanId) || tuan_id == tuanId) && localPoster && localCardPoster) { // 之前已经画过
         return false
       }
       const dataSuccess = () => {
-        this.initShare()
+        // this.initShare()
         this.draw()
+        this.drawCard(() => {
+          this.initShare()
+        })
       }
       this.getPosterData(huodong_id, tuan_id, dataSuccess)
     },
     startDrawAndSavePoster: function (huodong_id, tuan_id) {
-      const { huodongId, tuanId, localPoster } = this.data
-      if (huodong_id == huodongId && ((!tuan_id && !tuanId) || tuan_id == tuanId) && localPoster) { // 之前已经画过
+      const { huodongId, tuanId, localPoster, localCardPoster } = this.data
+      if (huodong_id == huodongId && ((!tuan_id && !tuanId) || tuan_id == tuanId) && localPoster && localCardPoster) { // 之前已经画过
         this.savePoster()
+        this.initShare()
         return false
       }
       const dataSuccess = () => {
         this.draw(() => {
           this.savePoster()
+        })
+        this.drawCard(() => {
+          this.initShare()
         })
       }
       this.getPosterData(huodong_id, tuan_id, dataSuccess)
@@ -487,8 +682,8 @@ Component({
       this.recoverShare()
     },
     initShare: function () {
-      const { title, banner, huodongId, tuanId, fenxiao_price, uid, saleType, hName } = this.data
-      if (title && banner && huodongId) { // 存在数据
+      const { title, huodongId, tuanId, fenxiao_price, uid, saleType, hName, localCardPoster } = this.data
+      if (title && huodongId && localCardPoster) { // 存在数据
         let path = ''
         if (huodongId && tuanId) { // 分享团
           path += '/pages/pintuandetail/pintuandetail?id=' + tuanId
@@ -503,14 +698,21 @@ Component({
         let passShareFunc = page.onShareAppMessage
         page._onShareAppMessage = passShareFunc
         page.onShareAppMessage = function () {
+          // return {
+          //   title: (saleType == 2 && tuanId && hName) ? (hName + '邀请你参与拼团') : title,
+          //   path: path,
+          //   imageUrl: localCardPoster
+          // }
           return {
-            title: (saleType == 2 && tuanId && hName) ? (hName + '邀请你参与拼团') : title,
+            title: `${hName}向你推荐：${title}`,
             path: path,
-            imageUrl: banner
+            imageUrl: localCardPoster
           }
         }
         this.setData({
           canShareFriend: true
+        }, () => {
+          this.triggerEvent('statuschange', { fetching: this.data.fetching, drawing: this.data.drawing, cardDrawing: this.data.cardDrawing, canShareFriend: this.data.canShareFriend, canSharePengyouquan: this.data.canSharePengyouquan })
         })
       }
     },
@@ -519,6 +721,11 @@ Component({
       const page = pages[pages.length - 1]
       let passShareFunc = page._onShareAppMessage
       page.onShareAppMessage = passShareFunc
+      // this.setData({
+      //   canShareFriend: false
+      // }, () => {
+      //   this.triggerEvent('statuschange', { fetching: this.data.fetching, drawing: this.data.drawing, cardDrawing: this.data.cardDrawing, canShareFriend: this.data.canShareFriend, canSharePengyouquan: this.data.canSharePengyouquan })
+      // })
     },
     savePoster: function () {
       const {localPoster } = this.data

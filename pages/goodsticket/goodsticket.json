@@ -3,6 +3,8 @@
   "backgroundColor": "#F5F5F5",
   "usingComponents": {
     "ft-custom-nav": "../../ftcomponents/ftCustomNav/ftCustomNav",
+    "ft-list-loader": "../../ftcomponents/ftListLoader/ftListLoader",
+    "ft-modal": "../../ftcomponents/ftModal/ftModal",
     "confirm-code": "../../components/confirmCode/confirmCode",
     "ft-iphone-bottom-adapter": "../../ftcomponents/ftIphoneBottomAdapter/ftIphoneBottomAdapter"
   }

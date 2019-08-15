@@ -1,19 +1,29 @@
 <!--pages/goodsticket/goodsticket.wxml-->
 <ft-custom-nav title="{{navTitle}}" />
-<view class='page-goodsticket'>
+<ft-list-loader visible="{{!loaded}}" />
+<view hidden="{{!loaded}}" class='page-goodsticket'>
   <view class='info-wrapper'>
     <view class='top-info'>
+      <view class="qr-code-header{{(status == 2 || status == 3 || status == -1 || status == 5) ? '' : ' theme-bg'}}">共{{ticket_total || 0}}张，可使用{{ticket_can_use || 0}}张</view>
+      <view class="use-tip">向商家出示二维码即可消费</view>
       <image class="qr-code{{(status == 2 || status == 3 || status == -1 || status == 5) ? ' disabled' : ''}}" src="{{qr_code_url}}" mode="aspectFit"></image>
-      <view wx:if="{{status == 2 || status == 3}}" class='checked-icon'><text>已核销</text></view>
-      <view wx:elif="{{status == -1 || status == 5}}" class='checked-icon'><text>已失效</text></view>
+      <view wx:if="{{status == 2 || status == 3}}" class='checked-icon'>
+        <text class="checked-icon-icon lutufont lutu-star_circle"></text>
+        <view class="checked-icon-text">已核销</view>
+      </view>
+      <view wx:elif="{{status == -1 || status == 5}}" class='checked-icon'>
+        <text class="checked-icon-icon lutufont lutu-star_circle"></text>
+        <view class="checked-icon-text">已失效</view>
+      </view>
       <!-- 未核销暂不显示 -->
       <!-- <view wx:elif="{{status === 0 || status === '0' || status == 1}}" class='checked-icon'><text>未核销</text></view> -->
       <!-- <view class='line-info'><text>过期时间：</text><text>{{deadline || ''}}</text></view> -->
-      <view class='line-info'><text>核销状态：</text><text class="{{(status == 2 || status == 3) ? 'status-text-normal' : 'theme-color'}}">{{hexiao_status_text[status]}}</text></view>
-      <view class='line-info'><text>核销时间：</text><text>{{checked_time || '--'}}</text></view>
+      <!-- <view class='line-info'><text>核销状态：</text><text class="{{(status == 2 || status == 3) ? 'status-text-normal' : 'theme-color'}}">{{hexiao_status_text[status]}}</text></view> -->
+      <!-- <view class='line-info'><text>核销时间：</text><text>{{checked_time || '--'}}</text></view> -->
       <!-- <view class='line-info'><text>核销人员：</text><text>{{hexiao_staff || ''}}</text></view> -->
-      <button wx:if="{{(status == 1)}}" class="hexiao-btn{{status != 1 ? ' disabled' : ' theme-bg'}}" disabled="{{status != 1}}" catchtap="openConfirmCode">自助核销</button>
-      <button wx:if="{{status == 2 || status == 3}}" class="comment-btn{{status != 2 ? ' disabled' : ' theme-bg'}}" disabled="{{status != 2}}" catchtap="goComment">{{status == 2 ? '去评价' : '已评价'}}</button>
+      <!-- <button wx:if="{{(status == 1)}}" class="hexiao-btn{{status != 1 ? ' disabled' : ' theme-bg'}}" disabled="{{status != 1}}" catchtap="openConfirmCode">自助核销</button> -->
+      <button wx:if="{{(status == 1)}}" class="hexiao-btn{{(status != 1 || !ticket_can_use || !can_check) ? ' disabled' : ' theme-color theme-border-color'}}" hover-class="none" disabled="{{status != 1 || !ticket_can_use || !can_check}}" catchtap="goConfirm">自助核销</button>
+      <button wx:if="{{status == 2 || status == 3}}" class="comment-btn{{status != 2 ? ' disabled' : ' theme-color theme-border-color'}}" hover-class="none" disabled="{{status != 2}}" catchtap="goComment">{{status == 2 ? '去评价' : '已评价'}}</button>
     </view>
     <view style="border:1px dashed #D8D8D8;width:638rpx;margin:0 auto;transform:scale(1, 0.5);transform-origin:50% 100%"></view>
     <!-- 活动商品 -->
@@ -22,11 +32,11 @@
         <view class="info-left">活动名称</view>
         <view class='info-right'>{{product.title}}</view>
       </view>
-      <view class='line-separator-h'></view>
+      <!-- <view class='line-separator-h'></view>
       <view class='info-item'>
         <view class="info-left">活动场次</view>
         <view class='info-right'>{{product.session}}</view>
-      </view>
+      </view> -->
       <view class='line-separator-h'></view>
       <view class='info-item'>
         <view class="info-left">购买数量</view>
@@ -68,5 +78,32 @@
     </view>
   </view>
   <ft-iphone-bottom-adapter />
-  <confirm-code id="confirm-code" confirming="{{submitting}}" catchconfirm="confirmCode" />
 </view>
+<ft-modal id="c-ft-modal" hide-cancel mode="1">
+  <view slot="bottom" class="tickets-wrapper">
+    <view class="tickets-header theme-bg">
+      <view class="close-btn" catchtap="hideTickets"><text>关闭</text></view>
+      <view class="tickets-header-title"><text>请选择核销券码</text></view>
+      <view class="choose-all-btn" catchtap="changeAllTicket"><text>{{choosedLen == ticket_can_use ? '全不选' : '全选'}}</text></view>
+    </view>
+    <view class="tickets-sub-header">
+      <view class="total-count">共{{ticket_total}}张</view>
+      <view class="choosed-count theme-color">已选{{choosedLen}}张</view>
+    </view>
+    <view class="tickets-body">
+      <view class="shadow-top"></view>
+      <scroll-view class="tickets-body-content" scroll-y>
+        <view wx:for="{{tickets}}" wx:key="id" class="tickets-item{{item.is_check ? ' disabled' : ''}}" catchtap="ticketChange" data-idx="{{index}}" hover-stop-propagation hover-class="{{item.is_check ? 'none' : 'bg-touched'}}" hover-start-time="{{50}}" hover-stay-time="{{200}}">
+          <view class="line-separator-h" style="position:absolute;left:52rpx;top:0;width:638rpx"></view>
+          <view class="tickets-item-title">券码{{index + 1}}：{{item.code}}</view>
+          <text class="check-icon lutufont{{item.choosed ? ' lutu-checked theme-color' : ' lutu-uncheck'}}{{item.is_check ? ' disabled' : ''}}"></text>
+        </view>
+      </scroll-view>
+      <view class="shadow-bottom"></view>
+    </view>
+    <button class="confirm-btn{{(status != 1 || !choosedLen) ? ' disabled' : ' theme-color theme-border-color'}}" catchtap="confirmBtnTap" disabled="{{status != 1 || !choosedLen}}">
+      <text class='confirm-btn-text'>确定</text>
+    </button>
+  </view>
+</ft-modal>
+<confirm-code id="confirm-code" confirming="{{submitting}}" catchconfirm="confirmCode" />

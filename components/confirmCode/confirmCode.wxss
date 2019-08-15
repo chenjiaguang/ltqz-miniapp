@@ -73,6 +73,7 @@
   font-size: 36rpx;
   color: #fff;
   margin: 40rpx auto 0;
+  transition: background 200ms;
 }
 .btn:after, .btn:before{
   display: none;

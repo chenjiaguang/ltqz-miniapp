@@ -1,5 +1,6 @@
 <!--pages/businessassistant/businessassistant.wxml-->
 <ft-custom-nav title="{{navTitle}}" />
+<official-account></official-account>
 <view class='page-businessassistant'>
   <view class="block-separator"></view>
   <view class='card overview'>
@@ -45,3 +46,32 @@
     </ft-entrance>
   </view>
 </view>
+<view hidden="{{!ticketGetting}}" class="ticket-getting-tip">正在识别...</view>
+<ft-modal id="c-ft-modal" hide-cancel bottom-touch-hide mode="1">
+  <view slot="bottom" class="tickets-wrapper">
+    <view class="tickets-header theme-bg">
+      <view class="close-btn" catchtap="hideTickets"><text>关闭</text></view>
+      <view class="tickets-header-title"><text>请选择核销券码</text></view>
+      <view class="choose-all-btn" catchtap="changeAllTicket"><text>{{choosedLen == ticket_can_use ? '全不选' : '全选'}}</text></view>
+    </view>
+    <view class="tickets-sub-header">
+      <view class="total-count">共{{ticket_total}}张</view>
+      <view class="choosed-count theme-color">已选{{choosedLen}}张</view>
+    </view>
+    <view class="tickets-body">
+      <view class="shadow-top"></view>
+      <scroll-view class="tickets-body-content" scroll-y>
+        <view wx:for="{{tickets}}" wx:key="id" class="tickets-item{{item.is_check ? ' disabled' : ''}}" catchtap="ticketChange" data-idx="{{index}}" hover-stop-propagation hover-class="{{item.is_check ? 'none' : 'bg-touched'}}" hover-start-time="{{50}}" hover-stay-time="{{200}}">
+          <view class="line-separator-h" style="position:absolute;left:52rpx;top:0;width:638rpx"></view>
+          <view class="tickets-item-title">券码{{index + 1}}：{{item.code}}</view>
+          <text class="check-icon lutufont{{item.choosed ? ' lutu-checked theme-color' : ' lutu-uncheck'}}{{item.is_check ? ' disabled' : ''}}"></text>
+        </view>
+      </scroll-view>
+      <view class="shadow-bottom"></view>
+    </view>
+    <button class="confirm-btn{{!choosedLen ? ' disabled' : ' theme-color theme-border-color'}}" catchtap="confirmBtnTap" disabled="{{!choosedLen}}">
+      <text class='confirm-btn-text'>确定</text>
+    </button>
+  </view>
+</ft-modal>
+  

@@ -57,7 +57,7 @@ Page({
     min_age: '',
     max_age: '',
     limit_num: '',
-    refund: false, // 是否支持退款
+    can_refund: false, // 是否支持退款
     join_num: 0,
     join_users: [],
     shop: {}, // 商家信息
@@ -151,16 +151,16 @@ Page({
   /**
    * 用户点击右上角分享
    */
-  onShareAppMessage: function () {
-    const { title, id, cover_url, uid, fenxiao_price} = this.data
-    if (title && id && cover_url) {
-      return {
-        title: title,
-        path: '/pages/goodsdetail/goodsdetail?id=' + id + ((uid && fenxiao_price) ? ('&uid=' + uid) : ''),
-        imageUrl: cover_url + '?x-oss-process=image/resize,m_fill,w_750,h_600'
-      }
-    }
-  },
+  // onShareAppMessage: function () {
+  //   const { title, id, cover_url, uid, fenxiao_price} = this.data
+  //   if (title && id && cover_url) {
+  //     return {
+  //       title: title,
+  //       path: '/pages/goodsdetail/goodsdetail?id=' + id + ((uid && fenxiao_price) ? ('&uid=' + uid) : ''),
+  //       imageUrl: cover_url + '?x-oss-process=image/resize,m_fill,w_750,h_600'
+  //     }
+  //   }
+  // },
 
   fetchGoods: function (id) {
     let rData = {id}
@@ -183,8 +183,8 @@ Page({
         res.data.show_min_pt_price = util.formatMoney(res.data.min_pt_price).showMoney
         res.data.min_qg_price = util.formatMoney(res.data.min_qg_price).money
         res.data.show_min_qg_price = util.formatMoney(res.data.min_qg_price).showMoney
-        const { id, type, sale_type, price_num, spell_num, status, qg_status, remain_qg, start_qg, show_min_price, show_min_origin_price, show_min_pt_price, show_min_qg_price, qg_btime, qg_etime, qg_max_limit, total_qg_count, is_book_remind } = res.data
-        res.data.goods_status_data = JSON.parse(JSON.stringify({ id, type, sale_type, price_num, spell_num, status, qg_status, remain_qg, start_qg, show_min_price, show_min_origin_price, show_min_pt_price, show_min_qg_price, qg_btime, qg_etime, qg_max_limit, total_qg_count, is_book_remind }))
+        const { id, title, desc, type, sale_type, price_num, spell_num, status, qg_status, remain_qg, start_qg, show_min_price, show_min_origin_price, show_min_pt_price, show_min_qg_price, qg_btime, qg_etime, qg_max_limit, total_qg_count, is_book_remind } = res.data
+        res.data.goods_status_data = JSON.parse(JSON.stringify({ id, title, desc, type, sale_type, price_num, spell_num, status, qg_status, remain_qg, start_qg, show_min_price, show_min_origin_price, show_min_pt_price, show_min_qg_price, qg_btime, qg_etime, qg_max_limit, total_qg_count, is_book_remind }))
         if (res.data.product_img_urls && res.data.product_img_urls.length) {
           res.data.banners = res.data.product_img_urls.map(item => {
             return {image: item}
@@ -289,7 +289,7 @@ Page({
   },
 
   getSubOverview: function (data) {
-    let {type, valid_btime, valid_etime, hx_rule, dead_line, address, address_position, jh_address, jh_address_position, min_age, max_age, limit_num, note, include_bx, refund} = data
+    let {type, valid_btime, valid_etime, hx_rule, dead_line, refund_deadline, address, address_position, jh_address, jh_address_position, min_age, max_age, limit_num, note, include_bx, can_refund} = data
     let arr = []
     if (type && type == 1 && valid_btime && valid_etime) {
       arr.push({img: '/assets/images/time_jointime.png', text: `活动日期：${valid_btime} 至 ${valid_etime}`})
@@ -307,7 +307,13 @@ Page({
       arr.push({img: '/assets/images/jihe_location.png', text: `集合地点：${jh_address}`, isAddress: true, lnglat: jh_address_position, address: `${jh_address}`})
     }
     if (min_age) {
-      arr.push({img: '/assets/images/nianling.png', text: `适合年龄段：${min_age == -1 ? '不限年龄' : (min_age + ' ~ ' + max_age + '岁')}`})
+      if (type == 1) {
+        arr.push({img: '/assets/images/nianling.png', text: `适合年龄段：${min_age == -1 ? '不限年龄' : (min_age + ' ~ ' + max_age + '岁')}`})
+      } else {
+        if (min_age != -1) {
+          arr.push({img: '/assets/images/nianling.png', text: `适合年龄段：${min_age} ~ ${max_age}岁`})
+        }
+      }
     }
     if (limit_num) {
       arr.push({img: '/assets/images/chengtuan.png', text: limit_num})
@@ -320,7 +326,13 @@ Page({
     if (include_bx) {
       arr.push({img: '/assets/images/baoxian.png', text: `${type == 1 ? '本次活动' : '本商品'}费用包含保险`})
     }
-    if (!refund) {
+    if (can_refund) {
+      if (refund_deadline) {
+        arr.push({img: '/assets/images/tuikuan.png', text: `${type == 1 ? '本次活动' : '本商品'}未消费在${refund_deadline}前可退款`})
+      } else {
+        arr.push({img: '/assets/images/tuikuan.png', text: `${type == 1 ? '本次活动' : '本商品'}未消费可随时退款，逾期未消费自动退款`})
+      }
+    } else {
       arr.push({img: '/assets/images/tuikuan.png', text: `${type == 1 ? '本次活动' : '本商品'}不支持退款`})
     }
     return arr
@@ -445,8 +457,8 @@ Page({
 
   nextTap: function (e) {
     const { saletype, currentSession, currentSubSession, currentTickets, subSessions, selectedTicketLength, totalPrice } = e.detail
-    const { type, id, tuanId: tuan_id, fromUid, fill_info, fill_form, title, valid_btime, valid_etime, address, session, sale_type, refund = false, include_bx, hx_rule } = this.data
-    let dataObj = {type, id, fromUid, fill_info, fill_form, title, address, valid_btime, valid_etime, session, sale_type, saletype, selectedTicketLength: selectedTicketLength[saletype], currentSession: currentSession[saletype], refund, include_bx, totalPrice: totalPrice[saletype], tuan_id, hx_rule}
+    const { type, id, tuanId: tuan_id, fromUid, fill_info, fill_form, title, valid_btime, valid_etime, address, session, sale_type, can_refund = false, include_bx, hx_rule } = this.data
+    let dataObj = {type, id, fromUid, fill_info, fill_form, title, address, valid_btime, valid_etime, session, sale_type, saletype, selectedTicketLength: selectedTicketLength[saletype], currentSession: currentSession[saletype], can_refund, include_bx, totalPrice: totalPrice[saletype], tuan_id, hx_rule}
     if (type == 1) { // 活动
       dataObj.currentTickets = currentTickets[saletype]
     } else if (type == 2) { // 非活动
@@ -474,7 +486,8 @@ Page({
     _obj.show_min_pt_price = data.show_min_pt_price
     _obj.show_min_qg_price = data.show_min_qg_price
     const btnTextObj = statusHelper.getBtnText(data.type, data.sale_type, data.status, data.qg_status)
-    _obj = Object.assign({}, _obj, btnTextObj)
+    const statusTipText = statusHelper.getStatusTipText(data.type, data.sale_type, data.status, data.qg_status)
+    _obj = Object.assign({}, _obj, btnTextObj, {statusTipText})
     this.setData({bottomButtonData: _obj})
   },
 

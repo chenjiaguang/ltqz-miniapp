@@ -174,6 +174,54 @@ const getStatusText = (type, sale_type, status, qg_status) => {
   return text
 }
 
+const getStatusTipText = (type, sale_type, status, qg_status) => {
+  let statusTipText = ''
+  if (type == 1) { // 活动
+    if ((sale_type == 1 || sale_type == 2) || (sale_type == 3 && qg_status != 2 && qg_status != 3)) { // 普通活动 或 拼团 或 抢购模式下（非抢购中、非抢光）
+      const textObj = {
+        '-3': '',
+        '-2': '',
+        '-1': '',
+        '0': '',
+        '1': '',
+        '2': '本次活动报名已满额',
+        '3': '本次活动报名已截止',
+        '4': '本次活动报名已满额',
+        '5': '本次活动已结束',
+        '6': '本次活动报名已满额'
+      }
+      statusTipText = (sale_type == 3 && qg_status == 1 && status == 2) ? '' : textObj[status]
+    } else if (sale_type == 3 && (qg_status == 2 || qg_status == 3)) { // 抢购模式下（抢购中、已抢光）
+      statusTipText = ''
+    }
+    if (sale_type == 2) {
+      statusTipText = ''
+    }
+  } else if (type == 2) { // 非活动
+    if ((sale_type == 1 || sale_type == 2) || (sale_type == 3 && qg_status != 2 && qg_status != 3)) { // 普通活动 或 拼团 或 抢购模式下（非抢购中、非抢光）
+      const textObj = {
+        '-3': '',
+        '-2': '',
+        '-1': '',
+        '0': '',
+        '1': '',
+        '2': '本商品已售罄',
+        '3': '本商品已售罄',
+        '4': '本商品已售罄',
+        '5': '本商品已售罄',
+        '6': '本商品已售罄'
+      }
+      statusTipText = (sale_type == 3 && qg_status == 1 && status == 2) ? '' : textObj[status]
+    } else if (sale_type == 3 && (qg_status == 2 || qg_status == 3)) { // 抢购
+      statusTipText = ''
+    }
+    if (sale_type == 2) {
+      statusTipText = ''
+    }
+  }
+  return statusTipText
+}
+
 const getPriceText = (type, sale_type, status, qg_status, show_min_price, show_min_pt_price, show_min_qg_price, price_num) => {
   let priceText = ''
   let isFree = false
@@ -204,5 +252,6 @@ module.exports = {
   getBtnText,
   getCardText,
   getStatusText,
+  getStatusTipText,
   getPriceText
 }

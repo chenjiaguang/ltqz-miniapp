@@ -92,25 +92,56 @@ Page({
     util.request('/user/become_fenxiao', {
       phone: this.data.user.phone,
       form_id: e.detail.formId
-    }).then(res => {
+    }, {dontToast: true}).then(res => {
       if (res.error == 0) {
         // util.backAndToast('您已申请成功，请耐心等待工作人员审核')
-        this.setData({
-          fenxiao_user_status: '0',
-          submitting: false
-        })
-        this.getApplyInfo()
+        if (res.data && res.data.status == 1) {
+          this.resetOtherPageAndBack(res.msg)
+        } else {
+          this.setData({
+            fenxiao_user_status: '0'
+          })
+          if (res.msg) {
+            wx.showToast({
+              title: res.msg,
+              icon: 'none'
+            })
+          }
+          this.getApplyInfo()
+        }
       } else {
-        this.setData({
-          submitting: false
-        })
+        if (res.msg) {
+          wx.showToast({
+            title: res.msg,
+            icon: 'none'
+          })
+        }
       }
     }).catch(err => {
       console.log('err', err)
+      if (res.msg) {
+        wx.showToast({
+          title: res.msg,
+          icon: 'none'
+        })
+      }
+    }).finally(res => {
       this.setData({
         submitting: false
       })
     })
+  },
+
+  resetOtherPageAndBack: function (msg) {
+    const pages = getCurrentPages()
+    for (let i = 0; i < pages.length; i++) {
+      if (pages[i].name === 'goodsdetail' && pages[i].data.show_fx_banner) { // 活动详情页，隐藏申请成为合伙人入口
+        pages[i].setData({show_fx_banner: false})
+      }
+    }
+    if (msg) {
+      util.backAndToast(msg)
+    }
   },
 
   getPhoneNumber(e) {

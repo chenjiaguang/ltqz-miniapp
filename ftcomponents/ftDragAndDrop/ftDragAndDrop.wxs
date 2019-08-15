@@ -7,190 +7,147 @@ function longPress(e, ins) {
   var wrapper = ins.selectComponent('.wrapper')
   var wrapperState = wrapper.getState()
   var wrapperDataset = wrapper.getDataset()
-
   state.ele = ins.selectComponent('.item' + index)
+
+  if (wrapperDataset.disablemove || !state.ele) {
+    return true
+  }
+
+  ins.callMethod('vibrateShort')
   state.ele.addClass('actived')
-  if (wrapperDataset.disablemove) {
-    state.startPulling = false
-  } else {
-    state.startPulling = true
-  }
-  if (!wrapperState.sortArr) {
-    wrapperState.sortArr = rects.map(function (rt, idx) {
-      return idx
-    })
-  }
-  wrapperState.oldSort = wrapperState.sortArr[index]
-  wrapperState.sort = wrapperState.sortArr[index]
+  wrapperState.startPulling = true
+  state.oldSort = state.sort === 0 ? state.sort : (state.sort || index)
+  state.sort = state.sort === 0 ? state.sort : (state.sort || index)
   state.pullStartY = e.touches[0].clientY
   state.distance = 0
-  state.sortArea = []
-  wrapperState.sortArr.forEach(function (item, idx) {
+  state.y = state.y || 0
+  wrapperState.sortArea = []
+  if (!wrapperState.moveInfo) {
+    wrapperState.moveInfo = rects.map(function (item, idx) {
+      return {
+        disY: 0,
+        rect: item,
+        sort: idx,
+        index: idx
+      }
+    })
+  }
+  wrapperState.moveInfo.forEach(function (item, idx) {
     if (idx === 0) {
       var top = 0
-      var nextTop = rects[wrapperState.sortArr[idx]].height
-      var height = rects[wrapperState.sortArr[idx]].height
-      var nextHeight = rects[wrapperState.sortArr[idx + 1]].height
-      state.sortArea.push({up: [-99999, top + height / 2], down: [top + height / 2, nextTop + nextHeight / 2]})
-    } else if (idx === rects.length - 1) {
+      var nextTop = item.rect.height
+      var height = item.rect.height
+      var nextHeight = wrapperState.moveInfo[idx + 1].rect.height
+      wrapperState.sortArea.push({up: [-99999, top + height / 2], down: [top + height / 2, nextTop + nextHeight / 2]})
+    } else if (idx === wrapperState.moveInfo.length - 1) {
       var preTop = 0
       var top = 0
-      var preHeight = rects[wrapperState.sortArr[idx - 1]].height
-      var height = rects[wrapperState.sortArr[idx]].height
+      var preHeight = wrapperState.moveInfo[idx - 1].rect.height
+      var height = item.rect.height
       for (var i = 0; i < idx; i++) {
         if (i < idx - 1) {
-          preTop += rects[wrapperState.sortArr[i]].height
+          preTop += wrapperState.moveInfo[i].rect.height
         }
-        top += rects[wrapperState.sortArr[i]].height
+        top += wrapperState.moveInfo[i].rect.height
       }
-      state.sortArea.push({up: [preTop + preHeight / 2, top + height / 2], down: [top + height / 2, 99999]})
+      wrapperState.sortArea.push({up: [preTop + preHeight / 2, top + height / 2], down: [top + height / 2, 99999]})
     } else {
-      var preHeight = rects[wrapperState.sortArr[idx - 1]].height
-      var height = rects[wrapperState.sortArr[idx]].height
-      var nextHeight = rects[wrapperState.sortArr[idx + 1]].height
+      var preHeight = wrapperState.moveInfo[idx - 1].rect.height
+      var height = item.rect.height
+      var nextHeight = wrapperState.moveInfo[idx + 1].rect.height
       var preTop = 0
       var top = 0
       var nextTop = 0
       
       for (var i = 0; i < idx; i++) {
         if (i < idx - 1) {
-          preTop += rects[wrapperState.sortArr[i]].height
+          preTop += wrapperState.moveInfo[i].rect.height
         }
-        top += rects[wrapperState.sortArr[i]].height
+        top += wrapperState.moveInfo[i].rect.height
       }
       nextTop = top + height
-      state.sortArea.push({up: [preTop + preHeight / 2, top + height / 2], down: [top + height / 2, nextTop + nextHeight / 2]})
+      wrapperState.sortArea.push({up: [preTop + preHeight / 2, top + height / 2], down: [top + height / 2, nextTop + nextHeight / 2]})
     }
   })
-  // ins.callMethod('consss', {area: state.sortArea, index: index, sortArr: wrapperState.sortArr})
 }
 
 function touchMove(e, ins) {
-  var dataset = e.instance.getDataset()
   var state = e.instance.getState()
-  var ele = dataset.ele
-  var rect = dataset.rect
-  var rects = dataset.rects
   var wrapper = ins.selectComponent('.wrapper')
   var wrapperState = wrapper.getState()
-  if (!state.startPulling || !state.ele) {
+  var wrapperDataset = wrapper.getDataset()
+  if (wrapperDataset.disablemove || !wrapperState.startPulling || !state.ele) {
     return true
   }
-
   state.pullMoveY = e.touches[0].clientY
   state.distance = state.pullMoveY - state.pullStartY
   state.ele.setStyle({
-    transform: 'translateY(' + state.distance + 'px)',
-    "-webkit-transform": 'translateY(' + state.distance + 'px)'
+    transform: 'translate3d(0, ' + (state.distance + state.y) + 'px, 0)',
+    "-webkit-transform": 'translate3d(0, ' + (state.distance + state.y) + 'px, 0)'
   })
-  var area = state.sortArea.map(function (item) {
+  var area = wrapperState.sortArea.map(function (item) {
     return state.distance > 0 ? item.down : item.up
   })
   var newSort = null
-  // ins.callMethod('consss', area)
+  var pos = state.distance > 0 ? (state.distance + wrapperState.sortArea[state.oldSort].down[0] + wrapperState.moveInfo[state.oldSort].rect.height / 2) : (state.distance + wrapperState.sortArea[state.oldSort].up[1] - wrapperState.moveInfo[state.oldSort].rect.height / 2)
   var newPos = area.filter(function(item, idx) {
-    var pos = state.distance > 0 ? (state.distance + rect.top + rect.height) : (state.distance + rect.top)
-    if (pos > item[0] && pos < item[1] && idx !== wrapperState.sort) {
+    if (pos > item[0] && pos < item[1] && idx !== state.sort) {
       newSort = idx
       return true
     }
   })
-  if (newSort !== null && newSort !== wrapperState.sort) { // 如果存在新的位置，则表示已经滑动到别的模块位置
-    // var minIndx = newSort > wrapperState.oldSort ? wrapperState.oldSort : newSort
-    // var maxIndx = newSort > wrapperState.oldSort ? newSort : wrapperState.oldSort
-    wrapperState.sort = newSort
-    if (!wrapperState.disY) {
-      wrapperState.disY = wrapperState.sortArr.map(function () {
-        return 0
-      })
-    }
+  if (newSort !== null && newSort !== state.sort) { // 如果存在新的位置，则表示已经滑动到别的模块位置
+    state.sort = newSort
 
-
-    var arr = wrapperState.sortArr.filter(function (item, idx) {
-      return idx !== wrapperState.oldSort
+    var arr = wrapperState.moveInfo.filter(function (item, idx) {
+      return idx !== state.oldSort
     })
-    arr.splice(wrapperState.sort, 0, wrapperState.sortArr[wrapperState.oldSort])
-    var disY = []
-    arr.forEach(function () {
-      disY.push(0)
-    })
+    arr.splice(state.sort, 0, wrapperState.moveInfo[state.oldSort])
     arr.forEach(function (item, idx) {
-      var originY = rects[item].top
+      item.sort = idx
       var calDis = 0
       for(var i = 0; i < arr.length; i++) {
         if (i < idx) {
-          calDis += rects[wrapperState.sortArr[i]].height
+          calDis += arr[i].rect.height
         }
       }
-      ins.callMethod('consss', {originY: originY, calDis: calDis, dis: (calDis - originY) })
-      disY[item] = calDis - originY
-    })
-
-    wrapperState.changeY = disY
-    var eles = ins.selectAllComponents('.item')
-    eles.forEach(function (item, idx) {
-      ins.callMethod('consss', item.getDataset())
-      if (idx !== wrapperState.oldSort) {
-        item.setStyle({
-          transform: 'translateY(' + disY[idx] + 'px)',
-          "-webkit-transform": 'translateY(' + disY[idx] + 'px)'
+      item.disY = calDis - item.rect.top
+      if (idx !== state.sort) {
+        ins.selectComponent('.item' + item.index).setStyle({
+          transform: 'translate3d(0, ' + item.disY + 'px, 0)',
+          "-webkit-transform": 'translate3d(0, ' + item.disY + 'px, 0)'
         })
       }
     })
+    wrapperState._moveInfo = arr
   }
   return false
 }
 
 function touchEnd(e, ins) {
-  var dataset = e.instance.getDataset()
   var state = e.instance.getState()
   state.ele.removeClass('actived')
   var wrapper = ins.selectComponent('.wrapper')
   var wrapperState = wrapper.getState()
-  wrapperState.disY = wrapperState.changeY
-  var arr = wrapperState.sortArr.filter(function (item, idx) {
-    return idx !== wrapperState.oldSort
-  })
-  arr.splice(wrapperState.sort, 0, wrapperState.sortArr[wrapperState.oldSort])
-  var eles = ins.selectAllComponents('.item')
-  eles.forEach(function (item, idx) {
-    // ins.callMethod('consss', item.getDataset())
-    item.setStyle({
-      transform: 'translateY(' + wrapperState.disY[idx] + 'px)',
-      "-webkit-transform": 'translateY(' + wrapperState.disY[idx] + 'px)'
+  wrapperState.startPulling = false
+  wrapperState.moveInfo = wrapperState._moveInfo
+  var sortArr = []
+  wrapperState.moveInfo.forEach(function (item, idx) {
+    sortArr.push(item.index)
+    var btnState = ins.selectComponent('.drag-btn' + item.index).getState()
+    btnState.sort = item.sort
+    btnState.y = item.disY
+    ins.selectComponent('.item' + item.index).setStyle({
+      transform: 'translate3d(0, ' + item.disY + 'px, 0)',
+      "-webkit-transform": 'translate3d(0, ' + item.disY + 'px, 0)'
     })
   })
-  wrapperState.sortArr = arr
-  // ins.callMethod('changePos', {newIndex: state.sort, oldIndex: state.oldSort})
-  // var accSpeed = state.lastDistance / (e.timeStamp - state.timeStamp) / (e.timeStamp - state.timeStamp)
-  // state.active = false
-  // if (!state.startPulling) {
-  //   return
-  // }
-  // state.startPulling = false
-  // state.startMoving = false
-  // var duration = parseInt((state.distance / dataset.height) * 200)
-  // if ((state.distance > dataset.height / 2) || (accSpeed > 0.0012 && state.direction > 0)) { // 0.0012是加速度临界点，大于这个加速度就关闭
-  //   ins.callMethod('hide', {duration})
-  // } else {
-  //   ins.callMethod('show', {duration})
-  // }
-}
-
-function moveableChange (newValue, oldValue, ins, itemIns) {
-  var eles = ins.selectAllComponents('.item')
-  eles.forEach(function (item) {
-    item.setStyle({
-      transform: 'translateY(0px)',
-      "-webkit-transform": 'translateY(0px)'
-    })
-  })
+  ins.callMethod('sortChange', sortArr)
 }
 
 module.exports = {
   longPress: longPress,
   touchMove: touchMove,
-  touchEnd: touchEnd,
-  moveableChange: moveableChange
+  touchEnd: touchEnd
 }
 /* eslint-enable */

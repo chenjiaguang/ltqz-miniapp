@@ -2,6 +2,7 @@
 <ft-bottom-box box-height="{{102}}" bg="#FFFFFF">
   <view class='bottom-button'>
     <view class='line-separator-h' style="transform-origin:50% 100%;background:#D8D8D8"></view>
+    <view wx:if="{{btndata.statusTipText}}" class="status-tip-text theme-bg-80">{{btndata.statusTipText}}</view>
     <view class='bottom-button-content'>
       <view class="first-collect-tip{{showCollectTip ? ' show' : ''}}">
         <view class='tip-body'>已收藏的商品，可以在我的-我的收藏中查看哦！</view>

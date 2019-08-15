@@ -4,12 +4,12 @@
 <view class="page-body">
   <view class="header header2">
     <view class="title-box title-box2" id="tab{{idx}}" wx:for="{{tabs}}" wx:for-item="tab" wx:for-index="idx" wx:key="title" catchtap="tabTap" data-idx="{{idx}}">
-      <view class='title' style="color:{{index === idx ? tabCurrentColor : color}}">
+      <view class="title{{index === idx ? ' theme-color' : ''}}">
         <text>{{tab.title}}</text>
       </view>
     </view>
     <view class='slide-box'>
-      <view class='slide-block' style="background:{{tabCurrentColor}};transform:translateX({{(0.5 + index) * (750/tabs.length)}}rpx);width:68rpx;height:6rpx;margin-left:-34rpx"></view>
+      <view class='slide-block theme-bg' style="transform:translateX({{(0.5 + index) * (750/tabs.length)}}rpx);width:68rpx;height:6rpx;margin-left:-34rpx"></view>
     </view>
     <view class='line-separator-h'></view>
   </view>
