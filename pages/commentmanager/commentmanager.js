@@ -83,9 +83,9 @@ Page({
   /**
    * 用户点击右上角分享
    */
-  onShareAppMessage: function () {
+  // onShareAppMessage: function () {
 
-  },
+  // },
 
   tabTap: function(e) {
     let {
@@ -145,7 +145,6 @@ Page({
     let rData = {
       product_id: options.pid,
       shop_id: options.sid,
-      type: options.pid ? '1' : '',
       pn: pn,
       reply: index == 1 ? null : ''
     }

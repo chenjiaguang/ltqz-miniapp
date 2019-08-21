@@ -14,6 +14,7 @@
     "shopping-view": "../../components/shoppingView/shoppingView",
     "shopping-view2": "../../components/shoppingView2/shoppingView2",
     "group-purchase": "../../components/groupPurchase/groupPurchase",
-    "qg-overview": "../../components/qgOverview/qgOverview"
+    "qg-overview": "../../components/qgOverview/qgOverview",
+    "coupon-packet": "../../components/couponPacket/couponPacket"
   }
 }

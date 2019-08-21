@@ -8,6 +8,56 @@ Page({
    * 页面的初始数据
    */
   data: {
+    coupons: [
+      {
+        id: '1',
+        price: 20000,
+        show_price: 200,
+        threshold: '无金额门槛',
+        title: '此处为优惠券名称此处为优 惠券名称',
+        tip: '2019-08-13 至 2019-08-20',
+        selected: true
+      },
+      {
+        id: '2',
+        price: 2000,
+        show_price: 20,
+        threshold: '满100可用',
+        title: '此处为优惠券名称此处',
+        tip: '2019-08-13 至 2019-08-20',
+        selected: false
+      },
+      {
+        id: '3',
+        price: 20000,
+        show_price: 200,
+        threshold: '无金额门槛',
+        title: '此处为优惠券名称此处为优 惠券名称',
+        tip: '自领取之日起X天内有效',
+        selected: false
+      },
+      {
+        id: '4',
+        price: 2000,
+        show_price: 20,
+        threshold: '满100可用',
+        title: '此处为优惠券名称此处为优 惠券名称',
+        tip: '在2019-08-20前可用',
+        selected: false
+      },
+      {
+        id: '5',
+        price: 200,
+        show_price: 2,
+        threshold: '无金额门槛',
+        title: '此处为优惠券名称此处为优 惠券名称',
+        tip: '2019-08-13 至 2019-08-20',
+        selected: false
+      }
+    ],
+    couponSelected: [],
+    couponPrice: 0,
+    couponShowPrice: 0,
     genderArray: ['男', '女'],
     genderIdx: 0,
     inputType: {
@@ -79,7 +129,8 @@ Page({
     }
     this.setData(data)
     this.fetchBuyfors() // 获取常用联系人
-    this.setBuyforsWrapperHeight() // 设置选择联系人弹窗高度为扳平高度
+    // this.setBuyforsWrapperHeight() // 设置选择联系人弹窗高度为扳平高度
+    this.getHalfScreenHeight() // 获取半屏幕高度，用于联系人选择 和 优惠券选择
   },
 
   /**
@@ -373,7 +424,7 @@ Page({
     }
   },
 
-  setBuyforsWrapperHeight: function () {
+  getHalfScreenHeight: function () {
     const systemInfo = wx.getSystemInfoSync()
     const rpx = systemInfo.windowWidth / 750
     const halfHeight = systemInfo.windowHeight / 2
@@ -385,7 +436,7 @@ Page({
     }
     const wrapperHeight = parseInt(halfHeight - (88 + 80 + 16 + (extraBottom ? 68 : 0)) * rpx)
     this.setData({
-      buyforsWrapperHeight: wrapperHeight + 'px'
+      halfScreenHeight: halfHeight + 'px'
     })
   },
 
@@ -487,5 +538,51 @@ Page({
         url: ele.path
       })
     }
+  },
+
+  toggleCoupon: function (e) {
+    if (e && e.currentTarget.dataset.compute) {
+      const { coupons, couponSelected } = this.data
+      let _coupons = [].concat(coupons)
+      let _obj = {}
+      if (_coupons && _coupons.length) {
+        _coupons.forEach((item, idx) => {
+          item.selected = couponSelected.indexOf(idx) !== -1
+        })
+      }
+      _obj.coupons = _coupons
+      this.setData(_obj)
+    }
+    const ftModal = this.selectComponent('#c-ft-modal-coupon')
+    ftModal && ftModal.toggle && ftModal.toggle()
+  },
+
+  confirmCoupon: function () {
+    const {coupons} = this.data
+    let _obj = {}
+    let selectedArr = []
+    let price = 0
+    coupons.forEach((item, idx) => {
+      if (item.selected) {
+        selectedArr.push(idx)
+        price += item.price
+      }
+    })
+    _obj.couponSelected = selectedArr
+    _obj.couponPrice = util.formatMoney(price).money
+    _obj.couponShowPrice = util.formatMoney(price).showMoney
+    this.setData(_obj, () => {
+      this.toggleCoupon()
+    })
+  },
+
+  couponTap: function (e) {
+    let {coupons} = this.data
+    const {idx} = e.currentTarget.dataset
+    const isSelected = coupons[idx].selected
+    coupons.forEach((item, cidx) => {
+      item.selected = cidx === idx ? (!isSelected) : false
+    })
+    this.setData({coupons})
   }
 })

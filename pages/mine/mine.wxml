@@ -1,115 +1,123 @@
 <!--pages/mine/mine.wxml-->
 <ft-custom-nav title="{{navTitle}}" />
-<view class='page-mine'>
-  <view class='user-info row center' catchtap="goUserInfo">
-    <image class="avatar" src="{{user.avatar}}" />
-    <view class='user-intro'>
-      <view class='user-name-box'>
-        <text class='user-name'>{{user.nick_name}}</text>
+<view wx:if="{{inited}}" class="page-mine{{hasToken ? ' page-mine-user' : ' page-mine-visitor'}}">
+  <block wx:if="{{hasToken}}">
+    <view class='user-info row center' catchtap="goUserInfo">
+      <image class="avatar" src="{{user.avatar}}" />
+      <view class='user-intro'>
+        <view class='user-name-box'>
+          <text class='user-name'>{{user.nick_name}}</text>
+        </view>
+        <view wx:if="{{user && user.fenxiao && user.fenxiao.user_level}}" class='user-tag-box theme-linear-gradient-h'>{{levelText[user.fenxiao.user_level]}}</view>
       </view>
-      <view wx:if="{{user && user.fenxiao && user.fenxiao.user_level}}" class='user-tag-box theme-linear-gradient-h'>{{levelText[user.fenxiao.user_level]}}</view>
+      <text class="lutufont lutu-next2"></text>
     </view>
-    <text class="lutufont lutu-next2"></text>
-  </view>
-  <view class="block-separator"></view>
-  <view class='other-list'>
-    <view class='card order-box'>
-      <view class='order-header'>
-        <!-- <text class="order-header-icon lutufont lutu-order"></text> -->
-        <image class="user-order-icon" src="/assets/images/user_order.png" mode="aspectFill" />
-        <text class='title'>我的订单</text>
-        <view catchtap="goOrder" data-type="0" class='view-detail'>
-          <text>查看全部订单</text>
-          <text class="order-header-next lutufont lutu-next2"></text>
-        </view>
-      </view>
-      <view class='line-separator-h' style="margin:0 0 0 32rpx"></view>
-      <view class='order-type'>
-        <view class='type-item' catchtap="goOrder" data-type='1' hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
-          <view class='order-type-icon-box'>
-            <image class='order-type-icon' src="/assets/images/order_type0.png"></image>
-            <text class='item-num theme-color theme-border-color' wx:if="{{user.order.wait_pay}}">{{user.order.wait_pay}}</text>
+    <view class="block-separator"></view>
+    <view class='other-list'>
+      <view class='card order-box'>
+        <view class='order-header'>
+          <!-- <text class="order-header-icon lutufont lutu-order"></text> -->
+          <image class="user-order-icon" src="/assets/images/user_order.png" mode="aspectFill" />
+          <text class='title'>我的订单</text>
+          <view catchtap="goOrder" data-type="0" class='view-detail'>
+            <text>查看全部订单</text>
+            <text class="order-header-next lutufont lutu-next2"></text>
           </view>
-          <view class='type-title'>待付款</view>
         </view>
-        <view class='type-item' catchtap="goOrder" data-type='2' hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
-          <view class='order-type-icon-box'>
-            <image class='order-type-icon' src="/assets/images/order_type4.png"></image>
-            <text class='item-num theme-color theme-border-color' wx:if="{{user.order.wait_tuan}}">{{user.order.wait_tuan}}</text>
+        <view class='line-separator-h' style="margin:0 0 0 32rpx"></view>
+        <view class='order-type'>
+          <view class='type-item' catchtap="goOrder" data-type='1' hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
+            <view class='order-type-icon-box'>
+              <image class='order-type-icon' src="/assets/images/order_type0.png"></image>
+              <text class='item-num theme-color theme-border-color' wx:if="{{user.order.wait_pay}}">{{user.order.wait_pay}}</text>
+            </view>
+            <view class='type-title'>待付款</view>
           </view>
-          <view class='type-title'>拼团中</view>
-        </view>
-        <view class='type-item' catchtap="goOrder" data-type='3' hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
-          <view class='order-type-icon-box'>
-            <image class='order-type-icon' src="/assets/images/order_type1.png"></image>
-            <text class='item-num theme-color theme-border-color' wx:if="{{user.order.wait_use}}">{{user.order.wait_use}}</text>
+          <view class='type-item' catchtap="goOrder" data-type='2' hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
+            <view class='order-type-icon-box'>
+              <image class='order-type-icon' src="/assets/images/order_type4.png"></image>
+              <text class='item-num theme-color theme-border-color' wx:if="{{user.order.wait_tuan}}">{{user.order.wait_tuan}}</text>
+            </view>
+            <view class='type-title'>拼团中</view>
           </view>
-          <view class='type-title'>待使用</view>
-        </view>
-        <view class='type-item' catchtap="goOrder" data-type='4' hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
-          <view class='order-type-icon-box'>
-            <image class='order-type-icon' src="/assets/images/order_type2.png"></image>
-            <text class='item-num theme-color theme-border-color' wx:if="{{user.order.wait_rate}}">{{user.order.wait_rate}}</text>
+          <view class='type-item' catchtap="goOrder" data-type='3' hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
+            <view class='order-type-icon-box'>
+              <image class='order-type-icon' src="/assets/images/order_type1.png"></image>
+              <text class='item-num theme-color theme-border-color' wx:if="{{user.order.wait_use}}">{{user.order.wait_use}}</text>
+            </view>
+            <view class='type-title'>待使用</view>
           </view>
-          <view class='type-title'>待评价</view>
-        </view>
-      </view>
-    </view>
-    <view wx:if="{{user.fenxiao}}" class='card profit-box'>
-      <view class="block-separator"></view>
-      <view class='profit-header'>
-        <!-- <text class="profit-header-icon lutufont lutu-fenxiao"></text> -->
-        <image class="user-profit-icon" src="/assets/images/user_profit.png" mode="aspectFill" />
-        <text class='title'>推广收益<text class='unit'> (元)</text></text>
-        <view catchtap="goProfit" class='view-detail'>
-          <view wx:if="{{user.fenxiao.no_read_remit}}" class="red-dot theme-bg"></view>
-          <text>{{user.fenxiao.no_read_remit ? ('您有' + user.fenxiao.no_read_remit + '笔新的收益') : '查看详情'}}</text>
-          <text class="profit-header-next lutufont lutu-next2"></text>
+          <view class='type-item' catchtap="goOrder" data-type='4' hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
+            <view class='order-type-icon-box'>
+              <image class='order-type-icon' src="/assets/images/order_type2.png"></image>
+              <text class='item-num theme-color theme-border-color' wx:if="{{user.order.wait_rate}}">{{user.order.wait_rate}}</text>
+            </view>
+            <view class='type-title'>待评价</view>
+          </view>
         </view>
       </view>
-      <view class='profit-sum bold'>
-        <text>￥</text>
-        <text>{{user.fenxiao.total}}</text>
-      </view>
-      <view class='line-separator-h'></view>
-      <view class='profit-overview'>
-        <view class='profit-overview-item'>
-          <view class='profit-overview-title'>
-            <text>今日收益</text>
-            <text class='unit'> (元)</text>
+      <view wx:if="{{user.fenxiao}}" class='card profit-box'>
+        <view class="block-separator"></view>
+        <view class='profit-header'>
+          <!-- <text class="profit-header-icon lutufont lutu-fenxiao"></text> -->
+          <image class="user-profit-icon" src="/assets/images/user_profit.png" mode="aspectFill" />
+          <text class='title'>推广收益<text class='unit'> (元)</text></text>
+          <view catchtap="goProfit" class='view-detail'>
+            <view wx:if="{{user.fenxiao.no_read_remit}}" class="red-dot theme-bg"></view>
+            <text>{{user.fenxiao.no_read_remit ? ('您有' + user.fenxiao.no_read_remit + '笔新的收益') : '查看详情'}}</text>
+            <text class="profit-header-next lutufont lutu-next2"></text>
           </view>
-          <view class='profit-overview-amount bold'>{{user.fenxiao.today_remit}}</view>
         </view>
-        <view class='profit-overview-item'>
-          <view class='profit-overview-title'>
-            <text>可提现收益</text>
-            <text class='unit'> (元)</text>
+        <view class='profit-sum bold'>
+          <text>￥</text>
+          <text>{{user.fenxiao.total}}</text>
+        </view>
+        <view class='line-separator-h'></view>
+        <view class='profit-overview'>
+          <view class='profit-overview-item'>
+            <view class='profit-overview-title'>
+              <text>今日收益</text>
+              <text class='unit'> (元)</text>
+            </view>
+            <view class='profit-overview-amount bold'>{{user.fenxiao.today_remit}}</view>
           </view>
-          <view class='profit-overview-amount bold'>{{user.fenxiao.can_remit}}</view>
+          <view class='profit-overview-item'>
+            <view class='profit-overview-title'>
+              <text>可提现收益</text>
+              <text class='unit'> (元)</text>
+            </view>
+            <view class='profit-overview-amount bold'>{{user.fenxiao.can_remit}}</view>
+          </view>
         </view>
+        <view class='line-separator-h'></view>
+        <ft-entrance image="{{userfxgoods_entrance.icon}}" image-size="{{36}}" image-spacing="{{10}}" title="{{userfxgoods_entrance.title}}" spacing="0 32rpx 0 24rpx" extra-data="{{userfxgoods_entrance}}" catchtap="entranceTap">
+          <!-- <view slot="icon" class="entrance-icon {{userfxgoods_entrance.icon}}"></view> -->
+        </ft-entrance>
       </view>
-      <view class='line-separator-h'></view>
-      <ft-entrance image="{{userfxgoods_entrance.icon}}" image-size="{{36}}" image-spacing="{{10}}" title="{{userfxgoods_entrance.title}}" spacing="0 32rpx 0 24rpx" extra-data="{{userfxgoods_entrance}}" catchtap="entranceTap">
-        <!-- <view slot="icon" class="entrance-icon {{userfxgoods_entrance.icon}}"></view> -->
-      </ft-entrance>
+      <view wx:if="{{user && !user.fenxiao && fx_apply_entrance}}" class='card be-partner'>
+        <view class="block-separator"></view>
+        <ft-entrance image="{{be_partner_entrance.icon}}" image-size="{{36}}" image-spacing="{{10}}" title="{{be_partner_entrance.title}}" spacing="0 32rpx 0 24rpx" extra-data="{{be_partner_entrance}}" catchtap="entranceTap">
+          <!-- <view slot="icon" class="entrance-icon {{be_partner_entrance.icon}}"></view> -->
+        </ft-entrance>
+      </view>
+      <view wx:if="{{user && user.shop && user.shop.length}}" class='card business-entrance'>
+        <view class="block-separator"></view>
+        <ft-entrance image="{{assistant_entrance.icon}}" image-size="{{36}}" image-spacing="{{10}}" title="{{assistant_entrance.title}}" spacing="0 32rpx 0 24rpx" extra-data="{{assistant_entrance}}" catchtap="entranceTap">
+          <!-- <view slot="icon" class="entrance-icon {{assistant_entrance.icon}}"></view> -->
+        </ft-entrance>
+      </view>
+      <view class='card other-entrances'>
+        <view class="block-separator"></view>
+        <ft-entrance wx:for="{{other_entrances}}" wx:for-index="idx" wx:for-item="entrance" wx:key="title" image="{{entrance.icon}}" image-size="{{36}}" image-spacing="{{10}}" title="{{entrance.title}}" top-border="{{idx !== 0}}" spacing="0 32rpx 0 24rpx" border-margin="0 0 0 30rpx" extra-data="{{entrance}}" catchtap="entranceTap" subTitle="{{entrance.phone}}" nextIcon="{{!entrance.phone}}">
+          <!-- <view slot="icon" class="entrance-icon {{entrance.icon}}"></view> -->
+        </ft-entrance>
+      </view>
     </view>
-    <view wx:if="{{user && !user.fenxiao && fx_apply_entrance}}" class='card be-partner'>
-      <view class="block-separator"></view>
-      <ft-entrance image="{{be_partner_entrance.icon}}" image-size="{{36}}" image-spacing="{{10}}" title="{{be_partner_entrance.title}}" spacing="0 32rpx 0 24rpx" extra-data="{{be_partner_entrance}}" catchtap="entranceTap">
-        <!-- <view slot="icon" class="entrance-icon {{be_partner_entrance.icon}}"></view> -->
-      </ft-entrance>
-    </view>
-    <view wx:if="{{user && user.shop && user.shop.length}}" class='card business-entrance'>
-      <view class="block-separator"></view>
-      <ft-entrance image="{{assistant_entrance.icon}}" image-size="{{36}}" image-spacing="{{10}}" title="{{assistant_entrance.title}}" spacing="0 32rpx 0 24rpx" extra-data="{{assistant_entrance}}" catchtap="entranceTap">
-        <!-- <view slot="icon" class="entrance-icon {{assistant_entrance.icon}}"></view> -->
-      </ft-entrance>
-    </view>
-    <view class='card other-entrances'>
-      <view class="block-separator"></view>
-      <ft-entrance wx:for="{{other_entrances}}" wx:for-index="idx" wx:for-item="entrance" wx:key="title" image="{{entrance.icon}}" image-size="{{36}}" image-spacing="{{10}}" title="{{entrance.title}}" top-border="{{idx !== 0}}" spacing="0 32rpx 0 24rpx" border-margin="0 0 0 30rpx" extra-data="{{entrance}}" catchtap="entranceTap" subTitle="{{entrance.phone}}" nextIcon="{{!entrance.phone}}">
-        <!-- <view slot="icon" class="entrance-icon {{entrance.icon}}"></view> -->
-      </ft-entrance>
-    </view>
-  </view>
+  </block>
+  <block wx:else>
+    <image class="visitor-image" src="/assets/images/mine_visitor.png" mode="aspectFit" />
+    <view class="login-tip">点击登录查看更多信息</view>
+    <view class="login-btn theme-linear-gradient-h" catchtap="loginTap">登录/注册</view>
+  </block>
 </view>
+<login-modal id="c-login-modal" />

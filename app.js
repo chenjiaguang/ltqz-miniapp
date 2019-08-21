@@ -33,24 +33,33 @@ App({
   onShow: function(options) { // 监听用户授权信息是否有变动
     const {path, query} = options
     let fenxiaoid = ''
-    if (path.indexOf('/goodsdetail/goodsdetail') !== -1 && query.uid) {
-      fenxiaoid = query.uid.toString()
-    } else if (path.indexOf('/pintuandetail/pintuandetail') !== -1 && query.uid) {
-      fenxiaoid = query.uid.toString()
+    if ((path.indexOf('/goodsdetail/goodsdetail') !== -1 || path.indexOf('/pintuandetail/pintuandetail') !== -1) && (query.uid || query.scene)) {
+      if (query.uid) {
+        fenxiaoid = query.uid.toString()
+      } else if (query.scene) {
+        const scene = decodeURIComponent(query.scene)
+        let paramsArr = scene.split('&')
+        let paramsObj = {}
+        paramsArr.forEach(item => {
+          let obj = item.split('=')
+          paramsObj[obj[0]] = obj[1]
+        })
+        fenxiaoid = paramsObj.uid ? paramsObj.uid.toString() : ''
+      }
     }
     if (fenxiaoid) {
       bindFenxiao.saveFenxiaoId(fenxiaoid)
     }
 
-    let isPermission = options.path.indexOf('pages/permission/permission') !== -1
-    if (!isPermission) {
-      const token = storageHelper.getStorage('token')
-      const getAuthSettingCallback = (authSetting) => { // 获取用户授权数据，未授权则跳转授权页面(permission)，授权后才可继续使用
-        if (!token || !authSetting['scope.userInfo'] || !authSetting['scope.userLocation']) {
-          util.relaunchPermission(options.path, options.query)
-        }
-      }
-      authManager.getAuthSetting(getAuthSettingCallback)
-    }
+    // let isPermission = options.path.indexOf('pages/permission/permission') !== -1
+    // if (!isPermission) {
+    //   const token = storageHelper.getStorage('token')
+    //   const getAuthSettingCallback = (authSetting) => { // 获取用户授权数据，未授权则跳转授权页面(permission)，授权后才可继续使用
+    //     if (!token || !authSetting['scope.userInfo'] || !authSetting['scope.userLocation']) {
+    //       util.relaunchPermission(options.path, options.query)
+    //     }
+    //   }
+    //   authManager.getAuthSetting(getAuthSettingCallback)
+    // }
   }
 })

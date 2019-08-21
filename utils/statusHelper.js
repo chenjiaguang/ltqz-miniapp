@@ -15,7 +15,7 @@ const getBtnText = (type, sale_type, status, qg_status) => {
         '5': '活动结束',
         '6': '报名已满'
       }
-      btnText = (sale_type == 3 && qg_status == 1 && status == 2) ? '暂不销售' : textObj[status]
+      btnText = (sale_type == 3 && qg_status == 1 && (status == 2 || status == 4 || status == 6)) ? '暂不销售' : textObj[status]
       btnDisabled = status != 1
     } else if (sale_type == 3 && (qg_status == 2 || qg_status == 3)) { // 抢购模式下（抢购中、已抢光）
       const textObj = {
@@ -45,7 +45,7 @@ const getBtnText = (type, sale_type, status, qg_status) => {
         '5': '已售罄',
         '6': '已售罄'
       }
-      btnText = (sale_type == 3 && qg_status == 1 && status == 2) ? '暂不销售' : textObj[status]
+      btnText = (sale_type == 3 && qg_status == 1 && (status == 2 || status == 4 || status == 6)) ? '暂不销售' : textObj[status]
       btnDisabled = status != 1
     } else if (sale_type == 3 && (qg_status == 2 || qg_status == 3)) { // 抢购
       const textObj = {
@@ -190,7 +190,7 @@ const getStatusTipText = (type, sale_type, status, qg_status) => {
         '5': '本次活动已结束',
         '6': '本次活动报名已满额'
       }
-      statusTipText = (sale_type == 3 && qg_status == 1 && status == 2) ? '' : textObj[status]
+      statusTipText = (sale_type == 3 && qg_status == 1 && (status == 2 || status == 4 || status == 6)) ? '' : textObj[status]
     } else if (sale_type == 3 && (qg_status == 2 || qg_status == 3)) { // 抢购模式下（抢购中、已抢光）
       statusTipText = ''
     }
@@ -211,7 +211,7 @@ const getStatusTipText = (type, sale_type, status, qg_status) => {
         '5': '本商品已售罄',
         '6': '本商品已售罄'
       }
-      statusTipText = (sale_type == 3 && qg_status == 1 && status == 2) ? '' : textObj[status]
+      statusTipText = (sale_type == 3 && qg_status == 1 && (status == 2 || status == 4 || status == 6)) ? '' : textObj[status]
     } else if (sale_type == 3 && (qg_status == 2 || qg_status == 3)) { // 抢购
       statusTipText = ''
     }

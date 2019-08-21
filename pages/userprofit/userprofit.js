@@ -87,9 +87,9 @@ Page({
   /**
    * 用户点击右上角分享
    */
-  onShareAppMessage: function() {
+  // onShareAppMessage: function() {
 
-  },
+  // },
 
   entranceTap: function(e) {
     const {
@@ -158,6 +158,8 @@ Page({
     let titleAmount = ''
     if (show_can_remit && show_can_remit.indexOf('.00') !== -1) {
       titleAmount = show_can_remit.replace('.00', '')
+    } else {
+      titleAmount = show_can_remit
     }
     if (withdraw) {
       const app = getApp()

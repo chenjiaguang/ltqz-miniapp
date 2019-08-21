@@ -584,9 +584,9 @@ Component({
           let data = res.data
           let _obj = {}
           _obj.saleType = data.sale_type
-          _obj.uid = data.user.id
-          _obj.hAvatar = data.user.avatar
-          _obj.hName = data.user.nick_name
+          _obj.uid = (data.user && data.user.id) ? data.user.id : ''
+          _obj.hAvatar = (data.user && data.user.avatar) ? data.user.avatar : ''
+          _obj.hName = (data.user && data.user.nick_name) ? data.user.nick_name : '我'
           _obj.hTip = (data.sale_type == 2 && tuan_id) ? '发起了拼团，邀请你参与拼团~' : '发现了一个宝贝，想要跟你分享~'
           _obj.banner = data.product_cover_url || data.cover_url
           _obj.title = data.title

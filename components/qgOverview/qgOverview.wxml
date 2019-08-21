@@ -21,9 +21,6 @@
           <text>{{qgRemind ? '取消提醒' : '开抢提醒'}}</text>
         </button>
       </form>
-      <!-- <view class="remind-btn theme-bg" catchtap="remindTap">
-        <text>开抢提醒</text>
-      </view> -->
     </view>
     <!-- 抢购中 -->
     <view wx:if="{{goodsStatusData.qg_status == 2}}" class="content">

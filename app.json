@@ -71,5 +71,8 @@
     "scope.userLocation": {
       "desc": "你的位置信息将用于动态的位置展示"
     }
+  },
+  "usingComponents": {
+    "login-modal": "./components/loginModal/loginModal"
   }
 }

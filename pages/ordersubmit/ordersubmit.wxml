@@ -69,6 +69,14 @@
       <input wx:else class='contact-item-input' type="{{item.type || 'text'}}" value="{{contact[index].value}}" placeholder-class="input-placeholder" type="text" placeholder="请填写{{item.label}}" bindinput="contactInput" data-idx="{{index}}"></input>
     </view>
   </view>
+  <view class='coupon-info'>
+    <view class='block-separator'></view>
+    <ft-entrance disabled="{{!(coupons && coupons.length)}}" height="84rpx" image="/assets/images/icon_coupon.png" image-size="{{36}}" image-spacing="{{12}}" title="优惠券" title-style="font-size:28rpx;line-height:36rpx;flex:0 0 auto;margin-right:12rpx" spacing="0 32rpx 0 24rpx" catchtap="toggleCoupon" data-compute="{{true}}">
+      <view slot="content" class="coupon-content">
+        <view class="coupon-content-text{{(couponSelected && couponSelected.length && couponPrice && couponShowPrice) ? ' selected theme-color' : ''}}">{{(couponSelected && couponSelected.length && couponPrice && couponShowPrice) ? ('-¥' + couponShowPrice) : '暂无可用优惠券'}}</view>
+      </view>
+    </ft-entrance>
+  </view>
   <view class='clause-box' catchtap="changeClause">
     <text class="clause-icon lutufont{{clause_checked ? ' lutu-tick' : ' lutu-uncheck disabled'}}"></text>
     <text>我已阅读并同意</text>
@@ -87,31 +95,64 @@
     </view>
   </ft-bottom-box>
   <ft-modal id="c-ft-modal" hide-cancel mode="1">
-    <view slot="bottom" class="buyfor-context">
+    <view slot="bottom" class="buyfor-context" style="height:{{halfScreenHeight || '408rpx'}}">
       <view class='buyfor-box'>
         <view class='buyfor-header'><text class='cancel' catchtap="cancelChangeBuyfor">取消</text><text class='confirm' catchtap="confirmChangeBuyfor">确定</text></view>
       </view>
       <view class='new-buyfor' catchtap="editBuyfor" data-needidcard="{{include_bx}}" hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}"><text class='new-icon theme-color lutufont lutu-add2'></text><text class='new-text theme-color'>新增</text></view>
       <view class='block-separator'></view>
-      <scroll-view scroll-y class='buyfors' style="height:{{buyforsWrapperHeight || '408rpx'}}">
-        <view wx:if="{{!buyfors || !buyfors[0]}}" style="height:300rpx"></view>
-        <view wx:for="{{buyfors}}" wx:for-index="idx" wx:for-item="buyfor" wx:key="id" class='buyfor-item-wrapper'>
-          <view class='buyfor-item' catchtap="toggleBuyforChecked" data-idx="{{idx}}" hover-stop-propagation hover-class="{{(include_bx && buyfor.id_number || (!include_bx)) ? 'bg-touched' : 'none'}}" hover-start-time="{{50}}" hover-stay-time="{{200}}">
-            <view class='wirte-icon-wrapper' catchtap="editBuyfor" data-needidcard="{{include_bx}}" data-buyfor="{{buyfor}}" hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
-              <image class='wirte-icon' src="/assets/images/write_icon.png" mode="aspectFit"></image>
+      <view class="buyfors-scroller-wrapper">
+        <scroll-view scroll-y class='buyfors'>
+          <view wx:if="{{!buyfors || !buyfors[0]}}" style="height:300rpx"></view>
+          <view wx:for="{{buyfors}}" wx:for-index="idx" wx:for-item="buyfor" wx:key="id" class='buyfor-item-wrapper'>
+            <view class='buyfor-item' catchtap="toggleBuyforChecked" data-idx="{{idx}}" hover-stop-propagation hover-class="{{(include_bx && buyfor.id_number || (!include_bx)) ? 'bg-touched' : 'none'}}" hover-start-time="{{50}}" hover-stay-time="{{200}}">
+              <view class='wirte-icon-wrapper' catchtap="editBuyfor" data-needidcard="{{include_bx}}" data-buyfor="{{buyfor}}" hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
+                <image class='wirte-icon' src="/assets/images/write_icon.png" mode="aspectFit"></image>
+              </view>
+              <view class='buyfor-center'>
+                <view class='buyfor-name'>{{buyfor.name}}</view>
+                <!-- <view wx:if="{{buyfor.tip}}" class='buyfor-idcard disabled'>{{buyfor.tip}}</view> -->
+                <view wx:if="{{include_bx && !buyfor.id_number}}" class='buyfor-idcard disabled'>请填写身份证号</view>
+                <view wx:elif="{{include_bx && buyfor.id_number}}" class='buyfor-idcard'><text>身份证 </text><text wx:for="{{buyfor.id_number}}" wx:key="*this">{{index >= 4 && index < (buyfor.id_number.length - 4) ? '*' : item}}</text></view>
+                <view wx:else class='buyfor-idcard'></view>
+              </view>
+              <text class="buyfor-check-icon lutufont{{buyfor.checked ? ' lutu-checked green-color' : ' lutu-uncheck'}}"></text>
             </view>
-            <view class='buyfor-center'>
-              <view class='buyfor-name'>{{buyfor.name}}</view>
-              <!-- <view wx:if="{{buyfor.tip}}" class='buyfor-idcard disabled'>{{buyfor.tip}}</view> -->
-              <view wx:if="{{include_bx && !buyfor.id_number}}" class='buyfor-idcard disabled'>请填写身份证号</view>
-              <view wx:elif="{{include_bx && buyfor.id_number}}" class='buyfor-idcard'><text>身份证 </text><text wx:for="{{buyfor.id_number}}" wx:key="*this">{{index >= 4 && index < (buyfor.id_number.length - 4) ? '*' : item}}</text></view>
-              <view wx:else class='buyfor-idcard'></view>
-            </view>
-            <text class="buyfor-check-icon lutufont{{buyfor.checked ? ' lutu-checked green-color' : ' lutu-uncheck'}}"></text>
+            <view class='line-separator-h' style="margin-left:98rpx;width:652rpx"></view>
           </view>
-          <view class='line-separator-h' style="margin-left:98rpx;width:652rpx"></view>
-        </view>
-      </scroll-view>
+        </scroll-view>
+      </view>
+    </view>
+  </ft-modal>
+  <ft-modal id="c-ft-modal-coupon" hide-cancel mode="1">
+    <view slot="bottom" class="coupon-selector" style="height:{{halfScreenHeight || '408rpx'}}">
+      <view class='coupon-selector-header theme-bg'>
+        <text>请选择优惠券</text>
+        <text class="coupon-selector-close-btn lutufont lutu-bianzu" catchtap="toggleCoupon"></text>
+      </view>
+      <view class="coupon-scroller-wrapper">
+        <scroll-view scroll-y class='coupon-scroller'>
+          <view wx:for="{{coupons}}" wx:for-item="coupon" wx:for-index="idx" wx:key="id" class="coupon-box-wrapper{{coupon.selected ? ' theme-border-color' : ''}}" catchtap="couponTap" data-idx="{{idx}}">
+            <view class="coupon-box">
+              <image class="coupon-box-bg" src="/assets/images/coupon_bg.png" mode="aspectFit" />
+              <view class="coupon-left-box">
+                <view class="coupon-price">
+                  <text class="coupon-price-sign theme-color">¥</text>
+                  <text class="coupon-price-num theme-color">{{coupon.show_price}}</text>
+                </view>
+                <view wx:if="{{coupon.threshold}}" class="threshold">{{coupon.threshold}}</view>
+              </view>
+              <view class="coupon-right-box">
+                <view class="coupon-title">{{coupon.title}}</view>
+                <view wx:if="{{coupon.tip}}" class="coupon-tip">{{coupon.tip}}</view>
+              </view>
+            </view>
+            <text class="coupon-box-icon lutufont lutu-tick2{{coupon.selected ? ' theme-color' : ''}}"></text>
+          </view>
+          <view style="height:154rpx"></view>
+        </scroll-view>
+      </view>
+      <view class="coupon-selector-btn theme-bg" catchtap="confirmCoupon">确定</view>
     </view>
   </ft-modal>
 </view>

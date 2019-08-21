@@ -5,61 +5,44 @@ import util from '../../utils/util.js'
 
 Page({
   name: 'permission',
-  userStore: true,
   /**
    * 页面的初始数据
    */
   data: {
+    navTitle: '范团精选',
     showType: '', // type：['permission','update_token']
+    swiperCurrent: 0,
     disableAuth: true,
     authUserInfo: false,
-    authUserLocation: false
+    openType: 'getUserInfo',
+    phoneNumber: '',
+    temToken: '',
+    loging: false,
+    phoneBinding: false
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
-    console.log('onload')
-    authManager.getAuthSetting((authSetting) => {
-      if (!!authSetting['scope.userInfo'] && !!authSetting['scope.userLocation']) {
-        // token过期或不存在token时进入的该页面，则不显示授权相关信息，直接重新登录
-        this.setData({
-          showType: 'update_token'
-        })
-        this.updateToken()
-      } else { // 走授权登录流程
-        this.setData({
-          showType: 'permission'
-        })
+    const token = storageHelper.getStorage('token')
+    if (token) {
+      this.setData({
+        showType: 'update_token'
+      })
+      this.updateToken()
+    } else {
+      this.setData({
+        showType: 'permission'
+      })
+      this.setData({
+        disableAuth: true,
+        authUserInfo: false,
+        openType: 'getUserInfo'
+      }, () => {
         this.login()
-        let _obj = {}
-        _obj.authUserInfo = !!authSetting['scope.userInfo']
-        _obj.authUserLocation = !!authSetting['scope.userLocation']
-        this.setData(_obj)
-      }
-    })
-  },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function() {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function() {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function() {
-
+      })
+    }
   },
 
   /**
@@ -69,32 +52,11 @@ Page({
     storageHelper.setStorage('permissionTimeStamp', new Date().getTime())
   },
 
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function() {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function() {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function() {
-
-  },
-
   updateToken: function() {
     console.log('updateToken')
     wx.login({
-      success: res => { // login调用成功后授权按钮才可用（loginSuccess为true）
-        this.userLogin({
+      success: res => { // login调用成功后授权按钮才可用
+        this.getToken({
           code: res.code
         })
       }
@@ -102,9 +64,9 @@ Page({
   },
 
   login() {
-    // 登录
     wx.login({
-      success: res => { // login调用成功后授权按钮才可用（loginSuccess为true）
+      success: res => { // login调用成功后授权按钮才可用
+        console.log('login', res)
         this.setData({
           disableAuth: false
         })
@@ -113,15 +75,97 @@ Page({
     })
   },
 
-  getUserInfo: function(e) {
-    if (this.timeStamp) {
+  relaunch: function () {
+    const pages = getCurrentPages()
+    if (pages.length > 1) { // 该授权页面不是第一个页面时
+      const page = pages[pages.length - 2]
+      if (page && page.route && page.options) {
+        const url = ('/' + util.getUrl(page.route, page.options)) || '/pages/index/index'
+        wx.reLaunch({
+          url: url
+        })
+      }
+    } else {
+      wx.reLaunch({
+        url: '/pages/mine/mine'
+      })
+    }
+  },
+
+  getPhoneNumber: function (e) {
+    console.log('getPhoneNumber', e)
+    const {phoneBinding} = this.data
+    const { iv, encryptedData } = e.detail
+    const temToken = storageHelper.getStorage('temToken')
+    if (!temToken) {
+      this.code = ''
+      this.setData({
+        swiperCurrent: 0,
+        showType: 'permission',
+        disableAuth: true,
+        authUserInfo: false,
+        openType: 'getUserInfo'
+      }, () => {
+        this.login()
+      })
       return false
     }
-    this.timeStamp = e.timeStamp
-    if (e.detail.errMsg === 'getUserInfo:ok') {
+    if (phoneBinding) {
+      return false
+    }
+    if (iv && encryptedData) {
       this.setData({
-        authUserInfo: true
+        phoneBinding: true
       })
+      util.request('/common/decrypt', {
+        iv: iv,
+        encryptedData: encryptedData
+      }, {
+        token: temToken
+      }).then(res => {
+        if (res.error == 0 && res.data && res.data.phoneNumber) {
+          const phone = res.data.phoneNumber
+          this.setData({
+            phoneNumber: phone
+          })
+          storageHelper.setStorage('uphone', phone || '')
+          storageHelper.setStorage('temToken', '')
+          storageHelper.setStorage('token', temToken)
+          this.relaunch()
+        } else {
+          this.code = ''
+          this.setData({
+            swiperCurrent: 0,
+            showType: 'permission',
+            disableAuth: true,
+            authUserInfo: false,
+            openType: 'getUserInfo'
+          }, () => {
+            this.login()
+          })
+        }
+      }).catch(err => {
+        this.code = ''
+        this.setData({
+          swiperCurrent: 0,
+          showType: 'permission',
+          disableAuth: true,
+          authUserInfo: false,
+          openType: 'getUserInfo'
+        }, () => {
+          this.login()
+        })
+      }).finally(res => {
+        this.setData({
+          phoneBinding: false
+        })
+      })
+    }
+  },
+
+  getUserInfo: function(e) {
+    console.log('getUserInfo', e)
+    if (e.detail.errMsg === 'getUserInfo:ok') {
       const {
         encryptedData,
         iv,
@@ -142,111 +186,29 @@ Page({
         gender,
         nickName
       }
-      if (this.loging) {
+      if (this.data.loging) {
         return false
       }
-      const success = (authSetting) => {
-        this.authGetting = false // 授权完成后重置正在授权为false
-        if (authSetting['scope.userInfo'] && authSetting['scope.userLocation']) {
-          this.timeStamp = 0
-          this.userLogin(logingInfo)
-        } else if (!authSetting['scope.userInfo']) {
-          this.timeStamp = 0
-          wx.showModal({
-            content: '需要获取您的公开信息(头像、昵称等),请授权后继续使用', //提示的内容
-            showCancel: false,
-            confirmText: '确定'
-          })
-          this.setData({
-            authUserInfo: false
-          })
-        } else if (authSetting['scope.userInfo'] && authSetting['scope.userLocation'] !== false) {
-          wx.authorize({
-            scope: 'scope.userLocation',
-            success: () => {
-              this.setData({
-                authUserLocation: true
-              })
-              this.userLogin(logingInfo)
-            },
-            complete: () => {
-              this.timeStamp = 0
-            }
-          })
-          this.setData({
-            authUserLocation: false
-          })
-        } else if (authSetting['scope.userInfo'] && authSetting['scope.userLocation'] === false) {
-          wx.showModal({
-            content: '需要获取您的位置权限，以提供地图服务,请授权后继续使用', //提示的内容
-            showCancel: true,
-            confirmText: '去授权',
-            success: res => {
-              if (res.confirm) {
-                wx.openSetting({
-                  success: (res) => {
-                    this.timeStamp = 0
-                    const authSetting = res.authSetting
-                    let _obj = {}
-                    _obj.authUserInfo = !!authSetting['scope.userInfo']
-                    _obj.authUserLocation = !!authSetting['scope.userLocation']
-                    this.setData(_obj)
-                    if (authSetting['scope.userInfo'] && authSetting['scope.userLocation']) {
-                      this.userLogin(logingInfo)
-                    }
-                  },
-                  complete: () => {
-                    this.timeStamp = 0
-                  }
-                })
-              } else if (res.cancel) {
-                console.log('用户点击取消')
-                this.timeStamp = 0
-              } else {
-                this.timeStamp = 0
-              }
-            },
-            fail: () => {
-              this.timeStamp = 0
-            }
-          })
-          this.setData({
-            authUserLocation: false
-          })
-        } else {
-          this.timeStamp = 0
-        }
-      }
-      const fail = () => {
-        this.timeStamp = 0
-      }
-      if (this.authGetting) { // 如果正在获取授权，不重复获取
-        return false
-      }
-      this.authGetting = true
-      authManager.getAuthSetting(success, fail) // 更新授权情况(storage)
+      this.getToken(logingInfo)
     } else {
-      this.timeStamp = 0
       this.setData({
-        authUserInfo: false
+        authUserInfo: false,
+        openType: 'getUserInfo'
       })
     }
   },
 
-  userLogin: function(logingInfo) {
-    // 这里写登录逻辑（通过将signature、encryptedData、iv等信息发送给后端完成登录）
-    // 模拟
-    if (this.loging) { // 判断是否正在调用登录接口，避免重复调用登录接口后提示code已使用的问题
+  getToken: function (logingInfo) {
+    const {loging} = this.data
+    if (!logingInfo || loging) { // 参数不存在 或 判断是否正在调用登录接口，避免重复调用登录接口后提示code已使用的问题
       return false
     }
-    this.setData({
-      authUserInfo: true,
-      authUserLocation: true
-    })
     let rData = Object.assign({}, {
       code: this.code
     }, logingInfo)
-    this.loging = true
+    this.setData({
+      loging: true
+    })
     util.request('/login', rData).then(res => {
       if ((res.error === 0 || res.error === '0') && res.data) {
         const {
@@ -256,40 +218,51 @@ Page({
           nick_name,
           phone
         } = res.data
-        storageHelper.setStorage('token', token)
         storageHelper.setStorage('uid', id)
         storageHelper.setStorage('uavatar', avatar || '')
         storageHelper.setStorage('unickname', nick_name || '')
         storageHelper.setStorage('uphone', phone || '')
-        const permissionBack = storageHelper.getStorage('permissionBack')
-        const url = permissionBack || '/pages/index/index'
-        wx.reLaunch({
-          url: url,
-          success: () => {
-            if (url.indexOf('pages/index/index') !== -1 || url.indexOf('pages/mine/mine') !== -1) { // 本身是tabbar中的页面(首页、个人中心页面)，则不显示首页按钮
-              return false
-            }
-            const permissionBackName = url.split('pages/')[1].split('/')[0]
-            let _obj = {}
-            _obj['showRelaunchHome.' + permissionBackName] = true
-            const app = getApp()
-            app.store.setState(_obj)
-          },
-          complete: () => {
-            this.loging = false
-          }
-        })
+        if (phone) { // 有手机号
+          storageHelper.setStorage('temToken', '')
+          storageHelper.setStorage('token', token)
+          this.setData({
+            authUserInfo: true,
+            openType: 'getPhoneNumber'
+          })
+          this.relaunch()
+        } else { // 没手机号
+          storageHelper.setStorage('temToken', token)
+          this.setData({
+            swiperCurrent: 1,
+            temToken: token,
+            authUserInfo: true,
+            openType: 'getPhoneNumber'
+          })
+        }
       } else {
-        this.loging = false
+        this.setData({
+          swiperCurrent: 0,
+          authUserInfo: false,
+          openType: 'getUserInfo'
+        }, () => {
+          this.login()
+        })
       }
     }).catch(err => {
-      this.loging = false
       if (err.error == 1 && this.data.showType === 'update_token') {
         this.login()
         this.setData({
-          showType: 'permission'
+          swiperCurrent: 0,
+          authUserInfo: false,
+          showType: 'permission',
+          openType: 'getUserInfo'
         })
       }
+    }).finally(res => {
+      this.code = ''
+      this.setData({
+        loging: false
+      })
     })
   }
 

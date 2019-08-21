@@ -1,7 +1,16 @@
 // ftcomponents/ftModalBottom/ftModalBottom.js
+const app = getApp()
+
+let systemInfo = app.globalData.systemInfo || wx.getSystemInfoSync()
+let MenuButtonInfo = app.globalData.MenuButtonInfo || wx.getMenuButtonBoundingClientRect()
+
+const statusBarHeight = systemInfo.statusBarHeight
+const menuTopSpace = MenuButtonInfo.top - statusBarHeight
+const menuHeight = MenuButtonInfo.height
+const navBoxHeight = menuTopSpace * 2 + menuHeight // 导航胶囊上下分别留6px的间隔
+const navWrapperHeight = statusBarHeight + navBoxHeight
 
 let extraBottom = false
-const systemInfo = wx.getSystemInfoSync()
 const isIos = systemInfo.system.indexOf('iOS') !== -1
 const higher = systemInfo.screenHeight > 736
 if (isIos && higher) {
@@ -42,6 +51,7 @@ Component({
    * 组件的初始数据
    */
   data: {
+    navWrapperHeight: navWrapperHeight,
     extraBottom,
     topReached: false,
     bottomReached: false,

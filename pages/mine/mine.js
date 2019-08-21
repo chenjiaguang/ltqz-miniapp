@@ -1,5 +1,6 @@
 // pages/mine/mine.js
 const util = require('../../utils/util.js')
+import storageHelper from '../../utils/storageHelper.js'
 
 Page({
   name: "mine",
@@ -64,6 +65,11 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function() {
+    const token = storageHelper.getStorage('token')
+    this.setData({
+      hasToken: Boolean(token),
+      inited: true
+    })
     util.request('/user/detail').then(res => {
       let assistant_entrance = this.data.assistant_entrance
       if (res.data.shop && res.data.shop.length > 1) {
@@ -126,8 +132,12 @@ Page({
   /**
    * 用户点击右上角分享
    */
-  onShareAppMessage: function() {
+  // onShareAppMessage: function() {
 
+  // },
+
+  loginTap: function () {
+    util.checkLogin()
   },
 
   goUserInfo: function() {

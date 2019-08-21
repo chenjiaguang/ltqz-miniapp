@@ -59,7 +59,7 @@ Page({
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function() {
-    const {page} = this.data
+    const {page, loading} = this.data
     if (!page || (page && !page.pn) || (page && page.is_end) || loading) {
       return false
     }
@@ -69,9 +69,9 @@ Page({
   /**
    * 用户点击右上角分享
    */
-  onShareAppMessage: function() {
+  // onShareAppMessage: function() {
 
-  },
+  // },
   getCheckedIdList: function() {
     let ids = []
     for (let i = 0; i < this.data.list.length; i++) {

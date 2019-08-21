@@ -1,8 +1,10 @@
 {
   "navigationBarBackgroundColor": "#FFFFFF",
-  "navigationBarTextStyle": "white",
   "navigationBarTitleText": "范团精选",
   "backgroundColorTop": "#FFFFFF",
-  "backgroundColorBottom": "#fff",
-  "usingComponents": {}
+  "backgroundColorBottom": "#FFFFFF",
+  "usingComponents": {
+    "ft-custom-nav": "../../ftcomponents/ftCustomNav/ftCustomNav",
+    "ft-iphone-bottom-adapter": "../../ftcomponents/ftIphoneBottomAdapter/ftIphoneBottomAdapter"
+  }
 }

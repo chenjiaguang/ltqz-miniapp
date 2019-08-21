@@ -5,6 +5,7 @@
     "ft-custom-nav": "../../ftcomponents/ftCustomNav/ftCustomNav",
     "ft-user-avatar": "../../ftcomponents/ftUserAvatar/ftUserAvatar",
     "ft-user-name": "../../ftcomponents/ftUserName/ftUserName",
-    "ft-entrance": "../../ftcomponents/ftEntrance/ftEntrance"
+    "ft-entrance": "../../ftcomponents/ftEntrance/ftEntrance",
+    "login-modal": "../../components/loginModal/loginModal"
   }
 }

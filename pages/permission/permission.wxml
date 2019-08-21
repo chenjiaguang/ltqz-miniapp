@@ -1,23 +1,34 @@
 <!--pages/permission/permission.wxml-->
-<view wx:if="{{showType === 'update_token'}}" class='update-token-view'>登录信息已过期，正在更新登录状态...</view>
-<view wx:if="{{showType === 'permission'}}" class='page-permission column ai-center'>
-  <image class='bg' src='/assets/images/login_bg.png' mode="widthFix" />
-  <text class='tip'>范团精选需要你授权以下权限</text>
-  <view class='typerow row ai-center'>
-    <text class='typeicon lutufont lutu-weixin {{authUserInfo?"able":"disable"}}'></text>
-    <view class='column'>
-      <text class='title'>微信授权</text>
-      <text class='desc'>获取您的公开信息(昵称、头像等)</text>
-    </view>
-  </view>
-  <view class='typerow row ai-center'>
-    <text class='typeicon lutufont lutu-location {{authUserLocation?"able":"disable"}}'></text>
-    <view class='column'>
-      <text class='title'>定位权限</text>
-      <text class='desc'>获取您的位置信息</text>
-    </view>
-  </view>
-  <view class='permission-view'>
-    <button class='relaunch-btn' open-type="getUserInfo" disabled="{{disableAuth}}" bindgetuserinfo="getUserInfo">确认授权</button>
+<ft-custom-nav title="{{navTitle}}" />
+<view wx:if="{{showType === 'update_token'}}" class="page-permission">您的登录信息已过期，正在为您自动更新登录信息</view>
+<view wx:if="{{showType === 'permission'}}" class="page-permission">
+  <image class="login-bg" src="/assets/images/login_bg.png" mode="aspectFill" />
+  <view class='tip'>范团精选需要你授权以下权限</view>
+  <swiper class="auth-swiper{{authUserInfo ? '' : ' disabled-event'}}" current="{{swiperCurrent}}">
+    <swiper-item class="auth-swiper-item">
+      <view class="wechat-icon-box">
+        <image class="wechat-icon{{authUserInfo ? ' disabled' : ' abled'}}" src="/assets/images/login_wechat_uncheck.png" mode="aspectFit" />
+        <image class="wechat-icon{{authUserInfo ? ' abled' : ' disabled'}}" src="/assets/images/login_wechat_checked.png" mode="aspectFit" />
+      </view>
+      <view class="auth-text">
+        <view class="auth-title">微信授权</view>
+        <view class="auth-tip">获取您的公开信息（昵称、头像等）</view>
+      </view>
+    </swiper-item>
+    <swiper-item class="auth-swiper-item">
+      <view class="phone-icon-box">
+        <image class="phone-icon{{phoneNumber ? ' disabled' : ' abled'}}" src="/assets/images/login_phone_uncheck.png" mode="aspectFit" />
+        <image class="phone-icon{{phoneNumber ? ' abled' : ' disabled'}}" src="/assets/images/login_phone_checked.png" mode="aspectFit" />
+      </view>
+      <view class="auth-text">
+        <view class="auth-title">手机号授权</view>
+        <view class="auth-tip">绑定您的手机号</view>
+      </view>
+    </swiper-item>
+  </swiper>
+  <view class="button-box">
+    <view class="back-btn">取消</view>
+    <button class="auth-btn{{(openType === 'getUserInfo' && (disableAuth || loging)) ? ' disabled' : ''}}{{(openType === 'getPhoneNumber' && (!temToken || phoneBinding)) ? ' disabled' : ''}}" open-type="{{openType}}" disabled="{{(openType === 'getUserInfo' && (disableAuth || loging)) || (openType === 'getPhoneNumber' && (!temToken || phoneBinding))}}" bindgetuserinfo="getUserInfo" bindgetphonenumber="getPhoneNumber">确认授权</button>
   </view>
 </view>
+<ft-iphone-bottom-adapter />

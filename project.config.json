@@ -50,7 +50,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 13,
+			"current": 32,
 			"list": [
 				{
 					"id": -1,
@@ -195,7 +195,7 @@
 					"id": 20,
 					"name": "活动详情",
 					"pathName": "pages/goodsdetail/goodsdetail",
-					"query": "id=165",
+					"query": "id=190",
 					"scene": null
 				},
 				{
@@ -272,6 +272,13 @@
 					"name": "常见问题",
 					"pathName": "pages/statement/statement",
 					"query": "type=4",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "订单-支付",
+					"pathName": "pages/ordersubmit/ordersubmit",
+					"query": "id=190",
 					"scene": null
 				}
 			]

@@ -3,6 +3,7 @@
 <view animation="{{wrapperAnimationData}}" class="wrapper" catchtouchmove='stopPropagation'>
   <view animation="{{maskAnimationData}}" class="mask"></view>
   <view class="content">
+    <view style="width:100%;height:{{navWrapperHeight}}px" catchtap="hide" data-origin="mask"></view>
     <view bind:touchstart="{{m1.touchStart}}" bind:touchmove="{{m1.touchMove}}" bind:touchend="{{m1.touchEnd}}" animation="{{topAnimationData}}" data-height="{{topHeight}}" data-ele="top" data-top-touch-hide="{{topTouchHide}}" data-top-reached="{{topReached}}" data-bottom-reached="{{bottomReached}}" class="top top{{mode}}" catchtap="hide" data-origin="mask">
       <view class="intersection-dot-top"></view>
       <slot name="top"></slot>

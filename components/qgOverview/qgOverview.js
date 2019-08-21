@@ -81,6 +81,9 @@ Component({
       })
     },
     remindTap: function (e) {
+      if (!util.checkLogin()) {
+        return false
+      }
       const {goodsStatusData: {start_qg}, remindRequesting, qgRemind} = this.data
       if (remindRequesting) {
         return false

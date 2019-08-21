@@ -71,7 +71,7 @@
         <view class="gray-tip">
           <view class="gray-tip-text">
             <view class="draw-text" data-text="长按图片识别二维码">长按图片识别二维码</view>
-            <view class="draw-text" data-text="立即参与拼团">立即参与拼团</view>
+            <view class="draw-text" data-text="立即参与拼团">立即{{(saleType == 2 && pintuan && pintuan > 0) ? '参与拼团' : '购买'}}</view>
           </view>
           <image class="gray-tip-sign draw-image" src="/assets/images/poster_arrow.png" data-islocal="{{true}}" mode="aspectFit" />
         </view>
@@ -97,7 +97,7 @@
 </view>
 <ft-modal wx:if="{{!hideComponent}}" id="c-ft-modal" hide-cancel mode="1">
   <view slot="top" id="top-wrapper" class="top-wrapper" catchtap="hidePoster">
-    <view style="width:100%;height:{{navWrapperHeight}}px"></view>
+    <!-- <view style="width:100%;height:{{navWrapperHeight}}px"></view> -->
     <view wx:if="{{!localPoster}}" class='loading-image'><text>正在生成图片...</text></view>
     <image wx:if="{{localPoster}}" class='poster' src="{{localPoster}}" style="width:{{posterWidth ? (posterWidth + 'px') : '88%'}};height:{{posterHeight ? (posterHeight + 'px') : '88%'}}" mode="aspectFit" catchtap="stopPropagation"></image>
   </view>

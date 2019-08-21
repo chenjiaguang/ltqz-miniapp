@@ -83,21 +83,20 @@ Page({
     if (loading || page.is_end) {
       return false
     }
-    this.fetchComment(this.options, page.pn)
+    this.fetchComment(this.options, parseInt(page.pn) + 1)
   },
 
   /**
    * 用户点击右上角分享
    */
-  onShareAppMessage: function() {
+  // onShareAppMessage: function() {
 
-  },
+  // },
   fetchComment: function(options, pn) {
     // options.sid(shop_id，传入商家id则请求商家的评论)、options.pid(product_id，传入商品id则请求商品的评论)、options.type(type，商品类型，活动为1)
     let rData = {
       product_id: options.pid,
       shop_id: options.sid,
-      type: options.pid ? '1' : '',
       pn: pn
     }
     this.setData({

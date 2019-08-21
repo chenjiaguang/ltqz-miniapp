@@ -1,6 +1,6 @@
 <!--components/orderDetailBottomButton/orderDetailBottomButton.wxml-->
-<ft-bottom-box box-height="{{102}}" bg="#FFFFFF">
-  <view class='bottom-button'>
+<ft-bottom-box box-height="{{102 + (btndata.statusTipText ? 78 : 0)}}" bg="#FFFFFF">
+  <view class='bottom-button' style="position:relative;top:{{btndata.statusTipText ? '78rpx' : 0}}">
     <view class='line-separator-h' style="transform-origin:50% 100%;background:#D8D8D8"></view>
     <view wx:if="{{btndata.statusTipText}}" class="status-tip-text theme-bg-80">{{btndata.statusTipText}}</view>
     <view class='bottom-button-content'>
@@ -31,7 +31,7 @@
             <view class='join-text' style="font-size:34rpx;line-height:46rpx">{{btndata.btnText}}</view>
           </button>
           <!-- 可报名且用户电话不存在 -->
-          <button wx:if="{{btndata.status == 1 && !orderContact}}" class="join-btn theme-linear-gradient-h" open-type='getPhoneNumber' bindgetphonenumber="initContact"><text class='join-text' style="font-size:34rpx;line-height:46rpx">立即报名</text></button>
+          <button wx:if="{{btndata.status == 1 && !orderContact}}" class="join-btn theme-linear-gradient-h" bindgetphonenumber="initContact" catchtap="goLogin"><text class='join-text' style="font-size:34rpx;line-height:46rpx">立即报名</text></button>
         </view>
       </block>
       <block wx:if="{{btndata.sale_type == 2}}">
@@ -50,7 +50,7 @@
             </button>
           </view>
           <!-- 可报名且用户电话不存在 -->
-          <button wx:if="{{btndata.status == 1 && !orderContact}}" class="join-btn theme-linear-gradient-h" open-type='getPhoneNumber' bindgetphonenumber="initContact"><text class='join-text' style="font-size:34rpx;line-height:46rpx">立即报名</text></button>
+          <button wx:if="{{btndata.status == 1 && !orderContact}}" class="join-btn theme-linear-gradient-h" bindgetphonenumber="initContact" catchtap="goLogin"><text class='join-text' style="font-size:34rpx;line-height:46rpx">立即报名</text></button>
         </view>
       </block>
       <block wx:if="{{btndata.sale_type == 3 && (btndata.qg_status == 2 || btndata.qg_status == 3)}}">
@@ -60,7 +60,7 @@
             <view class='join-text' style="font-size:34rpx;line-height:46rpx">{{btndata.btnText}}</view>
           </button>
           <!-- 可报名且用户电话不存在 -->
-          <button wx:if="{{btndata.status == 1 && !orderContact}}" class="join-btn theme-linear-gradient-h" open-type='getPhoneNumber' bindgetphonenumber="initContact"><text class='join-text' style="font-size:34rpx;line-height:46rpx">立即抢购</text></button>
+          <button wx:if="{{btndata.status == 1 && !orderContact}}" class="join-btn theme-linear-gradient-h" bindgetphonenumber="initContact" catchtap="goLogin"><text class='join-text' style="font-size:34rpx;line-height:46rpx">立即抢购</text></button>
         </view>
       </block>
     </view>

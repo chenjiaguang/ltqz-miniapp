@@ -106,9 +106,9 @@ Page({
   /**
    * 用户点击右上角分享
    */
-  onShareAppMessage: function() {
+  // onShareAppMessage: function() {
 
-  },
+  // },
 
   showTickets: function () { // 显示/隐藏券
     const ftModal = this.selectComponent('#c-ft-modal')

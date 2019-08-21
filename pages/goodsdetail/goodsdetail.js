@@ -343,6 +343,9 @@ Page({
   },
 
   showShoppingView: function (e) {
+    if (!util.checkLogin()) {
+      return false
+    }
     this.setData({
       tuanId: e.detail.saletype == 2 ? 0 : null
     })
@@ -439,6 +442,9 @@ Page({
   },
   
   groupTap: function (e) {
+    if (!util.checkLogin()) {
+      return false
+    }
     if (e.detail.isJoin) {
       wx.showToast({
         title: '您正在参与这个团哦～',

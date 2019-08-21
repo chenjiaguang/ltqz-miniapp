@@ -104,12 +104,9 @@ const checkLogin = () => {
   if (token) {
     return true
   }
-  const getAuthSettingCallback = (authSetting) => { // 获取用户授权数据，未授权则跳转授权页面(permission)，授权后才可继续使用
-    const pages = getCurrentPages()
-    const page = pages[pages.length - 1]
-    relaunchPermission(page.route, page.options)
-  }
-  authManager.getAuthSetting(getAuthSettingCallback)
+  wx.navigateTo({
+    url: '/pages/permission/permission'
+  })
   return false
 }
 const showErrorToast = (msg) => {
@@ -147,13 +144,60 @@ const backAndToast = (msg) => {
   }
 }
 
+const relogin = () => {
+  const app = getApp()
+  if ((app && app.globalData && app.globalData.loging) || !storageHelper.getStorage('token')) { // 只在全局未执行登录操作 且 原先就已经登录过(存在token)时才执行更新token操作
+    return false
+  }
+  app.globalData.loging = true
+  const pages = getCurrentPages()
+  const page = pages[pages.length - 1]
+  wx.login({
+    success: res => {
+      request('/login', {code: res.code}).then(res => {
+        if ((res.error === 0 || res.error === '0') && res.data) {
+          const {
+            token,
+            id,
+            avatar,
+            nick_name,
+            phone
+          } = res.data
+          storageHelper.setStorage('uid', id)
+          storageHelper.setStorage('uavatar', avatar || '')
+          storageHelper.setStorage('unickname', nick_name || '')
+          storageHelper.setStorage('uphone', phone || '')
+          if (phone) { // 有手机号
+            storageHelper.setStorage('temToken', '')
+            storageHelper.setStorage('token', token)
+            const url = ('/' + getUrl(page.route, page.options)) || '/pages/index/index'
+            wx.reLaunch({
+              url: url,
+              success: res => {
+                wx.showToast({
+                  title: '您的登录信息过期，已自动为您更新',
+                  icon: 'none'
+                })
+              }
+            })
+          }
+        }
+      }).catch(err => {
+        storageHelper.setStorage('token', '')
+      }).finally(res => {
+        app.globalData.loging = false
+      })
+    }
+  })
+}
+
 const request = (url, data, config = {}) => {
   const app = getApp()
   const apiVersion = (config && config.apiVersion) || app.config.apiVersion || '/v1'
   const token = (config && config.token) || storageHelper.getStorage('token') || ''
   const timeStamp = new Date().getTime()
   return new Promise((resolve, reject) => {
-    wx.request({
+    const requestTask = wx.request({
       url: app.config.baseUrl + apiVersion + url,
       data: data,
       method: (config && config.method) || 'POST', // 使用传入的method值，或者默认的post
@@ -169,9 +213,8 @@ const request = (url, data, config = {}) => {
           if (permissionTimeStamp && timeStamp < permissionTimeStamp) {
             return false
           }
-          storageHelper.setStorage('token', '')
           storageHelper.setStorage('permissionTimeStamp', new Date().getTime())
-          checkLogin()
+          relogin()
           reject(res.data || res) // 返回错误提示信息
           return
         }
@@ -182,20 +225,23 @@ const request = (url, data, config = {}) => {
             return
           }
         }
-        if (res.data && (res.data.error === 0 || res.data.error === '0') && token) { // 绑定分销员
+        if (res.data && (res.data.error === 0 || res.data.error === '0') && token && url !== '/fenxiao/bind_parent') { // 绑定分销员
           const fenxiaoid_unbind = storageHelper.getStorage('fenxiaoid_unbind')
           if (fenxiaoid_unbind) {
-            const fenxiaoid_binded = storageHelper.getStorage('fenxiaoid_binded')
-            if (fenxiaoid_unbind != fenxiaoid_binded) {
-              request('/fenxiao/bind_parent', {parent_id: fenxiaoid_unbind}, {dontToast: true}).then(res => {
-                console.log('bindfenxiao', res)
-                if (res.error === 0 || res.error === '0') {
-                  storageHelper.setStorage('fenxiaoid_binded', fenxiaoid_unbind)
-                }
-              })
-            } else {
-              storageHelper.setStorage('fenxiaoid_unbind', '')
+            const app = getApp()
+            if (app.globalData && app.globalData.fxBindingTask) {
+              app.globalData.fxBindingTask.abort()
             }
+            request('/fenxiao/bind_parent', {parent_id: fenxiaoid_unbind}, {dontToast: true, getRequestTask: function (task) {
+              app.globalData.fxBindingTask = task
+            }}).then(res => {
+              if (res.error === 0 || res.error === '0') {
+                storageHelper.setStorage('fenxiaoid_binded', fenxiaoid_unbind)
+                storageHelper.setStorage('fenxiaoid_unbind', '')
+              }
+            }).finally(res => {
+              app.globalData.fxBindingTask = null
+            })
           }
         }
         setTimeout(() => {
@@ -212,6 +258,9 @@ const request = (url, data, config = {}) => {
 
       }
     })
+    if (config.getRequestTask) {
+      config.getRequestTask(requestTask)
+    }
   })
 }
 
@@ -234,7 +283,8 @@ const isVersionGreater = (currentVer, ver) => {
 }
 
 module.exports = {
-  checkLogin,
+  checkLogin: checkLogin,
+  getUrl,
   formatTime: formatTime,
   isJsonString,
   relaunchPermission,

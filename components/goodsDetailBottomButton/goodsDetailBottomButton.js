@@ -40,6 +40,9 @@ Component({
    * 组件的方法列表
    */
   methods: {
+    goLogin: function () {
+      util.checkLogin()
+    },
     makePhoneCall: function (e) {
       let {phone} = e.currentTarget.dataset
       if (phone) {
@@ -54,6 +57,9 @@ Component({
       })
     },
     collectTap: function () {
+      if (!util.checkLogin()) {
+        return false
+      }
       const {collected, collectting, btndata: {id}} = this.data
       if (collectting) { // 未获取数据成功 或 正在操作，则点击收藏无效
         return false
