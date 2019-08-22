@@ -35,7 +35,8 @@
     "pages/thememerchant/thememerchant",
     "pages/themegoods/themegoods",
     "pages/userfxgoods/userfxgoods",
-    "pages/fxusuallyquestion/fxusuallyquestion"
+    "pages/fxusuallyquestion/fxusuallyquestion",
+    "pages/couponlist/couponlist"
   ],
   "window": {
     "navigationStyle": "custom",

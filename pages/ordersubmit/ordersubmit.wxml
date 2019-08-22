@@ -14,13 +14,15 @@
       </view>
       <view wx:if="{{address}}" class='address'>{{address}}</view>
       <view class='tags-box'>
-        <view class='tag-item theme-color theme-border-color'><text>本商品{{can_refund ? '' : '不'}}支持退款</text></view>
+        <view wx:if="{{type == 3}}" class='tag-item theme-color theme-border-color'><text>{{can_refund ? '发货前可申请退款' : '本商品不支持退款'}}</text></view>
+        <view wx:else class='tag-item theme-color theme-border-color'><text>本商品{{can_refund ? '' : '不'}}支持退款</text></view>
         <view wx:if="{{include_bx}}" class='tag-item theme-color theme-border-color'><text>费用中包含保险</text></view>
+        <view wx:if="{{has_postage}}" class='tag-item theme-color theme-border-color'><text>包邮</text></view>
       </view>
     </block>
 
     <!-- 非活动 -->
-    <block wx:if="{{type == 2}}">
+    <block wx:if="{{type == 2 || type == 3}}">
       <view wx:if="{{hx_rule}}" class="hx-rule">{{hx_rule}}</view>
       <view class='amount'>{{selectedTicketLength}}件</view>
       <view class='ticket-info'>
@@ -28,8 +30,10 @@
       </view>
       <view wx:if="{{address}}" class='address'>{{address}}</view>
       <view class='tags-box'>
-        <view class='tag-item theme-color theme-border-color'><text>本商品{{can_refund ? '' : '不'}}支持退款</text></view>
+        <view wx:if="{{type == 3}}" class='tag-item theme-color theme-border-color'><text>{{can_refund ? '发货前可申请退款' : '本商品不支持退款'}}</text></view>
+        <view wx:else class='tag-item theme-color theme-border-color'><text>本商品{{can_refund ? '' : '不'}}支持退款</text></view>
         <view wx:if="{{include_bx}}" class='tag-item theme-color theme-border-color'><text>费用中包含保险</text></view>
+        <view wx:if="{{has_postage}}" class='tag-item theme-color theme-border-color'><text>包邮</text></view>
       </view>
     </block>
     
@@ -69,10 +73,29 @@
       <input wx:else class='contact-item-input' type="{{item.type || 'text'}}" value="{{contact[index].value}}" placeholder-class="input-placeholder" type="text" placeholder="请填写{{item.label}}" bindinput="contactInput" data-idx="{{index}}"></input>
     </view>
   </view>
+  <!-- 物流信息 -->
+  <view wx:if="{{type == 3}}" class='shipping-info'>
+    <view class='block-separator'></view>
+    <view class='shipping-header'>收货地址</view>
+    <view class="line-separator-h" style="width:718rpx;margin-left:32rpx"></view>
+    <view class="shipping-box-wrapper">
+      <image class="address-icon" src="/assets/images/icon_location.png" mode="aspectFit" />
+      <view class="shipping-box" catchtap="getShippingInfo">
+        <view wx:if="{{!shippingInfo || !shippingInfo.detailInfo || !shippingInfo.telNumber}}" class="shipping-placeholder">
+          <view class="shipping-placeholder-title">收货地址</view>
+          <view class="shipping-placeholder-tip">点击添加地址</view>
+        </view>
+        <view wx:if="{{shippingInfo.userName || shippingInfo.telNumber}}" class="shipping-name-and-phone"><text class="shipping-name">{{shippingInfo.userName}}</text><text class="shipping-phone">{{shippingInfo.telNumber}}</text></view>
+        <view wx:if="{{shippingInfo.detailInfo}}" class="shipping-address">{{shippingInfo.provinceName}}{{shippingInfo.cityName}}{{shippingInfo.countyName}}{{shippingInfo.detailInfo}}</view>
+      </view>
+      <text class="shipping-next-icon lutufont lutu-next2"></text>
+    </view>
+  </view>
   <view class='coupon-info'>
     <view class='block-separator'></view>
     <ft-entrance disabled="{{!(coupons && coupons.length)}}" height="84rpx" image="/assets/images/icon_coupon.png" image-size="{{36}}" image-spacing="{{12}}" title="优惠券" title-style="font-size:28rpx;line-height:36rpx;flex:0 0 auto;margin-right:12rpx" spacing="0 32rpx 0 24rpx" catchtap="toggleCoupon" data-compute="{{true}}">
       <view slot="content" class="coupon-content">
+        <view wx:if="{{recommendCoupon === couponSelected[0]}}" class="recommand-coupon-tag theme-color theme-border-color">已选推荐优惠</view>
         <view class="coupon-content-text{{(couponSelected && couponSelected.length && couponPrice && couponShowPrice) ? ' selected theme-color' : ''}}">{{(couponSelected && couponSelected.length && couponPrice && couponShowPrice) ? ('-¥' + couponShowPrice) : '暂无可用优惠券'}}</view>
       </view>
     </ft-entrance>
@@ -86,7 +109,7 @@
   <ft-bottom-box box-height="{{102}}" bg="#FFFFFF">
     <view class='bottom-button'>
       <view class='total-box'>
-        <text class='total-text'>需支付</text>
+        <text class='total-text'>总计</text>
         <text class='total-amout'>¥{{totalPrice}}</text>
       </view>
       <form catchsubmit="submitOrder" class="btn-form" report-submit>
@@ -132,6 +155,7 @@
       </view>
       <view class="coupon-scroller-wrapper">
         <scroll-view scroll-y class='coupon-scroller'>
+          <view style="height:38rpx"></view>
           <view wx:for="{{coupons}}" wx:for-item="coupon" wx:for-index="idx" wx:key="id" class="coupon-box-wrapper{{coupon.selected ? ' theme-border-color' : ''}}" catchtap="couponTap" data-idx="{{idx}}">
             <view class="coupon-box">
               <image class="coupon-box-bg" src="/assets/images/coupon_bg.png" mode="aspectFit" />
@@ -140,7 +164,7 @@
                   <text class="coupon-price-sign theme-color">¥</text>
                   <text class="coupon-price-num theme-color">{{coupon.show_price}}</text>
                 </view>
-                <view wx:if="{{coupon.threshold}}" class="threshold">{{coupon.threshold}}</view>
+                <view wx:if="{{coupon.threshold_text}}" class="threshold">{{coupon.threshold_text}}</view>
               </view>
               <view class="coupon-right-box">
                 <view class="coupon-title">{{coupon.title}}</view>

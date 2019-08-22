@@ -30,7 +30,7 @@
       <text class='key'>{{order.type == 1 ? '活动地点' : '地点'}}</text>
       <text class='value'>{{product.address || '--'}}</text>
     </view>
-    <block wx:if="{{order.type == 2 && order.hx_rule}}">
+    <block wx:if="{{(order.type == 2 || order.type == 2) && order.hx_rule}}">
       <view class='line-separator-h'></view>
       <view class='item row'>
         <text class='key'>核销有效期</text>

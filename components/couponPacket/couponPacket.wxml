@@ -13,7 +13,7 @@
               <text class="price-sign theme-color">¥</text>
               <text class="price-num theme-color">{{coupon.show_price}}</text>
             </view>
-            <view wx:if="{{coupon.threshold}}" class="threshold">{{coupon.threshold}}</view>
+            <view wx:if="{{coupon.threshold_text}}" class="threshold">{{coupon.threshold_text}}</view>
           </view>
           <view class="right-box">
             <view class="coupon-title">{{coupon.title}}</view>

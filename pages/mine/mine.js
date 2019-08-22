@@ -31,11 +31,18 @@ Page({
       title: '商家助手',
       path: '/pages/selectuser/selectuser'
     },
-    other_entrances: [{
+    other_entrances: [
+      {
+        icon: '/assets/images/icon_coupon.png',
+        title: '我的优惠券',
+        path: '/pages/couponlist/couponlist'
+      },
+      {
         icon: '/assets/images/user_collection.png',
         title: '我的收藏',
         path: '/pages/collection/collection'
-      }, {
+      },
+      {
         icon: '/assets/images/user_usuallyinfo.png',
         title: '常用信息',
         path: '/pages/usuallycontacts/usuallycontacts'

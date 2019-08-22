@@ -78,7 +78,8 @@ Component({
     currentSubSession: { 1: null, 2: null, 3: null },
     currentTickets: { 1: [], 2: [], 3: [] },
     selectedTicketLength: { 1: 0, 2: 0, 3: 0 },
-    totalPrice: { 1: 0, 2: 0, 3: 0 }
+    totalPrice: { 1: 0, 2: 0, 3: 0 },
+    totalPriceCal: { 1: 0, 2: 0, 3: 0 }
   },
 
   /**
@@ -157,6 +158,7 @@ Component({
 
       let selectedTicketLength = { 1: 0, 2: 0, 3: 0 }
       let totalPrice = { 1: 0, 2: 0, 3: 0 }
+      let totalPriceCal = { 1: 0, 2: 0, 3: 0 }
       let currentSession = { 1: null, 2: null, 3: null }
       let currentSubSession = { 1: null, 2: null, 3: null }
       let currentTickets = { 1: [], 2: [], 3: [] }
@@ -190,6 +192,7 @@ Component({
         }
         
         selectedTicketLength[saletype] = initNum
+        totalPriceCal[saletype] = parseInt(initNum * singlePrice)
         totalPrice[saletype] = parseFloat((initNum * singlePrice / 100).toFixed(2))
       }
 
@@ -199,6 +202,7 @@ Component({
       this.setData({
         saletype: saletype,
         selectedTicketLength,
+        totalPriceCal,
         totalPrice,
         currentSession,
         currentSubSession,
@@ -253,6 +257,7 @@ Component({
       let num = ticket.num + (type === 'minus' ? -1 : 1)
       let _obj = {}
       _obj['selectedTicketLength.' + saletype] = selectedTicketLen
+      _obj['totalPriceCal.' + saletype] = parseInt(total)
       _obj['totalPrice.' + saletype] = parseFloat((total / 100).toFixed(2))
       _obj['currentTickets.' + saletype + '[' + idx + '].num'] = num
       this.setData(_obj)
@@ -273,8 +278,8 @@ Component({
 
     order: function () {
       this.toggleSession()
-      const { saletype, currentSession, currentTickets, selectedTicketLength, totalPrice} = this.data
-      this.triggerEvent('nextstep', { saletype, currentSession, currentTickets, selectedTicketLength, totalPrice})
+      const { saletype, currentSession, currentTickets, selectedTicketLength, totalPrice, totalPriceCal} = this.data
+      this.triggerEvent('nextstep', { saletype, currentSession, currentTickets, selectedTicketLength, totalPrice, totalPriceCal})
     },
 
     stopPropagation: function () {

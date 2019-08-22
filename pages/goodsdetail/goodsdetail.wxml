@@ -74,7 +74,7 @@
       </block>
     </view>
     <!-- 非活动 -->
-    <view wx:if="{{type == 2}}" class='sponsor-header'>
+    <view wx:if="{{type == 2 || type == 3}}" class='sponsor-header'>
       <text class="sponsor-header-text">商家名片</text>
       <!-- 商家经营主体:1 个人认证 | 2 企业认证 | 3 其他组织认证 -->
       <block wx:if="{{shop && shop.type}}">
@@ -159,6 +159,6 @@
 </view>
 <draw-poster id="c-draw-poster" />
 <shopping-view wx:if="{{status == 1 && session && session.length > 0 && type == 1}}" id="c-shopping-view" remain-count="{{person_remain_count}}" session="{{session}}" timestamp="{{goodsTimestamp}}" catchnextstep="nextTap" />
-<shopping-view2 wx:if="{{status == 1 && session && session.length > 0 && type == 2}}" id="c-shopping-view" remain-count="{{person_remain_count}}" session="{{session}}" timestamp="{{goodsTimestamp}}" catchnextstep="nextTap" />
+<shopping-view2 wx:if="{{status == 1 && session && session.length > 0 && (type == 2 || type == 3)}}" id="c-shopping-view" remain-count="{{person_remain_count}}" session="{{session}}" timestamp="{{goodsTimestamp}}" catchnextstep="nextTap" />
 <login-modal id="c-login-modal" />
 <coupon-packet />

@@ -11,7 +11,8 @@ Component({
           id: '1',
           price: 20000,
           show_price: 200,
-          threshold: '无金额门槛',
+          threshold: 0,
+          threshold_text: '无金额门槛',
           title: '此处为优惠券名称此处为优 惠券名称',
           tip: '2019-08-13 至 2019-08-20',
           received: false
@@ -20,7 +21,8 @@ Component({
           id: '2',
           price: 2000,
           show_price: 20,
-          threshold: '满100可用',
+          threshold: 10000,
+          threshold_text: '满100可用',
           title: '此处为优惠券名称此处',
           tip: '2019-08-13 至 2019-08-20',
           received: true
@@ -29,7 +31,8 @@ Component({
           id: '3',
           price: 20000,
           show_price: 200,
-          threshold: '无金额门槛',
+          threshold: 0,
+          threshold_text: '无金额门槛',
           title: '此处为优惠券名称此处为优 惠券名称',
           tip: '自领取之日起X天内有效',
           received: false
@@ -38,7 +41,8 @@ Component({
           id: '4',
           price: 2000,
           show_price: 20,
-          threshold: '满100可用',
+          threshold: 10000,
+          threshold_text: '满100可用',
           title: '此处为优惠券名称此处为优 惠券名称',
           tip: '在2019-08-20前可用',
           received: true
@@ -47,7 +51,8 @@ Component({
           id: '5',
           price: 200,
           show_price: 2,
-          threshold: '无金额门槛',
+          threshold: 0,
+          threshold_text: '无金额门槛',
           title: '此处为优惠券名称此处为优 惠券名称',
           tip: '2019-08-13 至 2019-08-20',
           received: false

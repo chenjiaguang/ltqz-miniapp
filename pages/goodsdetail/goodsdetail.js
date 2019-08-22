@@ -210,6 +210,7 @@ Page({
         }
         res.data.subOverview = this.getSubOverview(res.data)
         this.initBottomData(res.data)
+        
         this.setData(res.data, () => {
           this.setData({
             content: this.data.content.replace(/\t\t\t/gi, '')
@@ -294,18 +295,19 @@ Page({
     if (type && type == 1 && valid_btime && valid_etime) {
       arr.push({img: '/assets/images/time_jointime.png', text: `活动日期：${valid_btime} 至 ${valid_etime}`})
     }
+    
     if (dead_line) {
       arr.push({img: '/assets/images/time_deadline.png', text: `${type == 1 ? '报名' : ''}截止时间：${dead_line}`})
     }
     if (hx_rule) {
       arr.push({img: '/assets/images/hx_rule_icon.png', text: `核销有效期：${hx_rule}`})
     }
-    if (type == 1 && address) {
-      arr.push({img: '/assets/images/huodong_location.png', text: `活动地点：${address}`, isAddress: true, lnglat: address_position, address: `${address}`})
+    if (address) {
+      arr.push({img: '/assets/images/huodong_location.png', text: `${type == 1 ? '活动' : ''}地点：${address}`, isAddress: true, lnglat: address_position, address: `${address}`})
     }
-    if (type == 1 && jh_address) {
-      arr.push({img: '/assets/images/jihe_location.png', text: `集合地点：${jh_address}`, isAddress: true, lnglat: jh_address_position, address: `${jh_address}`})
-    }
+    // if (type == 1 && jh_address) {
+    //   arr.push({img: '/assets/images/jihe_location.png', text: `集合地点：${jh_address}`, isAddress: true, lnglat: jh_address_position, address: `${jh_address}`})
+    // }
     if (min_age) {
       if (type == 1) {
         arr.push({img: '/assets/images/nianling.png', text: `适合年龄段：${min_age == -1 ? '不限年龄' : (min_age + ' ~ ' + max_age + '岁')}`})
@@ -462,12 +464,12 @@ Page({
   },
 
   nextTap: function (e) {
-    const { saletype, currentSession, currentSubSession, currentTickets, subSessions, selectedTicketLength, totalPrice } = e.detail
-    const { type, id, tuanId: tuan_id, fromUid, fill_info, fill_form, title, valid_btime, valid_etime, address, session, sale_type, can_refund = false, include_bx, hx_rule } = this.data
-    let dataObj = {type, id, fromUid, fill_info, fill_form, title, address, valid_btime, valid_etime, session, sale_type, saletype, selectedTicketLength: selectedTicketLength[saletype], currentSession: currentSession[saletype], can_refund, include_bx, totalPrice: totalPrice[saletype], tuan_id, hx_rule}
+    const { saletype, currentSession, currentSubSession, currentTickets, subSessions, selectedTicketLength, totalPrice, totalPriceCal } = e.detail
+    const { type, id, tuanId: tuan_id, fromUid, fill_info, fill_form, title, valid_btime, valid_etime, address, session, sale_type, can_refund = false, include_bx, hx_rule, has_postage } = this.data
+    let dataObj = {type, id, fromUid, fill_info, fill_form, title, address, valid_btime, valid_etime, session, sale_type, saletype, selectedTicketLength: selectedTicketLength[saletype], currentSession: currentSession[saletype], can_refund, include_bx, totalPrice: totalPrice[saletype], totalPriceCal: totalPriceCal[saletype], tuan_id, hx_rule, has_postage}
     if (type == 1) { // 活动
       dataObj.currentTickets = currentTickets[saletype]
-    } else if (type == 2) { // 非活动
+    } else if (type == 2 || type == 3) { // 非活动
       dataObj.currentSubSession = currentSubSession[saletype]
       dataObj.subSessions = subSessions[saletype]
     }

@@ -31,7 +31,7 @@ const getBtnText = (type, sale_type, status, qg_status) => {
       btnText = textObj[qg_status]
       btnDisabled = status != 1 || qg_status != 2
     }
-  } else if (type == 2) { // 非活动
+  } else if (type == 2 || type == 3) { // 非活动
     if ((sale_type == 1 || sale_type == 2) || (sale_type == 3 && qg_status != 2 && qg_status != 3)) { // 普通活动 或 拼团 或 抢购模式下（非抢购中、非抢光）
       const textObj = {
         '-3': '已下架',
@@ -102,7 +102,7 @@ const getCardText = (type, sale_type, status, qg_status) => {
       statusText = textObj[qg_status]
       statusDisabled = status != 1 || qg_status != 2
     }
-  } else if (type == 2) {
+  } else if (type == 2 || type == 3) { // 非活动
     if ((sale_type == 1 || sale_type == 2) || (sale_type == 3 && qg_status != 2 && qg_status != 3)) {
       const textObj = {
         '-3': '已下架',
@@ -156,7 +156,7 @@ const getStatusText = (type, sale_type, status, qg_status) => {
       '6': '活动报名中'
     }
     text = textObj[status]
-  } else if (type == 2) { // 非活动
+  } else if (type == 2 || type == 3) { // 非活动
     const textObj = {
       '-3': '商品已下架',
       '-2': '商品未上架',
@@ -197,7 +197,7 @@ const getStatusTipText = (type, sale_type, status, qg_status) => {
     if (sale_type == 2) {
       statusTipText = ''
     }
-  } else if (type == 2) { // 非活动
+  } else if (type == 2 || type == 3) { // 非活动
     if ((sale_type == 1 || sale_type == 2) || (sale_type == 3 && qg_status != 2 && qg_status != 3)) { // 普通活动 或 拼团 或 抢购模式下（非抢购中、非抢光）
       const textObj = {
         '-3': '',
@@ -226,7 +226,7 @@ const getPriceText = (type, sale_type, status, qg_status, show_min_price, show_m
   let priceText = ''
   let isFree = false
   let hasMore = false
-  if (type == 1 || type == 2) { // 活动 或 商品都是相同的字段
+  if (type == 1 || type == 2 || type == 3) { // 活动 或 商品都是相同的字段
     if (sale_type == 1 || (sale_type == 3 && qg_status != 2 && qg_status != 3)) { // 普通
       priceText = (show_min_price && show_min_price) > 0 ? show_min_price : '免费'
       isFree = !show_min_price || show_min_price == 0

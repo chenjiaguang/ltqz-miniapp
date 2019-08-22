@@ -106,8 +106,9 @@
 .buy-for-placeholder{
   font-size: 28rpx;
   color: #ccc;
-  line-height: 48rpx;
+  line-height: 60rpx;
   padding-right: 20rpx;
+  padding-top: 12rpx;
 }
 .buy-for-item-view{
   display: flex;
@@ -124,9 +125,10 @@
 }
 .buy-for-item-text{
   font-size: 28rpx;
-  line-height: 48rpx;
+  line-height: 60rpx;
   color: #333;
   padding-right: 20rpx;
+  padding-top: 12rpx;
 }
 
 .contact-info{
@@ -195,9 +197,11 @@
   align-items: center;
 }
 .coupon-content-text{
+  flex: 1;
   font-size: 24rpx;
   line-height: 28rpx;
   color: #999999;
+  text-align: right;
 }
 .coupon-content-text.selected{
   font-weight: bold;
@@ -466,7 +470,7 @@ button.submit-btn.disabled{
   border-radius: 20rpx;
 }
 .coupon-box-wrapper:first-child{
-  margin-top: 38rpx;
+  margin-top: 0;
 }
 .coupon-box{
   width: 600rpx;
@@ -553,4 +557,68 @@ button.submit-btn.disabled{
   margin-left: -130rpx;
   bottom: 36rpx;
   z-index: 3;
+}
+.recommand-coupon-tag{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 24rpx;
+  line-height: 24rpx;
+  height: 36rpx;
+  padding: 0 14rpx;
+  box-sizing: border-box;
+  border-radius: 18rpx;
+  border-width: 1px;
+  border-style: solid;
+}
+
+.shipping-info{
+  background: #fff;
+}
+.shipping-header{
+  font-size: 32rpx;
+  line-height: 72rpx;
+  color: #333;
+  font-weight: bold;
+  padding: 10rpx 32rpx 0;
+}
+.shipping-box-wrapper{
+  display: flex;
+  padding: 0 32rpx 0 24rpx;
+  align-items: center;
+}
+.address-icon{
+  align-self: flex-start;
+  width: 36rpx;
+  height: 36rpx;
+  margin-top: 24rpx;
+}
+.shipping-box{
+  flex: 1;
+  padding: 14rpx 0 14rpx 12rpx;
+}
+.shipping-placeholder{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.shipping-placeholder-title, .shipping-name-and-phone, .shipping-address{
+  font-size: 28rpx;
+  line-height: 38rpx;
+  color: #333333;
+  padding: 9rpx 0;
+}
+.shipping-placeholder-tip{
+  font-size: 24rpx;
+  line-height: 38rpx;
+  color: #999999;
+  padding: 9rpx 0 9rpx 24rpx;
+}
+.shipping-next-icon{
+  display: block;
+  font-size: 24rpx;
+  margin-right: -6rpx;
+  margin-left: 22rpx;
+  overflow: visible;
+  color: #ccc;
 }

@@ -51,7 +51,7 @@
       <view class='right-ball'></view>
     </view>
     <!-- 非活动商品 -->
-    <view wx:if="{{type == 2}}" class='bottom-info'>
+    <view wx:if="{{type == 2 || type == 3}}" class='bottom-info'>
       <view class='info-item'>
         <view class="info-left">商品名称</view>
         <view class='info-right'>{{product.title}}</view>

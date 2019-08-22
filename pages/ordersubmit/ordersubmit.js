@@ -8,56 +8,12 @@ Page({
    * 页面的初始数据
    */
   data: {
-    coupons: [
-      {
-        id: '1',
-        price: 20000,
-        show_price: 200,
-        threshold: '无金额门槛',
-        title: '此处为优惠券名称此处为优 惠券名称',
-        tip: '2019-08-13 至 2019-08-20',
-        selected: true
-      },
-      {
-        id: '2',
-        price: 2000,
-        show_price: 20,
-        threshold: '满100可用',
-        title: '此处为优惠券名称此处',
-        tip: '2019-08-13 至 2019-08-20',
-        selected: false
-      },
-      {
-        id: '3',
-        price: 20000,
-        show_price: 200,
-        threshold: '无金额门槛',
-        title: '此处为优惠券名称此处为优 惠券名称',
-        tip: '自领取之日起X天内有效',
-        selected: false
-      },
-      {
-        id: '4',
-        price: 2000,
-        show_price: 20,
-        threshold: '满100可用',
-        title: '此处为优惠券名称此处为优 惠券名称',
-        tip: '在2019-08-20前可用',
-        selected: false
-      },
-      {
-        id: '5',
-        price: 200,
-        show_price: 2,
-        threshold: '无金额门槛',
-        title: '此处为优惠券名称此处为优 惠券名称',
-        tip: '2019-08-13 至 2019-08-20',
-        selected: false
-      }
-    ],
+    shippingInfo: {},
+    coupons: [],
     couponSelected: [],
     couponPrice: 0,
     couponShowPrice: 0,
+    recommendCoupon: 0,
     genderArray: ['男', '女'],
     genderIdx: 0,
     inputType: {
@@ -116,7 +72,7 @@ Page({
     }
     if (data.type == 1) { // 活动，已购买的票
       data.selectedTickets = data.currentTickets.filter(item => item.num > 0)
-    } else if (data.type == 2) { // 非活动，已购买的商品
+    } else if (data.type == 2 || data.type == 3) { // 非活动，已购买的商品
       data.selectedSessions = [data.session[data.currentSession]]
       data.selectedSessions.forEach(item => {
         item.num = data.selectedTicketLength
@@ -128,8 +84,9 @@ Page({
       })
     }
     this.setData(data)
+    this.initShippingInfo()
+    this.fetchCoupon(data.totalPriceCal)
     this.fetchBuyfors() // 获取常用联系人
-    // this.setBuyforsWrapperHeight() // 设置选择联系人弹窗高度为扳平高度
     this.getHalfScreenHeight() // 获取半屏幕高度，用于联系人选择 和 优惠券选择
   },
 
@@ -321,7 +278,7 @@ Page({
   },
 
   submitOrder: function (e) {
-    const { type, id, fromUid, fill_info, fill_form, selectedTickets, selectedSessions, contact, buy_for, submitting, clause_checked, saletype, tuan_id, totalPrice} = this.data
+    const { type, id, fromUid, fill_info, fill_form, selectedTickets, selectedSessions, contact, buy_for, submitting, clause_checked, saletype, tuan_id, totalPrice, shippingInfo: { provinceName, cityName, countyName, detailInfo, telNumber, userName}} = this.data
     const {formId} = e.detail
     console.log('formId', formId)
     const contactEmptyItem = contact.filter(item => !item.value)
@@ -335,6 +292,12 @@ Page({
     } else if (contactEmptyItem && contactEmptyItem.length) { // 需要填写出行人信息 且 没有选中的出行人
       wx.showToast({
         title: contactEmptyItem[0].type == 'gender' ? '请选择性别' : ('请填写' + contactEmptyItem[0].label),
+        icon: 'none'
+      })
+      return false
+    } else if (type == 3 && !(provinceName && cityName && countyName && detailInfo && telNumber && userName)) {
+      wx.showToast({
+        title: '请选择收货地址',
         icon: 'none'
       })
       return false
@@ -364,12 +327,19 @@ Page({
       ticket = selectedTickets.map(item => {
         return {id: item.id, quantity: item.num}
       })
-    } else if (type == 2) { // 非活动
+    } else if (type == 2 || type == 3) { // 非活动
       ticket = {}
       let selected = selectedSessions[0]
       ticket.id = selected.id
       ticket.quantity = selected.num
       ticket.style_id = selected.subId
+    }
+    let contact_info = null
+    if (provinceName && cityName && countyName && detailInfo && telNumber && userName) { // 收货地址信息
+      contact_info = {}
+      contact_info.who = userName
+      contact_info.phone = telNumber
+      contact_info.who = provinceName + cityName + countyName + detailInfo
     }
     let buy_for_ids = buy_for.map(item => item.id)
     const tuanid = saletype == 2 ? (tuan_id || 0) : null
@@ -382,7 +352,8 @@ Page({
       tuan_id: tuanid,
       total_price: totalPrice,
       form_id: formId,
-      form: form
+      form: form,
+      contact: contact_info
     }
     this.setData({
       submitting: true
@@ -540,6 +511,96 @@ Page({
     }
   },
 
+  fetchCoupon: function (totalPriceCal) {
+    setTimeout(() => {
+      const coupons = [
+        {
+          id: '1',
+          price: 50,
+          show_price: 0.50,
+          threshold: 0,
+          threshold_text: '无金额门槛',
+          title: '此处为优惠券名称此处为优 惠券名称',
+          tip: '2019-08-13 至 2019-08-20',
+          selected: true
+        },
+        {
+          id: '2',
+          price: 20,
+          show_price: 0.20,
+          threshold: 0,
+          threshold_text: '无金额门槛',
+          title: '此处为优惠券名称此处',
+          tip: '2019-08-13 至 2019-08-20',
+          selected: false
+        },
+        {
+          id: '3',
+          price: 20000,
+          show_price: 200,
+          threshold: 0,
+          threshold_text: '无金额门槛',
+          title: '此处为优惠券名称此处为优 惠券名称',
+          tip: '自领取之日起X天内有效',
+          selected: false
+        },
+        {
+          id: '4',
+          price: 2000,
+          show_price: 20,
+          threshold: 10000,
+          threshold_text: '满100可用',
+          title: '此处为优惠券名称此处为优 惠券名称',
+          tip: '在2019-08-20前可用',
+          selected: false
+        },
+        {
+          id: '5',
+          price: 200,
+          show_price: 2,
+          threshold: 0,
+          threshold_text: '无金额门槛',
+          title: '此处为优惠券名称此处为优 惠券名称',
+          tip: '2019-08-13 至 2019-08-20',
+          selected: false
+        }
+      ]
+      this.initCoupon(coupons, totalPriceCal)
+    }, 1000)
+  },
+
+  initCoupon: function (coupons, totalPriceCal) {
+    if (!coupons || !coupons.length || !totalPriceCal) { // 没有优惠券
+      return false
+    }
+    let _coupons = []
+    let _couponSelected = []
+    let _couponPrice = 0
+    let _couponShowPrice = 0
+    let _recommendCoupon = 0
+    coupons = coupons.forEach(item => {
+      item.disabled = (item.threshold > totalPriceCal) || (totalPriceCal < item.price)
+      if (!item.disabled) {
+        _coupons.push(item)
+        if (item.price > _couponPrice) {
+          _couponSelected = [_coupons.length - 1]
+          _couponPrice = util.formatMoney(item.price).money
+          _couponShowPrice = util.formatMoney(item.price).showMoney
+          _recommendCoupon = _coupons.length - 1
+        }
+      }
+    })
+    let _totalPrice = util.formatMoney(totalPriceCal - _couponPrice).showMoney
+    this.setData({
+      coupons: _coupons,
+      couponSelected: _couponSelected,
+      couponPrice: _couponPrice,
+      couponShowPrice: _couponShowPrice,
+      totalPrice: _totalPrice,
+      recommendCoupon: _recommendCoupon
+    })
+  },
+
   toggleCoupon: function (e) {
     if (e && e.currentTarget.dataset.compute) {
       const { coupons, couponSelected } = this.data
@@ -558,7 +619,7 @@ Page({
   },
 
   confirmCoupon: function () {
-    const {coupons} = this.data
+    const {coupons, totalPriceCal} = this.data
     let _obj = {}
     let selectedArr = []
     let price = 0
@@ -571,6 +632,7 @@ Page({
     _obj.couponSelected = selectedArr
     _obj.couponPrice = util.formatMoney(price).money
     _obj.couponShowPrice = util.formatMoney(price).showMoney
+    _obj.totalPrice = util.formatMoney(totalPriceCal - price).showMoney
     this.setData(_obj, () => {
       this.toggleCoupon()
     })
@@ -584,5 +646,68 @@ Page({
       item.selected = cidx === idx ? (!isSelected) : false
     })
     this.setData({coupons})
+  },
+
+  initShippingInfo: function (e) {
+    const shippingInfoJson = storageHelper.getStorage('shippingInfoJson')
+    if (shippingInfoJson) {
+      const shippingInfo = JSON.parse(shippingInfoJson)
+      this.setData({
+        shippingInfo
+      })
+    }
+  },
+
+  getShippingInfo: function (e) {
+    const authSuccess = () => {
+      wx.chooseAddress({
+        success: res => {
+          const {cityName, countyName, detailInfo, nationalCode, postalCode, provinceName, telNumber, userName} = res
+          if (provinceName && cityName && countyName && detailInfo && telNumber && userName) {
+            const shippingInfoJson = JSON.stringify(res)
+            storageHelper.setStorage('shippingInfoJson', shippingInfoJson)
+            this.setData({
+              shippingInfo: res
+            })
+          }
+        }
+      })
+    }
+    const app = getApp()
+    const confirmColor = app.globalData.themeModalConfirmColor || '#576B95' // #576B95是官方颜色
+    wx.getSetting({
+      success: res => {
+        // 如果没有则获取授权
+        if (!res.authSetting['scope.address'] && res.authSetting['scope.address'] !== false) { // 未授权 且 未拒绝过
+          wx.authorize({
+            scope: 'scope.address',
+            success: () => {
+              authSuccess()
+            }
+          })
+        } else if (!res.authSetting['scope.address'] && res.authSetting['scope.address'] === false) { // 未授权且拒绝过
+          wx.showModal({
+            content: '获取收货地址需要你授权，请授权收货地址', //提示的内容
+            showCancel: true,
+            confirmText: '去授权',
+            confirmColor,
+            success: res => {
+              if (res.confirm) {
+                wx.openSetting({
+                  success: res => {
+                    const authSetting = res.authSetting
+                    if (authSetting['scope.address']) {
+                      authSuccess()
+                    }
+                  }
+                })
+              }
+            }
+          })
+        } else if (res.authSetting['scope.address']) { // 有则直接保存
+          authSuccess()
+        }
+      }
+    })
   }
 })

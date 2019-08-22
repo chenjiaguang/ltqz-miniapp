@@ -12,6 +12,7 @@ module.exports = {
     'authSetting', // 记录用户已授权信息，避免每次获取已授权信息都要调取微信接口（微信的接口是异步的）
     'orderContact',
     'orderSubmitJson', // 提交订单页面，所需要的数据json串
+    'shippingInfoJson', // 用户上次填写的收货地址信息
     'orderListRefresh',
     'goodsCollected', // 是否收藏过活动，未收藏过，则在第一次收藏成功时提示其他操作
     'fenxiaoid_unbind', // 待绑定待分销员id

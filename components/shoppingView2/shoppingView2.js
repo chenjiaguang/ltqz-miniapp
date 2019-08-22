@@ -23,6 +23,18 @@ Component({
           item.origin_price =  util.formatMoney(item.origin_price).money
           item.show_qg_price =  util.formatMoney(item.qg_price).showMoney
           item.qg_price =  util.formatMoney(item.qg_price).money
+          if (item.sub && item.sub.legnth) {
+            item.sub.forEach(sitem => {
+              sitem.show_price =  util.formatMoney(sitem.price).showMoney
+              sitem.price =  util.formatMoney(sitem.price).money
+              sitem.show_pt_price =  util.formatMoney(sitem.pt_price).showMoney
+              sitem.pt_price =  util.formatMoney(sitem.pt_price).money
+              sitem.show_origin_price =  util.formatMoney(sitem.origin_price).showMoney
+              sitem.origin_price =  util.formatMoney(sitem.origin_price).money
+              sitem.show_qg_price =  util.formatMoney(sitem.qg_price).showMoney
+              sitem.qg_price =  util.formatMoney(sitem.qg_price).money
+            })
+          }
         })
         this.initSession(session, this.data.saletype)
       }
@@ -43,6 +55,18 @@ Component({
             item.origin_price =  util.formatMoney(item.origin_price).money
             item.show_qg_price =  util.formatMoney(item.qg_price).showMoney
             item.qg_price =  util.formatMoney(item.qg_price).money
+            if (item.sub && item.sub.legnth) {
+              item.sub.forEach(sitem => {
+                sitem.show_price =  util.formatMoney(sitem.price).showMoney
+                sitem.price =  util.formatMoney(sitem.price).money
+                sitem.show_pt_price =  util.formatMoney(sitem.pt_price).showMoney
+                sitem.pt_price =  util.formatMoney(sitem.pt_price).money
+                sitem.show_origin_price =  util.formatMoney(sitem.origin_price).showMoney
+                sitem.origin_price =  util.formatMoney(sitem.origin_price).money
+                sitem.show_qg_price =  util.formatMoney(sitem.qg_price).showMoney
+                sitem.qg_price =  util.formatMoney(sitem.qg_price).money
+              })
+            }
           })
           this.initSession(session, this.data.saletype)
         }
@@ -72,9 +96,11 @@ Component({
     saletype: '1',
     currentSession: { 1: null, 2: null, 3: null },
     currentSubSession: { 1: null, 2: null, 3: null },
+    currentStock: { 1: null, 2: null, 3: null },
     subSessions: { 1: [], 2: [], 3: [] },
     selectedTicketLength: { 1: 0, 2: 0, 3: 0 },
-    totalPrice: { 1: 0, 2: 0, 3: 0 }
+    totalPrice: { 1: 0, 2: 0, 3: 0 },
+    totalPriceCal: { 1: 0, 2: 0, 3: 0 }
   },
 
   /**
@@ -131,14 +157,17 @@ Component({
       let idxObj = this.searchFirstAble(_session, stockObj, saletype)
       let {ableSessionIdx, limit} = idxObj
       let current = (idx == 0) ? idx : (idx || ableSessionIdx)
+      let subCurrent = null
       // if (!(idx || idx === 0) && _session.length > 1) { // 如果idx不存在，则说明不是主动点击，该情况如果场次不止一个，则重置current为null
       //   current = null
       // }
 
       let selectedTicketLength = { 1: 0, 2: 0, 3: 0 }
+      let totalPriceCal = { 1: 0, 2: 0, 3: 0 }
       let totalPrice = { 1: 0, 2: 0, 3: 0 }
       let currentSession = { 1: null, 2: null, 3: null }
       let currentSubSession = { 1: null, 2: null, 3: null }
+      let currentStock = { 1: null, 2: null, 3: null }
       let subSessions = { 1: [], 2: [], 3: [] }
 
       if (current !== null) {
@@ -146,24 +175,48 @@ Component({
       }
 
       if (current !== null && !limit) { // 已有选择款式 且 未限制购买，则可以初始化选择一个
-        let singlePrice = _session[current][singlePriceObj[saletype]]
-        let subIndex = (subIdx === 0) ? subIdx : (subIdx || ((_subSessions && _subSessions.length) ? 0 : null))
+        let singlePrice = 0
+        console.log('singlePrice1', singlePrice)
+        // let subIndex = (subIdx === 0) ? subIdx : (subIdx || ((_subSessions && _subSessions.length) ? 0 : null))
+        let subIndex = null
+        if (subIdx === 0 || subIdx) {
+          subIndex = subIdx
+          singlePrice = _subSessions[subIndex][singlePriceObj[saletype]]
+        } else {
+          if (_subSessions && _subSessions.length) {
+            let subIdxObj = this.searchFirstAble(_subSessions, stockObj, saletype)
+            let {ableSessionIdx: subAbleSessionIdx} = subIdxObj
+            subIndex = subAbleSessionIdx
+            singlePrice = _subSessions[subIndex][singlePriceObj[saletype]]
+            console.log('singlePrice2', singlePrice)
+          } else {
+            singlePrice = _session[current][singlePriceObj[saletype]]
+            console.log('singlePrice3', singlePrice)
+          }
+        }
         // 如果已选择的款式不止一个二级款式 且 不是手动选择的，则重置subIndex为null
         if (_subSessions.length > 1 && !(subIdx || subIdx === 0)) {
           subIndex = null
+          singlePrice = 0
+          console.log('singlePrice4', singlePrice)
         }
         // 初始选择个数initNum
         const initNum = _subSessions.length == 0 ? 1 : (subIndex === null ? 0 : 1)
         if (initNum !== 0) {
+          totalPriceCal[saletype] = parseInt(initNum * singlePrice)
           totalPrice[saletype] = parseFloat((initNum * singlePrice / 100).toFixed(2))
         }
+        currentStock[saletype] = _session[current][stockObj[saletype]]
         if (subIndex !== null) {
           _subSessions[subIndex].num = initNum
+          currentStock[saletype] = _subSessions[subIndex][stockObj[saletype]]
         }
 
         selectedTicketLength[saletype] = initNum
         currentSubSession[saletype] = subIndex
+        console.log('current, subIndex', current, subIndex)
       }
+      
       
       currentSession[saletype] = current
       subSessions[saletype] = _subSessions
@@ -171,6 +224,7 @@ Component({
         saletype: saletype,
         showSession: _session,
         selectedTicketLength,
+        totalPriceCal,
         totalPrice,
         currentSession,
         currentSubSession,
@@ -197,13 +251,14 @@ Component({
       }
       let total = 0
       const { type, idx } = e.currentTarget.dataset
-      if (session[stockObj[saletype]] === 0) { // 没有库存
+      let stock = (subSessions && subSessions.length > 0 && currentSubSession[saletype]) ? subSessions[currentSubSession[saletype]][stockObj[saletype]] : session[stockObj[saletype]]
+      if (stock === 0) { // 没有库存
         return false
       }
       if (selectedTicketLength[saletype] <= 0 && type === 'minus') { // 点击的是减号，且当前小于或等于0
         return false
       }
-      if (session[stockObj[saletype]] && selectedTicketLength[saletype] >= session[stockObj[saletype]] && type === 'add') { // 有库存限制 且 点击的是加号 且 当前大于或等于库存
+      if (stock && selectedTicketLength[saletype] >= session[stockObj[saletype]] && type === 'add') { // 有库存限制 且 点击的是加号 且 当前大于或等于库存
         return false
       }
       if (saletype == 3 && (this.data.remainCount == 0 || this.data.remainCount && selectedTicketLength[saletype] >= this.data.remainCount && type === 'add')) { // 抢购模式 且 （抢购剩余为0 或 当前大于等于抢购限制）
@@ -220,11 +275,12 @@ Component({
       // })
 
       let num = selectedTicketLength[saletype] + (type === 'minus' ? -1 : 1)
-      const singlePrice = session[singlePriceObj[saletype]]
+      const singlePrice = (subSessions && subSessions.length > 0 && currentSubSession[saletype]) ? subSessions[currentSubSession[saletype]][singlePriceObj[saletype]] : session[singlePriceObj[saletype]]
       total = num * singlePrice
 
       let _obj = {}
       _obj['selectedTicketLength.' + saletype] = num
+      _obj['totalPriceCal.' + saletype] = parseInt(total)
       _obj['totalPrice.' + saletype] = parseFloat((total / 100).toFixed(2))
       if (idx) {
         _obj['subSessions.' + saletype + '[' + idx + '].num'] = num
@@ -247,8 +303,8 @@ Component({
 
     order: function () {
       this.toggleSession()
-      const { saletype, currentSession, currentSubSession, subSessions, selectedTicketLength, totalPrice} = this.data
-      this.triggerEvent('nextstep', { saletype, currentSession, currentSubSession, subSessions, selectedTicketLength, totalPrice})
+      const { saletype, currentSession, currentSubSession, subSessions, selectedTicketLength, totalPrice, totalPriceCal} = this.data
+      this.triggerEvent('nextstep', { saletype, currentSession, currentSubSession, subSessions, selectedTicketLength, totalPrice, totalPriceCal})
     },
 
     stopPropagation: function () {
