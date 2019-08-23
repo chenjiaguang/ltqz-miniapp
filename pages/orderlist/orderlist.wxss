@@ -65,9 +65,13 @@ page {
   background-color: #fff;
 }
 
+.tab-scroller{
+  font-size: 0;
+}
+
 .title-box {
   height: 100%;
-  padding: 0 20rpx;
+  padding: 0 27rpx;
   display: inline-block;
   flex-shrink: 0;
   flex-grow: 0;
@@ -79,10 +83,10 @@ page {
   justify-content: center;
 }
 
-.title-box2 {
+/* .title-box2 {
   display: block;
   flex: 1;
-}
+} */
 
 .title {
   height: 100%;
@@ -112,10 +116,7 @@ page {
 
 .slide-block {
   display: block;
-  width: 44rpx;
-  height: 4rpx;
-  margin-left: -22rpx;
-  transition: transform 0.3s;
+  transition: transform 0.3s, opacity 0.3s;
 }
 
 .tap-body{

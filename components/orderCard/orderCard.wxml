@@ -9,11 +9,15 @@
   <view class="content-wrapper">
     <activity-content data="{{item}}" />
   </view>
-  <view wx:if="{{item.status == 0 || item.status == 1 || item.status == 2 || item.status == 4 || item.can_refund}}">
+  <view wx:if="{{item.status == 0 || item.status == 1 || item.status == 2 || item.status == 4 || item.can_refund || (item.status == 6 && item.refund_status == 1) || item.status == 7}}">
     <view class='line-separator-h'></view>
     <view class='foot row jc-end ai-center'>
       <view class='btn btn-cancel' wx:if="{{item.status == 0}}" catchtap='goCancel' hover-stop-propagation><text>取消订单</text></view>
-      <view class='btn btn-refund' wx:if="{{item.can_refund}}" catchtap='goRefund' hover-stop-propagation><text>退款</text></view>
+      <form wx:if="{{item.can_refund}}" report-submit catchsubmit="goRefund">
+        <button class='btn btn-refund' form-type="submit" hover-stop-propagation hover-class="none" catchtap><text>{{item.type == 3 ? '申请退款' : '退款'}}</text></button>
+      </form>
+      <view class='btn btn-apply-refund' wx:if="{{item.status == 6 && item.refund_status == 1}}" hover-stop-propagation catchtap><text>退款中</text></view>
+      <view class='btn btn-confirm theme-color theme-border-color' wx:if="{{item.status == 7}}" catchtap='goConfirm' hover-stop-propagation><text>确认收货</text></view>
       <view class='btn btn-pay theme-color theme-border-color' wx:if="{{item.status==0}}" catchtap='goPay' hover-stop-propagation>立即支付</view>
       <view class='btn btn-online theme-color theme-border-color' wx:if="{{item.status == 1}}" catchtap='goTicket' hover-stop-propagation><text>电子票</text></view>
       <view class='btn btn-comment theme-color theme-border-color' wx:if="{{item.status==2}}" catchtap='goComment' hover-stop-propagation><text>去评价</text></view>

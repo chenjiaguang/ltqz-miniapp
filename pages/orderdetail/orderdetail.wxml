@@ -8,7 +8,11 @@
     <view class='goods-content flex1 column'>
       <text class='goods-title bold'>{{product.title}}</text>
       <text wx:if="{{product.valid_btime && product.valid_etime}}" class='goods-time'>{{product.valid_btime}} 至 {{product.valid_etime}}</text>
-      <text class='goods-location'>{{product.address}}</text>
+      <text wx:if="{{product.address}}" class='goods-location'>{{product.address}}</text>
+      <view wx:if="{{product.type == 3}}" class='tags-box'>
+        <view class='tag-item theme-color theme-border-color'><text>{{product.can_refund ? '发货前可申请退款' : '本商品不支持退款'}}</text></view>
+        <view class='tag-item theme-color theme-border-color'><text>{{product.has_postage ? '包邮' : '邮费到付'}}</text></view>
+      </view>
     </view>
     <text class='lutufont lutu-next2'></text>
   </view>
@@ -18,15 +22,63 @@
     <group-overview group="{{order.tuan}}" catchshare="shareTap" />
   </view>
 
+  <!-- 收货信息 -->
+  <view wx:if="{{order.type == 3}}" class='shipping-info'>
+    <view class='block-separator'></view>
+    <view class='shipping-header'>收货地址</view>
+    <view class="line-separator-h" style="width:718rpx;margin-left:32rpx"></view>
+    <view class="shipping-box-wrapper">
+      <image class="address-icon" src="/assets/images/icon_location.png" mode="aspectFit" />
+      <view class="shipping-box">
+        <view wx:if="{{order.contact_who || order.contact_phone}}" class="shipping-name-and-phone"><text class="shipping-name">{{order.contact_who}}</text><text class="shipping-phone">{{order.contact_phone}}</text></view>
+        <view wx:if="{{order.contact_address}}" class="shipping-address">{{order.contact_address}}</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 物流信息 -->
+  <view wx:if="{{order.type == 3}}" class='logistics-info'>
+    <view class='block-separator'></view>
+    <view class='logistics-header'>物流信息</view>
+    <block wx:if="{{!(order.express_status_text || order.express_company || order.express_number)}}">
+      <view class="line-separator-h" style="width:718rpx;margin-left:32rpx"></view>
+      <view class="logistics-content">
+        <view class="logistics-content-tip">暂无物流信息</view>
+      </view>
+    </block>
+    <block wx:if="{{order.express_status_text}}">
+      <view class="line-separator-h" style="width:718rpx;margin-left:32rpx"></view>
+      <view class="logistics-content">
+        <view class="logistics-content-title">快递状态</view>
+        <view class="logistics-content-text">{{order.express_status_text}}</view>
+      </view>
+    </block>
+    <block wx:if="{{order.express_company}}">
+      <view class="line-separator-h" style="width:718rpx;margin-left:32rpx"></view>
+      <view class="logistics-content">
+        <view class="logistics-content-title">快递公司</view>
+        <view class="logistics-content-text">{{order.express_company}}</view>
+      </view>
+    </block>
+    <block wx:if="{{order.express_number}}">
+      <view class="line-separator-h" style="width:718rpx;margin-left:32rpx"></view>
+      <view class="logistics-content">
+        <view class="logistics-content-title">快递单号</view>
+        <view class="logistics-content-text">{{order.express_number}}</view>
+        <view class="copy-logistics-number theme-color theme-border-color" catchtap="copyText" data-text="{{order.express_number}}">复制</view>
+      </view>
+    </block>
+  </view>
+
   <view class='list'>
     <view class='title'>订单信息</view>
     <view class='line-separator-h'></view>
     <view class='item row'>
-      <text class='key'>{{order.type == 1 ? '活动名称' : '商品名称'}}</text>
+      <text class='key'>商品名称</text>
       <text class='value'>{{product.title}}</text>
     </view>
-    <view class='line-separator-h'></view>
-    <view class='item row'>
+    <view wx:if="{{product.address}}" class='line-separator-h'></view>
+    <view wx:if="{{product.address}}" class='item row'>
       <text class='key'>{{order.type == 1 ? '活动地点' : '地点'}}</text>
       <text class='value'>{{product.address || '--'}}</text>
     </view>
@@ -47,6 +99,20 @@
       <text class='key'>购买数量</text>
       <text class='value'>{{order.ticket_text}}</text>
     </view>
+    <block wx:if="{{order.show_all_price}}">
+      <view class='line-separator-h'></view>
+      <view class='item row'>
+        <text class='key'>订单金额</text>
+        <text class='value'>¥{{order.show_all_price}}</text>
+      </view>
+    </block>
+    <block wx:if="{{order.show_yh_price}}">
+      <view class='line-separator-h'></view>
+      <view class='item row'>
+        <text class='key'>优惠金额</text>
+        <text class='value'>¥{{order.show_yh_price}}</text>
+      </view>
+    </block>
     <view class='line-separator-h'></view>
     <view class='item row'>
       <text class='key'>实付金额</text>
@@ -93,16 +159,18 @@
       </view>
     </view>
   </view>
-  <ft-bottom-box wx:if="{{order.status === 0 || order.status === '0' || order.can_refund || order.status == 1 || order.status == 2 || order.status == 3 || order.status == 5}}" box-height="{{114}}" bg="#FFFFFF">
+  <ft-bottom-box wx:if="{{order.status === 0 || order.status === '0' || order.can_refund || order.status == 1 || order.status == 2 || order.status == 3 || order.status == 5 || (order.status == 6 && order.refund_status == 1) || order.status == 7}}" box-height="{{114}}" bg="#FFFFFF">
     <view class="bottom-button-wrapper">
       <view class='line-separator-h' style="width:100%;margin:0;transform-origin:50% 0"></view>
       <view class='bottom-button'>
         <view wx:if="{{order.status === 0 || order.status === '0'}}" class="bottom-inner-button cancel" catchtap="goCancel">
           <text>取消订单</text>
         </view>
-        <view wx:if="{{order.can_refund}}" class='bottom-inner-button refund' bindtap='goRefund'>
-          <text>退款</text>
-        </view>
+        <form wx:if="{{order.can_refund}}" report-submit catchsubmit="goRefund">
+          <button class='bottom-inner-button refund' form-type="submit" hover-stop-propagation hover-class="none" catchtap><text>{{order.type == 3 ? '申请退款' : '退款'}}</text></button>
+        </form>
+        <view class='bottom-inner-button apply-refund' wx:if="{{order.status == 6 && order.refund_status == 1}}" hover-stop-propagation catchtap><text>退款中</text></view>
+        <view class='bottom-inner-button confirm theme-color theme-border-color' wx:if="{{order.status == 7}}" catchtap='goConfirm' hover-stop-propagation><text>确认收货</text></view>
         <view wx:if="{{order.status === 0 || order.status === '0'}}" class="bottom-inner-button pay theme-color theme-border-color" catchtap="repay">
           <text>立即支付</text>
         </view>

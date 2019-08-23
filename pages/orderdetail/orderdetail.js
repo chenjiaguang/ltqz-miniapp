@@ -17,7 +17,8 @@ Page({
     countdown_text: '',
     repaying: false,
     canceling: false,
-    refunding: false
+    refunding: false,
+    confirming: false
   },
 
   /**
@@ -90,19 +91,22 @@ Page({
   },
 
   fetchOrder: function (id) {
+    console.log('fetchOrder')
     util.request('/order/detail', {id}).then(res => {
       if (res.error == 0 && res.data) {
         let navWrapperHeight = this.data.navWrapperHeight || 0
         res.data.ticket_text = res.data.ticket.map((item) => {
           return item.name + '×' + item.quantity
         }).join(',')
-        let product = res.data.huodong || res.data.vgoods
+        let product = res.data.product || res.data.huodong || res.data.vgoods || res.data.goods
         // 处理时间格式
         product.valid_btime = product.valid_btime ? util.formatDateTimeDefault('d', product.valid_btime) : ''
         product.valid_etime = product.valid_etime ? util.formatDateTimeDefault('d', product.valid_etime) : ''
         res.data.created_at = util.formatDateTimeDefault('m', res.data.created_at)
         // 处理价格
         res.data.show_price = util.formatMoney(res.data.price).showMoney
+        res.data.show_all_price = util.formatMoney(res.data.all_price).showMoney
+        res.data.show_yh_price = util.formatMoney(res.data.yh_price).showMoney
         res.data.refund_amount = util.formatMoney(res.data.refund_amount).showMoney
         res.data.status = res.data.status.toString()
         let countdown = 0
@@ -185,8 +189,9 @@ Page({
     })
   },
 
-  goRefund() {
+  goRefund(e) {
     console.log('goRefund')
+    const {formId} = e.detail
     const {order: {can_refund, refund_all, refund_amount}, refunding} = this.data
     if (refunding || !can_refund) {
       return false
@@ -202,7 +207,7 @@ Page({
         confirmColor,
         success: res => {
           if (res.confirm) {
-            this.refund()
+            this.refund(formId)
           }
         }
       })
@@ -215,13 +220,13 @@ Page({
         confirmColor,
         success: res => {
           if (res.confirm) {
-            this.refund()
+            this.refund(formId)
           }
         }
       })
     }
   },
-  refund() {
+  refund(form_id) {
     console.log('refund')
     const {order: {can_refund, order_id }, refunding} = this.data
     if (refunding || !can_refund) {
@@ -229,6 +234,7 @@ Page({
     }
     this.setData({refunding: true})
     util.request('/order/refund', {
+      form_id: form_id,
       id: order_id
     }).then(res => {
       if (res.error == 0) { // 退款成功
@@ -260,6 +266,62 @@ Page({
       console.log('err', err)
     }).finally(res => {
       this.setData({refunding: false})
+    })
+  },
+
+  goConfirm: function () {
+    console.log('goConfirm')
+    const {order: {status}, confirming} = this.data
+    if (confirming || status != 7) {
+      return false
+    }
+    const app = getApp()
+    const confirmColor = app.globalData.themeModalConfirmColor || '#576B95' // #576B95是官方颜色
+    
+    wx.showModal({
+      title: '确定收货',
+      content: '确定已经收到宝贝了吗？',
+      showCancel: true,
+      confirmText: '确定',
+      confirmColor,
+      success: res => {
+        if (res.confirm) {
+          this.confirm()
+        }
+      }
+    })
+  },
+
+  confirm: function () {
+    console.log('confirm')
+    const {order: {status, order_id }, confirming} = this.data
+    if (confirming || status != 7) {
+      return false
+    }
+    this.setData({confirming: true})
+    util.request('/order/confirm', {
+      id: order_id
+    }).then(res => {
+      if (res.error == 0) { // 收货成功
+        wx.showToast({
+          title: res.msg || '交易成功啦！快去评价一下宝贝吧~',
+          icon: 'none',
+          duration: 3000
+        })
+        this.triggerEvent('orderListRefresh')
+      } else {
+        if (res.msg) {
+          wx.showToast({
+            title: res.msg,
+            icon: 'none',
+            duration: 3000
+          })
+        }
+      }
+    }).catch(err => {
+      console.log('err', err)
+    }).finally(res => {
+      this.setData({confirming: false})
     })
   },
 
@@ -401,5 +463,12 @@ Page({
         poster.startDraw(product_id, pt_id)
       }
     }
+  },
+
+  copyText: function (e) {
+    const {text} = e.currentTarget.dataset
+    wx.setClipboardData({
+      data: text
+    })
   }
 })

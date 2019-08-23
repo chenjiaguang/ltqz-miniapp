@@ -106,6 +106,7 @@
   box-sizing: border-box;
 }
 .ticket-name{
+  flex: 1;
   width: 260rpx;
   padding-right: 12rpx;
   flex-shrink: 0;

@@ -290,7 +290,7 @@ Page({
   },
 
   getSubOverview: function (data) {
-    let {type, valid_btime, valid_etime, hx_rule, dead_line, refund_deadline, address, address_position, jh_address, jh_address_position, min_age, max_age, limit_num, note, include_bx, can_refund} = data
+    let {type, valid_btime, valid_etime, hx_rule, dead_line, refund_deadline, address, address_position, jh_address, jh_address_position, min_age, max_age, limit_num, note, include_bx, can_refund, has_postage} = data
     let arr = []
     if (type && type == 1 && valid_btime && valid_etime) {
       arr.push({img: '/assets/images/time_jointime.png', text: `活动日期：${valid_btime} 至 ${valid_etime}`})
@@ -326,16 +326,23 @@ Page({
       })
     }
     if (include_bx) {
-      arr.push({img: '/assets/images/baoxian.png', text: `${type == 1 ? '本次活动' : '本商品'}费用包含保险`})
+      arr.push({img: '/assets/images/baoxian.png', text: `本商品费用包含保险`})
     }
-    if (can_refund) {
-      if (refund_deadline) {
-        arr.push({img: '/assets/images/tuikuan.png', text: `${type == 1 ? '本次活动' : '本商品'}未消费在${refund_deadline}前可退款`})
-      } else {
-        arr.push({img: '/assets/images/tuikuan.png', text: `${type == 1 ? '本次活动' : '本商品'}未消费可随时退款，逾期未消费自动退款`})
-      }
+    if (type == 3) {
+      arr.push({img: '/assets/images/shipping.png', text: `配送方式：${has_postage ? '包邮' : '邮费到付'}`})
+    }
+    if (type == 3) {
+      arr.push({img: '/assets/images/tuikuan.png', text: `本商品${can_refund ? '发货前可申请' : '不支持'}退款`})
     } else {
-      arr.push({img: '/assets/images/tuikuan.png', text: `${type == 1 ? '本次活动' : '本商品'}不支持退款`})
+      if (can_refund) {
+        if (refund_deadline) {
+          arr.push({img: '/assets/images/tuikuan.png', text: `本商品未消费在${refund_deadline}前可退款`})
+        } else {
+          arr.push({img: '/assets/images/tuikuan.png', text: `本商品未消费可随时退款，逾期未消费自动退款`})
+        }
+      } else {
+        arr.push({img: '/assets/images/tuikuan.png', text: `本商品不支持退款`})
+      }
     }
     return arr
   },

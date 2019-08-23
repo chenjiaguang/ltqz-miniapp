@@ -96,7 +96,7 @@ Component({
     saletype: '1',
     currentSession: { 1: null, 2: null, 3: null },
     currentSubSession: { 1: null, 2: null, 3: null },
-    currentStock: { 1: null, 2: null, 3: null },
+    currentStock: { 1: '', 2: '', 3: '' },
     subSessions: { 1: [], 2: [], 3: [] },
     selectedTicketLength: { 1: 0, 2: 0, 3: 0 },
     totalPrice: { 1: 0, 2: 0, 3: 0 },
@@ -137,8 +137,8 @@ Component({
     },
     subSessionTap: function (e) {
       const { idx } = e.currentTarget.dataset
-      const { showSession, currentSession, currentSubSession, saletype, remainCount } = this.data
-      if (currentSubSession[saletype] === idx) { // 点击的是当前的规格
+      const { showSession, subSessions, currentSession, currentSubSession, saletype, remainCount, stockObj } = this.data
+      if (subSessions[saletype][idx][stockObj[saletype]] == 0 || currentSubSession[saletype] === idx) { // 没有库存 或 点击的是当前的规格
         return false
       }
       if (saletype == 3 && remainCount == 0) { // 抢购模式 且 抢购剩余为0
@@ -157,7 +157,6 @@ Component({
       let idxObj = this.searchFirstAble(_session, stockObj, saletype)
       let {ableSessionIdx, limit} = idxObj
       let current = (idx == 0) ? idx : (idx || ableSessionIdx)
-      let subCurrent = null
       // if (!(idx || idx === 0) && _session.length > 1) { // 如果idx不存在，则说明不是主动点击，该情况如果场次不止一个，则重置current为null
       //   current = null
       // }
@@ -167,7 +166,7 @@ Component({
       let totalPrice = { 1: 0, 2: 0, 3: 0 }
       let currentSession = { 1: null, 2: null, 3: null }
       let currentSubSession = { 1: null, 2: null, 3: null }
-      let currentStock = { 1: null, 2: null, 3: null }
+      let currentStock = { 1: '', 2: '', 3: '' }
       let subSessions = { 1: [], 2: [], 3: [] }
 
       if (current !== null) {
@@ -176,29 +175,27 @@ Component({
 
       if (current !== null && !limit) { // 已有选择款式 且 未限制购买，则可以初始化选择一个
         let singlePrice = 0
-        console.log('singlePrice1', singlePrice)
         // let subIndex = (subIdx === 0) ? subIdx : (subIdx || ((_subSessions && _subSessions.length) ? 0 : null))
         let subIndex = null
-        if (subIdx === 0 || subIdx) {
-          subIndex = subIdx
-          singlePrice = _subSessions[subIndex][singlePriceObj[saletype]]
+        if ((subIdx === 0 || subIdx)) {
+          if (_subSessions && _subSessions.length && _subSessions[subIdx][stockObj[saletype]] !== 0) {
+            subIndex = subIdx
+            singlePrice = _subSessions[subIndex][singlePriceObj[saletype]]
+          }
         } else {
           if (_subSessions && _subSessions.length) {
             let subIdxObj = this.searchFirstAble(_subSessions, stockObj, saletype)
             let {ableSessionIdx: subAbleSessionIdx} = subIdxObj
             subIndex = subAbleSessionIdx
             singlePrice = _subSessions[subIndex][singlePriceObj[saletype]]
-            console.log('singlePrice2', singlePrice)
           } else {
             singlePrice = _session[current][singlePriceObj[saletype]]
-            console.log('singlePrice3', singlePrice)
           }
         }
         // 如果已选择的款式不止一个二级款式 且 不是手动选择的，则重置subIndex为null
         if (_subSessions.length > 1 && !(subIdx || subIdx === 0)) {
           subIndex = null
           singlePrice = 0
-          console.log('singlePrice4', singlePrice)
         }
         // 初始选择个数initNum
         const initNum = _subSessions.length == 0 ? 1 : (subIndex === null ? 0 : 1)
@@ -206,7 +203,9 @@ Component({
           totalPriceCal[saletype] = parseInt(initNum * singlePrice)
           totalPrice[saletype] = parseFloat((initNum * singlePrice / 100).toFixed(2))
         }
-        currentStock[saletype] = _session[current][stockObj[saletype]]
+        if (current && !_subSessions || _subSessions.length === 0) {
+          currentStock[saletype] = _session[current][stockObj[saletype]]
+        }
         if (subIndex !== null) {
           _subSessions[subIndex].num = initNum
           currentStock[saletype] = _subSessions[subIndex][stockObj[saletype]]
@@ -214,7 +213,6 @@ Component({
 
         selectedTicketLength[saletype] = initNum
         currentSubSession[saletype] = subIndex
-        console.log('current, subIndex', current, subIndex)
       }
       
       
@@ -228,11 +226,12 @@ Component({
         totalPrice,
         currentSession,
         currentSubSession,
+        currentStock,
         subSessions
       })
     },
     countTicket: function (e) {
-      const { stockObj, singlePriceObj, saletype, currentSession, currentSubSession, selectedTicketLength } = this.data
+      const { stockObj, singlePriceObj, saletype, currentSession, currentSubSession, currentStock, selectedTicketLength } = this.data
       if (currentSession[saletype] === null) { // 未选中一级规格
         wx.showToast({
           title: '请选择商品',
@@ -251,14 +250,14 @@ Component({
       }
       let total = 0
       const { type, idx } = e.currentTarget.dataset
-      let stock = (subSessions && subSessions.length > 0 && currentSubSession[saletype]) ? subSessions[currentSubSession[saletype]][stockObj[saletype]] : session[stockObj[saletype]]
+      let stock = currentStock[saletype]
       if (stock === 0) { // 没有库存
         return false
       }
       if (selectedTicketLength[saletype] <= 0 && type === 'minus') { // 点击的是减号，且当前小于或等于0
         return false
       }
-      if (stock && selectedTicketLength[saletype] >= session[stockObj[saletype]] && type === 'add') { // 有库存限制 且 点击的是加号 且 当前大于或等于库存
+      if (stock && selectedTicketLength[saletype] >= stock && type === 'add') { // 有库存限制 且 点击的是加号 且 当前大于或等于库存
         return false
       }
       if (saletype == 3 && (this.data.remainCount == 0 || this.data.remainCount && selectedTicketLength[saletype] >= this.data.remainCount && type === 'add')) { // 抢购模式 且 （抢购剩余为0 或 当前大于等于抢购限制）

@@ -37,6 +37,7 @@
 }
 
 .foot {
+  display: flex;
   padding: 0 32rpx;
   height: 95rpx;
 }
@@ -73,11 +74,19 @@
   border-color: #999999;
 }
 
+.btn-apply-refund{
+  color: #999999;
+  border-color: #999999;
+}
+
 .btn-cancel{
   color: #999999;
   border-color: #999999;
 }
 
+.btn-confirm{
+  color: #fff;
+}
 .btn-pay {
   color: #fff;
 }

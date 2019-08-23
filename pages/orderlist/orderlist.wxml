@@ -3,14 +3,23 @@
 <view slot="header" class="top-header">
   <ft-custom-nav title="{{navTitle}}" />
   <view class="header header2">
-    <view class="title-box title-box2" id="tab{{idx}}" wx:for="{{tabs}}" wx:for-item="tab" wx:for-index="idx" wx:key="title" catchtap="tabTap" data-idx="{{idx}}">
+    <scroll-view class="tab-scroller" scroll-x enable-back-to-top="{{false}}" scroll-left="{{scrollLeft}}" scroll-with-animation>
+      <view style="display:inline-block;width:17rpx"></view>
+      <view class="title-box" id="tab{{idx}}" wx:for="{{tabs}}" wx:for-item="tab" wx:for-index="idx" wx:key="title" catchtap="tabTap" data-idx="{{idx}}">
+        <view class='title' style="color:{{index === idx ? tabCurrentColor : color}}">
+          <text>{{tab.title}}</text>
+        </view>
+      </view>
+      <view style="display:inline-block;width:17rpx"></view>
+    </scroll-view>
+    <!-- <view class="title-box title-box2" id="tab{{idx}}" wx:for="{{tabs}}" wx:for-item="tab" wx:for-index="idx" wx:key="title" catchtap="tabTap" data-idx="{{idx}}">
       <view class='title' style="color:{{index === idx ? tabCurrentColor : color}}">
         <text>{{tab.title}}</text>
       </view>
-    </view>
-    <view class='slide-box'>
-      <view class='slide-block' style="background:{{tabCurrentColor}};transform:translateX({{(0.5 + index) * (750/tabs.length)}}rpx);width:68rpx;height:6rpx;border-radius:4rpx;margin-left:-34rpx"></view>
-    </view>
+    </view> -->
+    <!-- <view class='slide-box'>
+      <view class='slide-block' style="background:{{tabCurrentColor}};transform:translateX({{indicatorPos || -14}}px);width:26px;height:3px;border-radius:2px;margin-left:-13px;opacity:{{indicatorPos ? 1 : 0}}"></view>
+    </view> -->
     <view class='line-separator-h'></view>
   </view>
 </view>

@@ -330,7 +330,7 @@ Page({
     } else if (type == 2 || type == 3) { // 非活动
       ticket = {}
       let selected = selectedSessions[0]
-      ticket.id = selected.id
+      ticket.id = type == 3 ? (selected.subId || selected.id) : selected.id
       ticket.quantity = selected.num
       ticket.style_id = selected.subId
     }
@@ -339,7 +339,7 @@ Page({
       contact_info = {}
       contact_info.who = userName
       contact_info.phone = telNumber
-      contact_info.who = provinceName + cityName + countyName + detailInfo
+      contact_info.address = provinceName + cityName + countyName + detailInfo
     }
     let buy_for_ids = buy_for.map(item => item.id)
     const tuanid = saletype == 2 ? (tuan_id || 0) : null

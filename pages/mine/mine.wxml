@@ -33,13 +33,13 @@
             </view>
             <view class='type-title'>待付款</view>
           </view>
-          <view class='type-item' catchtap="goOrder" data-type='2' hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
+          <!-- <view class='type-item' catchtap="goOrder" data-type='2' hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
             <view class='order-type-icon-box'>
               <image class='order-type-icon' src="/assets/images/order_type4.png"></image>
               <text class='item-num theme-color theme-border-color' wx:if="{{user.order.wait_tuan}}">{{user.order.wait_tuan}}</text>
             </view>
             <view class='type-title'>拼团中</view>
-          </view>
+          </view> -->
           <view class='type-item' catchtap="goOrder" data-type='3' hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
             <view class='order-type-icon-box'>
               <image class='order-type-icon' src="/assets/images/order_type1.png"></image>
@@ -47,12 +47,26 @@
             </view>
             <view class='type-title'>待使用</view>
           </view>
-          <view class='type-item' catchtap="goOrder" data-type='4' hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
+          <view class='type-item' catchtap="goOrder" data-type='5' hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
+            <view class='order-type-icon-box'>
+              <image class='order-type-icon' src="/assets/images/order_type7.png"></image>
+              <text class='item-num theme-color theme-border-color' wx:if="{{user.order.wait_use}}">{{user.order.wait_use}}</text>
+            </view>
+            <view class='type-title'>待收货</view>
+          </view>
+          <view class='type-item' catchtap="goOrder" data-type='6' hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
             <view class='order-type-icon-box'>
               <image class='order-type-icon' src="/assets/images/order_type2.png"></image>
               <text class='item-num theme-color theme-border-color' wx:if="{{user.order.wait_rate}}">{{user.order.wait_rate}}</text>
             </view>
             <view class='type-title'>待评价</view>
+          </view>
+          <view class='type-item' catchtap="goOrder" data-type='7' hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
+            <view class='order-type-icon-box'>
+              <image class='order-type-icon' src="/assets/images/order_type7.png"></image>
+              <text class='item-num theme-color theme-border-color' wx:if="{{user.order.wait_use}}">{{user.order.wait_use}}</text>
+            </view>
+            <view class='type-title'>退款</view>
           </view>
         </view>
       </view>

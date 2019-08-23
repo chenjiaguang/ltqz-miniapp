@@ -105,7 +105,7 @@ Page({
     }
     util.request('/order/tuan_detail', rData).then(res => {
       if (res.data) {
-        let product = res.data.huodong || res.data.vgoods
+        let product = res.data.product || res.data.huodong || res.data.vgoods || res.data.goods
         if (product && product.valid_btime) {
           product.valid_btime = util.formatDateTimeDefault('d', product.valid_btime)
         }

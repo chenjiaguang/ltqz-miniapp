@@ -135,8 +135,7 @@ page{
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-top: 20rpx;
-  padding-bottom: 20rpx;
+  padding: 20rpx 22rpx;
 }
 
 .type-item {
@@ -153,7 +152,7 @@ page{
 }
 .order-type-icon{
   display: block;
-  width: 56rpx;
+  width: 60rpx;
   height: 60rpx;
 }
 

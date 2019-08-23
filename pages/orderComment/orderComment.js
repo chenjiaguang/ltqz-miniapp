@@ -31,7 +31,7 @@ Page({
     util.request('/order/detail', {
       id: this.data.id
     }).then(res => {
-      let product = res.data.huodong || res.data.vgoods
+      let product = res.data.product || res.data.huodong || res.data.vgoods || res.data.goods
       if (product && product.valid_btime) {
         product.valid_btime = util.formatDateTimeDefault('d', product.valid_btime)
       }

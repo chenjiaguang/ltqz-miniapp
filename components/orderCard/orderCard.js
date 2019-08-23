@@ -16,7 +16,7 @@ Component({
    * 组件的初始数据
    */
   data: {
-    statusText: { // -4为已退款|-3为手动下架|-2拼团失败|-1为失效订单|0为待付款|1为待参与|2为待评价|3已评价|4待成团|5已过期
+    statusText: { // -4普通退款|-3为手动下架|-2拼团失败|-1为失效订单|0为待付款|1为待参与|2为待评价|3已评价|4待成团|5已过期|6待发货|7已发货
       '-4': '已退款',
       '-3': '已取消',
       '-2': '已取消',
@@ -26,9 +26,11 @@ Component({
       '2': '待评价',
       '3': '已完成',
       '4': '拼团中',
-      '5': '已完成'
+      '5': '已完成',
+      '6': '待发货',
+      '7': '待收货'
     },
-    statusClass: { // -4为已退款|-3为手动下架|-2拼团失败|-1为失效订单|0为待付款|1为待参与|2为待评价|3已评价|4待成团|5已过期
+    statusClass: { // -4普通退款|-3为手动下架|-2拼团失败|-1为失效订单|0为待付款|1为待参与|2为待评价|3已评价|4待成团|5已过期|6待发货|7已发货
       '-4': 'state-normal',
       '-3': 'state-normal',
       '-2': 'state-normal',
@@ -38,11 +40,14 @@ Component({
       '2': 'state-normal',
       '3': 'state-normal',
       '4': 'theme-color',
-      '5': 'state-normal'
+      '5': 'state-normal',
+      '6': 'theme-color',
+      '7': 'theme-color'
     },
     repaying: false,
     canceling: false,
-    refunding: false
+    refunding: false,
+    confirming: false
   },
 
   /**
@@ -116,9 +121,10 @@ Component({
         })
       })
     },
-    goRefund() {
+    goRefund(e) {
+      const {formId} = e.detail
       console.log('goRefund')
-      const {item: {can_refund, refund_all, refund_amount}, refunding} = this.data
+      const {item: {type, can_refund, refund_all, refund_amount}, refunding} = this.data
       if (refunding || !can_refund) {
         return false
       }
@@ -126,33 +132,33 @@ Component({
       const confirmColor = app.globalData.themeModalConfirmColor || '#576B95' // #576B95是官方颜色
       if (refund_all) {
         wx.showModal({
-          title: '订单退款',
+          title: type == 3 ? '申请退款' : '订单退款',
           content: '退款后您可能会错过此商品哦，确定要退款吗？',
           showCancel: true,
           confirmText: '确定',
           confirmColor,
           success: res => {
             if (res.confirm) {
-              this.refund()
+              this.refund(formId)
             }
           }
         })
       } else {
         wx.showModal({
-          title: '订单退款',
+          title: type == 3 ? '申请退款' : '订单退款',
           content: '本商品属于特价商品，退款需用户承担一定手续费，退款金额为' + refund_amount + '元，您确定要退款吗？',
           showCancel: true,
           confirmText: '确定',
           confirmColor,
           success: res => {
             if (res.confirm) {
-              this.refund()
+              this.refund(formId)
             }
           }
         })
       }
     },
-    refund() {
+    refund(form_id) {
       console.log('refund')
       const {item: {can_refund, order_id }, refunding} = this.data
       if (refunding || !can_refund) {
@@ -160,6 +166,7 @@ Component({
       }
       this.setData({refunding: true})
       util.request('/order/refund', {
+        form_id: form_id,
         id: order_id
       }).then(res => {
         if (res.error == 0) { // 退款成功
@@ -182,6 +189,60 @@ Component({
         console.log('err', err)
       }).finally(res => {
         this.setData({refunding: false})
+      })
+    },
+    goConfirm: function () {
+      console.log('goConfirm')
+      const {item: {status}, confirming} = this.data
+      if (confirming || status != 7) {
+        return false
+      }
+      const app = getApp()
+      const confirmColor = app.globalData.themeModalConfirmColor || '#576B95' // #576B95是官方颜色
+      
+      wx.showModal({
+        title: '确定收货',
+        content: '确定已经收到宝贝了吗？',
+        showCancel: true,
+        confirmText: '确定',
+        confirmColor,
+        success: res => {
+          if (res.confirm) {
+            this.confirm()
+          }
+        }
+      })
+    },
+    confirm: function () {
+      console.log('confirm')
+      const {item: {status, order_id }, confirming} = this.data
+      if (confirming || status != 7) {
+        return false
+      }
+      this.setData({confirming: true})
+      util.request('/order/confirm', {
+        id: order_id
+      }).then(res => {
+        if (res.error == 0) { // 收货成功
+          wx.showToast({
+            title: res.msg || '交易成功啦！快去评价一下宝贝吧~',
+            icon: 'none',
+            duration: 3000
+          })
+          this.triggerEvent('orderListRefresh')
+        } else {
+          if (res.msg) {
+            wx.showToast({
+              title: res.msg,
+              icon: 'none',
+              duration: 3000
+            })
+          }
+        }
+      }).catch(err => {
+        console.log('err', err)
+      }).finally(res => {
+        this.setData({confirming: false})
       })
     },
     goPay() {

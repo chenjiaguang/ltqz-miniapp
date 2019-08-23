@@ -7,12 +7,13 @@ Page({
    * 页面的初始数据
    */
   data: {
+    tabTitleRects: [],
+    scrollLeft: 0,
     navTitle: '全部订单',
     refreshing: false,
     refreshed: true,
     index: 0,
-    // states: ['', '0', '1', '2'],
-    states: ['', '0', '4', '1', '2'],
+    states: ['', '0', '4', '1', '6', '7', '2', '-4'], // -4普通退款|-3为手动下架|-2拼团失败|-1为失效订单|0为待付款|1为待参与|2为待评价|3已评价|4待成团|5已过期|6待发货|7已发货
     tabCurrentColor: '#000000',
     tabs: [{
       title: '全部',
@@ -46,6 +47,22 @@ Page({
       },
       loaded: false,
       loading: false
+    },{
+      title: '待发货',
+      list: [],
+      page: {
+        pn: 1
+      },
+      loaded: false,
+      loading: false
+    },{
+      title: '待收货',
+      list: [],
+      page: {
+        pn: 1
+      },
+      loaded: false,
+      loading: false
     }, {
       title: '待评价',
       list: [],
@@ -54,34 +71,61 @@ Page({
       },
       loaded: false,
       loading: false
-    }]
+    },{
+      title: '已退款',
+      list: [],
+      page: {
+        pn: 1
+      },
+      loaded: false,
+      loading: false
+    },]
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
-    const app = getApp()
-    if (app.globalData && app.globalData.themeColor) { // 设置tab选中项颜色
-      this.setData({
-        tabCurrentColor: app.globalData.themeColor
-      })
-    }
-    let index = parseInt(options ? options.type : 0)
-    index = isNaN(index) ? 0 : index
-    storageHelper.setStorage('orderListRefresh', '')
-    this.currentChange({
-      detail: {
-        current: index,
-        source: 'touch'
-      }
-    })
+    this.options = options
   },
 
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
-  onReady: function() {},
+  onReady: function() {
+    console.log('options', this.options)
+    wx.createSelectorQuery().selectAll('.title-box').fields({
+      dataset: true,
+      rect: true,
+      size: true,
+    }, rects => {
+      const app = getApp()
+      const winWidth = app.globalData.systemInfo.windowWidth
+      let tabTitleRects = []
+      let tabTitleConWidth = 0
+      rects.forEach((rect, idx) => {
+        tabTitleRects.push({left: rect.left, width: rect.width})
+        tabTitleConWidth += rect.width
+      })
+      tabTitleConWidth += winWidth / 750 * 34
+      this.setData({tabTitleRects, winWidth, tabTitleConWidth}, () => {
+        if (app.globalData && app.globalData.themeColor) { // 设置tab选中项颜色
+          this.setData({
+            tabCurrentColor: app.globalData.themeColor
+          })
+        }
+        let index = parseInt(this.options ? this.options.type : 0)
+        index = isNaN(index) ? 0 : index
+        storageHelper.setStorage('orderListRefresh', '')
+        this.currentChange({
+          detail: {
+            current: index,
+            source: 'touch'
+          }
+        })
+      })
+    }).exec()
+  },
 
   /**
    * 生命周期函数--监听页面显示
@@ -145,13 +189,25 @@ Page({
     })
   },
   currentChange: function(e) {
+    const {tabTitleRects, winWidth, tabTitleConWidth} = this.data
     const {
       current,
       source
     } = e.detail
     if (source === 'touch') {
       let idx = current
+      let indicatorPos = 0
+      let scrollLeft = tabTitleRects[idx].left - (winWidth - tabTitleRects[idx].width) / 2
+      if (scrollLeft <= 0) {
+        indicatorPos = tabTitleRects[idx].left + (tabTitleRects[idx].width / 2)
+      } else if ((scrollLeft + tabTitleRects[idx].width + (winWidth - tabTitleRects[idx].width) - tabTitleConWidth > 0)) {
+        indicatorPos = winWidth / 2 + scrollLeft + tabTitleRects[idx].width + (winWidth - tabTitleRects[idx].width) - tabTitleConWidth
+      } else {
+        indicatorPos = winWidth / 2
+      }
       this.setData({
+        scrollLeft: scrollLeft,
+        indicatorPos: indicatorPos,
         index: idx
       })
       // 触发tabchange事件
@@ -225,7 +281,7 @@ Page({
       res.data.list.forEach((item) => {
         item.price = util.formatMoney(item.price).showMoney
         item.refund_amount = util.formatMoney(item.refund_amount).showMoney
-        let product = item.huodong || item.vgoods
+        let product = item.product || item.huodong || item.vgoods || item.goods
         if (product && product.valid_btime) {
           product.valid_btime = util.formatDateTimeDefault('d', product.valid_btime)
         }

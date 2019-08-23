@@ -152,6 +152,118 @@
   color: #999999;
   border-color: #999999;
 }
+.bottom-inner-button.apply-refund{
+  color: #999999;
+  border-color: #999999;
+}
 .pay.disabled{
   background-color: #B8B8B8;
+}
+.confirm.disabled{
+  background-color: #B8B8B8;
+}
+
+.tags-box{
+  padding: 7rpx 32rpx 0 0;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.tag-item{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 24rpx;
+  line-height: 24rpx;
+  height: 36rpx;
+  padding: 0 14rpx;
+  margin: 5rpx 16rpx 5rpx 0;
+  box-sizing: border-box;
+  border-radius: 18rpx;
+  border-width: 1px;
+  border-style: solid;
+}
+
+.shipping-info{
+  background: #fff;
+}
+.shipping-header{
+  font-size: 32rpx;
+  line-height: 86rpx;
+  color: #333;
+  font-weight: bold;
+  padding: 0 32rpx 0;
+}
+.shipping-box-wrapper{
+  display: flex;
+  padding: 0 32rpx 0 24rpx;
+  align-items: center;
+}
+.address-icon{
+  align-self: flex-start;
+  width: 36rpx;
+  height: 36rpx;
+  margin-top: 24rpx;
+}
+.shipping-box{
+  flex: 1;
+  padding: 14rpx 0 14rpx 12rpx;
+}
+.shipping-name-and-phone, .shipping-address{
+  font-size: 28rpx;
+  line-height: 38rpx;
+  color: #333333;
+  padding: 9rpx 0;
+}
+
+.logistics-info{
+  background: #fff;
+}
+.logistics-header{
+  font-size: 32rpx;
+  line-height: 86rpx;
+  color: #333;
+  font-weight: bold;
+  padding: 0 32rpx 0;
+}
+.logistics-content{
+  font-size: 28rpx;
+  line-height: 86rpx;
+  padding: 0 32rpx 0;
+  display: flex;
+  align-items: center;
+}
+.logistics-content-title{
+  color: #666666;
+}
+.logistics-content-text{
+  color: #333333;
+  margin-left: 62rpx;
+  flex: 1;
+}
+.copy-logistics-number{
+  width: 96rpx;
+  font-size: 24rpx;
+  line-height: 38rpx;
+  border-radius: 12rpx;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #333333;
+  box-sizing: content-box;
+  text-align: center;
+  margin-left: 20rpx;
+  margin-right: 10rpx;
+}
+.copy-logistics-number:before{
+  content: '';
+  display: inline-block;
+  vertical-align: middle;
+  width: 0;
+  height: 100%;
+  margin-top: 1px;
+}
+.logistics-content-tip{
+  flex: 1;
+  text-align: center;
+  color: #333333;
 }

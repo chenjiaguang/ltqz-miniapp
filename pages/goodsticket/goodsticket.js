@@ -265,7 +265,7 @@ Page({
         _obj.type = res.data.type
         _obj.order_id = res.data.order_id
         _obj.ticked_num_text = this.initTicketNumText(res.data.ticket)
-        let product = res.data.huodong || res.data.vgoods
+        let product = res.data.product || res.data.huodong || res.data.vgoods || res.data.goods
         _obj.product = {
           title: product.title,
           address: product.address,
@@ -328,7 +328,7 @@ Page({
           _obj.type = res.data.type
           _obj.order_id = res.data.order_id
           _obj.ticked_num_text = this.initTicketNumText(res.data.ticket)
-          let product = res.data.huodong || res.data.vgoods
+          let product = res.data.product || res.data.huodong || res.data.vgoods || res.data.goods
           _obj.product = {
             title: product.title,
             address: product.address,
