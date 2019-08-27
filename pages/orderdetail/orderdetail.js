@@ -75,9 +75,9 @@ Page({
   /**
    * 用户点击右上角分享
    */
-  onShareAppMessage: function(e) {
+  // onShareAppMessage: function(e) {
 
-  },
+  // },
 
   secondToMinute: function (seconds) {
     if (seconds <= 0) {
@@ -299,7 +299,7 @@ Page({
       return false
     }
     this.setData({confirming: true})
-    util.request('/order/confirm', {
+    util.request('/order/receipt', {
       id: order_id
     }).then(res => {
       if (res.error == 0) { // 收货成功

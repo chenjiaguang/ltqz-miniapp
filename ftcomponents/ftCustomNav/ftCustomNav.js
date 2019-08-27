@@ -71,6 +71,10 @@ Component({
           this.initObserver(dist)
         }
       }
+    },
+    tapable: {
+      type: Boolean,
+      value: true
     }
   },
 

@@ -144,7 +144,7 @@ Page({
   // },
 
   loginTap: function () {
-    util.checkLogin()
+    util.checkLogin('navPermission')
   },
 
   goUserInfo: function() {

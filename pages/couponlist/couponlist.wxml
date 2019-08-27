@@ -1,2 +1,7 @@
 <!--pages/couponlist/couponlist.wxml-->
-<text>pages/couponlist/couponlist.wxml</text>
+<ft-custom-nav title="{{navTitle}}" />
+<ft-list-loader visible="{{!page}}" />
+<coupon-card wx:for="{{list}}" wx:key='order_id' item="{{item}}" />
+<ft-list-footer loaded="{{!!page}}" loading="{{loading}}" page="{{page}}" show-no-more="{{list && list[0]}}" />
+<image wx:if="{{page && list && !list.length}}" class='empty-img' src='/assets/images/empty_refundlist.png' />
+<text wx:if="{{page && list && !list.length}}" class='empty-text'>您当前没有待处理的退款申请~</text>

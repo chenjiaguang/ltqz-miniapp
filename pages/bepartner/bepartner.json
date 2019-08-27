@@ -6,6 +6,7 @@
     "ft-custom-nav": "../../ftcomponents/ftCustomNav/ftCustomNav",
     "ft-bottom-box": "../../ftcomponents/ftBottomBox/ftBottomBox",
     "ft-iphone-bottom-adapter": "../../ftcomponents/ftIphoneBottomAdapter/ftIphoneBottomAdapter",
-    "ft-modal": "../../ftcomponents/ftModal/ftModal"
+    "ft-modal": "../../ftcomponents/ftModal/ftModal",
+    "login-modal": "../../components/loginModal/loginModal"
   }
 }

@@ -12,6 +12,9 @@
   z-index: 99;
   /* transition: opacity 0.3s, z-index 0.3s; */
 }
+.wrapper-disabled{
+  pointer-events: none;
+}
 .line-separator-h{
   position: absolute;
   left: 0;

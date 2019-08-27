@@ -423,6 +423,7 @@ button.submit-btn.disabled{
 }
 
 .coupon-selector{
+  height: 770rpx;
   display: flex;
   flex-direction: column;
   align-items: stretch;

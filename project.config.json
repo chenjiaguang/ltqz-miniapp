@@ -50,7 +50,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 7,
+			"current": 34,
 			"list": [
 				{
 					"id": -1,
@@ -167,7 +167,7 @@
 					"id": 16,
 					"name": "商助-订单详情",
 					"pathName": "pages/signupmanager/signupmanager",
-					"query": "id=20&product_id=174",
+					"query": "id=20&product_id=229",
 					"scene": null
 				},
 				{
@@ -279,6 +279,20 @@
 					"name": "订单-支付",
 					"pathName": "pages/ordersubmit/ordersubmit",
 					"query": "id=190",
+					"scene": null
+				},
+				{
+					"id": 33,
+					"name": "商助-待处理退款申请",
+					"pathName": "pages/refundlist/refundlist",
+					"query": "id=20",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "我的优惠券",
+					"pathName": "pages/couponlist/couponlist",
+					"query": "",
 					"scene": null
 				}
 			]

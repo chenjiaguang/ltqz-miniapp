@@ -51,10 +51,17 @@
     </view>
   </view>
 </view>
-<ft-bottom-box wx:if="{{loaded}}" box-height="{{142}}">
+<ft-bottom-box wx:if="{{isLogin && loaded}}" box-height="{{142}}">
   <view class="apply-btn-wrapper" hover-class="none" hover-stop-propagation="false">
     <button class="apply-btn{{(can_apply && fenxiao_user_status == 2 && !submitting) ? ' theme-linear-gradient-137' : ' disabled'}}" disabled="{{fenxiao_user_status === 0 || fenxiao_user_status === '0' || submitting}}" catchtap="showApplyModal">
       <text class='apply-text'>{{btnText[fenxiao_user_status] || '立即申请'}}</text>
+    </button>
+  </view>
+</ft-bottom-box>
+<ft-bottom-box wx:elif="{{!isLogin}}" box-height="{{142}}">
+  <view class="apply-btn-wrapper" hover-class="none" hover-stop-propagation="false">
+    <button class="apply-btn theme-linear-gradient-137" catchtap="showApplyModal">
+      <text class='apply-text'>立即申请</text>
     </button>
   </view>
 </ft-bottom-box>
@@ -92,4 +99,5 @@
     </view>
   </view>
 </ft-modal>
+<login-modal id="c-login-modal" />
   

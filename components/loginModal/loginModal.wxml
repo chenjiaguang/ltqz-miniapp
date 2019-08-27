@@ -1,24 +1,12 @@
 <!--components/loginModal/loginModal.wxml-->
-<ft-modal hide-cancel id="c-ft-modal" mode="1">
-  <view slot="bottom" wx:if="{{showType === 'permission'}}" class='page-permission column ai-center'>
-    <text class='tip'>范团精选需要你授权以下权限</text>
-    <view class='typerow row ai-center'>
-      <text class='typeicon lutufont lutu-weixin {{authUserInfo?"able":"disable"}}'></text>
-      <view class='column'>
-        <text class='title'>微信授权</text>
-        <text class='desc'>获取您的公开信息(昵称、头像等)</text>
-      </view>
-    </view>
-    <view class='typerow row ai-center'>
-      <text class='typeicon lutufont lutu-location {{phoneNumber?"able":"disable"}}'></text>
-      <view class='column'>
-        <text class='title'>手机号码</text>
-        <text class='desc'>用于注册系统</text>
-      </view>
-    </view>
-    <view class='permission-view'>
-      <button wx:if="{{authUserInfo && phoneNumber}}" class='relaunch-btn' disabled="{{!(authUserInfo && phoneNumber)}}" catchtap="userLogin" bindgetphonenumber="getPhoneNumber">登录</button>
-      <button wx:else class='relaunch-btn' open-type="{{openType}}" disabled="{{disableAuth || (openType === 'getPhoneNumber' && !temToken)}}" bindgetuserinfo="getUserInfo" bindgetphonenumber="getPhoneNumber">确认授权</button>
+<ft-modal hide-cancel id="c-ft-modal" mode="2">
+  <view slot="top" class="login-box" catchtap="stopPropagation">
+    <view class="header">您还未登录</view>
+    <view class="tip">登录后才能进行更多操作哦～</view>
+    <image class="login-banner" src="/assets/images/login_banner.png" mode="aspectFit" />
+    <view class="btn-box">
+      <view class="btn btn-cancel" catchtap="hideModal">取消</view>
+      <view class="btn btn-confirm" catchtap="navToPermission">确定</view>
     </view>
   </view>
 </ft-modal>

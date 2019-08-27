@@ -6,12 +6,20 @@
 
 .head {
   background-color: #fff;
-  padding-left: 30rpx;
-  padding-right: 30rpx;
-  height: 105rpx;
-  font-size: 32rpx;
-  color: #333;
-  font-weight: bold;
+  padding: 7rpx 32rpx;
+  font-size: 24rpx;
+  line-height: 50rpx;
+}
+.head-item{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.head-item-title{
+  color: #999999;
+}
+.head-item-content{
+  color: #333333;
 }
 
 .usernum {
@@ -52,11 +60,11 @@
   border-radius: 8rpx;
   border-width: 1px;
   border-style: solid;
-  border-color: #A0A0A0;
+  border-color: #999999;
   box-sizing: border-box;
   padding-left: 12rpx;
   padding-right: 12rpx;
-  color: #A3A3A3;
+  color: #999999;
   margin-left: 20rpx;
   display: flex;
   align-items: center;
@@ -111,9 +119,9 @@
 .btn {
   font-size: 28rpx;
   line-height: 28rpx;
-  width: 468rpx;
-  height: 80rpx;
-  border-radius: 40rpx;
+  width: 272rpx;
+  height: 60rpx;
+  border-radius: 30rpx;
   text-align: center;
   box-sizing: border-box;
   border-width: 1px;
@@ -134,4 +142,73 @@
 }
 .table-wrapper{
   padding-top: 24rpx;
+}
+
+.confirm-view{
+  width: 650rpx;
+  border-radius: 8rpx;
+  background: #FFFFFF;
+  position: relative;
+  top: 50%;
+  margin: -215rpx auto 0;
+}
+.confirm-header{
+  font-size: 34rpx;
+  line-height: 106rpx;
+  font-weight: bold;
+  color: #333333;
+  text-align: center;
+}
+.confirm-item{
+  display: flex;
+  font-size: 30rpx;
+  line-height: 42rpx;
+  padding: 12rpx 48rpx;
+  color: #333333;
+  align-items: center;
+}
+.confirm-title{
+  padding-right: 40rpx;
+}
+.confirm-text{
+  width: 334rpx;
+  font-size: 24rpx;
+  border-bottom: 1px solid #D8D8D8;
+}
+.confirm-text-placeholder{
+  width: 334rpx;
+  font-size: 24rpx;
+  border-bottom: 1px solid #D8D8D8;
+  color: #999999;
+}
+.flex-view{
+  flex: 1;
+}
+.modal-next{
+  display: block;
+  font-size: 24rpx;
+  margin-right: -6rpx;
+  margin-left: 22rpx;
+  overflow: visible;
+  color: #999;
+}
+.confirm-tip-box{
+  margin-top: 20rpx;
+}
+.confirm-tip{
+  font-size: 22rpx;
+  line-height: 30rpx;
+  color: #666666;
+  text-align: center;
+}
+.button-box{
+  display: flex;
+  height: 80rpx;
+}
+.button-cancel, .button-confirm{
+  line-height: 80rpx;
+  font-size: 34rpx;
+  flex: 1;
+  text-align: center;
+  color: #333333;
 }

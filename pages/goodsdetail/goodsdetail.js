@@ -352,7 +352,7 @@ Page({
   },
 
   showShoppingView: function (e) {
-    if (!util.checkLogin()) {
+    if (!util.checkLogin('navPermission')) {
       return false
     }
     this.setData({
@@ -451,7 +451,7 @@ Page({
   },
   
   groupTap: function (e) {
-    if (!util.checkLogin()) {
+    if (!util.checkLogin('navPermission')) {
       return false
     }
     if (e.detail.isJoin) {
@@ -511,6 +511,9 @@ Page({
   },
 
   bePartner: function () {
+    if (!util.checkLogin('navPermission')) {
+      return false
+    }
     wx.navigateTo({
       url: '/pages/bepartner/bepartner'
     })

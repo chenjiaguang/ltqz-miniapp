@@ -1,0 +1,47 @@
+<!--components/orderCard2/orderCard2.wxml-->
+<view wx:if="{{item.type == 1 || item.type == 2}}" class="wrapper">
+  <view wx:if="{{topBlock}}" class="block-separator"></view>
+  <view class='box' hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}" bindtap='tapItem'>
+    <view class="avatar-name-status">
+      <image src="{{item.user.avatar}}" class='avatar' />
+      <view class='name'>{{item.user.nick_name}}</view>
+      <view wx:if="{{statusText[item.status]}}" class="status{{(item.status == 1 || item.status == 2 || item.status == 3) ? ' theme-color theme-border-color' : ''}}"><text>{{(item.hx_number && item.hx_number !== '0' && item.hx_number !== 'all') ? ('已核销x' + item.hx_number) : statusText[item.status]}}</text></view>
+    </view>
+    <view wx:if="{{item.tableContent && item.tableContent.length}}" class="table-wrapper">
+      <ft-table-list table-data="{{item.tableContent}}" title-style="min-width:132rpx;box-sizing:border-box;padding-right:12rpx" title-align="left" font-size="{{24}}" line-height="28rpx" spacing="{{22}}" title-color="#999999" content-color="#333333" show-colon="{{false}}" />
+    </view>
+  </view>
+</view>
+<view wx:elif="{{item.type == 3}}" class="wrapper">
+  <view wx:if="{{topBlock}}" class="block-separator"></view>
+  <view class='box' hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}" bindtap='tapItem'>
+    <view class="avatar-name-status">
+      <image src="{{item.user.avatar}}" class='avatar' />
+      <view class='name'>{{item.user.nick_name}}</view>
+      <view wx:if="{{statusTextType3[item.status]}}" class="status{{(item.status == 1 || item.status == 2 || item.status == 3 || item.status == 6 || item.status == 7) ? ' theme-color theme-border-color' : ''}}"><text>{{statusTextType3[item.status]}}</text></view>
+    </view>
+    <view wx:if="{{item.tableContent && item.tableContent.length}}" class="table-wrapper">
+      <ft-table-list table-data="{{item.tableContent}}" title-style="min-width:132rpx;box-sizing:border-box;padding-right:12rpx" title-align="left" font-size="{{24}}" line-height="28rpx" spacing="{{22}}" title-color="#999999" content-color="#333333" show-colon="{{false}}" />
+    </view>
+  </view>
+  <view wx:if="{{item.status == 6}}" class="shipping-info">
+    <view class="line-separator-h"></view>
+    <view class="confirm-delivery theme-color theme-border-color" catchtap="showDeliverModal">
+      <text>确认发货</text>
+    </view>
+  </view>
+  <view wx:if="{{item.status == 7 && (item.express_number || item.express_company)}}" class="shipping-info">
+    <view class="line-separator-h"></view>
+    <view class="shipping-info-box">
+      <view wx:if="{{item.express_company}}" class="delivery-line">
+        <view class="delivery-title">快递公司</view>
+        <view class="delivery-title-text">{{item.express_company}}</view>
+      </view>
+      <view wx:if="{{item.express_number}}" class="delivery-line">
+        <view class="delivery-title">快递单号</view>
+        <view class="delivery-title-text">{{item.express_number}}</view>
+        <view class="copy-number-btn theme-color theme-border-color" catchtap="copyText" data-text="{{item.express_number}}">复制</view>
+      </view>
+    </view>
+  </view>
+</view>

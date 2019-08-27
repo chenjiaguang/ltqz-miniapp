@@ -590,6 +590,7 @@ Component({
           _obj.hTip = (data.sale_type == 2 && tuan_id) ? '发起了拼团，邀请你参与拼团~' : '发现了一个宝贝，想要跟你分享~'
           _obj.banner = data.product_cover_url || data.cover_url
           _obj.title = data.title
+          _obj.priceNum = data.price_num
           let price = ''
           if (data.sale_type == 1) { // 普通
             price = util.formatMoney(data.min_price).showMoney

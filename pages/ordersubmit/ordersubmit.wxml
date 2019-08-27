@@ -148,7 +148,7 @@
     </view>
   </ft-modal>
   <ft-modal id="c-ft-modal-coupon" hide-cancel mode="1">
-    <view slot="bottom" class="coupon-selector" style="height:{{halfScreenHeight || '408rpx'}}">
+    <view slot="bottom" class="coupon-selector">
       <view class='coupon-selector-header theme-bg'>
         <text>请选择优惠券</text>
         <text class="coupon-selector-close-btn lutufont lutu-bianzu" catchtap="toggleCoupon"></text>
@@ -156,7 +156,7 @@
       <view class="coupon-scroller-wrapper">
         <scroll-view scroll-y class='coupon-scroller'>
           <view style="height:38rpx"></view>
-          <view wx:for="{{coupons}}" wx:for-item="coupon" wx:for-index="idx" wx:key="id" class="coupon-box-wrapper{{coupon.selected ? ' theme-border-color' : ''}}" catchtap="couponTap" data-idx="{{idx}}">
+          <view wx:for="{{coupons}}" wx:for-item="coupon" wx:for-index="idx" wx:key="id" class="coupon-box-wrapper{{coupon.selected ? ' theme-border-color' : ''}}" style="{{idx === 0 ? 'margin-top:0' : ''}}" catchtap="couponTap" data-idx="{{idx}}">
             <view class="coupon-box">
               <image class="coupon-box-bg" src="/assets/images/coupon_bg.png" mode="aspectFit" />
               <view class="coupon-left-box">
@@ -173,7 +173,7 @@
             </view>
             <text class="coupon-box-icon lutufont lutu-tick2{{coupon.selected ? ' theme-color' : ''}}"></text>
           </view>
-          <view style="height:154rpx"></view>
+          <view style="height:130rpx"></view>
         </scroll-view>
       </view>
       <view class="coupon-selector-btn theme-bg" catchtap="confirmCoupon">确定</view>

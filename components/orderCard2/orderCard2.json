@@ -1,0 +1,6 @@
+{
+  "component": true,
+  "usingComponents": {
+    "ft-table-list": "../../ftcomponents/ftTableList/ftTableList"
+  }
+}

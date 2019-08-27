@@ -55,6 +55,7 @@
         <view wx:else class="flex1"></view>
         <text class="real-price-big theme-color draw-text{{priceFirst == '免费' ? ' real-price-big-free' : ''}}" data-text="{{priceFirst}}">{{priceFirst}}</text>
         <text class="real-price-small theme-color draw-text" data-text="{{priceLast}}">{{priceLast}}</text>
+        <text wx:if="{{priceNum && priceNum > 1 && priceFirst != '免费'}}" class="real-price-qi theme-color draw-text" data-text="起">起</text>
       </view>
     </view>
     <view wx:if="{{joinUsers && joinUsers.length}}" class='join-user-box'>
@@ -88,8 +89,11 @@
     <view class="poster-card-right-content">
       <view wx:if="{{saleType == 2 && pintuan && pintuan > 0}}" class="poster-card-price-title draw-text-card" data-text="{{pintuan}}人拼团价">{{pintuan}}人拼团价</view>
       <view wx:elif="{{saleType == 3}}" class="poster-card-price-title draw-text-card" data-text="抢购价">抢购价</view>
-      <view wx:else class="poster-card-price-title draw-text-card" data-text="精选价">精选价</view>
-      <view class="poster-card-price-text draw-text-card" data-text="{{price > 0 ? ('¥' + price) : '免费'}}">{{price > 0 ? ('¥' + price) : '免费'}}</view>
+      <view wx:else class="poster-card-price-title theme-color draw-text-card" data-text="精选价">精选价</view>
+      <view class="poster-card-price-box">
+        <text class="poster-card-price-text theme-color draw-text-card" data-text="{{price > 0 ? ('¥' + price) : '免费'}}">{{price > 0 ? ('¥' + price) : '免费'}}</text>
+        <text wx:if="{{priceNum && priceNum > 1 && price != '免费'}}" class="poster-card-price-qi theme-color draw-text-card" data-text="起">起</text>
+      </view>
       <view wx:if="{{originPrice}}" class="poster-card-origin-price-text draw-text-card" data-text="{{'¥' + originPrice}}">{{'¥' + originPrice}}</view>
     </view>
   </view>

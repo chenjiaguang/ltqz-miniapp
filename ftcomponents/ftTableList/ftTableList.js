@@ -20,6 +20,10 @@ Component({
       type: String,
       value: '#333'
     },
+    titleStyle: {
+      type: String,
+      value: ''
+    },
     contentColor: {
       type: String,
       value: '#666'
@@ -35,6 +39,10 @@ Component({
     contentLine: {
       type: String,
       value: ''
+    },
+    showColon: {
+      type: Boolean,
+      value: true
     }
   },
 

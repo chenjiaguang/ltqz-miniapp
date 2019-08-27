@@ -1,0 +1,21 @@
+<!--components/orderCard3/orderCard3.wxml-->
+<view wx:if="{{item.status == 6}}" class="wrapper">
+  <view wx:if="{{topBlock}}" class="block-separator"></view>
+  <view class='box' hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}" bindtap='tapItem'>
+    <view class="avatar-name-status">
+      <image src="{{item.user.avatar}}" class='avatar' />
+      <view class='name'>{{item.user.nick_name}}</view>
+    </view>
+    <view wx:if="{{item.tableContent && item.tableContent.length}}" class="table-wrapper">
+      <ft-table-list table-data="{{item.tableContent}}" title-style="min-width:132rpx;box-sizing:border-box;padding-right:12rpx" title-align="left" font-size="{{24}}" line-height="28rpx" spacing="{{22}}" title-color="#999999" content-color="#333333" show-colon="{{false}}" />
+    </view>
+  </view>
+  <view wx:if="{{item.status == 6}}" class="refund-wrapper">
+    <view class="line-separator-h" style="width:686rpx;margin:0 auto"></view>
+    <view class="refund-box">
+      <view class="refund-cancel" catchtap="showRejectModal">拒绝</view>
+      <view class="center-line"></view>
+      <view class="refund-confirm" catchtap="confirmRefund">同意</view>
+    </view>
+  </view>
+</view>

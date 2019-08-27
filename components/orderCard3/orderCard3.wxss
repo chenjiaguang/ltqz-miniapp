@@ -1,0 +1,61 @@
+/* components/orderCard3/orderCard3.wxss */
+@import "../../app.wxss";
+
+.wrapper{
+  background: #FFFFFF;
+}
+.box{
+  padding: 24rpx 0;
+}
+.avatar-name-status{
+  display: flex;
+  padding: 0 32rpx 0 45rpx;
+  align-items: center;
+  justify-content: space-between;
+}
+.avatar{
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: 50%;
+  margin-right: 42rpx;
+}
+.status{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 24rpx;
+  line-height: 24rpx;
+  height: 40rpx;
+  padding: 0 12rpx;
+  box-sizing: border-box;
+  border-radius: 8rpx;
+  border-width: 1px;
+  border-style: solid;
+  color: #999999;
+}
+.name{
+  font-size: 32rpx;
+  line-height: 36rpx;
+  color: #333333;
+  flex: 1;
+  margin-right: 20rpx;
+}
+.table-wrapper{
+  padding: 22rpx 32rpx 0;
+}
+.refund-box{
+  padding: 0 32rpx;
+  display: flex;
+}
+.center-line{
+  width: 0;
+  height: 88rpx;
+  border-left: 1px dashed #eee;
+}
+.refund-cancel, .refund-confirm{
+  flex: 1;
+  height: 88rpx;
+  line-height: 88rpx;
+  text-align: center;
+  color: #666666;
+}

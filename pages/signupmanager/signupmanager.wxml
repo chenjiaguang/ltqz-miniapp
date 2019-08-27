@@ -1,41 +1,19 @@
 <!--pages/signupmanager/signupmanager.wxml-->
 <ft-custom-nav title="{{navTitle}}" />
 <view class='container'>
-  <view class="block-separator"></view>
-  <view class='head row ai-center'>
-    <text class='usernum'>下单人数：{{join_num || 0}}</text>
-    <text>预计收入：￥{{js_price || 0}}</text>
+  <view class='head'>
+    <view class="head-item">
+      <view class="head-item-title">订单数</view>
+      <view class="head-item-content">{{join_num || 0}}</view>
+    </view>
+    <view class="head-item">
+      <view class="head-item-title">实际收入{{type == 3 ? '(仅含已发货和已完成)' : ((type == 1 || type == 2) ? '(仅包含已核销)' : '')}}</view>
+      <view class="head-item-content">￥ {{js_price || 0}}</view>
+    </view>
   </view>
   <ft-list-loader visible="{{!page}}" />
-  <view class="income-view">
-    <block wx:for="{{list}}" wx:key='order_id'>
-      <view wx:if="{{index !== 0}}" class='line-separator-h' style="width:686rpx;margin:0 auto;"></view>
-      <view wx:else class="block-separator"></view>
-      <view class='row box' hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}" bindtap='tapItem'>
-        <image src="{{item.user.avatar}}" class='avatar' />
-        <view class='column flex1'>
-          <view class="username-and-status">
-            <view class='username'>{{item.user.nick_name}}</view>
-            <view wx:if="{{statusText[item.status]}}" class="state{{(item.status == 1) ? ' theme-color theme-border-color' : ''}}"><text>{{statusText[item.status]}}</text></view>
-          </view>
-          <!-- <text class='username'>{{item.user.nick_name}}</text> -->
-          <!-- <text class='content'>{{item.content}}</text>
-          <view wx:if="{{item.traveler_infos && item.traveler_infos.length}}" class='travelers-box'>
-            <view class='travelers' wx:for="{{item.traveler_infos}}" wx:for-item="traveler" wx:for-index="idx" wx:key="id">
-              <text class='traneler-name'>{{traveler.name}}</text>
-              <text class='traneler-gender'>{{genderText[traveler.sex]}}</text>
-              <text class='traneler-idcard'>{{traveler.id_number}}</text>
-            </view>
-          </view> -->
-          <view wx:if="{{item.tableContent && item.tableContent.length}}" class="table-wrapper">
-            <ft-table-list table-data="{{item.tableContent}}" title-align="left" font-size="{{24}}" line-height="28rpx" spacing="{{14}}" title-color="#999999" content-color="#666666" />
-          </view>
-        </view>
-        <!-- <view class='lutufont lutu-tel4 theme-color' hover-stop-propagation catchtap='callPhone' data-phone='{{item.phone}}'></view> -->
-      </view>
-    </block>
-  </view>
-  <ft-list-footer loaded="{{!!page}}" loading="{{loading}}" page="{{page}}" show-no-more />
+  <order-card2 wx:for="{{list}}" wx:key='order_id' item="{{item}}" bindshowconfirmdeliver="showConfirmDeliver" />
+  <ft-list-footer loaded="{{!!page}}" loading="{{loading}}" page="{{page}}" show-no-more="{{list && list[0]}}" />
   <ft-bottom-box box-height="{{140}}">
     <view class="btn-wrapper">
       <view class='btn theme-border-color theme-color' bindtap='goDetail'>
@@ -44,3 +22,34 @@
     </view>
   </ft-bottom-box>
 </view>
+<ft-modal id="c-ft-modal" hide-cancel mask-tap-hide="{{false}}" mode="2">
+  <view slot="top" class="confirm-view" catchtap="stopPropagation">
+    <view class="confirm-header">确认发货</view>
+    <view class="confirm-content">
+      <picker value="{{index}}" range="{{shippingMap}}" bindchange="shippingChange">
+        <view class="confirm-item">
+          <view class="confirm-title">快递公司</view>
+          <view wx:if="{{shippingMap && shippingMap.length && (shippingIndex || shippingIndex === 0)}}" class="confirm-text">{{shippingMap[shippingIndex]}}</view>
+          <view wx:else class="confirm-text-placeholder">请选择快递公司</view>
+          <view class="flex-view"></view>
+          <text class="modal-next lutufont lutu-next2"></text>
+        </view>
+      </picker>
+      <view class="confirm-item">
+        <view class="confirm-title">快递公司</view>
+        <input class="confirm-text" type="text" placeholder="请输入快递单号" placeholder-style="color:#999999" cursor-spacing="{{(pxRatio || 0.5) * 250}}" value="{{shippingNumber}}" bindinput="shippingNumberInput" />
+        <view class="flex-view"></view>
+      </view>
+    </view>
+    <view class="confirm-tip-box">
+      <view class="confirm-tip">请保证以上快递信息确认无误</view>
+      <view class="confirm-tip">保存后不可进行修改哦~</view>
+    </view>
+    <view class="line-separator-h" style="margin-top:32rpx"></view>
+    <view class="button-box">
+      <view class="button-cancel" catchtap="hideConfirmModal">取消</view>
+      <view class="line-separator-v"></view>
+      <view class="button-confirm theme-color" catchtap="confirmTap">确定</view>
+    </view>
+  </view>
+</ft-modal>

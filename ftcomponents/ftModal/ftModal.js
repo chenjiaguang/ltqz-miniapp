@@ -44,6 +44,10 @@ Component({
     bottomTouchHide: {
       type: Boolean,
       value: false
+    },
+    maskTapHide: {
+      type: Boolean,
+      value: true
     }
   },
 
@@ -115,6 +119,10 @@ Component({
       return false
     },
     hide: function (e) {
+      const {maskTapHide} = this.data
+      if (e && e.currentTarget && e.currentTarget.dataset && e.currentTarget.dataset.origin == 'mask' && !maskTapHide) { // 禁止点击遮罩关闭
+        return false
+      }
       this.showModal = false
       const duration = (e && e.duration) ? e.duration : 200
       if (!this.wrapperHideAnimation) {

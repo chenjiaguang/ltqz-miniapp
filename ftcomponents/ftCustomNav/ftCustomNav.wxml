@@ -2,7 +2,7 @@
 <view style="height:{{fixed ? 0 : navBoxHeight}}px;padding-top:{{fixed ? 0 : statusBarHeight}}px;box-sizing:content-box;background-color:{{fixedAdapterBg}};position:relative;overflow:hidden;">
   <view class="intersection-dot" style="position:absolute;left:0;top:0;width:100%;height:{{observeDist}}px"></view>
 </view>
-<view class="wrapper{{showNav ? ' show' : ' hide'}}" style="color:{{color}}">
+<view class="wrapper{{showNav ? ' wrapper-show' : ' wrapper-show'}}{{tapable ? '' : ' wrapper-disabled'}}" style="color:{{color}}">
   <view class="nav-bg" style="background-color:{{bg}};opacity:{{showNav ? 1 : 0}}"></view>
   <view class='status-bar' style="height:{{statusBarHeight}}px"></view>
   <view class='nav-box' style="height:{{navBoxHeight}}px">
@@ -17,7 +17,7 @@
     </view>
     <view class="title{{showHideChanged ? (showNav ? ' show' : ' hide') : ((hideDist && fixed) ? ' hide' : ' show')}}">{{title}}</view>
   </view>
-  <view class="line-separator-h"></view>
+  <view class="line-separator-h" style="opacity:{{showNav ? 1 : 0}}"></view>
 </view>
 <view wx:if="{{env === 'dev'}}" class="env" style="width:{{MenuButtonInfo.width}}px;height:{{MenuButtonInfo.height}}px;top:{{MenuButtonInfo.top}}px;left:{{MenuButtonInfo.left}}px;border-radius:{{MenuButtonInfo.height / 2}}px"></view>
   

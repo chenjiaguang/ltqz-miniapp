@@ -63,13 +63,21 @@
 .poster-card-price-title{
   font-size: 24rpx;
   line-height: 24rpx;
-  color: #EE3158;
 }
+.poster-card-price-box{
+  margin-top: 20rpx;
+  display: flex;
+  align-items: flex-end;
+}
+
 .poster-card-price-text{
-  font-size: 60rpx;
-  line-height: 60rpx;
-  margin-top: 8rpx;
-  color: #EE3158;
+  font-size: 44rpx;
+  line-height: 44rpx;
+  font-weight: bold;
+}
+.poster-card-price-qi{
+  font-size: 24rpx;
+  line-height: 34rpx;
   font-weight: bold;
 }
 .poster-card-origin-price-text{
@@ -210,7 +218,7 @@
   height: 80rpx;
 }
 .origin-price{
-  font-size: 24rpx;
+  font-size: 20rpx;
   line-height: 24rpx;
   color: #999999;
   position: absolute;
@@ -248,17 +256,23 @@
 .real-price-big{
   font-size: 78rpx;
   line-height: 62rpx;
-  font-size: bold;
+  font-weight: bold;
 }
 .real-price-small{
   font-size: 36rpx;
   line-height: 32rpx;
-  font-size: bold;
+  font-weight: bold;
 }
 .real-price-big-free{
   font-size: 46rpx;
   line-height: 42rpx;
   margin-left: 14rpx;
+  font-weight: bold;
+}
+.real-price-qi{
+  font-size: 30rpx;
+  line-height: 30rpx;
+  font-weight: bold;
 }
 .title{
   font-size: 30rpx;

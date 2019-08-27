@@ -30,6 +30,6 @@
 </view>
 <ft-list-footer loaded="{{page && list && list.length}}" loading="{{loading}}" page="{{page}}" show-no-more />
 <image wx:if="{{page && list && !list.length}}" class='empty-img' src='/assets/images/empty_collection.png' />
-<text wx:if="{{page && list && !list.length}}" class='empty-text'>暂时没有您收藏的商品，快去收藏吧~</text>
+<text wx:if="{{page && list && !list.length}}" class='empty-text'>啊哦，您的收藏列表空空如也～</text>
 <ft-iphone-bottom-adapter />
 <view class='cancel-btn theme-bg' wx:if="{{showDelBtn}}" catchtap='deleteItem'>取消收藏</view>

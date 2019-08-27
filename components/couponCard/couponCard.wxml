@@ -1,0 +1,30 @@
+<!--components/couponCard/couponCard.wxml-->
+<view class="wrapper">
+  <view class="card-box">
+    <image class="card-box-bg" src="./coupon_card.png" mode="aspectFit" />
+    <view class="card-box-content">
+      <view class="card-box-left">
+        <view class="card-box-price">
+          <text class="price-sign theme-color">¥</text>
+          <text class="price-num theme-color">{{item.show_price}}</text>
+        </view>
+        <view wx:if="{{item.threshold_text}}" class="card-box-threshold">{{item.threshold_text}}</view>
+      </view>
+      <view class="card-box-right">
+        <view class="card-box-title">{{item.title}}</view>
+        <view wx:if="{{item.tip || item.extra_detail}}" class="card-box-tip-and-more">
+          <view class="card-box-tip">{{item.tip}}</view>
+          <view wx:if="{{item.extra_detail}}" class="card-box-more" catchtap="toggleMore">
+            <view class="more-btn-text">详细信息</view>
+            <!-- <view class="more-icon lutufont lutu-more_icon theme-color{{showMore ? ' show' : ''}}"></view> -->
+            <image class="more-icon{{showMore ? ' show' : ''}}" src="./more_icon.png" mode="aspectFit" />
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class="card-statement{{showMore ? ' show' : ''}}">
+    <view class="card-statement-content">{{item.extra_detail}}</view>
+  </view>
+</view>
+  

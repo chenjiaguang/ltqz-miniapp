@@ -87,6 +87,11 @@ Page({
    */
   onLoad: function(options) {
     this.options = options
+    let index = parseInt(this.options ? this.options.type : 0)
+    index = isNaN(index) ? 0 : index
+    this.setData({
+      index: index
+    })
   },
 
   /**
@@ -318,45 +323,62 @@ Page({
   },
 
   refresh() {
-    this.setData({
-      [`index`]: 0,
-      [`tabs[0].page`]: {
-        pn: 1
-      },
-      [`tabs[0].list`]: [],
-      [`tabs[0].loaded`]: false,
-      [`tabs[0].loading`]: false,
-
-      [`tabs[1].page`]: {
-        pn: 1
-      },
-      [`tabs[1].list`]: [],
-      [`tabs[1].loaded`]: false,
-      [`tabs[1].loading`]: false,
-
-      [`tabs[2].page`]: {
-        pn: 1
-      },
-      [`tabs[2].list`]: [],
-      [`tabs[2].loaded`]: false,
-      [`tabs[2].loading`]: false,
-
-      [`tabs[3].page`]: {
-        pn: 1
-      },
-      [`tabs[3].list`]: [],
-      [`tabs[3].loaded`]: false,
-      [`tabs[3].loading`]: false,
-
-      [`tabs[4].page`]: {
-        pn: 1
-      },
-      [`tabs[4].list`]: [],
-      [`tabs[4].loaded`]: false,
-      [`tabs[4].loading`]: false
-    }, () => {
-      this.loadList(0, 1)
+    let _obj = {}
+    let {tabs} = this.data
+    tabs.forEach(item => {
+      item.page = {pn: 1}
+      item.list = []
+      item.loaded = false
+      item.loading = false
     })
+    _obj.tabs = tabs
+    this.setData(_obj, () => {
+      this.currentChange({
+        detail: {
+          current: 0,
+          source: 'touch'
+        }
+      })
+    })
+    // this.setData({
+    //   [`index`]: 0,
+    //   [`tabs[0].page`]: {
+    //     pn: 1
+    //   },
+    //   [`tabs[0].list`]: [],
+    //   [`tabs[0].loaded`]: false,
+    //   [`tabs[0].loading`]: false,
+
+    //   [`tabs[1].page`]: {
+    //     pn: 1
+    //   },
+    //   [`tabs[1].list`]: [],
+    //   [`tabs[1].loaded`]: false,
+    //   [`tabs[1].loading`]: false,
+
+    //   [`tabs[2].page`]: {
+    //     pn: 1
+    //   },
+    //   [`tabs[2].list`]: [],
+    //   [`tabs[2].loaded`]: false,
+    //   [`tabs[2].loading`]: false,
+
+    //   [`tabs[3].page`]: {
+    //     pn: 1
+    //   },
+    //   [`tabs[3].list`]: [],
+    //   [`tabs[3].loaded`]: false,
+    //   [`tabs[3].loading`]: false,
+
+    //   [`tabs[4].page`]: {
+    //     pn: 1
+    //   },
+    //   [`tabs[4].list`]: [],
+    //   [`tabs[4].loaded`]: false,
+    //   [`tabs[4].loading`]: false
+    // }, () => {
+    //   this.loadList(0, 1)
+    // })
   },
 
   shareTap: function (e) {

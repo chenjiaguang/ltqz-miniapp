@@ -17,6 +17,9 @@ Page({
     other_entrances: [{
         title: '商品管理',
         path: '/pages/activitymanager/activitymanager'
+      },{
+        title: '待处理退款申请',
+        path: '/pages/refundlist/refundlist'
       },
       {
         title: '评价管理',
@@ -41,7 +44,8 @@ Page({
 
     let other_entrances = this.data.other_entrances
     other_entrances[0].path = other_entrances[0].path + '?id=' + options.id
-    other_entrances[1].path = other_entrances[1].path + '?role=business&sid=' + options.id
+    other_entrances[1].path = other_entrances[1].path + '?id=' + options.id
+    other_entrances[2].path = other_entrances[2].path + '?role=business&sid=' + options.id
 
     this.setData({
       id: options.id,
@@ -65,7 +69,7 @@ Page({
       res.data.total_income = util.formatMoney(res.data.total_income).showMoney
       let other_entrances = this.data.other_entrances
       other_entrances[0].title = other_entrances[0].title.split('（')[0] + '（' + res.data.product_num + '）'
-      other_entrances[1].title = other_entrances[1].title.split('（')[0] + '（' + res.data.rate_num + '）'
+      other_entrances[2].title = other_entrances[2].title.split('（')[0] + '（' + res.data.rate_num + '）'
       let _obj = {}
       _obj.data = res.data
       _obj.other_entrances = other_entrances

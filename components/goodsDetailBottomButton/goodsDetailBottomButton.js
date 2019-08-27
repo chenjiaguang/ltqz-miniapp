@@ -57,7 +57,7 @@ Component({
       })
     },
     collectTap: function () {
-      if (!util.checkLogin()) {
+      if (!util.checkLogin('navPermission')) {
         return false
       }
       const {collected, collectting, btndata: {id}} = this.data

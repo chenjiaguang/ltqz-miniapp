@@ -6,6 +6,7 @@
     "ft-list-loader": "../../ftcomponents/ftListLoader/ftListLoader",
     "ft-list-footer": "../../ftcomponents/ftListFooter/ftListFooter",
     "ft-bottom-box": "../../ftcomponents/ftBottomBox/ftBottomBox",
-    "ft-table-list": "../../ftcomponents/ftTableList/ftTableList"
+    "order-card2": "../../components/orderCard2/orderCard2",
+    "ft-modal": "../../ftcomponents/ftModal/ftModal"
   }
 }

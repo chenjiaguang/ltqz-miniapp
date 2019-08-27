@@ -1,0 +1,78 @@
+/* pages/refundlist/refundlist.wxss */
+.reject-view{
+  padding-top: 55rpx;
+  background: #ffffff;
+  border-radius: 8rpx;
+  width: 594rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 auto;
+  position: relative;
+  top: 50%;
+  margin-top: -233rpx;
+  transition: top 200ms, margin 200ms;
+}
+.reject-view.focused{
+  top: 0;
+  margin-top: 0;
+}
+.reject-view.blured{
+  top: 50%;
+  margin-top: -233rpx;
+}
+.reject-header{
+  font-size: 34rpx;
+  line-height: 34rpx;
+  color: #333;
+  font-weight: bold;
+  text-align: center;
+}
+.reject-tip{
+  width: 458rpx;
+  margin: 0 auto;
+  padding-top: 22rpx;
+  font-size: 28rpx;
+  line-height: 38rpx;
+  color: #333333;
+}
+.textarea-view{
+  width: 520rpx;
+  box-sizing: border-box;
+  padding: 4rpx 18rpx;
+  height: 154rpx;
+  font-size: 28rpx;
+  line-height: 38rpx;
+  color: #333333;
+  border: 1px solid #EDEDED;
+  margin-top: 22rpx;
+}
+.button-box{
+  width: 100%;
+  display: flex;
+}
+.button-cancel, .button-confirm{
+  flex: 1;
+  font-size: #333333;
+  height: 80rpx;
+  line-height: 80rpx;
+  text-align: center;
+}
+
+.empty-img {
+  width: 600rpx;
+  height: 400rpx;
+  margin-top: 189rpx;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+
+.empty-text {
+  margin-top: 39rpx;
+  color: #999;
+  font-size: 28rpx;
+  line-height: 40rpx;
+  display: block;
+  text-align: center;
+}

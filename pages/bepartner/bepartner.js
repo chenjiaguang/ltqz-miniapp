@@ -1,5 +1,6 @@
 // pages/bepartner/bepartner.js
 const util = require('../../utils/util.js')
+
 Page({
 
   /**
@@ -17,6 +18,7 @@ Page({
       1: '立即申请',
       2: '立即申请'
     },
+    isLogin: true, // 默认设置为登录状态
     loaded: false,
     submitting: false // 是否正在请求申请
   },
@@ -160,6 +162,9 @@ Page({
   },
 
   showApplyModal: function () {
+    if (!util.checkLogin('loginModal')) { // 检查是否有token，即未登录状态下，弹出登录弹窗
+      return false
+    }
     let {loaded, can_apply, fenxiao_user_status, submitting} = this.data
     if (!loaded || submitting || fenxiao_user_status === 0 || fenxiao_user_status === '0') { // 数据未获取完成 或 正在提交数据 或 正在审批
       return false
@@ -211,6 +216,12 @@ Page({
   },
 
   getApplyInfo: function () {
+    if (!util.checkLogin()) { // 无token状态
+      this.setData({
+        isLogin: false
+      })
+      return false
+    }
     util.request('/fenxiao/apply_info').then(res => {
       if (res.error == 0 && res.data) {
         let _obj = res.data

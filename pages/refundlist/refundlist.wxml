@@ -1,0 +1,20 @@
+<!--pages/refundlist/refundlist.wxml-->
+<ft-custom-nav title="{{navTitle}}" />
+<ft-list-loader visible="{{!page}}" />
+<order-card3 wx:for="{{list}}" wx:key='order_id' item="{{item}}" bindshowrejectmodal="showReject" bindconfirmrefund="confirmTap" data-agree="{{true}}" />
+<ft-list-footer loaded="{{!!page}}" loading="{{loading}}" page="{{page}}" show-no-more="{{list && list[0]}}" />
+<image wx:if="{{page && list && !list.length}}" class='empty-img' src='/assets/images/empty_refundlist.png' />
+<text wx:if="{{page && list && !list.length}}" class='empty-text'>您当前没有待处理的退款申请~</text>
+<ft-modal id="c-ft-modal" hide-cancel mask-tap-hide="{{false}}" mode="2">
+  <view slot="top" class="reject-view{{areaFocus ? ' focused' : ' blured'}}" catchtap="stopPropagation">
+    <view class="reject-header">拒绝退款</view>
+    <view class="reject-tip">确定拒绝此退款申请吗？为避免出现问题，请填写拒绝退款的原因：</view>
+    <textarea class="textarea-view" value="{{rejectRecord}}" adjust-position="{{false}}" placeholder="请填写拒绝原因" placeholder-style="color:#999999" bindinput="rejectRecordInput" bindfocus="areaFocus" bindblur="areaBlur"></textarea>
+    <view class="line-separator-h" style="margin-top:22rpx"></view>
+    <view class="button-box">
+      <view class="button-cancel" catchtap="hideRejectModal">取消</view>
+      <view class="line-separator-v" style="height:80rpx;align-self:center"></view>
+      <view class="button-confirm theme-color" catchtap="confirmTap" data-agree="{{false}}">确定</view>
+    </view>
+  </view>
+</ft-modal>

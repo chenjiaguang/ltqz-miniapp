@@ -99,14 +99,27 @@ const isJsonString = str => {
   return false
 }
 
-const checkLogin = () => {
+const checkLogin = (action) => {
   const token = storageHelper.getStorage('token')
   if (token) {
     return true
   }
-  wx.navigateTo({
-    url: '/pages/permission/permission'
-  })
+  if (action) {
+    if (action == 'navPermission') { // 直接跳转登录页面
+      wx.navigateTo({
+        url: '/pages/permission/permission'
+      })
+    } else if (typeof action == 'function') { // 传入的是函数
+      action()
+    } else if (action == 'loginModal') { // 显示登录提示弹窗
+      const pages = getCurrentPages()
+      if (pages && pages.length) {
+        const page = pages[pages.length - 1]
+        const loginModal = page.selectComponent('#c-login-modal')
+        loginModal && loginModal.showModal && loginModal.showModal()
+      }
+    }
+  }
   return false
 }
 const showErrorToast = (msg) => {
