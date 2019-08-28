@@ -75,18 +75,18 @@ Page({
     })
   },
 
-  relaunch: function () {
+  startRelaunch: function () {
     const pages = getCurrentPages()
     if (pages.length > 1) { // 该授权页面不是第一个页面时
       const page = pages[pages.length - 2]
       if (page && page.route && page.options) {
         const url = ('/' + util.getUrl(page.route, page.options)) || '/pages/index/index'
-        wx.reLaunch({
+        this.reLaunch({
           url: url
         })
       }
     } else {
-      wx.reLaunch({
+      this.reLaunch({
         url: '/pages/mine/mine'
       })
     }
@@ -131,7 +131,7 @@ Page({
           storageHelper.setStorage('uphone', phone || '')
           storageHelper.setStorage('temToken', '')
           storageHelper.setStorage('token', temToken)
-          this.relaunch()
+          this.startRelaunch()
         } else {
           this.code = ''
           this.setData({
@@ -229,7 +229,7 @@ Page({
             authUserInfo: true,
             openType: 'getPhoneNumber'
           })
-          this.relaunch()
+          this.startRelaunch()
         } else { // 没手机号
           storageHelper.setStorage('temToken', token)
           this.setData({

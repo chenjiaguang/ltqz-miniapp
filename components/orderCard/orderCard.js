@@ -55,12 +55,12 @@ Component({
    */
   methods: {
     goDetail() {
-      wx.navigateTo({
+      this.navigateTo({
         url: '/pages/orderdetail/orderdetail?id=' + this.data.item.order_id
       })
     },
     goComment() {
-      wx.navigateTo({
+      this.navigateTo({
         url: '/pages/orderComment/orderComment?id=' + this.data.item.order_id
       })
     },
@@ -292,7 +292,7 @@ Component({
       })
     },
     goTicket() {
-      wx.navigateTo({
+      this.navigateTo({
         url: '/pages/goodsticket/goodsticket?id=' + this.data.item.order_id
       })
     },

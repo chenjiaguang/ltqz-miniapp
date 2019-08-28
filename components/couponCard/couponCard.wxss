@@ -1,6 +1,9 @@
 /* components/couponCard/couponCard.wxss */
 @import "../../app.wxss";
 
+.wrapper{
+  padding: 6rpx 0;
+}
 .card-box{
   width: 686rpx;
   height: 162rpx;
@@ -67,6 +70,7 @@
   font-size: 24rpx;
   line-height: 32rpx;
   min-height: 64rpx;
+  font-weight: bold;
 }
 .card-box-tip-and-more{
   font-size: 20rpx;
@@ -93,13 +97,11 @@
   color: #999999;
 }
 .more-icon{
-  display: block;
   width: 20rpx;
   height: 20rpx;
   margin-left: 8rpx;
   transform: rotate(180deg);
   transition: transform 300ms;
-  overflow: visible;
 }
 .more-icon.show{
   transform: rotate(0);
@@ -112,10 +114,14 @@
   background: #FFFFFF;
   max-height: 0;
   transition: max-height 300ms;
+  overflow: hidden;
 }
 .card-statement.show{
   max-height: 1000rpx;
 }
 .card-statement-content{
   padding: 22rpx 12rpx;
+  font-size: 22rpx;
+  line-height: 30rpx;
+  color: #999999;
 }

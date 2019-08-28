@@ -79,13 +79,13 @@ Page({
     })
   },
   addItem: function() {
-    wx.navigateTo({
+    this.navigateTo({
       url: '/pages/editcontact/editcontact'
     })
   },
   editItem: function(e) {
     let item = e.currentTarget.dataset.item
-    wx.navigateTo({
+    this.navigateTo({
       url: `/pages/editcontact/editcontact?id=${item.id}&name=${item.name}&id_number=${item.id_number}&sex=${item.sex}`
     })
   }

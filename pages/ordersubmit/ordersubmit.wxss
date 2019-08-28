@@ -533,12 +533,13 @@ button.submit-btn.disabled{
   font-size: 24rpx;
   line-height: 28rpx;
   color: #333333;
+  margin-top: 8rpx;
 }
 .coupon-tip{
   font-size: 20rpx;
   line-height: 24rpx;
   color: #999999;
-  padding-top: 8rpx;
+  padding-top: 10rpx;
 }
 .coupon-box-icon{
   font-size: 36rpx;

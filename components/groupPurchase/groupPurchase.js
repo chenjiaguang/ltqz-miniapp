@@ -97,7 +97,7 @@ Component({
       return [hour, min, second].join(':')
     },
     ruleTap: function () {
-      wx.navigateTo({
+      this.navigateTo({
         url: '/pages/statement/statement?type=3'
       })
       

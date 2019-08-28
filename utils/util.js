@@ -84,7 +84,7 @@ const relaunchPermission = (path, options) => {
   }
   storageHelper.setStorage('permissionBack', url)
   wx.reLaunch({
-    url: '/pages/permission/permission'
+    url: '/pages/permission/permission?fromnav=true'
   })
 }
 
@@ -107,7 +107,7 @@ const checkLogin = (action) => {
   if (action) {
     if (action == 'navPermission') { // 直接跳转登录页面
       wx.navigateTo({
-        url: '/pages/permission/permission'
+        url: '/pages/permission/permission??fromnav=true'
       })
     } else if (typeof action == 'function') { // 传入的是函数
       action()
@@ -144,7 +144,7 @@ const backAndToast = (msg) => {
     })
   } else {
     wx.reLaunch({
-      url: '/pages/index/index',
+      url: '/pages/index/index?fromnav=true',
       complete: () => {
         setTimeout(() => {
           wx.showToast({
@@ -184,7 +184,7 @@ const relogin = () => {
             storageHelper.setStorage('temToken', '')
             storageHelper.setStorage('token', token)
             const url = ('/' + getUrl(page.route, page.options)) || '/pages/index/index'
-            wx.reLaunch({
+            page.reLaunch({
               url: url,
               success: res => {
                 wx.showToast({

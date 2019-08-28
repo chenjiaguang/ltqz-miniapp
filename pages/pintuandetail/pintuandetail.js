@@ -235,7 +235,7 @@ Page({
     }
   },
   goHome: function () {
-    wx.switchTab({
+    this.switchTab({
       url: '/pages/index/index'
     })
   },
@@ -301,7 +301,7 @@ Page({
   },
   goGoodsDetail: function (e) {
     if (e.currentTarget.dataset.goodsid) {
-      wx.navigateTo({
+      this.navigateTo({
         url: '/pages/goodsdetail/goodsdetail?id=' + e.currentTarget.dataset.goodsid
       })
     }
@@ -320,7 +320,7 @@ Page({
       dataObj.tuan_id = 0
     }
     storageHelper.setStorage('orderSubmitJson', JSON.stringify(dataObj))
-    wx.navigateTo({
+    this.navigateTo({
       url: '/pages/ordersubmit/ordersubmit'
     })
   }

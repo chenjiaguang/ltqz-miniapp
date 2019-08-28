@@ -47,7 +47,7 @@ Component({
     saleTap: function (e) {
       const {link} = e.currentTarget.dataset.sale
       if (link) {
-        wx.navigateTo({
+        this.navigateTo({
           url: link
         })
       }

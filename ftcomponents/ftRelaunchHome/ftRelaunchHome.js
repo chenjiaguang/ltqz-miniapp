@@ -29,7 +29,7 @@ Component({
    */
   methods: {
     relaunchHome: function () {
-      wx.reLaunch({
+      this.reLaunch({
         url: '/pages/index/index',
         success: () => {
           let _obj = {}

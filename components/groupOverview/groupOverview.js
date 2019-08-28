@@ -108,7 +108,7 @@ Component({
     },
     goPintuanDetail: function () {
       const { id } = this.data.group
-      wx.navigateTo({
+      this.navigateTo({
         url: '/pages/pintuandetail/pintuandetail?id=' + id
       })
     },

@@ -5,8 +5,8 @@
     <view class="header-box"></view>
     <scroll-view class="coupon-scroller" scroll-y>
       <view wx:for="{{coupons}}" wx:for-item="coupon" wx:for-index="idx" wx:key="id" class="coupon-box-wrapper">
-        <image hidden="{{!coupon.received}}" class="coupon-uncheck" src="/assets/images/coupon_packet_coupon_uncheck.png" mode="aspectFit" data-ele="uncheck" bindload="imageLoaded" binderror="imageLoaded" />
-        <image hidden="{{coupon.received}}" class="coupon-checked" src="/assets/images/coupon_packet_coupon_checked.png" mode="aspectFit" data-ele="checked" bindload="imageLoaded" binderror="imageLoaded" />
+        <image hidden="{{!received[coupon.id]}}" class="coupon-uncheck" src="/assets/images/coupon_packet_coupon_uncheck.png" mode="aspectFit" data-ele="uncheck" bindload="imageLoaded" binderror="imageLoaded" />
+        <image hidden="{{received[coupon.id]}}" class="coupon-checked" src="/assets/images/coupon_packet_coupon_checked.png" mode="aspectFit" data-ele="checked" bindload="imageLoaded" binderror="imageLoaded" />
         <view class="coupon-box">
           <view class="left-box">
             <view class="price">
@@ -16,11 +16,11 @@
             <view wx:if="{{coupon.threshold_text}}" class="threshold">{{coupon.threshold_text}}</view>
           </view>
           <view class="right-box">
-            <view class="coupon-title">{{coupon.title}}</view>
+            <view class="coupon-title">{{coupon.title}}阿斯顿发理解拉萨家 阿斯利康的风景阿里舒服就阿</view>
             <view wx:if="{{coupon.tip}}" class="coupon-tip">{{coupon.tip}}</view>
           </view>
           <view class="receive-btn">
-            <view class="receive-btn-text{{coupon.received ? ' disabled' : ''}}">{{coupon.received ? '已领取' : '立即领取'}}</view>
+            <view class="receive-btn-text{{received[coupon.id] ? ' disabled' : ''}}" data-coupon="{{coupon}}" catchtap="receiveCoupon">{{received[coupon.id] ? '已领取' : '立即领取'}}</view>
           </view>
         </view>
       </view>

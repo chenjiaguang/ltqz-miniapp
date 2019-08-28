@@ -14,7 +14,12 @@ Component({
    * 组件的初始数据
    */
   data: {
-    showMore: false
+    showMore: false,
+    thresholdTypeText: {
+      '1': '无门槛：',
+      '2': '指定商品：',
+      '3': '指定商家：'
+    }
   },
 
   /**

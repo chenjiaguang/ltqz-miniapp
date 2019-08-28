@@ -232,11 +232,11 @@ Page({
       success: res => {
         util.request('/order/pay_result', {id}).then(res => {
           if (res.error == 0) { // 查询结果为已支付
-            wx.redirectTo({
+            this.redirectTo({
               url: '/pages/paysuccess/paysuccess?id=' + id,
             })
           } else {
-            wx.redirectTo({
+            this.redirectTo({
               url: '/pages/paysuccess/paysuccess?id=' + id,
             })
             if (res.msg) {
@@ -262,13 +262,13 @@ Page({
             if (res.confirm) {
               this.pay(id, paydata)
             } else {
-              wx.redirectTo({
+              this.redirectTo({
                 url: '/pages/orderdetail/orderdetail?id=' + id,
               })
             }
           },
           fail: res => {
-            wx.redirectTo({
+            this.redirectTo({
               url: '/pages/orderdetail/orderdetail?id=' + id,
             })
           }
@@ -367,7 +367,7 @@ Page({
         if (res.data.pay) {
           this.pay(res.data.id, res.data.pay)
         } else {
-          wx.redirectTo({
+          this.redirectTo({
             url: '/pages/paysuccess/paysuccess?id=' + res.data.id,
           })
         }
@@ -497,7 +497,7 @@ Page({
     } else { // 属于新增
       url = '/pages/editcontact/editcontact' + (needidcard ? '?requireidcard=true' : '')
     }
-    wx.navigateTo({
+    this.navigateTo({
       url: url
     })
   },
@@ -505,7 +505,7 @@ Page({
   clauseTap: function (e) {
     let {ele} = e.currentTarget.dataset
     if (ele.path) {
-      wx.navigateTo({
+      this.navigateTo({
         url: ele.path
       })
     }

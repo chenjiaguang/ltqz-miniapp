@@ -143,12 +143,12 @@ Component({
       }
     },
     goBack: function () {
-      wx.navigateBack({
+      this.navigateBack({
         delta: 1
       })
     },
     goHome: function () {
-      wx.switchTab({
+      this.switchTab({
         url: '/pages/index/index'
       })
     }

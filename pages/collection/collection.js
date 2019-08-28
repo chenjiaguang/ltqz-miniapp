@@ -157,7 +157,7 @@ Page({
   },
   goDetail(e) {
     let id = e.currentTarget.dataset.id
-    wx.navigateTo({
+    this.navigateTo({
       url: '/pages/goodsdetail/goodsdetail?id=' + id
     })
   },

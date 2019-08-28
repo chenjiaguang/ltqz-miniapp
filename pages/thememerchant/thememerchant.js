@@ -125,7 +125,7 @@ Page({
   merchantTap: function (e) {
     const {id} = e.detail
     if (id) {
-      wx.navigateTo({
+      this.navigateTo({
         url: '/pages/merchantdetail/merchantdetail?id=' + id
       })
     }

@@ -1,6 +1,4 @@
 // components/loginModal/loginModal.js
-import storageHelper from '../../utils/storageHelper.js'
-import util from '../../utils/util.js'
 
 Component({
   /**
@@ -34,7 +32,7 @@ Component({
     },
     navToPermission: function () {
       this.hideModal()
-      wx.navigateTo({
+      this.navigateTo({
         url: '/pages/permission/permission'
       })
     }

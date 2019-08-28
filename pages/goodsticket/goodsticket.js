@@ -229,7 +229,7 @@ Page({
     })
   },
   goComment: function() { // 跳转去评价页面
-    wx.navigateTo({
+    this.navigateTo({
       url: '/pages/orderComment/orderComment?id=' + this.data.order_id
     })
   },

@@ -148,7 +148,7 @@ Page({
   },
 
   goUserInfo: function() {
-    wx.navigateTo({
+    this.navigateTo({
       url: '/pages/userinfo/userinfo'
     })
   },
@@ -158,13 +158,13 @@ Page({
       type
     } = e.currentTarget.dataset
     const url = '/pages/orderlist/orderlist?type=' + type
-    wx.navigateTo({
+    this.navigateTo({
       url: url
     })
   },
 
   goProfit: function() {
-    wx.navigateTo({
+    this.navigateTo({
       url: '/pages/userprofit/userprofit'
     })
   },
@@ -175,7 +175,7 @@ Page({
       phone
     } = e.detail
     if (path) {
-      wx.navigateTo({
+      this.navigateTo({
         url: path
       })
     } else if (phone) {

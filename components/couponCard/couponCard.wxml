@@ -16,15 +16,14 @@
           <view class="card-box-tip">{{item.tip}}</view>
           <view wx:if="{{item.extra_detail}}" class="card-box-more" catchtap="toggleMore">
             <view class="more-btn-text">详细信息</view>
-            <!-- <view class="more-icon lutufont lutu-more_icon theme-color{{showMore ? ' show' : ''}}"></view> -->
-            <image class="more-icon{{showMore ? ' show' : ''}}" src="./more_icon.png" mode="aspectFit" />
+            <image class="more-icon{{showMore ? ' show' : ''}}" src="./more_icon.svg" mode="aspectFit" />
           </view>
         </view>
       </view>
     </view>
   </view>
   <view class="card-statement{{showMore ? ' show' : ''}}">
-    <view class="card-statement-content">{{item.extra_detail}}</view>
+    <view class="card-statement-content">{{thresholdTypeText[item.threshold_type] || ''}}{{item.extra_detail}}</view>
   </view>
 </view>
   

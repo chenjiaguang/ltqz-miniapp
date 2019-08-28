@@ -187,7 +187,7 @@ Page({
     })
   },
   goDetail() {
-    wx.navigateTo({
+    this.navigateTo({
       url: '/pages/goodsdetail/goodsdetail?id=' + this.data.product_id
     })
   },

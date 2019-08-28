@@ -124,7 +124,7 @@ Page({
       phone
     } = e.detail
     if (path) {
-      wx.navigateTo({
+      this.navigateTo({
         url: path
       })
     }

@@ -48,7 +48,7 @@ Page({
   bannerTap: function (e) {
     const {item} = e.detail
     if (item && item.path) {
-      wx.navigateTo({
+      this.navigateTo({
         url: item.path
       })
     }
@@ -56,7 +56,7 @@ Page({
   subBannerTap: function (e) {
     const {path} = e.currentTarget.dataset
     if (path) {
-      wx.navigateTo({
+      this.navigateTo({
         url: path
       })
     }
@@ -64,7 +64,7 @@ Page({
   cateTap: function (e) {
     const { item } = e.detail
     if (item && item.id) {
-      wx.navigateTo({
+      this.navigateTo({
         url: '/pages/goodslist/goodslist?id=' + item.id + '&title=' + item.name
       })
     }
@@ -72,7 +72,7 @@ Page({
   themeTap: function (e) {
     const {theme} = e.detail
     if (theme && theme.id) {
-      wx.navigateTo({
+      this.navigateTo({
         url: '/pages/themeaggregation/themeaggregation?id=' + theme.id
       })
     }
@@ -80,7 +80,7 @@ Page({
   activityTap: function (e) {
     const { link } = e.currentTarget.dataset
     if (link) {
-      wx.navigateTo({
+      this.navigateTo({
         url: link
       })
     }
@@ -88,7 +88,7 @@ Page({
   goodsTap: function (e) {
     const {id} = e.detail
     if (id) {
-      wx.navigateTo({
+      this.navigateTo({
         url: '/pages/goodsdetail/goodsdetail?id=' + id
       })
     }

@@ -184,7 +184,7 @@ Page({
   },
 
   goGoodsTicket() {
-    wx.navigateTo({
+    this.navigateTo({
       url: '/pages/goodsticket/goodsticket?id=' + this.data.order.order_id
     })
   },
@@ -449,7 +449,7 @@ Page({
       id = this.data.product.id
     }
     if (id !== null) {
-      wx.navigateTo({
+      this.navigateTo({
         url: '/pages/goodsdetail/goodsdetail?id=' + id
       })
     }

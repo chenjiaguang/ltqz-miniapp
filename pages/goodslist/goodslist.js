@@ -92,7 +92,7 @@ Page({
   bannerTap: function (e) {
     const { item } = e.detail
     if (item && item.path) {
-      wx.navigateTo({
+      this.navigateTo({
         url: item.path
       })
     }
@@ -101,7 +101,7 @@ Page({
   goodsTap: function (e) {
     const { id } = e.detail
     if (id) {
-      wx.navigateTo({
+      this.navigateTo({
         url: '/pages/goodsdetail/goodsdetail?id=' + id
       })
     }

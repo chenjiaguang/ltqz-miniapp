@@ -122,7 +122,7 @@ Page({
     console.log('goodsTap')
     const {id} = e.detail
     if (id) {
-      wx.navigateTo({
+      this.navigateTo({
         url: '/pages/goodsdetail/goodsdetail?id=' + id
       })
     }

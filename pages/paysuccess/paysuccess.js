@@ -70,7 +70,7 @@ Page({
   viewOrder: function () {
     const {id} = this.data
     if (id) {
-      wx.redirectTo({
+      this.redirectTo({
         url: '/pages/orderdetail/orderdetail?id=' + id
       })
     }

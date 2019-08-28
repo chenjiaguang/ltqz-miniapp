@@ -7,6 +7,7 @@ if (env == 'prod') {
 } else if (env == 'test') {
   config = require('test.env.js')
 } else {
+  console.error('导航请用this.navigateTo、this.redirectTo、this.switchTab、this.reLaunch、this.navigateBack代替微信的导航，这是封装过后的，仅往url中自动注入“fromnav=true”，fromnav[是否小程序内的导航进入该页面]')
   config = require('dev.env.js')
 }
 

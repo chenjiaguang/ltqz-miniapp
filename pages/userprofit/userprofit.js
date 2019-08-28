@@ -96,7 +96,7 @@ Page({
       path
     } = e.detail
     if (path) {
-      wx.navigateTo({
+      this.navigateTo({
         url: path
       })
     }
@@ -180,7 +180,7 @@ Page({
                 title: '申请提现成功啦，预计将在2小时内到账',
                 icon: 'none'
               })
-              this.onReady()
+              this.fetchProfit()
             }).catch(err => {
               console.log('err', err)
             })

@@ -76,7 +76,7 @@ Page({
   // },
 
   goBusiness(e) {
-    wx.navigateTo({
+    this.navigateTo({
       url: '/pages/businessassistant/businessassistant?id=' + e.currentTarget.dataset.id
     })
   }

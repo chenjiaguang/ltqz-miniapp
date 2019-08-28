@@ -163,7 +163,7 @@ Page({
   // },
 
   fetchGoods: function (id) {
-    let rData = {id}
+    let rData = {id, coupon: !this.options.fromnav}
     util.request('/product/detail', rData).then(res => {
       if (res.error == 0 && res.data) {
         // 处理展示详情内容
@@ -209,6 +209,21 @@ Page({
           })
         }
         res.data.subOverview = this.getSubOverview(res.data)
+        if (res.data.coupon) {
+          res.data.coupon = res.data.coupon.map(item => {
+            const priceObj = util.formatMoney(item.reduction_amount)
+            const thresholdObj = util.formatMoney(item.full_amount)
+            return {
+              id: item.id,
+              title: item.title,
+              price: priceObj.money,
+              show_price: priceObj.showMoney,
+              threshold: thresholdObj.money,
+              threshold_text: (thresholdObj.money && thresholdObj.money !== '0' && thresholdObj.money != '免费') ? `满${thresholdObj.showMoney}可用` : '无金额门槛',
+              tip: item.time_desc
+            }
+          })
+        }
         this.initBottomData(res.data)
         
         this.setData(res.data, () => {
@@ -366,7 +381,7 @@ Page({
 
   viewAllComment: function () {
     const {id} = this.data
-    wx.navigateTo({
+    this.navigateTo({
       url: '/pages/commentlist/commentlist?pid=' + id
     })
   },
@@ -386,14 +401,14 @@ Page({
   },
 
   viewBusinessCertification: function () { // 查看商家资质
-    wx.navigateTo({
+    this.navigateTo({
       url: '/pages/imagepage/imagepage?image=' + this.data.shop.type_pic_url + '&title=商家资质',
     })
   },
 
   viewBusiness: function () { // 跳转到商家
     const {id} = this.data.shop
-    wx.navigateTo({
+    this.navigateTo({
       url: '/pages/merchantdetail/merchantdetail?id=' + id
     })
   },
@@ -482,7 +497,7 @@ Page({
     }
     let dataJson = JSON.stringify(dataObj)
     storageHelper.setStorage('orderSubmitJson', dataJson)
-    wx.navigateTo({
+    this.navigateTo({
       url: '/pages/ordersubmit/ordersubmit'
     })
   },
@@ -514,7 +529,7 @@ Page({
     if (!util.checkLogin('navPermission')) {
       return false
     }
-    wx.navigateTo({
+    this.navigateTo({
       url: '/pages/bepartner/bepartner'
     })
   }
