@@ -215,6 +215,9 @@
   color: #333333;
   padding: 9rpx 0;
 }
+.shipping-phone{
+  margin-left: 12rpx;
+}
 
 .logistics-info{
   background: #fff;

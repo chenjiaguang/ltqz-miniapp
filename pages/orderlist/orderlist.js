@@ -72,7 +72,7 @@ Page({
       loaded: false,
       loading: false
     },{
-      title: '已退款',
+      title: '退款',
       list: [],
       page: {
         pn: 1
@@ -99,21 +99,21 @@ Page({
    */
   onReady: function() {
     console.log('options', this.options)
+    const {rpx} = this.data._nav_data_
     wx.createSelectorQuery().selectAll('.title-box').fields({
       dataset: true,
       rect: true,
       size: true,
     }, rects => {
-      const app = getApp()
-      const winWidth = app.globalData.systemInfo.windowWidth
       let tabTitleRects = []
       let tabTitleConWidth = 0
       rects.forEach((rect, idx) => {
         tabTitleRects.push({left: rect.left, width: rect.width})
         tabTitleConWidth += rect.width
       })
-      tabTitleConWidth += winWidth / 750 * 34
-      this.setData({tabTitleRects, winWidth, tabTitleConWidth}, () => {
+      tabTitleConWidth += rpx * 34
+      this.setData({tabTitleRects, tabTitleConWidth}, () => {
+        const app = getApp()
         if (app.globalData && app.globalData.themeColor) { // 设置tab选中项颜色
           this.setData({
             tabCurrentColor: app.globalData.themeColor
@@ -194,7 +194,8 @@ Page({
     })
   },
   currentChange: function(e) {
-    const {tabTitleRects, winWidth, tabTitleConWidth} = this.data
+    const {tabTitleRects, tabTitleConWidth} = this.data
+    const {windowWidth} = this.data._nav_data_
     const {
       current,
       source
@@ -202,13 +203,13 @@ Page({
     if (source === 'touch') {
       let idx = current
       let indicatorPos = 0
-      let scrollLeft = tabTitleRects[idx].left - (winWidth - tabTitleRects[idx].width) / 2
+      let scrollLeft = tabTitleRects[idx].left - (windowWidth - tabTitleRects[idx].width) / 2
       if (scrollLeft <= 0) {
         indicatorPos = tabTitleRects[idx].left + (tabTitleRects[idx].width / 2)
-      } else if ((scrollLeft + tabTitleRects[idx].width + (winWidth - tabTitleRects[idx].width) - tabTitleConWidth > 0)) {
-        indicatorPos = winWidth / 2 + scrollLeft + tabTitleRects[idx].width + (winWidth - tabTitleRects[idx].width) - tabTitleConWidth
+      } else if ((scrollLeft + tabTitleRects[idx].width + (windowWidth - tabTitleRects[idx].width) - tabTitleConWidth > 0)) {
+        indicatorPos = windowWidth / 2 + scrollLeft + tabTitleRects[idx].width + (windowWidth - tabTitleRects[idx].width) - tabTitleConWidth
       } else {
-        indicatorPos = winWidth / 2
+        indicatorPos = windowWidth / 2
       }
       this.setData({
         scrollLeft: scrollLeft,

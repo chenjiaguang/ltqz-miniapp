@@ -27,7 +27,7 @@
     </swiper-item>
   </swiper>
   <view class="button-box">
-    <view class="back-btn">取消</view>
+    <view class="back-btn" catchtap="goBack">取消</view>
     <button class="auth-btn{{(openType === 'getUserInfo' && (disableAuth || loging)) ? ' disabled' : ''}}{{(openType === 'getPhoneNumber' && (!temToken || phoneBinding)) ? ' disabled' : ''}}" open-type="{{openType}}" disabled="{{(openType === 'getUserInfo' && (disableAuth || loging)) || (openType === 'getPhoneNumber' && (!temToken || phoneBinding))}}" bindgetuserinfo="getUserInfo" bindgetphonenumber="getPhoneNumber">确认授权</button>
   </view>
 </view>

@@ -328,7 +328,8 @@ page{
   text-align: center;
   border-radius: 38rpx;
   margin-top: 62rpx;
-  box-shadow: 0 4rpx 12rpx 0 rgba(198, 9, 76, 0.2);
+  background-color: rgba(111, 212, 230, 1);
+  box-shadow: 0 4rpx 12rpx 0 rgba(98, 163, 197, 0.5);
 }
 .login-btn:before{
   content: '';

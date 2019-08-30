@@ -16,7 +16,7 @@
             <view wx:if="{{coupon.threshold_text}}" class="threshold">{{coupon.threshold_text}}</view>
           </view>
           <view class="right-box">
-            <view class="coupon-title">{{coupon.title}}阿斯顿发理解拉萨家 阿斯利康的风景阿里舒服就阿</view>
+            <view class="coupon-title">{{coupon.title}}</view>
             <view wx:if="{{coupon.tip}}" class="coupon-tip">{{coupon.tip}}</view>
           </view>
           <view class="receive-btn">

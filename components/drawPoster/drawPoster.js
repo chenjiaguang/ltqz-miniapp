@@ -1,15 +1,5 @@
 // components/drawPoster/drawPoster.js
 import util from '../../utils/util.js'
-const app = getApp()
-
-let systemInfo = app.globalData.systemInfo || wx.getSystemInfoSync()
-let MenuButtonInfo = app.globalData.MenuButtonInfo || wx.getMenuButtonBoundingClientRect()
-
-const statusBarHeight = systemInfo.statusBarHeight
-const menuTopSpace = MenuButtonInfo.top - statusBarHeight
-const menuHeight = MenuButtonInfo.height
-const navBoxHeight = menuTopSpace * 2 + menuHeight // 导航胶囊上下分别留6px的间隔
-const navWrapperHeight = statusBarHeight + navBoxHeight
 
 Component({
   /**
@@ -26,7 +16,6 @@ Component({
    * 组件的初始数据
    */
   data: {
-    navWrapperHeight,
     fetching: false, // 是否正在拉取数据
     drawing: false, // 是否正在画图
     cardDrawing: false, // 是否正在画卡片图
@@ -45,7 +34,7 @@ Component({
   },
 
   attached: function () {
-    // this.getPosterData(149)
+    
   },
 
   /**
@@ -380,14 +369,8 @@ Component({
       ctx.stroke()
       ctx.restore()
       if ((idx + 1) == strokeData.length) {
-        // ctx.draw(true, () => {
-        //   this.drawTextFunc(ctx, drawSuccess)
-        // })
         this.drawTextFunc(ctx, drawSuccess, isCard)
       } else {
-        // ctx.draw(true, () => {
-        //   this.drawStroke(strokeData, ctx, idx + 1, drawSuccess)
-        // })
         this.drawStroke(strokeData, ctx, idx + 1, drawSuccess, isCard)
       }
     },
@@ -434,24 +417,10 @@ Component({
         for (let b = 0; b < row.length; b++) {
           ctx.fillText(row[b], alignObj[textData[idx].textAlign] == 'center' ? (textData[idx].left + textData[idx].width / 2) : textData[idx].left + parseInt(textData[idx].paddingLeft) + parseInt(textData[idx].borderLeftWidth), textData[idx].top + parseInt(textData[idx].paddingTop) + parseInt(textData[idx].borderTopWidth) + parseInt(textData[idx].lineHeight) * (b + (1 / 2)), textData[idx].width)
           this.drawTextThroughLine(textData[idx], ctx, b)
-          // if (textData[idx].textDecoration.indexOf('line-through') !== -1) { // 存在line-through样式，则画删除线
-          //   ctx.moveTo(textData[idx].left, textData[idx].top + parseInt(textData[idx].paddingTop) + parseInt(textData[idx].borderTopWidth) + parseInt(textData[idx].lineHeight) * (b + (1 / 2)))
-          //   ctx.lineTo(textData[idx].left + ctx.measureText(row[b]).width, textData[idx].top + parseInt(textData[idx].paddingTop) + parseInt(textData[idx].borderTopWidth) + parseInt(textData[idx].lineHeight) * (b + (1 / 2)))
-          //   ctx.lineWidth = 1
-          //   ctx.strokeStyle = textData[idx].textDecoration.replace('line-through solid ', '')
-          //   ctx.stroke()
-          // }
         }
       } else {
         ctx.fillText(textData[idx].dataset.text, alignObj[textData[idx].textAlign] == 'center' ? (textData[idx].left + textData[idx].width / 2) : textData[idx].left + parseInt(textData[idx].paddingLeft) + parseInt(textData[idx].borderLeftWidth), textData[idx].top + parseInt(textData[idx].paddingTop) + parseInt(textData[idx].borderTopWidth) + parseInt(textData[idx].lineHeight) / 2, textData[idx].width)
         this.drawTextThroughLine(textData[idx], ctx, 0)
-        // if (textData[idx].textDecoration.indexOf('line-through') !== -1) { // 存在line-through样式，则画删除线
-        //   ctx.moveTo(textData[idx].left, textData[idx].top + parseInt(textData[idx].paddingTop) + parseInt(textData[idx].borderTopWidth) + parseInt(textData[idx].lineHeight) / 2)
-        //   ctx.lineTo(textData[idx].left + ctx.measureText(textData[idx].dataset.text).width, textData[idx].top + parseInt(textData[idx].paddingTop) + parseInt(textData[idx].borderTopWidth) + parseInt(textData[idx].lineHeight) / 2)
-        //   ctx.lineWidth = 1
-        //   ctx.strokeStyle = textData[idx].textDecoration.replace('line-through solid ', '')
-        //   ctx.stroke()
-        // }
       }
       ctx.restore()
       this.textLen -= 1
@@ -507,9 +476,6 @@ Component({
           }, 200)
         })
       } else {
-        // ctx.draw(true, () => {
-        //   this.drawText(textData, ctx, idx + 1, drawSuccess)
-        // })
         this.drawText(textData, ctx, idx + 1, drawSuccess, isCard)
       }
     },
@@ -552,9 +518,6 @@ Component({
         scrollOffset: true,
         computedStyle: ['fontSize', 'fontFamily', 'color', 'lineHeight', 'textAlign', 'paddingLeft', 'paddingTop', 'borderLeftWidth', 'borderTopWidth', 'textDecoration']
       }, res => {
-        // const arr = res.map(item => {
-        //   return { fontsize: item.fontSize, dataset: item.dataset, lineHeight: item.lineHeight, color: item.color }
-        // })
         this.drawText(res, ctx, 0, drawSuccess, isCard)
       }).exec()
     },
@@ -588,6 +551,7 @@ Component({
           _obj.hAvatar = (data.user && data.user.avatar) ? data.user.avatar : ''
           _obj.hName = (data.user && data.user.nick_name) ? data.user.nick_name : '我'
           _obj.hTip = (data.sale_type == 2 && tuan_id) ? '发起了拼团，邀请你参与拼团~' : '发现了一个宝贝，想要跟你分享~'
+          _obj.sAvatar = (data.shop && data.shop.logo_url) ? data.shop.logo_url : ''
           _obj.banner = data.product_cover_url || data.cover_url
           _obj.title = data.title
           _obj.priceNum = data.price_num
@@ -699,11 +663,6 @@ Component({
         let passShareFunc = page.onShareAppMessage
         page._onShareAppMessage = passShareFunc
         page.onShareAppMessage = function () {
-          // return {
-          //   title: (saleType == 2 && tuanId && hName) ? (hName + '邀请你参与拼团') : title,
-          //   path: path,
-          //   imageUrl: localCardPoster
-          // }
           return {
             title: `${hName}向你推荐：${title}`,
             path: path,
@@ -722,11 +681,6 @@ Component({
       const page = pages[pages.length - 1]
       let passShareFunc = page._onShareAppMessage
       page.onShareAppMessage = passShareFunc
-      // this.setData({
-      //   canShareFriend: false
-      // }, () => {
-      //   this.triggerEvent('statuschange', { fetching: this.data.fetching, drawing: this.data.drawing, cardDrawing: this.data.cardDrawing, canShareFriend: this.data.canShareFriend, canSharePengyouquan: this.data.canSharePengyouquan })
-      // })
     },
     savePoster: function () {
       const {localPoster } = this.data

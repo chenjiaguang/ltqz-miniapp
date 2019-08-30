@@ -85,7 +85,7 @@ Page({
         //   return ticket.name + 'x' + ticket.quantity
         // }).join('，') + '，共计￥' + item.order.js_price
         item.tableContent = []
-        item.tableContent.push({title: '商品名称', content: item.product_name, c_color: '#637BD9'})
+        item.tableContent.push({title: '商品名称', content: item.product_name, c_color: '#637BD9', isGoods: true, goodsid: item.product_id})
         item.tableContent.push({title: '预计收入', content: '¥' + item.order.js_price})
         item.tableContent.push({title: '已购数量', content: item.ticket.map((ticket) => {
           return ticket.name + 'x' + ticket.quantity

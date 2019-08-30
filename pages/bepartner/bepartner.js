@@ -216,7 +216,7 @@ Page({
   },
 
   getApplyInfo: function () {
-    if (!util.checkLogin()) { // 无token状态
+    if (!util.checkLogin()) { // 展示无token状态
       this.setData({
         isLogin: false
       })

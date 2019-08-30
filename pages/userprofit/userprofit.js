@@ -15,7 +15,7 @@ Page({
     show_has_remit: 0,
     show_freeze_remit: 0,
     show_unfreeze_remit: 0,
-    show_today_remit: 0,
+    show_no_read_remit: 0,
     entrances: [{
         title: '收益明细',
         path: '/pages/userprofitdetail/userprofitdetail',
@@ -117,7 +117,7 @@ Page({
       let has_remit = util.formatMoney(res.data.has_remit)
       let freeze_remit = util.formatMoney(res.data.freeze_remit)
       let unfreeze_remit = util.formatMoney(res.data.unfreeze_remit)
-      let today_remit = util.formatMoney(res.data.today_remit)
+      let no_read_remit = util.formatMoney(res.data.no_read_remit)
       let today_tx = util.formatMoney(res.data.today_tx)
       let _obj = {}
       _obj.show_total = total.showMoney
@@ -135,13 +135,12 @@ Page({
       _obj.freeze_remit = freeze_remit.money
       _obj.show_unfreeze_remit = unfreeze_remit.showMoney
       _obj.unfreeze_remit = unfreeze_remit.money
-      _obj.show_today_remit = today_remit.showMoney
-      _obj.today_remit = today_remit.money
       _obj.show_today_tx = today_tx.showMoney
       _obj.today_tx = today_tx.money
-      _obj['entrances[0].subTitle'] = '今日新增' + (today_remit.showMoney || 0) + '元'
-      _obj['entrances[0].noRead'] = res.data.no_read_remit || 0
-      _obj['entrances[1].subTitle'] = '今日提现' + (today_tx.showMoney || 0) + '元'
+      _obj.show_no_read_remit = no_read_remit.showMoney
+      _obj.no_read_remit = no_read_remit.money
+      _obj['entrances[0].subTitle'] = no_read_remit.money ? ('新增收益' + (no_read_remit.showMoney || 0) + '元') : ''
+      _obj['entrances[0].noRead'] = no_read_remit.money || 0
       _obj.withdraw = can_remit.money >= min_tx_amount.money
       this.setData(_obj)
     }).catch(err => {

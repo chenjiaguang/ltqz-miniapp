@@ -9,7 +9,7 @@
   <view slot="top" class="reject-view{{areaFocus ? ' focused' : ' blured'}}" catchtap="stopPropagation">
     <view class="reject-header">拒绝退款</view>
     <view class="reject-tip">确定拒绝此退款申请吗？为避免出现问题，请填写拒绝退款的原因：</view>
-    <textarea class="textarea-view" value="{{rejectRecord}}" adjust-position="{{false}}" placeholder="请填写拒绝原因" placeholder-style="color:#999999" bindinput="rejectRecordInput" bindfocus="areaFocus" bindblur="areaBlur"></textarea>
+    <textarea class="textarea-view" value="{{rejectRecord}}" maxlength="{{50}}" adjust-position="{{false}}" placeholder="请填写拒绝原因" placeholder-style="color:#999999" bindinput="rejectRecordInput" bindfocus="areaFocus" bindblur="areaBlur"></textarea>
     <view class="line-separator-h" style="margin-top:22rpx"></view>
     <view class="button-box">
       <view class="button-cancel" catchtap="hideRejectModal">取消</view>

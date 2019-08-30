@@ -41,7 +41,7 @@ Component({
    */
   methods: {
     goLogin: function () {
-      util.checkLogin()
+      util.checkLogin('navPermission')
     },
     makePhoneCall: function (e) {
       let {phone} = e.currentTarget.dataset

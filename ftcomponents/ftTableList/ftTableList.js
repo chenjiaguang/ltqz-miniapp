@@ -60,11 +60,14 @@ Component({
    */
   methods: {
     contentTap: function (e) {
-      console.log('dffd')
-      const {content, isphone} = e.currentTarget.dataset
+      const {content, isphone, isgoods, goodsid} = e.currentTarget.dataset
       if (isphone && content) {
         wx.makePhoneCall({
           phoneNumber: content.toString()
+        })
+      } else if (isgoods && goodsid) {
+        this.navigateTo({
+          url: '/pages/goodsdetail/goodsdetail?id=' + goodsid
         })
       }
     }

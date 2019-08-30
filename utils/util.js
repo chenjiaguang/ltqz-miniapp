@@ -180,20 +180,24 @@ const relogin = () => {
           storageHelper.setStorage('uavatar', avatar || '')
           storageHelper.setStorage('unickname', nick_name || '')
           storageHelper.setStorage('uphone', phone || '')
+          const url = ('/' + getUrl(page.route, page.options)) || '/pages/index/index'
+          storageHelper.setStorage('temToken', '')
           if (phone) { // 有手机号
-            storageHelper.setStorage('temToken', '')
             storageHelper.setStorage('token', token)
-            const url = ('/' + getUrl(page.route, page.options)) || '/pages/index/index'
-            page.reLaunch({
-              url: url,
-              success: res => {
+          } else {
+            storageHelper.setStorage('token', '')
+          }
+          wx.reLaunch({ // 这里用wx.relaunch而page.reLaunch在重新登录的时候不改变原路径
+            url: url,
+            success: res => {
+              if (phone) {
                 wx.showToast({
                   title: '您的登录信息过期，已自动为您更新',
                   icon: 'none'
                 })
               }
-            })
-          }
+            }
+          })
         }
       }).catch(err => {
         storageHelper.setStorage('token', '')
@@ -223,6 +227,7 @@ const request = (url, data, config = {}) => {
       success: function(res) {
         if (res.data.error && (res.data.error == 401)) {
           const permissionTimeStamp = storageHelper.getStorage('permissionTimeStamp')
+          console.log('401', timeStamp, permissionTimeStamp, timeStamp)
           if (permissionTimeStamp && timeStamp < permissionTimeStamp) {
             return false
           }

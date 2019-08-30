@@ -22,8 +22,8 @@
       </view>
     </view>
   </view>
-  <view class="card-statement{{showMore ? ' show' : ''}}">
-    <view class="card-statement-content">{{thresholdTypeText[item.threshold_type] || ''}}{{item.extra_detail}}</view>
+  <view class="card-statement{{showMore ? ' show' : ''}}" style="height:{{showMore ? stateContentHeight : 0}}px">
+    <view id="card-statement-content" class="card-statement-content">{{thresholdTypeText[item.threshold_type] || ''}}{{item.extra_detail}}</view>
   </view>
 </view>
   

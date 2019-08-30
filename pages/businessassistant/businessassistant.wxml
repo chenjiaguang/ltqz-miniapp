@@ -40,7 +40,9 @@
   <view class="block-separator"></view>
   <view class='card other-entrance-box'>
     <ft-entrance height="84rpx" title="{{other_entrances[0].title}}" extra-data="{{other_entrances[0]}}" catchtap="entranceTap" />
-    <ft-entrance height="84rpx" top-border title="{{other_entrances[1].title}}" extra-data="{{other_entrances[1]}}" catchtap="entranceTap" />
+    <ft-entrance height="84rpx" top-border title="{{other_entrances[1].title}}" extra-data="{{other_entrances[1]}}" catchtap="entranceTap">
+      <view slot="content" wx:if="{{wait_refund && wait_refund !== '0'}}" class="refund-num theme-bg"><text>{{wait_refund}}</text></view>
+    </ft-entrance>
     <ft-entrance height="84rpx" top-border title="{{other_entrances[2].title}}" extra-data="{{other_entrances[2]}}" catchtap="entranceTap">
       <ft-star-box slot="content" size="{{30}}" score="{{data.rate}}"/>
     </ft-entrance>

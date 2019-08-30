@@ -7,7 +7,7 @@
     <text>¥{{goodsStatusData.show_min_origin_price}}</text>
   </view>
   <!-- <view class="status{{goodsStatusData.status == 1 ? ' status-able' : ' status-other'}}">{{statusText}}</view> -->
-  <view wx:if="{{uid}}" class="right-box">
+  <view class="right-box">
     <view class="line-separator-v" style="margin-right:28rpx;margin-top:8rpx"></view>
     <share-button catchshare="shareBtnTap" style="margin-top:4rpx" />
   </view>
@@ -48,7 +48,7 @@
       <view class='title'>{{goodsStatusData.title}}</view>
       <view class='intro'>{{goodsStatusData.desc}}</view>
     </view>
-    <view wx:if="{{uid && !(goodsStatusData.sale_type == 1 || (goodsStatusData.sale_type == 3 && goodsStatusData.qg_status != 2 && goodsStatusData.qg_status != 3))}}" class='normal-share'>
+    <view wx:if="{{!(goodsStatusData.sale_type == 1 || (goodsStatusData.sale_type == 3 && goodsStatusData.qg_status != 2 && goodsStatusData.qg_status != 3))}}" class='normal-share'>
       <share-button catchshare="shareBtnTap" />
     </view>
   </view>

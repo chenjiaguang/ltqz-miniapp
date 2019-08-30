@@ -94,7 +94,7 @@ Page({
     console.log('fetchOrder')
     util.request('/order/detail', {id}).then(res => {
       if (res.error == 0 && res.data) {
-        let navWrapperHeight = this.data.navWrapperHeight || 0
+        // let navWrapperHeight = this.data.navWrapperHeight || 0
         res.data.ticket_text = res.data.ticket.map((item) => {
           return item.name + '×' + item.quantity
         }).join(',')
@@ -115,15 +115,6 @@ Page({
           clearInterval(this.countdownTimer)
         }
         if (res.data.remain_time) {
-          let app = getApp()
-          let systemInfo = app.globalData.systemInfo || wx.getSystemInfoSync()
-          let MenuButtonInfo = app.globalData.MenuButtonInfo || wx.getMenuButtonBoundingClientRect()
-
-          const statusBarHeight = systemInfo.statusBarHeight
-          const menuTopSpace = MenuButtonInfo.top - statusBarHeight
-          const menuHeight = MenuButtonInfo.height
-          const navBoxHeight = menuTopSpace * 2 + menuHeight // 导航胶囊上下分别留6px的间隔
-          navWrapperHeight = statusBarHeight + navBoxHeight
           countdown = res.data.remain_time
           countdown_text = '剩余支付时间' + this.secondToMinute(res.data.remain_time)
           this.countdownTimer = setInterval(this.startCountdown, 1000)
@@ -143,8 +134,7 @@ Page({
           product: product,
           order: res.data,
           traveler_infos: res.data.traveler_infos,
-          contact_info: contact_info,
-          navWrapperHeight
+          contact_info: contact_info
         })
       }
     }).catch(err => { })
@@ -308,7 +298,16 @@ Page({
           icon: 'none',
           duration: 3000
         })
-        this.triggerEvent('orderListRefresh')
+        this.fetchOrder(order_id)
+        const pages = getCurrentPages()
+        for (let i = 0; i < pages.length; i++) {
+          if (pages[i].name === 'goodsdetail' && pages[i].data && pages[i].data.id && pages[i].fetchGoods) { // 刷新活动详情页信息
+            pages[i].fetchGoods(pages[i].data.id)
+          }
+          if (pages[i].name === 'orderlist') { // 更新订单列表页的信息
+            storageHelper.setStorage('orderListRefresh', '1')
+          }
+        }
       } else {
         if (res.msg) {
           wx.showToast({
@@ -420,6 +419,15 @@ Page({
                   icon: 'none'
                 })
                 this.fetchOrder(id) // 重新获取数据
+                const pages = getCurrentPages()
+                for (let i = 0; i < pages.length; i++) {
+                  if (pages[i].name === 'goodsdetail' && pages[i].data && pages[i].data.id && pages[i].fetchGoods) { // 刷新活动详情页信息
+                    pages[i].fetchGoods(pages[i].data.id)
+                  }
+                  if (pages[i].name === 'orderlist') { // 更新订单列表页的信息
+                    storageHelper.setStorage('orderListRefresh', '1')
+                  }
+                }
               } else {
                 if (res.msg) {
                   wx.showToast({

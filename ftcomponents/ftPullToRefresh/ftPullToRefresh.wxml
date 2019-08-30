@@ -4,7 +4,7 @@
   <image class="icon" src="/assets/images/refresh_icon.png" mode="aspectFit" />
 </view>
 <slot name="header"></slot>
-<view class="wrapper" change:refreshed="{{m1.onRefreshed}}" refreshed="{{refreshed}}" change:refreshing="{{m1.onRefreshing}}" refreshing="{{refreshing}}" data-platform="{{platform}}" data-dist-max="{{distMax}}" data-icon-dist="{{iconDist}}" data-reach-top="{{reachTop}}" bind:touchstart="{{m1.touchStart}}" bind:touchmove="{{m1.touchMove}}" bind:touchend="{{m1.touchEnd}}">
+<view class="wrapper" change:refreshed="{{m1.onRefreshed}}" refreshed="{{refreshed}}" change:refreshing="{{m1.onRefreshing}}" refreshing="{{refreshing}}" data-platform="{{_nav_data_.platform}}" data-dist-max="{{distMax}}" data-icon-dist="{{iconDist}}" data-reach-top="{{reachTop}}" bind:touchstart="{{m1.touchStart}}" bind:touchmove="{{m1.touchMove}}" bind:touchend="{{m1.touchEnd}}">
   <view class="intersection-dot"></view>
   <slot name="body"></slot>
 </view>

@@ -91,14 +91,6 @@ Page({
       pn: pn
     }
     util.request('/coupon/list', rData).then(res => {
-      // this.setData({
-      //   loaded: true,
-      //   page: {
-      //     pn: 1,
-      //     is_end: true
-      //   }
-      // })
-      // return false
       if ((res.error === 0 || res.error === '0') && res.data) {
         let {
           list,

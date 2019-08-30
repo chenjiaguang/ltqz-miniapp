@@ -17,7 +17,7 @@
         <view wx:if="{{type == 3}}" class='tag-item theme-color theme-border-color'><text>{{can_refund ? '发货前可申请退款' : '本商品不支持退款'}}</text></view>
         <view wx:else class='tag-item theme-color theme-border-color'><text>本商品{{can_refund ? '' : '不'}}支持退款</text></view>
         <view wx:if="{{include_bx}}" class='tag-item theme-color theme-border-color'><text>费用中包含保险</text></view>
-        <view wx:if="{{has_postage}}" class='tag-item theme-color theme-border-color'><text>包邮</text></view>
+        <view wx:if="{{type == 3}}" class='tag-item theme-color theme-border-color'><text>{{has_postage ? '包邮' : '邮费到付'}}</text></view>
       </view>
     </block>
 
@@ -70,7 +70,8 @@
           <text class="gender-icon lutufont lutu-next"></text>
         </view>
       </picker>
-      <input wx:else class='contact-item-input' type="{{item.type || 'text'}}" value="{{contact[index].value}}" placeholder-class="input-placeholder" type="text" placeholder="请填写{{item.label}}" bindinput="contactInput" data-idx="{{index}}"></input>
+      <input wx:else class='contact-item-input' type="{{item.type || 'text'}}" value="{{contact[index].value}}" placeholder-class="input-placeholder" type="text" placeholder="请输入{{item.label}}" bindinput="contactInput" data-idx="{{index}}"></input>
+      <view class="line-separator-h" style="width:580rpx;position:absolute;right:0;bottom:0"></view>
     </view>
   </view>
   <!-- 物流信息 -->
@@ -135,7 +136,7 @@
               <view class='buyfor-center'>
                 <view class='buyfor-name'>{{buyfor.name}}</view>
                 <!-- <view wx:if="{{buyfor.tip}}" class='buyfor-idcard disabled'>{{buyfor.tip}}</view> -->
-                <view wx:if="{{include_bx && !buyfor.id_number}}" class='buyfor-idcard disabled'>请填写身份证号</view>
+                <view wx:if="{{include_bx && !buyfor.id_number}}" class='buyfor-idcard disabled'>请输入身份证号</view>
                 <view wx:elif="{{include_bx && buyfor.id_number}}" class='buyfor-idcard'><text>身份证 </text><text wx:for="{{buyfor.id_number}}" wx:key="*this">{{index >= 4 && index < (buyfor.id_number.length - 4) ? '*' : item}}</text></view>
                 <view wx:else class='buyfor-idcard'></view>
               </view>

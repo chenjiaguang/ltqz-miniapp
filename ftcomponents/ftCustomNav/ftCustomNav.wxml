@@ -1,23 +1,23 @@
 <!--ftcomponents/ftCustomNav/ftCustomNav.wxml-->
-<view style="height:{{fixed ? 0 : navBoxHeight}}px;padding-top:{{fixed ? 0 : statusBarHeight}}px;box-sizing:content-box;background-color:{{fixedAdapterBg}};position:relative;overflow:hidden;">
+<view style="height:{{fixed ? 0 : _nav_data_.navBoxHeight}}px;padding-top:{{fixed ? 0 : _nav_data_.statusBarHeight}}px;padding-bottom:{{_nav_data_.navPaddingBottom}}px;box-sizing:content-box;background-color:{{fixedAdapterBg}};position:relative;overflow:hidden;">
   <view class="intersection-dot" style="position:absolute;left:0;top:0;width:100%;height:{{observeDist}}px"></view>
 </view>
-<view class="wrapper{{showNav ? ' wrapper-show' : ' wrapper-show'}}{{tapable ? '' : ' wrapper-disabled'}}" style="color:{{color}}">
+<view class="wrapper{{showNav ? ' wrapper-show' : ' wrapper-show'}}{{tapable ? '' : ' wrapper-disabled'}}" style="color:{{color}};padding-bottom:{{_nav_data_.navPaddingBottom}}px">
   <view class="nav-bg" style="background-color:{{bg}};opacity:{{showNav ? 1 : 0}}"></view>
-  <view class='status-bar' style="height:{{statusBarHeight}}px"></view>
-  <view class='nav-box' style="height:{{navBoxHeight}}px">
+  <view class='status-bar' style="height:{{_nav_data_.statusBarHeight}}px"></view>
+  <view class='nav-box' style="height:{{_nav_data_.navBoxHeight}}px">
     <!-- 左侧按钮 -->
-    <view class='left-btns' style="height:{{menuHeight}}px;left:7px;top:{{(navBoxHeight - menuHeight) / 2}}px">
+    <view class='left-btns' style="height:{{_nav_data_.menuHeight}}px;left:7px;top:{{(_nav_data_.navBoxHeight - _nav_data_.menuHeight) / 2}}px">
       <view wx:if="{{showBack}}" class="icon-button" catchtap="goBack">
-        <button class="lutufont lutu-back icon icon-{{color === '#ffffff' ? 'black' : 'white'}}{{showNav ? ' show' : ' hide'}}" style="width:{{menuHeight}}px;height:{{menuHeight}}px;line-height:{{menuHeight}}px;color:{{color}}"></button>
+        <button class="lutufont lutu-back icon icon-{{color === '#ffffff' ? 'black' : 'white'}}{{showNav ? ' show' : ' hide'}}" style="width:{{_nav_data_.menuHeight}}px;height:{{_nav_data_.menuHeight}}px;line-height:{{_nav_data_.menuHeight}}px;color:{{color}}"></button>
       </view>
       <view wx:if="{{showHome}}" class="icon-button" catchtap="goHome">
-        <button class="lutufont lutu-home icon icon-{{color === '#ffffff' ? 'black' : 'white'}}{{showNav ? ' show' : ' hide'}}" style="width:{{menuHeight}}px;height:{{menuHeight}}px;line-height:{{menuHeight}}px;color:{{color}}"></button>
+        <button class="lutufont lutu-home icon icon-{{color === '#ffffff' ? 'black' : 'white'}}{{showNav ? ' show' : ' hide'}}" style="width:{{_nav_data_.menuHeight}}px;height:{{_nav_data_.menuHeight}}px;line-height:{{_nav_data_.menuHeight}}px;color:{{color}}"></button>
       </view>
     </view>
     <view class="title{{showHideChanged ? (showNav ? ' show' : ' hide') : ((hideDist && fixed) ? ' hide' : ' show')}}">{{title}}</view>
   </view>
   <view class="line-separator-h" style="opacity:{{showNav ? 1 : 0}}"></view>
 </view>
-<view wx:if="{{env === 'dev'}}" class="env" style="width:{{MenuButtonInfo.width}}px;height:{{MenuButtonInfo.height}}px;top:{{MenuButtonInfo.top}}px;left:{{MenuButtonInfo.left}}px;border-radius:{{MenuButtonInfo.height / 2}}px"></view>
+<view wx:if="{{_nav_data_.env === 'dev'}}" class="env" style="width:{{_nav_data_.menuWidth}}px;height:{{_nav_data_.menuHeight}}px;top:{{_nav_data_.menuTop}}px;left:{{_nav_data_.menuLeft}}px;border-radius:{{_nav_data_.menuRadius}}px"></view>
   

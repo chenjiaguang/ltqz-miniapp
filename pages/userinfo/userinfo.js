@@ -20,7 +20,8 @@ Page({
       1: '男',
       2: '女'
     },
-    user: null
+    user: null,
+    loaded: false
   },
 
   /**
@@ -35,9 +36,12 @@ Page({
    */
   onReady: function() {
     util.request('/user/detail').then(res => {
-      this.setData({
-        user: res.data
-      })
+      if (res.error === 0 || res.error === '0' && res.data) {
+        this.setData({
+          user: res.data,
+          loaded: true
+        })
+      }
     }).catch(err => {
       console.log('err', err)
     })

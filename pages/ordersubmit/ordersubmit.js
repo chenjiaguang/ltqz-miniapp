@@ -9,6 +9,7 @@ Page({
    */
   data: {
     shippingInfo: {},
+    couponLoading: false,
     coupons: [],
     couponSelected: [],
     couponPrice: 0,
@@ -278,7 +279,7 @@ Page({
   },
 
   submitOrder: function (e) {
-    const { type, id, fromUid, fill_info, fill_form, selectedTickets, selectedSessions, contact, buy_for, submitting, clause_checked, saletype, tuan_id, totalPrice, shippingInfo: { provinceName, cityName, countyName, detailInfo, telNumber, userName}} = this.data
+    const { type, id, fromUid, fill_info, fill_form, selectedTickets, selectedSessions, contact, buy_for, submitting, clause_checked, saletype, tuan_id, totalPrice, shippingInfo: { provinceName, cityName, countyName, detailInfo, telNumber, userName}, coupons, couponSelected} = this.data
     const {formId} = e.detail
     console.log('formId', formId)
     const contactEmptyItem = contact.filter(item => !item.value)
@@ -291,7 +292,7 @@ Page({
       return false
     } else if (contactEmptyItem && contactEmptyItem.length) { // 需要填写出行人信息 且 没有选中的出行人
       wx.showToast({
-        title: contactEmptyItem[0].type == 'gender' ? '请选择性别' : ('请填写' + contactEmptyItem[0].label),
+        title: contactEmptyItem[0].type == 'gender' ? '请选择性别' : ('请输入' + contactEmptyItem[0].label),
         icon: 'none'
       })
       return false
@@ -344,6 +345,11 @@ Page({
     let buy_for_ids = buy_for.map(item => item.id)
     const tuanid = saletype == 2 ? (tuan_id || 0) : null
 
+    let coupon_id = ''
+    if (coupons && coupons.length && couponSelected && couponSelected.length) { // 有选中的优惠券
+      coupon_id = couponSelected.map(item => coupons[item].id).join(',')
+    }
+
     let rData = {
       id: id,
       ticket: ticket,
@@ -353,7 +359,8 @@ Page({
       total_price: totalPrice,
       form_id: formId,
       form: form,
-      contact: contact_info
+      contact: contact_info,
+      coupon_id
     }
     this.setData({
       submitting: true
@@ -396,16 +403,8 @@ Page({
   },
 
   getHalfScreenHeight: function () {
-    const systemInfo = wx.getSystemInfoSync()
-    const rpx = systemInfo.windowWidth / 750
-    const halfHeight = systemInfo.windowHeight / 2
-    const isIos = systemInfo.system.indexOf('iOS') !== -1
-    const higher = systemInfo.screenHeight > 736
-    let extraBottom = false
-    if (isIos && higher) {
-      extraBottom = true
-    }
-    const wrapperHeight = parseInt(halfHeight - (88 + 80 + 16 + (extraBottom ? 68 : 0)) * rpx)
+    const {windowHeight} = this.data._nav_data_
+    const halfHeight = windowHeight / 2
     this.setData({
       halfScreenHeight: halfHeight + 'px'
     })
@@ -470,7 +469,7 @@ Page({
     let { buyfors, include_bx} = this.data
     let _obj = {}
     if (include_bx && !buyfors[idx].id_number) {
-      _obj['buyfors[' + idx + '].tip'] = '请填写身份证号'
+      _obj['buyfors[' + idx + '].tip'] = '请输入身份证号'
       const event = {currentTarget: {dataset: {buyfor: buyfors[idx], needidcard: true}}}
       this.editBuyfor(event)
     } else {
@@ -512,62 +511,109 @@ Page({
   },
 
   fetchCoupon: function (totalPriceCal) {
-    setTimeout(() => {
-      const coupons = [
-        {
-          id: '1',
-          price: 50,
-          show_price: 0.50,
-          threshold: 0,
-          threshold_text: '无金额门槛',
-          title: '此处为优惠券名称此处为优 惠券名称',
-          tip: '2019-08-13 至 2019-08-20',
-          selected: true
-        },
-        {
-          id: '2',
-          price: 20,
-          show_price: 0.20,
-          threshold: 0,
-          threshold_text: '无金额门槛',
-          title: '此处为优惠券名称此处',
-          tip: '2019-08-13 至 2019-08-20',
-          selected: false
-        },
-        {
-          id: '3',
-          price: 20000,
-          show_price: 200,
-          threshold: 0,
-          threshold_text: '无金额门槛',
-          title: '此处为优惠券名称此处为优 惠券名称',
-          tip: '自领取之日起X天内有效',
-          selected: false
-        },
-        {
-          id: '4',
-          price: 2000,
-          show_price: 20,
-          threshold: 10000,
-          threshold_text: '满100可用',
-          title: '此处为优惠券名称此处为优 惠券名称',
-          tip: '在2019-08-20前可用',
-          selected: false
-        },
-        {
-          id: '5',
-          price: 200,
-          show_price: 2,
-          threshold: 0,
-          threshold_text: '无金额门槛',
-          title: '此处为优惠券名称此处为优 惠券名称',
-          tip: '2019-08-13 至 2019-08-20',
-          selected: false
-        }
-      ]
-      this.initCoupon(coupons, totalPriceCal)
-    }, 1000)
+    const {
+      couponLoading,
+      id,
+      shop_id
+    } = this.data
+    if (couponLoading) { // 正在加载 或 最后一页并且不是刷新
+      return false
+    }
+    this.setData({
+      couponLoading: true
+    })
+    let rData = {
+      product_id: id,
+      shop_id
+    }
+    util.request('/coupon/list', rData).then(res => {
+      if ((res.error === 0 || res.error === '0') && res.data) {
+        console.log('fff', res)
+        let coupons = (res.data && res.data.length) ? res.data : []
+        coupons = coupons.map(item => {
+          const priceObj = util.formatMoney(item.reduction_amount)
+          const thresholdObj = util.formatMoney(item.full_amount)
+          return {
+            id: item.id,
+            title: item.title,
+            price: priceObj.money,
+            show_price: priceObj.showMoney,
+            threshold: thresholdObj.money,
+            threshold_text: (thresholdObj.money && thresholdObj.money !== '0' && thresholdObj.money != '免费') ? `满${thresholdObj.showMoney}可用` : '无金额门槛',
+            tip: item.time_desc,
+            extra_detail: item.rule_desc,
+            threshold_type: item.threshold_type,
+            selected: false
+          }
+        })
+        this.initCoupon(coupons, totalPriceCal)
+      }
+    }).catch(err => {
+      console.log('catch')
+    }).finally(res => {
+      this.setData({
+        couponLoading: false
+      })
+    })
   },
+
+  // fetchCoupon: function (totalPriceCal) {
+  //   setTimeout(() => {
+  //     const coupons = [
+  //       {
+  //         id: '1',
+  //         price: 50,
+  //         show_price: 0.50,
+  //         threshold: 0,
+  //         threshold_text: '无金额门槛',
+  //         title: '此处为优惠券名称此处为优 惠券名称',
+  //         tip: '2019-08-13 至 2019-08-20',
+  //         selected: true
+  //       },
+  //       {
+  //         id: '2',
+  //         price: 20,
+  //         show_price: 0.20,
+  //         threshold: 0,
+  //         threshold_text: '无金额门槛',
+  //         title: '此处为优惠券名称此处',
+  //         tip: '2019-08-13 至 2019-08-20',
+  //         selected: false
+  //       },
+  //       {
+  //         id: '3',
+  //         price: 20000,
+  //         show_price: 200,
+  //         threshold: 0,
+  //         threshold_text: '无金额门槛',
+  //         title: '此处为优惠券名称此处为优 惠券名称',
+  //         tip: '自领取之日起X天内有效',
+  //         selected: false
+  //       },
+  //       {
+  //         id: '4',
+  //         price: 2000,
+  //         show_price: 20,
+  //         threshold: 10000,
+  //         threshold_text: '满100可用',
+  //         title: '此处为优惠券名称此处为优 惠券名称',
+  //         tip: '在2019-08-20前可用',
+  //         selected: false
+  //       },
+  //       {
+  //         id: '5',
+  //         price: 200,
+  //         show_price: 2,
+  //         threshold: 0,
+  //         threshold_text: '无金额门槛',
+  //         title: '此处为优惠券名称此处为优 惠券名称',
+  //         tip: '2019-08-13 至 2019-08-20',
+  //         selected: false
+  //       }
+  //     ]
+  //     this.initCoupon(coupons, totalPriceCal)
+  //   }, 1000)
+  // },
 
   initCoupon: function (coupons, totalPriceCal) {
     if (!coupons || !coupons.length || !totalPriceCal) { // 没有优惠券

@@ -63,10 +63,13 @@ Page({
     })
   },
 
+  goBack: function () {
+    this.navigateBack()
+  },
+
   login() {
     wx.login({
       success: res => { // login调用成功后授权按钮才可用
-        console.log('login', res)
         this.setData({
           disableAuth: false
         })

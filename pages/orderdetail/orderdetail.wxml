@@ -1,7 +1,7 @@
 <!--pages/orderdetail/orderdetail.wxml-->
 <ft-custom-nav title="{{navTitle}}" />
 <view class='page-orderdetail'>
-  <view class="left-time theme-bg-85{{(countdown > 0 && countdown_text) ? ' show' : ''}}" style="top:{{navWrapperHeight}}px"><text>{{countdown_text}}</text></view>
+  <view class="left-time theme-bg-85{{(countdown > 0 && countdown_text) ? ' show' : ''}}" style="top:{{_nav_data_.navHeight}}px"><text>{{countdown_text}}</text></view>
   
   <view class='row goods' bindtap='goGoodsDetail'>
     <image class='goods-cover' src="{{product.cover_url}}" mode="aspectFill"></image>
@@ -10,7 +10,7 @@
       <text wx:if="{{product.valid_btime && product.valid_etime}}" class='goods-time'>{{product.valid_btime}} 至 {{product.valid_etime}}</text>
       <text wx:if="{{product.address}}" class='goods-location'>{{product.address}}</text>
       <view wx:if="{{product.type == 3}}" class='tags-box'>
-        <view class='tag-item theme-color theme-border-color'><text>{{product.can_refund ? '发货前可申请退款' : '本商品不支持退款'}}</text></view>
+        <view class='tag-item theme-color theme-border-color'><text>{{can_refund ? '发货前可申请退款' : '本商品不支持退款'}}</text></view>
         <view class='tag-item theme-color theme-border-color'><text>{{product.has_postage ? '包邮' : '邮费到付'}}</text></view>
       </view>
     </view>
@@ -37,16 +37,16 @@
   </view>
 
   <!-- 物流信息 -->
-  <view wx:if="{{order.type == 3}}" class='logistics-info'>
+  <view wx:if="{{order.type == 3 && order.status != -1 && order.status != -2 && order.status != -3 && order.status != -4}}" class='logistics-info'>
     <view class='block-separator'></view>
     <view class='logistics-header'>物流信息</view>
-    <block wx:if="{{!(order.express_status_text || order.express_company || order.express_number)}}">
+    <block wx:if="{{!((order.express_status_text && order.express_status_text != '待发货') || order.express_company || order.express_number)}}">
       <view class="line-separator-h" style="width:718rpx;margin-left:32rpx"></view>
       <view class="logistics-content">
         <view class="logistics-content-tip">暂无物流信息</view>
       </view>
     </block>
-    <block wx:if="{{order.express_status_text}}">
+    <block wx:if="{{order.express_status_text && order.express_status_text != '待发货'}}">
       <view class="line-separator-h" style="width:718rpx;margin-left:32rpx"></view>
       <view class="logistics-content">
         <view class="logistics-content-title">快递状态</view>
@@ -99,7 +99,7 @@
       <text class='key'>购买数量</text>
       <text class='value'>{{order.ticket_text}}</text>
     </view>
-    <block wx:if="{{order.show_all_price}}">
+    <block wx:if="{{order.show_all_price && order.show_all_price != order.show_price}}">
       <view class='line-separator-h'></view>
       <view class='item row'>
         <text class='key'>订单金额</text>
@@ -175,7 +175,7 @@
           <text>立即支付</text>
         </view>
         <view wx:if="{{order.status == 1 || order.status == 2 || order.status == 3 || order.status == 5}}" class='bottom-inner-button ticket theme-color theme-border-color' bindtap='goGoodsTicket'>
-          <text>查看电子票</text>
+          <text>{{order.type == 3 ? '去评价' : '查看电子票'}}</text>
         </view>
       </view>
     </view>

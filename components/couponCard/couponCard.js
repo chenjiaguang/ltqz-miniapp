@@ -19,7 +19,16 @@ Component({
       '1': '无门槛：',
       '2': '指定商品：',
       '3': '指定商家：'
-    }
+    },
+    stateContentHeight: 0
+  },
+
+  ready: function () {
+    this.createSelectorQuery().select('#card-statement-content').boundingClientRect(rect => {
+      this.setData({
+        stateContentHeight: rect.height
+      })
+    }).exec()
   },
 
   /**
@@ -27,7 +36,10 @@ Component({
    */
   methods: {
     toggleMore: function () {
-      const {showMore} = this.data
+      const {showMore, stateContentHeight} = this.data
+      if (!stateContentHeight) {
+        return false
+      }
       this.setData({showMore: !showMore})
     }
   }

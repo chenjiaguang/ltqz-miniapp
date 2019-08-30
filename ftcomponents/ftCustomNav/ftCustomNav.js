@@ -1,17 +1,4 @@
 // ftcomponents/ftCustomNav/ftCustomNav.js
-const app = getApp()
-
-let systemInfo = app.globalData.systemInfo || wx.getSystemInfoSync()
-let MenuButtonInfo = app.globalData.MenuButtonInfo || wx.getMenuButtonBoundingClientRect()
-
-const statusBarHeight = systemInfo.statusBarHeight
-const menuTopSpace = MenuButtonInfo.top - statusBarHeight
-const menuHeight = MenuButtonInfo.height
-const navBoxHeight = menuTopSpace * 2 + menuHeight // 导航胶囊上下分别留6px的间隔
-const navUseableWidth = MenuButtonInfo.left - 20
-const navWrapperHeight = statusBarHeight + navBoxHeight
-const env = app.globalData.env
-MenuButtonInfo.radius = Math.ceil(MenuButtonInfo.height / 2)
 Component({
   /**
    * 组件的属性列表
@@ -56,20 +43,8 @@ Component({
       value: 0,
       observer: function (newVal, oldVal) {
         // 属性值变化时执行
-        let val = newVal
-        let dist = 0
-        const systemInfo = wx.getSystemInfoSync()
-        const rpx = systemInfo.windowWidth / 750
-        if (val) {
-          if (val.indexOf('rpx') !== -1) { // 传入的是rpx
-            dist = parseInt(val) * rpx
-          } else if (val.indexOf('%') !== -1) {
-            dist = systemInfo.windowHeight * (parseFloat(val) / 100)
-          } else {
-            dist = parseInt(val)
-          }
-          this.initObserver(dist)
-        }
+        const val = newVal
+        this.calHideDist(val)
       }
     },
     tapable: {
@@ -82,18 +57,11 @@ Component({
    * 组件的初始数据
    */
   data: {
-    env: env,
     observeDist: 0,
     showHideChanged: false,
     showNav: true,
     showBack: false,
-    showHome: false,
-    statusBarHeight: statusBarHeight,
-    navBoxHeight: navBoxHeight,
-    menuHeight: menuHeight,
-    useableWidth: navUseableWidth,
-    navHeight: navWrapperHeight,
-    MenuButtonInfo: MenuButtonInfo
+    showHome: false
   },
 
   attached: function () {
@@ -115,9 +83,24 @@ Component({
    * 组件的方法列表
    */
   methods: {
+    calHideDist: function (distVal) {
+      const {rpx, windowHeight} = this.data._nav_data_
+      let val = distVal
+      let dist = 0
+      if (val) {
+        if (val.indexOf('rpx') !== -1) { // 传入的是rpx
+          dist = parseInt(val) * rpx
+        } else if (val.indexOf('%') !== -1) {
+          dist = windowHeight * (parseFloat(val) / 100)
+        } else {
+          dist = parseInt(val)
+        }
+        this.initObserver(dist)
+      }
+    },
     initObserver(dist) {
       if (dist) {
-        let top = dist - this.data.navHeight
+        let top = dist - this.data._nav_data_.navHeight
         this.setData({
           observeDist: top
         })
@@ -154,20 +137,8 @@ Component({
     }
   },
   ready () {
-    let val = this.data.hideDist
-    let dist = 0
-    const systemInfo = wx.getSystemInfoSync()
-    const rpx = systemInfo.windowWidth / 750
-    if (val) {
-      if (val.indexOf('rpx') !== -1) { // 传入的是rpx
-        dist = parseInt(val) * rpx
-      } else if (val.indexOf('%') !== -1) {
-        dist = systemInfo.windowHeight * (parseFloat(val) / 100)
-      } else {
-        dist = parseInt(val)
-      }
-      this.initObserver(dist)
-    }
+    const val = this.data.hideDist
+    this.calHideDist(val)
   },
   detached() {
     this.clearObserver()

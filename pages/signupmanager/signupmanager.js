@@ -42,9 +42,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
-    const pxRatio = wx.getSystemInfoSync().width / 750
     this.setData({
-      pxRatio,
       id: options.id,
       product_id: options.product_id
     })
@@ -114,12 +112,18 @@ Page({
       const {genderText} = this.data
       res.data.js_price = util.formatMoney(res.data.js_price).showMoney
       res.data.list.forEach((item) => {
-        item.order.js_price = util.formatMoney(item.order.js_price).showMoney
+        item.js_price = util.formatMoney(item.js_price).showMoney
+        item.real_income = util.formatMoney(item.real_income).showMoney
         // item.content = item.ticket.map((ticket) => {
         //   return ticket.name + 'x' + ticket.quantity
         // }).join('，') + '，共计￥' + item.order.js_price
         item.tableContent = []
-        item.tableContent.push({title: '预计收入', content: '¥' + item.order.js_price})
+        if ((item.status == 6 || item.status == 7 || item.status == 1) && item.hx_status == 0) {
+          item.tableContent.push({title: '预计收入', content: '¥' + item.js_price})
+        } else {
+          item.tableContent.push({title: '实际收入', content: '¥' + item.real_income})
+        }
+        // item.tableContent.push({title: '预计收入', content: '¥' + item.order.js_price})
         item.tableContent.push({title: '已购数量', content: item.ticket.map((ticket) => {
           return ticket.name + 'x' + ticket.quantity
         }).join('，')})
@@ -233,10 +237,11 @@ Page({
         shippingIndex: this.shippingRecord[order_id.toString()].shippingIndex,
         shippingNumber: this.shippingRecord[order_id.toString()].shippingNumber
       })
-      this.shippingRecord[this.order_id.toString()] = {
-        shippingIndex,
-        shippingNumber
-      }
+    } else {
+      this.setData({
+        shippingIndex: '',
+        shippingNumber: ''
+      })
     }
     const ftModal = this.selectComponent('#c-ft-modal')
     if (ftModal && ftModal.show) {

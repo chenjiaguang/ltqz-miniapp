@@ -3,15 +3,6 @@ import util from '../../utils/util.js'
 import storageHelper from '../../utils/storageHelper.js'
 import statusHelper from '../../utils/statusHelper'
 
-let navHeight = 0
-const app =  getApp()
-let systemInfo = app.globalData.systemInfo || wx.getSystemInfoSync()
-let MenuButtonInfo = app.globalData.MenuButtonInfo || wx.getMenuButtonBoundingClientRect()
-
-const statusBarHeight = systemInfo.statusBarHeight
-const menuTopSpace = MenuButtonInfo.top - statusBarHeight
-const navBoxHeight = menuTopSpace * 2 + MenuButtonInfo.height
-navHeight = statusBarHeight + navBoxHeight
 Page({
   name: 'goodsdetail',
   /**
@@ -20,7 +11,6 @@ Page({
   data: {
     navTitle: '商品详情',
     tabFixed: false,
-    navHeight: navHeight,
     goodsLoaded: false, // 是否已加载数据
     commentLoaded: false, // 是否已加载评价
     fromUid: '',
@@ -224,6 +214,9 @@ Page({
             }
           })
         }
+        if (res.data.shop && (res.data.shop.rate || res.data.shop.rate === 0)) { // 商家评分显示小数点后1位
+          res.data.shop.rate = parseFloat(res.data.shop.rate).toFixed(1)
+        }
         this.initBottomData(res.data)
         
         this.setData(res.data, () => {
@@ -260,13 +253,13 @@ Page({
 
   changeTab: function (e) {
     const { idx, scrollid } = e.currentTarget.dataset
-    const systemInfo = wx.getSystemInfoSync()
-    const rpx = systemInfo.windowWidth / 750
+    const {rpx} = this.data._nav_data_
+    
     const query = wx.createSelectorQuery()
     query.select(scrollid).boundingClientRect()
     query.selectViewport().scrollOffset()
     query.exec(res => {
-      const scrollPos = res[0].top + res[1].scrollTop - (90 * rpx) - this.data.navHeight
+      const scrollPos = res[0].top + res[1].scrollTop - (90 * rpx) - this.data._nav_data_.navHeight
       wx.pageScrollTo({
         scrollTop: scrollPos + 1,
         duration: 0
@@ -275,11 +268,10 @@ Page({
   },
 
   initTabScroll: function () {
-    const systemInfo = wx.getSystemInfoSync()
-    const rpx = systemInfo.windowWidth / 750
-      
-    const tabHeaderObserveRect = { bottom: -(systemInfo.windowHeight - 1) + this.data.navHeight}
-    const tabContentObserveRect = { top: -(90 * rpx) - this.data.navHeight, bottom: -(systemInfo.windowHeight - (90 * rpx) - this.data.navHeight - 1) }
+    const {rpx, windowHeight} = this.data._nav_data_
+    
+    const tabHeaderObserveRect = { bottom: -(windowHeight - 1) + this.data._nav_data_.navHeight}
+    const tabContentObserveRect = { top: -(90 * rpx) - this.data._nav_data_.navHeight, bottom: -(windowHeight - (90 * rpx) - this.data._nav_data_.navHeight - 1) }
     wx.createIntersectionObserver().relativeToViewport(tabHeaderObserveRect).observe('#tab-wrapper', (res) => {
       const tabFixed = res.intersectionRatio > 0
       this.setData({tabFixed})
@@ -305,7 +297,7 @@ Page({
   },
 
   getSubOverview: function (data) {
-    let {type, valid_btime, valid_etime, hx_rule, dead_line, refund_deadline, address, address_position, jh_address, jh_address_position, min_age, max_age, limit_num, note, include_bx, can_refund, has_postage} = data
+    let {type, valid_btime, valid_etime, hx_rule, dead_line, refund_deadline, address, address_position, jh_address, jh_address_position, age_desc, min_age, max_age, limit_num, note, include_bx, can_refund, has_postage} = data
     let arr = []
     if (type && type == 1 && valid_btime && valid_etime) {
       arr.push({img: '/assets/images/time_jointime.png', text: `活动日期：${valid_btime} 至 ${valid_etime}`})
@@ -323,14 +315,8 @@ Page({
     // if (type == 1 && jh_address) {
     //   arr.push({img: '/assets/images/jihe_location.png', text: `集合地点：${jh_address}`, isAddress: true, lnglat: jh_address_position, address: `${jh_address}`})
     // }
-    if (min_age) {
-      if (type == 1) {
-        arr.push({img: '/assets/images/nianling.png', text: `适合年龄段：${min_age == -1 ? '不限年龄' : (min_age + ' ~ ' + max_age + '岁')}`})
-      } else {
-        if (min_age != -1) {
-          arr.push({img: '/assets/images/nianling.png', text: `适合年龄段：${min_age} ~ ${max_age}岁`})
-        }
-      }
+    if (age_desc) {
+      arr.push({img: '/assets/images/nianling.png', text: `适合年龄段：${age_desc}`})
     }
     if (limit_num) {
       arr.push({img: '/assets/images/chengtuan.png', text: limit_num})
@@ -487,8 +473,8 @@ Page({
 
   nextTap: function (e) {
     const { saletype, currentSession, currentSubSession, currentTickets, subSessions, selectedTicketLength, totalPrice, totalPriceCal } = e.detail
-    const { type, id, tuanId: tuan_id, fromUid, fill_info, fill_form, title, valid_btime, valid_etime, address, session, sale_type, can_refund = false, include_bx, hx_rule, has_postage } = this.data
-    let dataObj = {type, id, fromUid, fill_info, fill_form, title, address, valid_btime, valid_etime, session, sale_type, saletype, selectedTicketLength: selectedTicketLength[saletype], currentSession: currentSession[saletype], can_refund, include_bx, totalPrice: totalPrice[saletype], totalPriceCal: totalPriceCal[saletype], tuan_id, hx_rule, has_postage}
+    const { type, id, tuanId: tuan_id, fromUid, fill_info, fill_form, title, valid_btime, valid_etime, address, session, sale_type, can_refund = false, include_bx, hx_rule, has_postage, shop_id } = this.data
+    let dataObj = {type, id, fromUid, fill_info, fill_form, title, address, valid_btime, valid_etime, session, sale_type, saletype, selectedTicketLength: selectedTicketLength[saletype], currentSession: currentSession[saletype], can_refund, include_bx, totalPrice: totalPrice[saletype], totalPriceCal: totalPriceCal[saletype], tuan_id, hx_rule, has_postage, shop_id}
     if (type == 1) { // 活动
       dataObj.currentTickets = currentTickets[saletype]
     } else if (type == 2 || type == 3) { // 非活动

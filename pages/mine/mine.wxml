@@ -133,7 +133,7 @@
   <block wx:else>
     <image class="visitor-image" src="/assets/images/mine_visitor.png" mode="aspectFit" />
     <view class="login-tip">点击登录查看更多信息</view>
-    <view class="login-btn theme-linear-gradient-h" catchtap="loginTap">登录/注册</view>
+    <view class="login-btn" catchtap="loginTap">登录/注册</view>
   </block>
 </view>
 <login-modal id="c-login-modal" />

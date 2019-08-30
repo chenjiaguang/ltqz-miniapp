@@ -84,6 +84,9 @@ page {
   z-index: 3;
   background-color: #f5f5f5;
   padding: 0 4%;
+  transform: 0;
+  transition-property: transform;
+  transition-duration: 0;
 }
 
 .bottom-reply-box.focus {

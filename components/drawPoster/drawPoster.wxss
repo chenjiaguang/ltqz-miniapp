@@ -92,6 +92,9 @@
   display: flex;
   align-items: center;
 }
+.flex-1{
+  flex: 1;
+}
 .header-avatar{
   width: 80rpx;
   height: 80rpx;
@@ -291,8 +294,15 @@
   align-items: center;
 }
 .poster-logo{
-  width: 208rpx;
+  width: 118rpx;
   height: 74rpx;
+  margin-right: 22rpx;
+}
+.shop-logo{
+  display: block;
+  width: 70rpx;
+  height: 70rpx;
+  border-radius: 50%;
 }
 .poster-slogan{
   width: 160rpx;

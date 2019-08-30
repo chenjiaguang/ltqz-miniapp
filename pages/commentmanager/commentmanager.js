@@ -201,6 +201,19 @@ Page({
       reply_cursor: cursor
     })
   },
+
+  keyboardHeightChange: function (e) {
+    const {duration, height} = e.detail
+    const {keyBoardDuration} = this.data
+    if (keyBoardDuration == height) {
+      return false
+    }
+    this.setData({
+      keyboardHeight: height,
+      keyBoardDuration: duration
+    })
+  },
+
   replySubmit: function () {
     util.request('/admin/rate/reply', {
       id: this.options.sid,

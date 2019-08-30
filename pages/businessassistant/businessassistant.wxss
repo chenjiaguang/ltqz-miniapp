@@ -98,6 +98,16 @@
 .other-entrance-box {
   padding: 0;
 }
+.refund-num{
+  display: flex;
+  width: 36rpx;
+  height: 36rpx;
+  border-radius: 50%;
+  color: #FFFFFF;
+  justify-content: center;
+  align-items: center;
+  font-size: 24rpx;
+}
 
 .ticket-getting-tip{
   height: 88rpx;

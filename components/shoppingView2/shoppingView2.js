@@ -170,7 +170,12 @@ Component({
       let subSessions = { 1: [], 2: [], 3: [] }
 
       if (current !== null) {
-        _subSessions = _session[current].sub.map(item => Object.assign({}, item, {num: 0}))
+        if (_session[current].sub) {
+          _subSessions = _session[current].sub.map(item => Object.assign({}, item, {num: 0}))
+        } else {
+          _subSessions = []
+        }
+        
       }
 
       if (current !== null && !limit) { // 已有选择款式 且 未限制购买，则可以初始化选择一个

@@ -12,7 +12,7 @@
   </block>
 
   <image wx:if="{{list.length==0}}" class='empty-img' src='/assets/images/withdrawrecord.png' />
-  <text wx:if="{{list.length==0}}" class='empty-text'>你还没有提现记录哦~</text>
+  <text wx:if="{{list.length==0}}" class='empty-text'>您还没有提现记录哦~</text>
 
   <ft-list-footer wx:if="{{list.length>0}}" loaded="{{!!page}}" loading="{{loading}}" page="{{page}}" show-no-more />
 

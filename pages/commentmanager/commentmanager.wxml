@@ -28,10 +28,10 @@
     </swiper>
   </view>
 </view>
-
+  
 <ft-mask show="{{reply_focus}}">
-  <view class="row ai-center jc-between bottom-reply-box{{reply_focus ? ' focus' : ''}}">
-    <input class='reply-input flex1' focus="{{reply_focus}}" placeholder="回复：{{current_reply_name}}" value="{{reply_value}}" bindinput='replyInput'></input>
+  <view class="row ai-center jc-between bottom-reply-box{{reply_focus ? ' focus' : ''}}" style="-webkit-transition-duration:{{keyBoardDuration || 0}}s;transition-duration:{{keyBoardDuration || 0}}s;-webkit-transform:translateY(-{{keyboardHeight}}px);transform:translateY(-{{keyboardHeight}}px)">
+    <input class='reply-input flex1' adjust-position="{{false}}" focus="{{reply_focus}}" placeholder="回复：{{current_reply_name}}" value="{{reply_value}}" bindinput='replyInput' bindkeyboardheightchange="keyboardHeightChange"></input>
     <view class='reply-btn bold {{reply_value.length?"theme-color":"disable"}}' disabled="{{!reply_value}}" catchtap="replySubmit">发送</view>
   </view>
 </ft-mask>

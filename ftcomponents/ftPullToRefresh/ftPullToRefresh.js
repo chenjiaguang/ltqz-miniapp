@@ -1,8 +1,5 @@
 // ftcomponents/ftPullToRefresh/ftPullToRefresh.js
 // 使用的时候，用本组件包裹可以触发下拉刷新的内容。enablePullDownRefresh需要设置为false。
-const app = getApp()
-const systemInfo = app.globalData.systemInfo || wx.getSystemInfoSync()
-const platform = systemInfo.platform
   
 Component({
   options: {
@@ -27,7 +24,6 @@ Component({
     }
   },
   data: {
-    platform: platform,
     reachTop: false
   },
   methods: {

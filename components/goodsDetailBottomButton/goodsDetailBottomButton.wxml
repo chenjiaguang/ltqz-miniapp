@@ -31,7 +31,7 @@
             <view class='join-text' style="font-size:34rpx;line-height:46rpx">{{btndata.btnText}}</view>
           </button>
           <!-- 可报名且用户电话不存在 -->
-          <button wx:if="{{btndata.status == 1 && !orderContact}}" class="join-btn theme-linear-gradient-h" bindgetphonenumber="initContact" catchtap="goLogin"><text class='join-text' style="font-size:34rpx;line-height:46rpx">立即报名</text></button>
+          <button wx:if="{{btndata.status == 1 && !orderContact}}" class="join-btn theme-linear-gradient-h" bindgetphonenumber="initContact" catchtap="goLogin"><text class='join-text' style="font-size:34rpx;line-height:46rpx">{{btndata.type == 1 ? '立即报名' : '立即购买'}}</text></button>
         </view>
       </block>
       <block wx:if="{{btndata.sale_type == 2}}">
@@ -50,7 +50,7 @@
             </button>
           </view>
           <!-- 可报名且用户电话不存在 -->
-          <button wx:if="{{btndata.status == 1 && !orderContact}}" class="join-btn theme-linear-gradient-h" bindgetphonenumber="initContact" catchtap="goLogin"><text class='join-text' style="font-size:34rpx;line-height:46rpx">立即报名</text></button>
+          <button wx:if="{{btndata.status == 1 && !orderContact}}" class="join-btn theme-linear-gradient-h" bindgetphonenumber="initContact" catchtap="goLogin"><text class='join-text' style="font-size:34rpx;line-height:46rpx">{{btndata.type == 1 ? '立即报名' : '立即购买'}}</text></button>
         </view>
       </block>
       <block wx:if="{{btndata.sale_type == 3 && (btndata.qg_status == 2 || btndata.qg_status == 3)}}">

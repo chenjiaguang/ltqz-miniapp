@@ -17,7 +17,7 @@
       </block>
     </view>
     <view class='content' style="font-size:{{fontSize}}rpx;line-height:{{lineHeight}};color:{{item.c_color || contentColor}}">
-      <text data-content="{{item.content}}" data-isphone="{{item.isPhone}}" catchtap="contentTap">{{item.content}}</text>
+      <view data-content="{{item.content}}" data-isphone="{{item.isPhone}}" data-goodsid="{{item.goodsid}}" data-isgoods="{{item.isGoods}}" catchtap="contentTap" hover-stop-propagation="{{item.isGoods || item.isPhone}}">{{item.content}}</view>
       <view wx:if="{{contentLine}}" class='content-line' style="border-top:{{contentLine}}"></view>
     </view>
   </view>

@@ -7,7 +7,7 @@
       <view class="head-item-content">{{join_num || 0}}</view>
     </view>
     <view class="head-item">
-      <view class="head-item-title">实际收入{{type == 3 ? '(仅含已发货和已完成)' : ((type == 1 || type == 2) ? '(仅包含已核销)' : '')}}</view>
+      <view class="head-item-title">实际收入{{type == 3 ? '(仅包含已完成)' : ((type == 1 || type == 2) ? '(仅包含已核销)' : '')}}</view>
       <view class="head-item-content">￥ {{js_price || 0}}</view>
     </view>
   </view>
@@ -36,8 +36,8 @@
         </view>
       </picker>
       <view class="confirm-item">
-        <view class="confirm-title">快递公司</view>
-        <input class="confirm-text" type="text" placeholder="请输入快递单号" placeholder-style="color:#999999" cursor-spacing="{{(pxRatio || 0.5) * 250}}" value="{{shippingNumber}}" bindinput="shippingNumberInput" />
+        <view class="confirm-title">快递单号</view>
+        <input class="confirm-text" type="text" placeholder="请输入快递单号" placeholder-style="color:#999999" cursor-spacing="{{(_nav_data_.rpx || 0.5) * 250}}" value="{{shippingNumber}}" bindinput="shippingNumberInput" />
         <view class="flex-view"></view>
       </view>
     </view>

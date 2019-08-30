@@ -112,12 +112,8 @@
   width: 652rpx;
   margin: 0 auto;
   background: #FFFFFF;
-  max-height: 0;
-  transition: max-height 300ms;
+  transition: height 200ms;
   overflow: hidden;
-}
-.card-statement.show{
-  max-height: 1000rpx;
 }
 .card-statement-content{
   padding: 22rpx 12rpx;

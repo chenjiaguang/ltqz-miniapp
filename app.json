@@ -56,7 +56,7 @@
     "list": [
       {
         "pagePath": "pages/index/index",
-        "text": "主页",
+        "text": "精选",
         "iconPath": "/assets/images/home_unactived.png",
         "selectedIconPath": "/assets/images/home_actived.png"
       },

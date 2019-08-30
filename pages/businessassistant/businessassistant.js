@@ -73,6 +73,7 @@ Page({
       let _obj = {}
       _obj.data = res.data
       _obj.other_entrances = other_entrances
+      _obj.wait_refund = res.data.wait_refund
       this.setData(_obj)
     }).catch(err => {
       console.log('err', err)

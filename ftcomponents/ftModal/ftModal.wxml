@@ -3,7 +3,7 @@
 <view animation="{{wrapperAnimationData}}" class="wrapper" catchtouchmove='stopPropagation'>
   <view animation="{{maskAnimationData}}" class="mask"></view>
   <view class="content">
-    <view style="width:100%;height:{{navWrapperHeight}}px" catchtap="hide" data-origin="mask"></view>
+    <view style="width:100%;height:{{_nav_data_.navHeight}}px" catchtap="hide" data-origin="mask"></view>
     <view bind:touchstart="{{m1.touchStart}}" bind:touchmove="{{m1.touchMove}}" bind:touchend="{{m1.touchEnd}}" animation="{{topAnimationData}}" data-height="{{topHeight}}" data-ele="top" data-top-touch-hide="{{topTouchHide}}" data-top-reached="{{topReached}}" data-bottom-reached="{{bottomReached}}" class="top top{{mode}}" catchtap="hide" data-origin="mask">
       <view class="intersection-dot-top"></view>
       <slot name="top"></slot>
@@ -16,7 +16,7 @@
         <view class="separator separator{{mode}}"></view>
         <view class="cancel-btn cancel-btn{{mode}}" catchtap="hide" hover-stop-propagation hover-class='touched' hover-start-time="{{50}}" hover-stay-time="{{200}}"><text>{{cancelText}}</text></view>
       </view>
-      <view wx:if="{{extraBottom}}" class="iphone-extra-bottom iphone-extra-bottom{{mode}}"></view>
+      <view wx:if="{{_nav_data_.extraBottom}}" class="iphone-extra-bottom iphone-extra-bottom{{mode}}"></view>
       <view class="intersection-dot-bottom"></view>
     </view>
   </view>
