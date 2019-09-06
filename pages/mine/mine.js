@@ -85,7 +85,7 @@ Page({
         assistant_entrance.path = '/pages/businessassistant/businessassistant?id=' + res.data.shop[0].id
       }
       if (res.data.fenxiao) {
-        if (res.data.fenxiao.no_read_remit) {
+        if (res.data.fenxiao.no_read_remit_number) {
           wx.showTabBarRedDot({
             index: 1
           })

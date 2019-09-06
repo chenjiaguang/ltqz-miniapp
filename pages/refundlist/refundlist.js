@@ -212,10 +212,12 @@ Page({
   },
   confirmRefund: function (agree) {
     const {rejectRecord, refundConfirming} = this.data
-    if (!agree && !rejectRecord) { // 提交的是拒绝 且 无拒绝原因
+    const _rejectRecord = rejectRecord ? rejectRecord.replace(/\s+/g,'') : ''
+    if (!agree && !_rejectRecord) { // 提交的是拒绝 且 无拒绝原因
       wx.showToast({
-        title: '请输入拒绝原因',
-        icon: 'none'
+        title: '需要告知用户您拒绝退款的原因哦~',
+        icon: 'none',
+        duration: 2000
       })
       return false
     }

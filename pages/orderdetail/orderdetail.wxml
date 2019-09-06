@@ -4,13 +4,13 @@
   <view class="left-time theme-bg-85{{(countdown > 0 && countdown_text) ? ' show' : ''}}" style="top:{{_nav_data_.navHeight}}px"><text>{{countdown_text}}</text></view>
   
   <view class='row goods' bindtap='goGoodsDetail'>
-    <image class='goods-cover' src="{{product.cover_url}}" mode="aspectFill"></image>
+    <image class='goods-cover' src="{{product.product_cover_url || product.cover_url}}" mode="aspectFill"></image>
     <view class='goods-content flex1 column'>
       <text class='goods-title bold'>{{product.title}}</text>
       <text wx:if="{{product.valid_btime && product.valid_etime}}" class='goods-time'>{{product.valid_btime}} 至 {{product.valid_etime}}</text>
       <text wx:if="{{product.address}}" class='goods-location'>{{product.address}}</text>
       <view wx:if="{{product.type == 3}}" class='tags-box'>
-        <view class='tag-item theme-color theme-border-color'><text>{{can_refund ? '发货前可申请退款' : '本商品不支持退款'}}</text></view>
+        <view class='tag-item theme-color theme-border-color'><text>{{product.can_refund ? '发货前可申请退款' : '本商品不支持退款'}}</text></view>
         <view class='tag-item theme-color theme-border-color'><text>{{product.has_postage ? '包邮' : '邮费到付'}}</text></view>
       </view>
     </view>
@@ -36,8 +36,8 @@
     </view>
   </view>
 
-  <!-- 物流信息 -->
-  <view wx:if="{{order.type == 3 && order.status != -1 && order.status != -2 && order.status != -3 && order.status != -4}}" class='logistics-info'>
+  <!-- 物流信息 物流商品 且 非已取消状态 且 非待付款状态 -->
+  <view wx:if="{{order.type == 3 && order.status != -1 && order.status != -2 && order.status != -3 && order.status != -4 && order.status != 0}}" class='logistics-info'>
     <view class='block-separator'></view>
     <view class='logistics-header'>物流信息</view>
     <block wx:if="{{!((order.express_status_text && order.express_status_text != '待发货') || order.express_company || order.express_number)}}">
@@ -174,8 +174,11 @@
         <view wx:if="{{order.status === 0 || order.status === '0'}}" class="bottom-inner-button pay theme-color theme-border-color" catchtap="repay">
           <text>立即支付</text>
         </view>
-        <view wx:if="{{order.status == 1 || order.status == 2 || order.status == 3 || order.status == 5}}" class='bottom-inner-button ticket theme-color theme-border-color' bindtap='goGoodsTicket'>
-          <text>{{order.type == 3 ? '去评价' : '查看电子票'}}</text>
+        <view wx:if="{{order.status == 2 && order.type == 3}}" class='bottom-inner-button ticket theme-color theme-border-color' bindtap='goComment'>
+          <text>去评价</text>
+        </view>
+        <view wx:elif="{{order.status == 1 || order.status == 2 || order.status == 3 || order.status == 5}}" class='bottom-inner-button ticket theme-color theme-border-color' bindtap='goGoodsTicket'>
+          <text>查看电子票</text>
         </view>
       </view>
     </view>

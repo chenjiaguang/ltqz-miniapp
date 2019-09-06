@@ -35,7 +35,7 @@ Component({
       '-3': 'state-normal',
       '-2': 'state-normal',
       '-1': 'state-normal',
-      '0': 'state-red',
+      '0': 'theme-color',
       '1': 'theme-color',
       '2': 'state-normal',
       '3': 'state-normal',
@@ -65,7 +65,6 @@ Component({
       })
     },
     goCancel() {
-      console.log('goCancel')
       const {canceling} = this.data
       if (canceling) {
         return false
@@ -86,7 +85,6 @@ Component({
       })
     },
     cancel: function () {
-      console.log('cancel')
       let {canceling} = this.data
       const status = this.data.item.status
       const id = this.data.item.order_id
@@ -123,7 +121,6 @@ Component({
     },
     goRefund(e) {
       const {formId} = e.detail
-      console.log('goRefund')
       const {item: {type, can_refund, refund_all, refund_amount}, refunding} = this.data
       if (refunding || !can_refund) {
         return false
@@ -159,7 +156,6 @@ Component({
       }
     },
     refund(form_id) {
-      console.log('refund')
       const {item: {can_refund, order_id }, refunding} = this.data
       if (refunding || !can_refund) {
         return false
@@ -192,7 +188,6 @@ Component({
       })
     },
     goConfirm: function () {
-      console.log('goConfirm')
       const {item: {status}, confirming} = this.data
       if (confirming || status != 7) {
         return false
@@ -214,7 +209,6 @@ Component({
       })
     },
     confirm: function () {
-      console.log('confirm')
       const {item: {status, order_id }, confirming} = this.data
       if (confirming || status != 7) {
         return false

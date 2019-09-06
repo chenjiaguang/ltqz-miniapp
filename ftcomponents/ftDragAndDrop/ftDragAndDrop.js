@@ -30,14 +30,12 @@ Component({
    */
   methods: {
     initShowList (list) {
-      console.log('ddd')
       this.setData({showList: list, disableMove: true})
       wx.nextTick(() => {
         this.initRectObserver()
       })
     },
     initRectObserver() {
-      console.log('initRectObserver')
       this.createSelectorQuery().selectAll('.item').boundingClientRect((rects) => {
         if (rects && rects.length) {
           let rectsList = new Array(rects.length)
@@ -51,7 +49,6 @@ Component({
           rectsList.forEach(rect => {
             rect.top -= min_top
           })
-          console.log('rectsList', rectsList)
           this.setData({rects: rectsList, minTop: min_top, disableMove: false})
         }
       }).exec()

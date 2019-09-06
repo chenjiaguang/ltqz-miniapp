@@ -34,8 +34,7 @@ Page({
     js_price: '',
     list: [],
     page: null,
-    loading: false,
-    confirmShipping: false
+    loading: false
   },
 
   /**
@@ -132,17 +131,20 @@ Page({
             item.tableContent.push({title: '出行人' + (idx + 1), content: traveler.name + (genderText[traveler.sex] ? ('，' + genderText[traveler.sex]) : '') + (traveler.id_number ? ('，' + traveler.id_number) : '')})
           })
         }
-        if (item.form && item.form.length) {
-          for (let key in item.form) {
-            if (item.form[key] !== '') {
-              let conData = {}
-              conData.title = key
-              conData.content = item.form[key]
-              if (item.form[key] + '' && item.phone && item.phone + '') {
-                conData.isPhone = item.form[key].toString() === item.phone.toString()
-                conData.c_color = item.form[key].toString() === item.phone.toString() ? '#637BD9' : ''
+        if (item.form) {
+          let formLen = Object.keys(item.form).length
+          if (formLen) {
+            for (let key in item.form) {
+              if (item.form[key] !== '') {
+                let conData = {}
+                conData.title = key
+                conData.content = item.form[key]
+                if (item.form[key] + '' && item.phone && item.phone + '') {
+                  conData.isPhone = item.form[key].toString() === item.phone.toString()
+                  conData.c_color = item.form[key].toString() === item.phone.toString() ? '#637BD9' : ''
+                }
+                item.tableContent.push(conData)
               }
-              item.tableContent.push(conData)
             }
           }
         }
@@ -249,7 +251,7 @@ Page({
     }
   },
   confirmTap: function () {
-    const {shippingMap, shippingIndex, shippingNumber, confirmShipping} = this.data
+    const {shippingMap, shippingIndex, shippingNumber} = this.data
     if (!shippingIndex && shippingIndex !== 0) {
       wx.showToast({
         title: '请选择快递公司',
@@ -263,7 +265,7 @@ Page({
       })
       return false
     }
-    if (confirmShipping) {
+    if (this.confirmShipping) {
       return false
     }
     const s_id = this.shop_id
@@ -276,9 +278,10 @@ Page({
       express_number: ship_num,
       express_company: ship_index,
     }
-    this.setData({
-      confirmShipping: true
-    })
+    if (this.confirmTimer) {
+      clearTimeout(this.confirmTimer)
+    }
+    this.confirmShipping = true
     util.request('/admin/product/delivery', rData).then(res => {
       if (res && (res.error === 0 || res.error === '0')) {
         wx.showToast({
@@ -296,9 +299,12 @@ Page({
         }
       }
     }).finally(res => {
-      this.setData({
-        confirmShipping: false
-      })
+      if (this.confirmTimer) {
+        clearTimeout(this.confirmTimer)
+      }
+      this.confirmTimer = setTimeout(() => {
+        this.confirmShipping = false
+      }, 300)
     })
   },
   updateItemStatus: function (order_id, status, express_company, express_number) {

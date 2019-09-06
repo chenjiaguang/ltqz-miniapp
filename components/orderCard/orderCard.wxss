@@ -20,12 +20,6 @@
 .state-normal{
   color: #666;
 }
-.state-red{
-  color: #f24724;
-}
-.state1 {
-  color: #f24724;
-}
 
 .money {
   color: #f24724;

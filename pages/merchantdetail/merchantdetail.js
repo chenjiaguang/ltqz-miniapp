@@ -81,9 +81,9 @@ Page({
   /**
    * 用户点击右上角分享
    */
-  onShareAppMessage: function () {
+  // onShareAppMessage: function () {
     
-  },
+  // },
 
   activityTap: function (e) {
     const { id } = e.detail

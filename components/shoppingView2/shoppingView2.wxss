@@ -111,6 +111,7 @@
   flex-shrink: 0;
   font-size: 30rpx;
   color: #333;
+  font-weight: bold;
 }
 .ticket-price{
   flex: 1;

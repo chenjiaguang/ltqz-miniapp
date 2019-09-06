@@ -281,7 +281,6 @@ Page({
   submitOrder: function (e) {
     const { type, id, fromUid, fill_info, fill_form, selectedTickets, selectedSessions, contact, buy_for, submitting, clause_checked, saletype, tuan_id, totalPrice, shippingInfo: { provinceName, cityName, countyName, detailInfo, telNumber, userName}, coupons, couponSelected} = this.data
     const {formId} = e.detail
-    console.log('formId', formId)
     const contactEmptyItem = contact.filter(item => !item.value)
 
     if (fill_info && (!buy_for || (buy_for && !buy_for.length))) { // 联系人信息不完整
@@ -528,7 +527,6 @@ Page({
     }
     util.request('/coupon/list', rData).then(res => {
       if ((res.error === 0 || res.error === '0') && res.data) {
-        console.log('fff', res)
         let coupons = (res.data && res.data.length) ? res.data : []
         coupons = coupons.map(item => {
           const priceObj = util.formatMoney(item.reduction_amount)
@@ -537,9 +535,9 @@ Page({
             id: item.id,
             title: item.title,
             price: priceObj.money,
-            show_price: priceObj.showMoney,
+            show_price: parseFloat(priceObj.showMoney),
             threshold: thresholdObj.money,
-            threshold_text: (thresholdObj.money && thresholdObj.money !== '0' && thresholdObj.money != '免费') ? `满${thresholdObj.showMoney}可用` : '无金额门槛',
+            threshold_text: (thresholdObj.money && thresholdObj.money !== '0' && thresholdObj.money != '免费') ? `满¥${parseFloat(thresholdObj.showMoney)}可用` : '无金额门槛',
             tip: item.time_desc,
             extra_detail: item.rule_desc,
             threshold_type: item.threshold_type,
@@ -616,7 +614,7 @@ Page({
   // },
 
   initCoupon: function (coupons, totalPriceCal) {
-    if (!coupons || !coupons.length || !totalPriceCal) { // 没有优惠券
+    if (!coupons || !coupons.length || !totalPriceCal) { // 没有优惠券 或 商品免费
       return false
     }
     let _coupons = []
@@ -624,8 +622,8 @@ Page({
     let _couponPrice = 0
     let _couponShowPrice = 0
     let _recommendCoupon = 0
-    coupons = coupons.forEach(item => {
-      item.disabled = (item.threshold > totalPriceCal) || (totalPriceCal < item.price)
+    coupons.forEach(item => {
+      item.disabled = (item.threshold > totalPriceCal)
       if (!item.disabled) {
         _coupons.push(item)
         if (item.price > _couponPrice) {
@@ -635,8 +633,31 @@ Page({
           _recommendCoupon = _coupons.length - 1
         }
       }
+      // item.disabled = (item.threshold > totalPriceCal) || (totalPriceCal < item.price)
+      // if (!item.disabled) {
+      //   _coupons.push(item)
+      //   if (item.price > _couponPrice) {
+      //     _couponSelected = [_coupons.length - 1]
+      //     _couponPrice = util.formatMoney(item.price).money
+      //     _couponShowPrice = util.formatMoney(item.price).showMoney
+      //     _recommendCoupon = _coupons.length - 1
+      //   }
+      // }
     })
     let _totalPrice = util.formatMoney(totalPriceCal - _couponPrice).showMoney
+    if (_couponPrice && totalPriceCal > 0 && _totalPrice <= 0) { // 使用优惠券后价格小于0，则默认支付0.01
+      _totalPrice = 0.01
+      _couponPrice = totalPriceCal - 1
+      _couponShowPrice = util.formatMoney(totalPriceCal - 1).showMoney
+      const app = getApp()
+      const confirmColor = app.globalData.themeModalConfirmColor || '#576B95' // #576B95是官方颜色
+      wx.showModal({
+        content: '您选取的优惠券金额≥订单金额，为保证真实性，您至少需支付0.01元哦', //提示的内容
+        showCancel: false,
+        confirmText: '好的',
+        confirmColor
+      })
+    }
     this.setData({
       coupons: _coupons,
       couponSelected: _couponSelected,
@@ -665,7 +686,7 @@ Page({
   },
 
   confirmCoupon: function () {
-    const {coupons, totalPriceCal} = this.data
+    const {coupons, totalPriceCal, couponSelected} = this.data
     let _obj = {}
     let selectedArr = []
     let price = 0
@@ -675,10 +696,25 @@ Page({
         price += item.price
       }
     })
+    let _totalPrice = util.formatMoney(totalPriceCal - price).showMoney
+    if (price && totalPriceCal > 0 && _totalPrice <= 0) { // 使用优惠券后价格小于0，则默认支付0.01
+      _totalPrice = 0.01
+      price = totalPriceCal - 1
+      if (couponSelected[0] != selectedArr[0]) { // 当此次选择和上次选择不同时才提示
+        const app = getApp()
+        const confirmColor = app.globalData.themeModalConfirmColor || '#576B95' // #576B95是官方颜色
+        wx.showModal({
+          content: '您选取的优惠券金额≥订单金额，为保证真实性，您至少需支付0.01元哦', //提示的内容
+          showCancel: false,
+          confirmText: '好的',
+          confirmColor
+        })
+      }
+    }
     _obj.couponSelected = selectedArr
     _obj.couponPrice = util.formatMoney(price).money
     _obj.couponShowPrice = util.formatMoney(price).showMoney
-    _obj.totalPrice = util.formatMoney(totalPriceCal - price).showMoney
+    _obj.totalPrice = _totalPrice
     this.setData(_obj, () => {
       this.toggleCoupon()
     })
@@ -705,9 +741,13 @@ Page({
   },
 
   getShippingInfo: function (e) {
+    if (this.shippingGetting) {
+      return false
+    }
     const authSuccess = () => {
       wx.chooseAddress({
         success: res => {
+          this.shippingGetting = false
           const {cityName, countyName, detailInfo, nationalCode, postalCode, provinceName, telNumber, userName} = res
           if (provinceName && cityName && countyName && detailInfo && telNumber && userName) {
             const shippingInfoJson = JSON.stringify(res)
@@ -716,11 +756,18 @@ Page({
               shippingInfo: res
             })
           }
+        },
+        fail: res => {
+          this.shippingGetting = false
+        },
+        complete: res => {
+          this.shippingGetting = false
         }
       })
     }
     const app = getApp()
     const confirmColor = app.globalData.themeModalConfirmColor || '#576B95' // #576B95是官方颜色
+    this.shippingGetting = true // 标志正在获取收货地址
     wx.getSetting({
       success: res => {
         // 如果没有则获取授权
@@ -729,6 +776,9 @@ Page({
             scope: 'scope.address',
             success: () => {
               authSuccess()
+            },
+            fail: res => {
+              this.shippingGetting = false
             }
           })
         } else if (!res.authSetting['scope.address'] && res.authSetting['scope.address'] === false) { // 未授权且拒绝过
@@ -738,6 +788,7 @@ Page({
             confirmText: '去授权',
             confirmColor,
             success: res => {
+              this.shippingGetting = false
               if (res.confirm) {
                 wx.openSetting({
                   success: res => {
@@ -748,11 +799,19 @@ Page({
                   }
                 })
               }
+            },
+            fail: res => {
+              this.shippingGetting = false
             }
           })
         } else if (res.authSetting['scope.address']) { // 有则直接保存
           authSuccess()
+        } else {
+          this.shippingGetting = false
         }
+      },
+      fail: res => {
+        this.shippingGetting = false
       }
     })
   }

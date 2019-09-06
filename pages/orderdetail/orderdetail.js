@@ -91,7 +91,6 @@ Page({
   },
 
   fetchOrder: function (id) {
-    console.log('fetchOrder')
     util.request('/order/detail', {id}).then(res => {
       if (res.error == 0 && res.data) {
         // let navWrapperHeight = this.data.navWrapperHeight || 0
@@ -179,8 +178,13 @@ Page({
     })
   },
 
+  goComment () {
+    this.navigateTo({
+      url: '/pages/orderComment/orderComment?id=' + this.data.order.order_id
+    })
+  },
+
   goRefund(e) {
-    console.log('goRefund')
     const {formId} = e.detail
     const {order: {can_refund, refund_all, refund_amount}, refunding} = this.data
     if (refunding || !can_refund) {
@@ -217,7 +221,6 @@ Page({
     }
   },
   refund(form_id) {
-    console.log('refund')
     const {order: {can_refund, order_id }, refunding} = this.data
     if (refunding || !can_refund) {
       return false
@@ -260,7 +263,6 @@ Page({
   },
 
   goConfirm: function () {
-    console.log('goConfirm')
     const {order: {status}, confirming} = this.data
     if (confirming || status != 7) {
       return false
@@ -283,7 +285,6 @@ Page({
   },
 
   confirm: function () {
-    console.log('confirm')
     const {order: {status, order_id }, confirming} = this.data
     if (confirming || status != 7) {
       return false
@@ -325,7 +326,6 @@ Page({
   },
 
   goCancel: function () {
-    console.log('goCancel')
     const {canceling} = this.data
     if (canceling) {
       return false
@@ -347,7 +347,6 @@ Page({
   },
 
   cancel: function () {
-    console.log('cancel')
     let {canceling} = this.data
     const status = this.data.order.status
     const id = this.data.order.order_id

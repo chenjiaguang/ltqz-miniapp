@@ -1,5 +1,4 @@
 // pages/permission/permission.js
-import authManager from '../../utils/authManager.js'
 import storageHelper from '../../utils/storageHelper.js'
 import util from '../../utils/util.js'
 
@@ -84,19 +83,18 @@ Page({
       const page = pages[pages.length - 2]
       if (page && page.route && page.options) {
         const url = ('/' + util.getUrl(page.route, page.options)) || '/pages/index/index'
-        this.reLaunch({
+        wx.reLaunch({
           url: url
         })
       }
     } else {
-      this.reLaunch({
+      wx.reLaunch({
         url: '/pages/mine/mine'
       })
     }
   },
 
   getPhoneNumber: function (e) {
-    console.log('getPhoneNumber', e)
     const {phoneBinding} = this.data
     const { iv, encryptedData } = e.detail
     const temToken = storageHelper.getStorage('temToken')
@@ -167,7 +165,6 @@ Page({
   },
 
   getUserInfo: function(e) {
-    console.log('getUserInfo', e)
     if (e.detail.errMsg === 'getUserInfo:ok') {
       const {
         encryptedData,

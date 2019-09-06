@@ -18,7 +18,6 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    console.log('options', options)
     this.fetchCoupon(1)
   },
 
@@ -103,9 +102,9 @@ Page({
             id: item.id,
             title: item.title,
             price: priceObj.money,
-            show_price: priceObj.showMoney,
+            show_price: parseFloat(priceObj.showMoney),
             threshold: thresholdObj.money,
-            threshold_text: (thresholdObj.money && thresholdObj.money !== '0' && thresholdObj.money != '免费') ? `满${thresholdObj.showMoney}可用` : '无金额门槛',
+            threshold_text: (thresholdObj.money && thresholdObj.money !== '0' && thresholdObj.money != '免费') ? `满¥${parseFloat(thresholdObj.showMoney)}可用` : '无金额门槛',
             tip: item.time_desc,
             extra_detail: item.rule_desc,
             threshold_type: item.threshold_type

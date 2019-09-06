@@ -54,7 +54,10 @@ Component({
    */
   methods: {
     getUsers: function (tuan) {
-      const len = tuan.spell_num
+      let len = tuan.spell_num
+      if (len > 1000) { // 认为干预，不允许拼团人数大于1000，过多会内存泄漏
+        len = 1000
+      }
       let users = []
       users = users.concat(tuan.tuanRecord)
       const length = len - users.length
@@ -71,9 +74,13 @@ Component({
       if (!tuan || !tuan.expired_timestamp) {
         return false
       }
+      let len = tuan.spell_num
+      if (len > 1000) { // 认为干预，不允许拼团人数大于1000，过多会内存泄漏
+        len = 1000
+      }
       this.remainSeconds = tuan.expired_timestamp
       const func = () => {
-        const needUsers = tuan.spell_num - tuan.tuanRecord.length
+        const needUsers = len - tuan.tuanRecord.length
         this.remainSeconds -= 1
         const remainTime = this.remainSeconds
         const remainClock = this.secondToClock(remainTime)

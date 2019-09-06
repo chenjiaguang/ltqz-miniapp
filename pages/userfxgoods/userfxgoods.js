@@ -85,7 +85,6 @@ Page({
     }
     util.request('/fenxiao/product', rData).then(res => {
       if (res.error == 0 && res.data) {
-        console.log('/fenxiao/product', res)
         let {
           list,
           page
@@ -119,7 +118,6 @@ Page({
   },
 
   goodsTap: function (e) {
-    console.log('goodsTap')
     const {id} = e.detail
     if (id) {
       this.navigateTo({

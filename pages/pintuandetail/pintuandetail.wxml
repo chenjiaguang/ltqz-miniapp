@@ -2,7 +2,7 @@
 <ft-custom-nav title="{{navTitle}}" />
 <view class='page-pintuandetail'>
   <view class='row goods' bindtap='goGoodsDetail' data-goodsid="{{product_id}}">
-    <image class='goods-cover' src="{{product.cover_url}}" mode="aspectFill"></image>
+    <image class='goods-cover' src="{{product.product_cover_url || product.cover_url}}" mode="aspectFill"></image>
     <view class='goods-content flex1 column'>
       <text class='goods-title bold'>{{product.title}}</text>
       <text wx:if="{{product.valid_btime && product.valid_etime}}" class='goods-time'>{{product.valid_btime}} 至 {{product.valid_etime}}</text>

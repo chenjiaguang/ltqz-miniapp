@@ -1,5 +1,11 @@
 /* pages/couponlist/couponlist.wxss */
 
+.coupon-tip{
+  padding: 16rpx 50rpx 0;
+  font-size: 22rpx;
+  line-height: 32rpx;
+  color: #666666;
+}
 .empty-box{
   overflow: hidden;
 }

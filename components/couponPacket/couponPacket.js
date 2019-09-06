@@ -43,10 +43,17 @@ Component({
         this[ele + 'Loaded'] = true
       }
       if (this.bgLoaded && this.footerLoaded && this.uncheckLoaded && this.checkedLoaded) {
+        if (this.firstShow) {
+          return false
+        }
+        this.firstShow = true
         this.toggleModal()
       }
     },
     receiveCoupon: function (e) {
+      if (!util.checkLogin('navPermission')) {
+        return false
+      }
       const {received} = this.data
       const {coupon} = e.currentTarget.dataset
       if (received[coupon.id] || (this.receiving && this.receiving[coupon.id])) { // 不可领 或 正在领
@@ -64,6 +71,9 @@ Component({
           this.setData({
             ['received.' + coupon.id]: true
           })
+          if (res.data) {
+            this.triggerEvent('couponchange', {coupon: res.data})
+          }
         }
       }).finally(res => {
         this.receiving[coupon.id] = false

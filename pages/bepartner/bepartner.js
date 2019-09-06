@@ -86,7 +86,6 @@ Page({
   // },
 
   apply (e) {
-    console.log('e', e)
     this.setData({
       submitting: true
     })

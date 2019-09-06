@@ -1,7 +1,7 @@
 <!--pages/couponlist/couponlist.wxml-->
 <ft-custom-nav title="{{navTitle}}" />
 <ft-list-loader visible="{{!loaded}}" />
-<view wx:if="{{list && list.length}}" style="height:24rpx"></view>
+<view wx:if="{{list && list.length}}" class="coupon-tip">温馨提示：优惠券一旦使用成功，即使订单后期发生退款，也不再返还哦~</view>
 <coupon-card wx:for="{{list}}" wx:key='order_id' item="{{item}}" />
 <ft-list-footer loaded="{{loaded}}" loading="{{loading}}" page="{{page}}" show-no-more="{{list && list[0]}}" />
 <view wx:if="{{loaded && (!list || !list[0])}}" class='empty-box'>

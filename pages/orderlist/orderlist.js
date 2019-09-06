@@ -98,7 +98,6 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function() {
-    console.log('options', this.options)
     const {rpx} = this.data._nav_data_
     wx.createSelectorQuery().selectAll('.title-box').fields({
       dataset: true,
@@ -384,7 +383,6 @@ Page({
 
   shareTap: function (e) {
     const {product_id, pt_id} = e.detail
-    console.log('shareTap', product_id, pt_id)
     if (product_id && pt_id) {
       const poster = this.selectComponent('#c-draw-poster')
       if (poster && poster.startDraw) {

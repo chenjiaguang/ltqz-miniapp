@@ -82,7 +82,6 @@ Page({
    * 用户点击右上角分享
    */
   onShareAppMessage: function () {
-    const { cover_url } = this.data
     return {
       title: '给你分享了范团精选的' + (this.options.title || '') + '，快来看看有没有适合你的吧~',
       path: '/pages/goodslist/goodslist?id=' + this.options.id + (this.options.title ? ('&title=' + this.options.title) : '')

@@ -37,6 +37,12 @@ Component({
     
   },
 
+  detached: function () {
+    if (this.canvastopathTimer) {
+      clearInterval(this.canvastopathTimer)
+    }
+  },
+
   /**
    * 组件的方法列表
    */
@@ -383,6 +389,11 @@ Component({
         ctx.stroke()
       }
     },
+    toggleCanvas: function () {
+      this.setData({
+        showCanvas: !this.data.showCanvas
+      })
+    },
     drawText: function (textData, ctx, idx, drawSuccess, isCard) {
       const alignObj = {start: 'left', center: 'center', end: 'right'}
       ctx.save()
@@ -422,58 +433,76 @@ Component({
         ctx.fillText(textData[idx].dataset.text, alignObj[textData[idx].textAlign] == 'center' ? (textData[idx].left + textData[idx].width / 2) : textData[idx].left + parseInt(textData[idx].paddingLeft) + parseInt(textData[idx].borderLeftWidth), textData[idx].top + parseInt(textData[idx].paddingTop) + parseInt(textData[idx].borderTopWidth) + parseInt(textData[idx].lineHeight) / 2, textData[idx].width)
         this.drawTextThroughLine(textData[idx], ctx, 0)
       }
+      // ctx.draw(true)
       ctx.restore()
       this.textLen -= 1
       if ((idx + 1) == textData.length) {
         const query = isCard ? 'c-draw-poster-card' : 'c-draw-poster'
         ctx.draw(true, () => {
-          setTimeout(() => {
-            wx.canvasToTempFilePath({
-              x: 0,
-              y: 0,
-              canvasId: query,
-              success: res => {
-                this.createSelectorQuery().select('#top-wrapper').boundingClientRect(rect => {
-                  if (rect) { // #top-wrapper有可能时隐藏状态的，所以做此判断
-                    let _width = isCard ? this.cardPosterWidth : this.posterWidth
-                    let _height = isCard ? this.cardPosterHeight : this.posterHeight
-                    let width = 0
-                    let height = 0
-                    rect.height = rect.height - 44
-                    const posterRatio = _width / _height
-                    const topWrapperRatio = rect.width / rect.height
-                    if (posterRatio < topWrapperRatio) {
-                      height = rect.height * 0.88
-                      width = height * posterRatio
-                    } else {
-                      width = rect.width * 0.88
-                      height = width / posterRatio
+          const drawFunc = () => {
+            setTimeout(() => {
+              // this.canvastransforming = true
+              wx.canvasToTempFilePath({
+                x: 0,
+                y: 0,
+                canvasId: query,
+                success: res => {
+                  // this.canvastransforming = false
+                  this.createSelectorQuery().select('#top-wrapper').boundingClientRect(rect => {
+                    if (rect) { // #top-wrapper有可能时隐藏状态的，所以做此判断
+                      let _width = isCard ? this.cardPosterWidth : this.posterWidth
+                      let _height = isCard ? this.cardPosterHeight : this.posterHeight
+                      let width = 0
+                      let height = 0
+                      rect.height = rect.height - 44
+                      const posterRatio = _width / _height
+                      const topWrapperRatio = rect.width / rect.height
+                      if (posterRatio < topWrapperRatio) {
+                        height = rect.height * 0.88
+                        width = height * posterRatio
+                      } else {
+                        width = rect.width * 0.88
+                        height = width / posterRatio
+                      }
+                      this.setData({
+                        posterWidth: width,
+                        posterHeight: height
+                      })
                     }
-                    this.setData({
-                      posterWidth: width,
-                      posterHeight: height
-                    })
-                  }
-                }).exec()
-                let localPoster = res.tempFilePath
-                this.setData({
-                  [isCard ? 'localCardPoster' : 'localPoster']: localPoster,
-                  [isCard ? 'cardDrawing' : 'drawing']: false,
-                  canSharePengyouquan: (!isCard && localPoster)
-                }, () => {
-                  this.triggerEvent('statuschange', { fetching: this.data.fetching, drawing: this.data.drawing, cardDrawing: this.data.cardDrawing, canShareFriend: this.data.canShareFriend, canSharePengyouquan: this.data.canSharePengyouquan })
-                  drawSuccess && drawSuccess()
-                })
-              },
-              fail: res => {
-                this.setData({
-                  [isCard ? 'cardDrawing' : 'drawing']: false
-                }, () => {
-                  this.triggerEvent('statuschange', { fetching: this.data.fetching, drawing: this.data.drawing, cardDrawing: this.data.cardDrawing, canShareFriend: this.data.canShareFriend, canSharePengyouquan: this.data.canSharePengyouquan })
-                })
-              }
-            }, this)
-          }, 200)
+                  }).exec()
+                  let localPoster = res.tempFilePath
+                  this.setData({
+                    [isCard ? 'localCardPoster' : 'localPoster']: localPoster,
+                    [isCard ? 'cardDrawing' : 'drawing']: false,
+                    canSharePengyouquan: (!isCard && localPoster)
+                  }, () => {
+                    this.triggerEvent('statuschange', { fetching: this.data.fetching, drawing: this.data.drawing, cardDrawing: this.data.cardDrawing, canShareFriend: this.data.canShareFriend, canSharePengyouquan: this.data.canSharePengyouquan })
+                    drawSuccess && drawSuccess()
+                  })
+                },
+                fail: res => {
+                  // this.canvastransforming = false
+                  this.setData({
+                    [isCard ? 'cardDrawing' : 'drawing']: false
+                  }, () => {
+                    this.triggerEvent('statuschange', { fetching: this.data.fetching, drawing: this.data.drawing, cardDrawing: this.data.cardDrawing, canShareFriend: this.data.canShareFriend, canSharePengyouquan: this.data.canSharePengyouquan })
+                  })
+                }
+              }, this)
+            }, 200)
+          }
+          drawFunc()
+          // if (this.canvastransforming) { // 正在使用wx.canvasToTempFilePath
+          //   if (this.canvastopathTimer) {
+          //     clearInterval(this.canvastopathTimer)
+          //   }
+          //   this.canvastopathTimer = setInterval(drawFunc, 100)
+          // } else {
+          //   if (this.canvastopathTimer) {
+          //     clearInterval(this.canvastopathTimer)
+          //   }
+          //   drawFunc()
+          // }
         })
       } else {
         this.drawText(textData, ctx, idx + 1, drawSuccess, isCard)
@@ -522,8 +551,8 @@ Component({
       }).exec()
     },
     getPosterData: function (huodong_id, tuan_id, dataSuccess) { // dataSuccess在成功获取后执行
-      const { fetching } = this.data
-      if (fetching) { // 正在拉取数据
+      const { fetching, drawing, cardDrawing } = this.data
+      if (fetching || drawing || cardDrawing) { // 正在拉取数据 或 正在画图
         return false
       }
       let rData = {
@@ -575,12 +604,16 @@ Component({
           _obj.originPrice = util.formatMoney(data.min_origin_price).showMoney
           _obj.reduce_amount = util.formatMoney(data.reduce_amount).showMoney
           _obj.fenxiao_price = data.fenxiao_price
-          _obj.pintuan = data.spell_num
+          let len = data.spell_num
+          if (len > 1000) { // 人为干预，最大为1000
+            len = 1000
+          }
+          _obj.pintuan = len
           _obj.joinNumber = data.join_num
           _obj.joinUsers = []
           if (data.tuan && data.tuan.tuanRecord && data.tuan.tuanRecord[0]) {
             let recordArr = [].concat(data.tuan.tuanRecord)
-            let leftNum = data.spell_num - data.tuan.tuanRecord.length
+            let leftNum = len - data.tuan.tuanRecord.length
             if (leftNum > 0) {
               for (let i = 0; i < leftNum; i++) {
                 recordArr.push({ id: new Date().getTime() + i })
@@ -647,12 +680,15 @@ Component({
       this.recoverShare()
     },
     initShare: function () {
-      const { title, huodongId, tuanId, fenxiao_price, uid, saleType, hName, localCardPoster } = this.data
+      const { title, huodongId, tuanId, fenxiao_price, uid, saleType, pintuan, hName, localCardPoster } = this.data
       if (title && huodongId && localCardPoster) { // 存在数据
+        let _title = ''
         let path = ''
         if (huodongId && tuanId) { // 分享团
+          _title = `${hName}邀请你参与拼团：${title}`
           path += '/pages/pintuandetail/pintuandetail?id=' + tuanId
         } else if (huodongId && !tuanId) { // 分享商品
+          _title = `${hName}向你推荐：${title}`
           path += '/pages/goodsdetail/goodsdetail?id=' + huodongId
         }
         if (fenxiao_price && uid) { // 有分销红利
@@ -664,7 +700,7 @@ Component({
         page._onShareAppMessage = passShareFunc
         page.onShareAppMessage = function () {
           return {
-            title: `${hName}向你推荐：${title}`,
+            title: _title,
             path: path,
             imageUrl: localCardPoster
           }
@@ -796,6 +832,23 @@ Component({
           }
         }
       })
+    },
+    getFantuanAppShareLink: function (e) {
+      const {huodongId, tuanId} = this.data
+      if (e.timeStamp - this.imageTimeStamp  < 300 && huodongId && !tuanId) { // 仅双击时 且 分享的是商品详情页时，设置剪贴板内容为范团app分享链接
+        let _path = ''
+        if (this.data._nav_data_.env === 'prod') {
+          _path = 'https://m.fantuan.cn/jx/goodsDetail?id='
+        } else {
+          _path = 'https://mtest.fantuan.cn/jx/goodsDetail?id='
+        }
+        _path += huodongId
+        wx.setClipboardData({
+          data: _path
+        })
+      }
+      this.imageTimeStamp = e.timeStamp
+      return false
     },
     stopPropagation: function () {
       return false

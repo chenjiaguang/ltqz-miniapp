@@ -4,7 +4,7 @@
 <view wx:if="{{showType === 'permission'}}" class="page-permission">
   <image class="login-bg" src="/assets/images/login_bg.png" mode="aspectFill" />
   <view class='tip'>范团精选需要你授权以下权限</view>
-  <swiper class="auth-swiper{{authUserInfo ? '' : ' disabled-event'}}" current="{{swiperCurrent}}">
+  <swiper class="auth-swiper disabled-event" current="{{swiperCurrent}}">
     <swiper-item class="auth-swiper-item">
       <view class="wechat-icon-box">
         <image class="wechat-icon{{authUserInfo ? ' disabled' : ' abled'}}" src="/assets/images/login_wechat_uncheck.png" mode="aspectFit" />

@@ -116,7 +116,6 @@ Page({
         res.data.created_at = util.formatDateTimeDefault('m', res.data.created_at)
         res.data.users = this.getUsers(res.data)
         res.data.pintuanTimestamp = new Date().getTime()
-        console.log('res.data.is_join && res.data.status == 1', res.data.is_join, res.data.status)
         if (res.data.is_join && res.data.status == 1) { // 状态为拼团中时，初始化分享到朋友圈
           // const title = res.data.current_user_name + '邀请你参与拼团'
           // let path = '/pages/pintuandetail/pintuandetail?id=' + id
@@ -125,7 +124,6 @@ Page({
           // }
           // const imageUrl = res.data.product.cover_url
           // this.initShare(title, path, imageUrl)
-          console.log('3333')
           this.drawPoster(res.data.product_id, res.data.id)
         }
         this.setData(res.data)
@@ -136,7 +134,10 @@ Page({
     })
   },
   getUsers: function (tuan) {
-    const len = tuan.spell_num
+    let len = tuan.spell_num
+    if (len > 1000) {
+      len = 1000
+    }
     let users = []
     users = users.concat(tuan.tuanRecord)
     const length = len - users.length
@@ -151,9 +152,13 @@ Page({
     if (!tuan || !tuan.expired_timestamp) {
       return false
     }
+    let len = tuan.spell_num
+    if (len > 1000) { // 认为干预，不允许拼团人数大于1000，过多会内存泄漏
+      len = 1000
+    }
     this.remainSeconds = tuan.expired_timestamp
     const func = () => {
-      const needUsers = tuan.spell_num - tuan.tuanRecord.length
+      const needUsers = len - tuan.tuanRecord.length
       this.remainSeconds -= 1
       const remainTime = this.remainSeconds
       const remainClock = this.secondToClock(remainTime)
@@ -204,7 +209,6 @@ Page({
   // },
   drawPosterChange: function (e) {
     const {fetching, drawing, canShareFriend, canSharePengyouquan} = e.detail
-    console.log('canShareFriend', canShareFriend, 'canSharePengyouquan', canSharePengyouquan, )
     const sharing = fetching || drawing
     this.setData({ sharing, canShareFriend, canSharePengyouquan})
   },

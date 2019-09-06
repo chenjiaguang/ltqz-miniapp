@@ -173,6 +173,7 @@ page{
 }
 
 .item-num {
+  display: block;
   position: absolute;
   left: 42rpx;
   top: -15rpx;
@@ -184,6 +185,21 @@ page{
   border-style: solid;
   background-color: #fff;
   border-radius: 16px;
+}
+.item-num.one-number{
+  padding-left: 0;
+  padding-right: 0;
+  width: 28rpx;
+  text-align: center;
+  box-sizing: content-box;
+}
+.item-num:before{
+  content: '';
+  display: inline-block;
+  vertical-align: middle;
+  width: 0;
+  height: 100%;
+  margin-top: 1px;
 }
 
 .type-icon {

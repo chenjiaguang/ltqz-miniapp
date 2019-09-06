@@ -87,6 +87,16 @@ Page({
 
   // },
 
+  scrollToEnd: function (e) {
+    console.log('scrollToEnd', e)
+    const {idx} = e.currentTarget.dataset
+    const {page, loading} = this.data.tabs[idx]
+    if (!page || !page.pn || page.is_end || loading) {
+      return false
+    }
+    this.fetchComment(idx, this.options, parseInt(page.pn) + 1)
+  },
+
   tabTap: function(e) {
     let {
       idx
@@ -202,10 +212,29 @@ Page({
     })
   },
 
+  inputBlur: function () {
+    const {reply_focus} = this.data
+    if (reply_focus) {
+      this.setData({
+        reply_focus: false,
+        keyboardHeight: 0
+      })
+    }
+  },
+
+  inputFocus: function () {
+    const {reply_focus} = this.data
+    if (!reply_focus) {
+      this.setData({
+        reply_focus: true
+      })
+    }
+  },
+
   keyboardHeightChange: function (e) {
     const {duration, height} = e.detail
-    const {keyBoardDuration} = this.data
-    if (keyBoardDuration == height) {
+    const {keyboardHeight} = this.data
+    if (keyboardHeight == height) {
       return false
     }
     this.setData({
@@ -224,14 +253,29 @@ Page({
         title: '回复成功',
         icon: 'none'
       })
-      let i = this.data.tabs[this.data.index].list.findIndex((item) => {
-        return item.id == this.data.current_reply_id
+      let _obj = {}
+      _obj.reply_focus = false
+      _obj.reply_value = ''
+      this.data.tabs.forEach((item, idx) => {
+        item.list.forEach((litem, lidx) => {
+          if (litem.id == this.data.current_reply_id) {
+            if (idx == 1) { // 待回复tab，则隐藏对应的评价
+              _obj[`tabs[${idx}].list`] = item.list.filter(item => item.id != this.data.current_reply_id)
+            } else {
+              _obj[`tabs[${idx}].list[${lidx}].reply`] = this.data.reply_value
+            }
+          }
+        })
       })
-      this.setData({
-        reply_focus: false,
-        reply_value: '',
-        [`tabs[${this.data.index}].list[${i}].reply`]: this.data.reply_value
-      })
+      this.setData(_obj)
+      // let i = this.data.tabs[this.data.index].list.findIndex((item) => {
+      //   return item.id == this.data.current_reply_id
+      // })
+      // this.setData({
+      //   reply_focus: false,
+      //   reply_value: '',
+      //   [`tabs[${this.data.index}].list[${i}].reply`]: this.data.reply_value
+      // })
     }).catch(err => {
       console.log('err', err)
     })

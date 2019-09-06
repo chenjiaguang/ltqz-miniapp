@@ -178,7 +178,6 @@ Page({
       submitting: true
     })
     util.request('/order/consume', rData).then(res => {
-      console.log('/order/consume', res)
       if (res.error == 0) { // 请求接口成功
         wx.showToast({
           title: res.msg || '核销成功',

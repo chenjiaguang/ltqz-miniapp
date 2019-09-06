@@ -199,12 +199,19 @@
 }
 .coupon-content-text{
   flex: 1;
-  font-size: 24rpx;
-  line-height: 28rpx;
+  font-size: 28rpx;
+  line-height: 32rpx;
   color: #999999;
   text-align: right;
 }
+.coupon-content-text.has-coupon{
+  /* font-size: 32rpx;
+  line-height: 36rpx; */
+  font-weight: normal;
+}
 .coupon-content-text.selected{
+  font-size: 32rpx;
+  line-height: 36rpx;
   font-weight: bold;
 }
 .clause-box{
@@ -627,5 +634,5 @@ button.submit-btn.disabled{
   margin-right: -6rpx;
   margin-left: 22rpx;
   overflow: visible;
-  color: #ccc;
+  color: #999;
 }

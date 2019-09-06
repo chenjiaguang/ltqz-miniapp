@@ -89,8 +89,8 @@
     <image class="poster-card-bg draw-image-card" src="/assets/images/poster_card.png" data-islocal="{{true}}" mode="aspectFit" />
     <image class="poster-card-banner draw-image-card" src="{{banner}}" mode="aspectFill" />
     <view class="poster-card-right-content">
-      <view wx:if="{{saleType == 2 && pintuan && pintuan > 0}}" class="poster-card-price-title draw-text-card" data-text="{{pintuan}}人拼团价">{{pintuan}}人拼团价</view>
-      <view wx:elif="{{saleType == 3}}" class="poster-card-price-title draw-text-card" data-text="抢购价">抢购价</view>
+      <view wx:if="{{saleType == 2 && pintuan && pintuan > 0}}" class="poster-card-price-title theme-color draw-text-card" data-text="{{pintuan}}人拼团价">{{pintuan}}人拼团价</view>
+      <view wx:elif="{{saleType == 3}}" class="poster-card-price-title theme-color draw-text-card" data-text="抢购价">抢购价</view>
       <view wx:else class="poster-card-price-title theme-color draw-text-card" data-text="精选价">精选价</view>
       <view class="poster-card-price-box">
         <text class="poster-card-price-text theme-color draw-text-card" data-text="{{price > 0 ? ('¥' + price) : '免费'}}">{{price > 0 ? ('¥' + price) : '免费'}}</text>
@@ -105,7 +105,7 @@
   <view slot="top" id="top-wrapper" class="top-wrapper" catchtap="hidePoster">
     <!-- <view style="width:100%;height:{{_nav_data_.navWrapperHeight}}px"></view> -->
     <view wx:if="{{!localPoster}}" class='loading-image'><text>正在生成图片...</text></view>
-    <image wx:if="{{localPoster}}" class='poster' src="{{localPoster}}" style="width:{{posterWidth ? (posterWidth + 'px') : '88%'}};height:{{posterHeight ? (posterHeight + 'px') : '88%'}}" mode="aspectFit" catchtap="stopPropagation"></image>
+    <image wx:if="{{localPoster}}" class='poster' src="{{localPoster}}" style="width:{{posterWidth ? (posterWidth + 'px') : '88%'}};height:{{posterHeight ? (posterHeight + 'px') : '88%'}}" mode="aspectFit" catchtap="getFantuanAppShareLink"></image>
   </view>
   <view slot="bottom" class="bottom-wrapper">
     <view class="share-tip{{(fenxiao_price && fenxiao_price !== '0') ? ' show' : ' hide'}}">好友通过你的分享购买此产品，你将获得{{fenxiao_price}}元收益</view>

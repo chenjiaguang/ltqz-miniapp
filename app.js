@@ -1,9 +1,6 @@
 const config = require('/configs/index.js');
-import authManager from '/utils/authManager.js'
-import storageHelper from '/utils/storageHelper.js'
 import bindFenxiao from '/utils/bindFenxiao.js'
 import expand from '/utils/expand.js'
-import util from '/utils/util.js'
 let store = require('/store/index.js')
 
 App({
@@ -11,7 +8,7 @@ App({
     env: config.env,
     userInfo: null,
     themeColor: '#FF2266', // 设置主题色
-    themeModalConfirmColor: '#F24724'
+    themeModalConfirmColor: '#FF296B'
   },
   config: config,
   store,

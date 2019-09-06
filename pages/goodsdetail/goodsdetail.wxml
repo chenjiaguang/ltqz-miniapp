@@ -161,4 +161,4 @@
 <shopping-view wx:if="{{status == 1 && session && session.length > 0 && type == 1}}" id="c-shopping-view" remain-count="{{person_remain_count}}" session="{{session}}" timestamp="{{goodsTimestamp}}" catchnextstep="nextTap" />
 <shopping-view2 wx:if="{{status == 1 && session && session.length > 0 && (type == 2 || type == 3)}}" id="c-shopping-view" remain-count="{{person_remain_count}}" session="{{session}}" timestamp="{{goodsTimestamp}}" catchnextstep="nextTap" />
 <login-modal id="c-login-modal" />
-<coupon-packet wx:if="{{coupon && coupon.length}}" coupons="{{coupon}}" />
+<coupon-packet wx:if="{{coupon && coupon.length}}" coupons="{{coupon}}" bindcouponchange="couponChange" />

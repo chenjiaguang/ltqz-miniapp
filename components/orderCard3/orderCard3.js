@@ -33,7 +33,6 @@ Component({
       this.triggerEvent('showrejectmodal', {shop_id, order_id})
     },
     confirmRefund: function () {
-      console.log('confirmRefund')
       const {shop_id, order_id} = this.data.item
       this.triggerEvent('confirmrefund', {shop_id, order_id})
     }

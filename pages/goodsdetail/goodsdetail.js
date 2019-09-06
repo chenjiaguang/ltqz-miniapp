@@ -207,9 +207,9 @@ Page({
               id: item.id,
               title: item.title,
               price: priceObj.money,
-              show_price: priceObj.showMoney,
+              show_price: parseFloat(priceObj.showMoney),
               threshold: thresholdObj.money,
-              threshold_text: (thresholdObj.money && thresholdObj.money !== '0' && thresholdObj.money != '免费') ? `满${thresholdObj.showMoney}可用` : '无金额门槛',
+              threshold_text: (thresholdObj.money && thresholdObj.money !== '0' && thresholdObj.money != '免费') ? `满¥${parseFloat(thresholdObj.showMoney)}可用` : '无金额门槛',
               tip: item.time_desc
             }
           })
@@ -518,5 +518,19 @@ Page({
     this.navigateTo({
       url: '/pages/bepartner/bepartner'
     })
+  },
+
+  couponChange: function (e) {
+    const {coupon} = e.detail
+    const {coupon: coupons} = this.data
+    if (coupon && coupon.time_desc && coupon.coupon_id) {
+      let _obj = {}
+      coupons.forEach((item, index) => {
+        if (item.id == coupon.coupon_id) {
+          _obj[`coupon[${index}].tip`] = coupon.time_desc
+        }
+      })
+      this.setData(_obj)
+    }
   }
 })

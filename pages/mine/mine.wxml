@@ -32,7 +32,7 @@
           <view class='type-item' catchtap="goOrder" data-type='1' hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
             <view class='order-type-icon-box'>
               <image class='order-type-icon' src="/assets/images/order_type0.png"></image>
-              <text class='item-num theme-color theme-border-color' wx:if="{{user.order.wait_pay}}">{{user.order.wait_pay}}</text>
+              <text class="item-num theme-color theme-border-color{{user.order.wait_pay < 10 ? ' one-number' : ''}}" wx:if="{{user.order.wait_pay}}">{{user.order.wait_pay}}</text>
             </view>
             <view class='type-title'>待付款</view>
           </view>
@@ -46,21 +46,21 @@
           <view class='type-item' catchtap="goOrder" data-type='3' hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
             <view class='order-type-icon-box'>
               <image class='order-type-icon' src="/assets/images/order_type1.png"></image>
-              <text class='item-num theme-color theme-border-color' wx:if="{{user.order.wait_use}}">{{user.order.wait_use}}</text>
+              <text class="item-num theme-color theme-border-color{{user.order.wait_use < 10 ? ' one-number' : ''}}" wx:if="{{user.order.wait_use}}">{{user.order.wait_use}}</text>
             </view>
             <view class='type-title'>待使用</view>
           </view>
           <view class='type-item' catchtap="goOrder" data-type='5' hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
             <view class='order-type-icon-box'>
               <image class='order-type-icon' src="/assets/images/order_type7.png"></image>
-              <text class='item-num theme-color theme-border-color' wx:if="{{user.order.wait_receipt}}">{{user.order.wait_receipt}}</text>
+              <text class="item-num theme-color theme-border-color{{user.order.wait_receipt < 10 ? ' one-number' : ''}}" wx:if="{{user.order.wait_receipt}}">{{user.order.wait_receipt}}</text>
             </view>
             <view class='type-title'>待收货</view>
           </view>
           <view class='type-item' catchtap="goOrder" data-type='6' hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
             <view class='order-type-icon-box'>
               <image class='order-type-icon' src="/assets/images/order_type2.png"></image>
-              <text class='item-num theme-color theme-border-color' wx:if="{{user.order.wait_rate}}">{{user.order.wait_rate}}</text>
+              <text class="item-num theme-color theme-border-color{{user.order.wait_rate < 10 ? ' one-number' : ''}}" wx:if="{{user.order.wait_rate}}">{{user.order.wait_rate}}</text>
             </view>
             <view class='type-title'>待评价</view>
           </view>
@@ -85,8 +85,8 @@
           <image class="user-profit-icon" src="/assets/images/user_profit.png" mode="aspectFill" />
           <text class='title'>推广收益<text class='unit'> (元)</text></text>
           <view catchtap="goProfit" class='view-detail'>
-            <view wx:if="{{user.fenxiao.no_read_remit}}" class="red-dot theme-bg"></view>
-            <text>{{user.fenxiao.no_read_remit ? ('您有' + user.fenxiao.no_read_remit + '笔新的收益') : '查看详情'}}</text>
+            <view wx:if="{{user.fenxiao.no_read_remit_number}}" class="red-dot theme-bg"></view>
+            <text>{{user.fenxiao.no_read_remit_number ? ('您有' + user.fenxiao.no_read_remit_number + '笔新的收益') : '查看详情'}}</text>
             <text class="profit-header-next lutufont lutu-next2"></text>
           </view>
         </view>

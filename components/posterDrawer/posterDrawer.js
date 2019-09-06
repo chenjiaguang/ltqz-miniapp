@@ -329,12 +329,16 @@ Component({
           _obj.title = data.title
           _obj.price = util.formatMoney(data.sale_type == 1 ? data.min_price : data.min_pt_price).showMoney
           _obj.fenxiao_price = data.fenxiao_price
-          _obj.pintuan = data.spell_num
+          let len = data.spell_num
+          if (len > 1000) { // 人为干预，最大为1000
+            len = 1000
+          }
+          _obj.pintuan = len
           _obj.joinNumber = data.join_num
           _obj.joinUsers = []
           if (data.tuan && data.tuan.tuanRecord && data.tuan.tuanRecord[0]) {
             let recordArr = [].concat(data.tuan.tuanRecord)
-            let leftNum = data.spell_num - data.tuan.tuanRecord.length
+            let leftNum = len - data.tuan.tuanRecord.length
             if (leftNum > 0) {
               for (let i = 0; i < leftNum; i++) {
                 recordArr.push({ id: new Date().getTime() + i })

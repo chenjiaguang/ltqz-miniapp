@@ -18,9 +18,6 @@
   line-height: 92rpx;
   color: #999;
 }
-.wrapper.show{
-  visibility: visible;
-}
 .card-wrapper{
   position: fixed;
   left: 0;
@@ -209,7 +206,7 @@
 .real-price-text{
   flex: 1;
   position: relative;
-  font-size: 0;
+  /* font-size: 0; */
   overflow: visible;
   display: flex;
   align-items: flex-end;
@@ -476,6 +473,12 @@
   top: 200%;
   opacity: 0;
   visibility: hidden;
+}
+.toggle-button{
+  position: fixed;
+  left: 50%;
+  bottom: 100rpx;
+  z-index: 9999999999;
 }
 .draw-poster-card{
   position: absolute;

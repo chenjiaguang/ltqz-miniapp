@@ -1,4 +1,3 @@
-import authManager from './authManager.js'
 import storageHelper from './storageHelper.js'
 
 const secondToClock = seconds => {
@@ -220,14 +219,13 @@ const request = (url, data, config = {}) => {
       method: (config && config.method) || 'POST', // 使用传入的method值，或者默认的post
       header: {
         'fromOrigin': 'miniapp',
-        'version': apiVersion,
+        'version': '1.5',
         'content-type': (config && config.contentType) || 'application/json', // 使用传入的contentType值，或者默认的application/json
         'token': token, // 使用传入的token值，或者全局的token，都没有则默认空字符串
       },
       success: function(res) {
         if (res.data.error && (res.data.error == 401)) {
           const permissionTimeStamp = storageHelper.getStorage('permissionTimeStamp')
-          console.log('401', timeStamp, permissionTimeStamp, timeStamp)
           if (permissionTimeStamp && timeStamp < permissionTimeStamp) {
             return false
           }

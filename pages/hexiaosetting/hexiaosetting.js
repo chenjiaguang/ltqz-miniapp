@@ -103,7 +103,6 @@ Page({
   },
   onFocus: function (e) {
     let { focus} = this.data
-    console.log('onFocus', focus)
     if (focus) return false
     this.setData({
       focus: true
@@ -119,7 +118,10 @@ Page({
       id: this.data.id,
       hx_code: this.data.code
     }).then(res => {
-      util.backAndToast('核销密码修改成功啦')
+      if (res.error === 0 || res.error === '0') {
+        util.backAndToast(res.msg || '核销密码修改成功啦')
+      }
+      
     }).catch(err => {
       console.log('err', err)
     })
