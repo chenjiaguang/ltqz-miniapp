@@ -84,14 +84,14 @@ Component({
    */
   methods: {
     calHideDist: function (distVal) {
-      const {rpx, windowHeight} = this.data._nav_data_
+      const {rpx, screenHeight} = this.data._nav_data_
       let val = distVal
       let dist = 0
       if (val) {
         if (val.indexOf('rpx') !== -1) { // 传入的是rpx
           dist = parseInt(val) * rpx
         } else if (val.indexOf('%') !== -1) {
-          dist = windowHeight * (parseFloat(val) / 100)
+          dist = screenHeight * (parseFloat(val) / 100)
         } else {
           dist = parseInt(val)
         }

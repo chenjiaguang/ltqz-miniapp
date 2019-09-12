@@ -402,8 +402,8 @@ Page({
   },
 
   getHalfScreenHeight: function () {
-    const {windowHeight} = this.data._nav_data_
-    const halfHeight = windowHeight / 2
+    const {screenHeight} = this.data._nav_data_
+    const halfHeight = screenHeight / 2
     this.setData({
       halfScreenHeight: halfHeight + 'px'
     })

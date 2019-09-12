@@ -268,10 +268,11 @@ Page({
   },
 
   initTabScroll: function () {
-    const {rpx, windowHeight} = this.data._nav_data_
+    const {rpx, screenHeight} = this.data._nav_data_
+      
     
-    const tabHeaderObserveRect = { bottom: -(windowHeight - 1) + this.data._nav_data_.navHeight}
-    const tabContentObserveRect = { top: -(90 * rpx) - this.data._nav_data_.navHeight, bottom: -(windowHeight - (90 * rpx) - this.data._nav_data_.navHeight - 1) }
+    const tabHeaderObserveRect = { bottom: -(screenHeight - 1) + this.data._nav_data_.navHeight}
+    const tabContentObserveRect = { top: -(90 * rpx) - this.data._nav_data_.navHeight, bottom: -(screenHeight - (90 * rpx) - this.data._nav_data_.navHeight - 1) }
     wx.createIntersectionObserver().relativeToViewport(tabHeaderObserveRect).observe('#tab-wrapper', (res) => {
       const tabFixed = res.intersectionRatio > 0
       this.setData({tabFixed})
