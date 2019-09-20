@@ -411,14 +411,26 @@
   align-items: center;
   padding: 0 32rpx;
 }
+.overview-separator-block{
+  width: 10rpx;
+  height: 32rpx;
+  border-radius: 6rpx;
+}
 .overview-separator{
-  border-left-width: 10rpx;
-  border-left-style: solid;
+  flex: 1;
   padding-left: 10rpx;
   font-size: 32rpx;
-  line-height: 32rpx;
   font-weight: bold;
-  overflow: visible;
+}
+.overview-score{
+  font-size: 32rpx;
+  display: flex;
+  align-items: center;
+}
+.overview-score-text{
+  color: #333333;
+  font-weight: bold;
+  margin-right: 4rpx;
 }
 .comment-amount{
   font-size: 28rpx;

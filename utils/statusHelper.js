@@ -75,7 +75,7 @@ const getCardText = (type, sale_type, status, qg_status) => {
         '-2': '未上架',
         '-1': '未上架',
         '0': '未上架',
-        '1': '报名中',
+        '1': '', // 原为报名中
         '2': '已满额',
         '3': '已截止',
         '4': '已满额',
@@ -109,7 +109,7 @@ const getCardText = (type, sale_type, status, qg_status) => {
         '-2': '未上架',
         '-1': '未上架',
         '0': '未上架',
-        '1': '出售中',
+        '1': '', // 原为出售中
         '2': '已售罄',
         '3': '已售罄',
         '4': '已售罄',
@@ -148,12 +148,12 @@ const getStatusText = (type, sale_type, status, qg_status) => {
       '-2': '活动未上架',
       '-1': '活动未上架',
       '0': '活动未上架',
-      '1': '活动报名中',
-      '2': '活动报名中',
+      '1': '', // 原为活动报名中
+      '2': '', // 原为活动报名中
       '3': '报名已结束',
       '4': '报名已结束',
       '5': '活动已结束',
-      '6': '活动报名中'
+      '6': '' // 原为活动报名中
     }
     text = textObj[status]
   } else if (type == 2 || type == 3) { // 非活动
@@ -162,8 +162,8 @@ const getStatusText = (type, sale_type, status, qg_status) => {
       '-2': '商品未上架',
       '-1': '商品未上架',
       '0': '商品未上架',
-      '1': '商品出售中',
-      '2': '商品出售中',
+      '1': '', // 原为商品出售中
+      '2': '', // 原为商品出售中
       '3': '商品已售罄',
       '4': '商品已售罄',
       '5': '商品已售罄',
@@ -219,6 +219,7 @@ const getStatusTipText = (type, sale_type, status, qg_status) => {
       statusTipText = ''
     }
   }
+  statusTipText = '' // 固定去掉详情页的状态栏
   return statusTipText
 }
 

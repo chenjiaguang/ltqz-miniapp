@@ -1,26 +1,75 @@
 <!--pages/signupmanager/signupmanager.wxml-->
 <ft-custom-nav title="{{navTitle}}" />
-<view class='container'>
+<view class="hidden-header">
+  <picker mode="selector" range="{{statusFilter}}" range-key="text" value="{{statusSelected}}" bindchange="statusChange">
+    <view class="type-filter" hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
+      <text class="type-filter-text">{{statusFilter[statusSelected] ? statusFilter[statusSelected].text : '全部'}}订单</text>
+      <image class="type-filter-icon" src="/assets/images/triangle.svg" mode="aspectFit" />
+    </view>
+  </picker>
+  <view class="block-separator"></view>
   <view class='head'>
-    <view class="head-item">
+    <view class="date-picker">
+      <picker mode="date" start="{{dateFilter[0]}}" end="{{dateFilter[1]}}" value="{{dateSelected}}" fields="month" bindchange="dateChange">
+        <view class="date-filter" hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
+          <text class="date-filter-text">{{dateSelected || dateFilter[1]}}</text>
+          <image class="date-filter-icon" src="/assets/images/arrow.svg" mode="aspectFit" />
+        </view>
+      </picker>
+    </view>
+    <view wx:if="{{(join_num && join_num !== '0') || (js_price && js_price !== '0')}}" style="width:100%;height:10rpx"></view>
+    <view wx:if="{{join_num && join_num !== '0'}}" class="head-item">
       <view class="head-item-title">订单数</view>
       <view class="head-item-content">{{join_num || 0}}</view>
     </view>
-    <view class="head-item">
+    <view wx:if="{{js_price && js_price !== '0'}}" class="head-item">
       <view class="head-item-title">实际收入{{type == 3 ? '(仅包含已完成)' : ((type == 1 || type == 2) ? '(仅包含已核销)' : '')}}</view>
       <view class="head-item-content">￥ {{js_price || 0}}</view>
     </view>
   </view>
+  <view class="intersection-dot"></view>
+</view>
+<view class="fixed-header{{showFixedFilter ? ' fixed-show' : ' fixed-hide'}}" id="fixed-header" style="top:{{_nav_data_.navHeight}}px">
+  <picker mode="selector" range="{{statusFilter}}" range-key="text" value="{{statusSelected}}" bindchange="statusChange">
+    <view class="type-filter" hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
+      <text class="type-filter-text">{{statusFilter[statusSelected] ? statusFilter[statusSelected].text : '全部'}}订单</text>
+      <image class="type-filter-icon" src="/assets/images/triangle.svg" mode="aspectFit" />
+    </view>
+  </picker>
+  <view class="block-separator"></view>
+  <view class='head'>
+    <view class="date-picker">
+      <picker mode="date" start="{{dateFilter[0]}}" end="{{dateFilter[1]}}" value="{{dateSelected}}" fields="month" bindchange="dateChange">
+        <view class="date-filter" hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
+          <text class="date-filter-text">{{dateSelectedShow}}</text>
+          <image class="date-filter-icon" src="/assets/images/arrow.svg" mode="aspectFit" />
+        </view>
+      </picker>
+    </view>
+    <view wx:if="{{(join_num && join_num !== '0') || (js_price && js_price !== '0')}}" style="width:100%;height:10rpx"></view>
+    <view wx:if="{{join_num && join_num !== '0'}}" class="head-item">
+      <view class="head-item-title">订单数</view>
+      <view class="head-item-content">{{join_num || 0}}</view>
+    </view>
+    <view wx:if="{{js_price && js_price !== '0'}}" class="head-item">
+      <view class="head-item-title">实际收入{{type == 3 ? '(仅包含已完成)' : ((type == 1 || type == 2) ? '(仅包含已核销)' : '')}}</view>
+      <view class="head-item-content">￥ {{js_price || 0}}</view>
+    </view>
+  </view>
+</view>
+<view class="container">
   <ft-list-loader visible="{{!page}}" />
   <order-card2 wx:for="{{list}}" wx:key='order_id' item="{{item}}" bindshowconfirmdeliver="showConfirmDeliver" />
   <ft-list-footer loaded="{{!!page}}" loading="{{loading}}" page="{{page}}" show-no-more="{{list && list[0]}}" />
-  <ft-bottom-box box-height="{{140}}">
+  <image wx:if="{{page && list && !list.length}}" class='empty-img' src='/assets/images/empty_signupmanager.png' />
+  <text wx:if="{{page && list && !list.length}}" class='empty-text'>暂无订单记录</text>
+  <!-- <ft-bottom-box box-height="{{140}}">
     <view class="btn-wrapper">
       <view class='btn theme-border-color theme-color' bindtap='goDetail'>
         <text>查看商品详情</text>
       </view>
     </view>
-  </ft-bottom-box>
+  </ft-bottom-box> -->
 </view>
 <ft-modal id="c-ft-modal" hide-cancel mask-tap-hide="{{false}}" mode="2">
   <view slot="top" class="confirm-view" catchtap="stopPropagation">

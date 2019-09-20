@@ -37,7 +37,11 @@
     "pages/userfxgoods/userfxgoods",
     "pages/fxusuallyquestion/fxusuallyquestion",
     "pages/couponlist/couponlist",
-    "pages/refundlist/refundlist"
+    "pages/refundlist/refundlist",
+    "pages/billlist/billlist",
+    "pages/businessinfo/businessinfo",
+    "pages/refundapply/refundapply",
+    "pages/aftermarket/aftermarket"
   ],
   "window": {
     "navigationStyle": "custom",

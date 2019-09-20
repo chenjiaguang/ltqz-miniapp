@@ -4,16 +4,19 @@
     <view class='title-wrapper' style="{{titleStyle}}">
       <!-- 获取最长的字符位置 -->
       <view class='title-text'>
-        <view class="title-text-box {{titleAlign}}" style="font-size:{{fontSize}}rpx;line-height:{{lineHeight}};color:{{titleColor}}">
+        <view wx:if="{{mode == 1}}" class="title-text-box {{titleAlign}}" style="font-size:{{fontSize}}rpx;line-height:{{lineHeight}};color:{{titleColor}}">
           <text wx:for="{{item.title}}" wx:for-item="char" wx:key="*this" class="title-char">{{char}}</text>
         </view>
+        <view wx:else class="title-text-box {{titleAlign}}" style="font-size:{{fontSize}}rpx;line-height:{{lineHeight}};color:{{titleColor}}">{{item.title}}</view>
         <text wx:if="{{item.title && showColon}}" class='title-sign' style="font-size:{{fontSize}}rpx;line-height:{{lineHeight}};color:{{titleColor}}">：</text>
       </view>
-      <block wx:if="{{showColon}}">
-        <view wx:for="{{tableData}}" wx:key="title" class='title-box' style="font-size:{{fontSize}}rpx">{{item.title}}：</view>
-      </block>
-      <block wx:else>
-        <view wx:for="{{tableData}}" wx:key="title" class='title-box' style="font-size:{{fontSize}}rpx">{{item.title}}</view>
+      <block wx:if="{{mode == 1}}">
+        <block wx:if="{{showColon}}">
+          <view wx:for="{{tableData}}" wx:key="title" class='title-box' style="font-size:{{fontSize}}rpx">{{item.title}}：</view>
+        </block>
+        <block wx:else>
+          <view wx:for="{{tableData}}" wx:key="title" class='title-box' style="font-size:{{fontSize}}rpx">{{item.title}}</view>
+        </block>
       </block>
     </view>
     <view class='content' style="font-size:{{fontSize}}rpx;line-height:{{lineHeight}};color:{{item.c_color || contentColor}}">

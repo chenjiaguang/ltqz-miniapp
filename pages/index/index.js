@@ -39,6 +39,7 @@ Page({
     }
   },
   onShareAppMessage: function () {
+    const { cover_url } = this.data
     return {
       title: '范团精选-精选你的有范生活',
       path: '/pages/index/index'

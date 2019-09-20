@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "商家资料",
+  "usingComponents": {
+    "ft-custom-nav": "../../ftcomponents/ftCustomNav/ftCustomNav"
+  }
+}

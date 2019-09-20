@@ -12,7 +12,8 @@
           </view>
         </scroll-view>
       </view>
-      <view class="sub-sessions{{currentTickets[saletype] && currentTickets[saletype].length ? ' show' : ' hide'}}">
+      <!-- <view class="sub-sessions{{currentTickets[saletype] && currentTickets[saletype].length ? ' show' : ' hide'}}"> -->
+      <view class="sub-sessions show">
         <view class='line-separator-h'></view>
         <view class='ticket-header' style="padding-top:32rpx">票种</view>
         <scroll-view scroll-x class='sessions'>

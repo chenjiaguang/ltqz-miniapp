@@ -1,5 +1,5 @@
 {
-  "navigationBarTitleText": "商品管理",
+  "navigationBarTitleText": "商品列表",
   "usingComponents": {
     "ft-custom-nav": "../../ftcomponents/ftCustomNav/ftCustomNav",
     "activity-card3": "../../components/activityCard3/activityCard3",

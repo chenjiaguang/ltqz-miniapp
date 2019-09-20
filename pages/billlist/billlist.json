@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "到账明细",
+  "usingComponents": {
+    "ft-custom-nav": "../../ftcomponents/ftCustomNav/ftCustomNav",
+    "ft-iphone-bottom-adapter": "../../ftcomponents/ftIphoneBottomAdapter/ftIphoneBottomAdapter",
+    "ft-list-loader": "../../ftcomponents/ftListLoader/ftListLoader",
+    "ft-list-footer": "../../ftcomponents/ftListFooter/ftListFooter"
+  }
+}

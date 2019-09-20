@@ -78,6 +78,11 @@ Component({
       }).finally(res => {
         this.receiving[coupon.id] = false
       })
+    },
+    goCouponlist: function () {
+      this.navigateTo({
+        url: '/pages/couponlist/couponlist'
+      })
     }
   }
 })

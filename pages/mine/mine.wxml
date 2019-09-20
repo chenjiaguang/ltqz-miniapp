@@ -64,11 +64,11 @@
             </view>
             <view class='type-title'>待评价</view>
           </view>
-          <view class='type-item' catchtap="goOrder" data-type='7' hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
+          <view class='type-item' catchtap="goAftermarket" hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
             <view class='order-type-icon-box'>
               <image class='order-type-icon' src="/assets/images/order_type-4.png"></image>
             </view>
-            <view class='type-title'>退款</view>
+            <view class='type-title'>退款/售后</view>
           </view>
         </view>
       </view>

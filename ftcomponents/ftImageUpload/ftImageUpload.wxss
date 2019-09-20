@@ -40,7 +40,7 @@
 
 .add {
   box-sizing: border-box;
-  border: 1px dotted #979797;
+  border: 1rpx dotted #979797;
   display: flex;
   flex-direction: column;
   align-items: center;

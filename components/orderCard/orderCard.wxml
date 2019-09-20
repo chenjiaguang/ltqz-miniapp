@@ -2,21 +2,36 @@
 <view class='card wrapper' bindtap='goDetail' hover-stop-propagation hover-class='card-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
   <view class="block-separator"></view>
   <view class='head row jc-between ai-center'>
-    <text class="{{statusClass[item.status] || 'state-normal'}}">{{statusText[item.status]}}</text>
-    <text class='money bold'>¥{{item.price}}</text>
+    <text class="date">{{item.created_at}}</text>
+    <text class="state-normal2">{{(item.status == 6 && item.refund_status == 1) ? '退款审核中' : statusText[item.status]}}</text>
+    <!-- <text class='money bold'>¥{{item.price}}</text> -->
   </view>
-  <view class='line-separator-h'></view>
+  <view class='line-separator-h' style="width:auto;margin:0 32rpx"></view>
   <view class="content-wrapper">
-    <activity-content data="{{item}}" />
+    <image class="cover" src="{{item.product.product_cover_url}}" mode="aspectFill" />
+    <view class="content-wrapper-right">
+      <view class="title">{{item.product.title}}</view>
+      <view class="ticket">{{item.ticket[0].name}}</view>
+      <view class="ticket-price-and-amount">
+        <view class="ticket-price">¥{{item.ticket[0].price}}</view>
+        <view class="ticket-amount"><text style="font-size:24rpx;margin-right:4rpx">数量</text><text style="font-size:28rpx">{{item.ticket[0].quantity}}</text></view>
+      </view>
+    </view>
+    <!-- <activity-content data="{{item}}" /> -->
   </view>
-  <view wx:if="{{item.status == 0 || item.status == 1 || item.status == 2 || item.status == 4 || item.can_refund || (item.status == 6 && item.refund_status == 1) || item.status == 7}}">
-    <view class='line-separator-h'></view>
-    <view class='foot row jc-end ai-center'>
+  <view class='line-separator-h' style="width:auto;margin:0 32rpx"></view>
+  <view class="bottom-bar">
+    <view class="pay-price">
+      <view class="total-amount">共{{item.ticket[0].quantity}}件</view>
+      <view class="total-pay-title">应付总额</view>
+      <view class="total-pay-amount">¥{{item.price}}</view>
+    </view>
+    <view wx:if="{{item.status == 0 || item.status == 1 || item.status == 2 || item.status == 4 || item.can_refund || item.status == 7}}" class='foot'>
       <view class='btn btn-cancel' wx:if="{{item.status == 0}}" catchtap='goCancel' hover-stop-propagation><text>取消订单</text></view>
       <form wx:if="{{item.can_refund}}" report-submit catchsubmit="goRefund">
-        <button class='btn btn-refund' form-type="submit" hover-stop-propagation hover-class="none" catchtap><text>{{item.type == 3 ? '申请退款' : '退款'}}</text></button>
+        <button class='btn btn-refund' form-type="submit" hover-stop-propagation hover-class="none" catchtap><text>申请退款</text></button>
       </form>
-      <view class='btn btn-apply-refund' wx:if="{{item.status == 6 && item.refund_status == 1}}" hover-stop-propagation catchtap><text>退款中</text></view>
+      <!-- <view class='btn btn-apply-refund' wx:if="{{item.status == 6 && item.refund_status == 1}}" hover-stop-propagation catchtap><text>退款中</text></view> -->
       <view class='btn btn-confirm theme-color theme-border-color' wx:if="{{item.status == 7}}" catchtap='goConfirm' hover-stop-propagation><text>确认收货</text></view>
       <view class='btn btn-pay theme-color theme-border-color' wx:if="{{item.status==0}}" catchtap='goPay' hover-stop-propagation>立即支付</view>
       <view class='btn btn-online theme-color theme-border-color' wx:if="{{item.status == 1}}" catchtap='goTicket' hover-stop-propagation><text>电子票</text></view>

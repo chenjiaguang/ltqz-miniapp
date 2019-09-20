@@ -2,7 +2,7 @@
 const util = require('../../utils/util.js')
 
 Page({
-
+  name: 'businessassistant',
   /**
    * 页面的初始数据
    */
@@ -15,8 +15,11 @@ Page({
       path: '/pages/hexiaosetting/hexiaosetting'
     },
     other_entrances: [{
-        title: '商品管理',
+        title: '订单管理',
         path: '/pages/activitymanager/activitymanager'
+      },{
+        title: '到账明细',
+        path: '/pages/billlist/billlist'
       },{
         title: '待处理退款申请',
         path: '/pages/refundlist/refundlist'
@@ -24,10 +27,15 @@ Page({
       {
         title: '评价管理',
         path: '/pages/commentmanager/commentmanager'
+      },
+      {
+        title: '常见问题',
+        path: '/pages/statement/statement?type=5'
       }
     ],
     ticketGetting: false, // 是否正在获取券码
     submitting: false,
+    webLoging: false,
     ticket_total: 0,
     ticket_can_use: 0,
     can_check: false,
@@ -39,13 +47,15 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
+    this.options = options
     let hexiao_entrance = this.data.hexiao_entrance
     hexiao_entrance.path = hexiao_entrance.path + '?id=' + options.id
 
     let other_entrances = this.data.other_entrances
     other_entrances[0].path = other_entrances[0].path + '?id=' + options.id
     other_entrances[1].path = other_entrances[1].path + '?id=' + options.id
-    other_entrances[2].path = other_entrances[2].path + '?role=business&sid=' + options.id
+    other_entrances[2].path = other_entrances[2].path + '?id=' + options.id
+    other_entrances[3].path = other_entrances[3].path + '?role=business&sid=' + options.id
 
     this.setData({
       id: options.id,
@@ -67,9 +77,11 @@ Page({
       id: this.data.id
     }).then(res => {
       res.data.total_income = util.formatMoney(res.data.total_income).showMoney
+      res.data.has_js_income = util.formatMoney(res.data.has_js_income).showMoney
+      res.data.no_js_income = util.formatMoney(res.data.no_js_income).showMoney
       let other_entrances = this.data.other_entrances
       other_entrances[0].title = other_entrances[0].title.split('（')[0] + '（' + res.data.product_num + '）'
-      other_entrances[2].title = other_entrances[2].title.split('（')[0] + '（' + res.data.rate_num + '）'
+      other_entrances[3].title = other_entrances[3].title.split('（')[0] + '（' + res.data.rate_num + '）'
       let _obj = {}
       _obj.data = res.data
       _obj.other_entrances = other_entrances
@@ -114,6 +126,12 @@ Page({
   // onShareAppMessage: function() {
 
   // },
+
+  goShopInfo: function () {
+    this.navigateTo({
+      url: `/pages/businessinfo/businessinfo?id=${this.options.id}`
+    })
+  },
 
   showTickets: function () { // 显示/隐藏券
     const ftModal = this.selectComponent('#c-ft-modal')
@@ -196,10 +214,82 @@ Page({
     })
   },
 
-  scanHexiaoCode: function() {
+  hexiaoRequest: function (rData) {
+    this.setData({
+      ticketGetting: true
+    })
+    util.request('/admin/hx/order_ticket', rData).then(res => {
+      if (res.error == 0) {
+        let _obj = {}
+        _obj.ticket_total = res.data.ticket_total
+        _obj.ticket_can_use = res.data.ticket_can_use
+        _obj.can_check = res.data.can_check
+        _obj.choosedLen = 0
+        _obj.tickets = res.data.ticket_list.map(item => ({code: item.code, id: item.id, is_check: item.is_check, order_id: item.order_id, choosed: false}))
+        this.setData(_obj, () => {
+          this.qr_code_result = e.result
+          this.showTickets()
+        })
+      } else {
+        if (res.msg) {
+          wx.showToast({
+            title: res.msg,
+            icon: 'none'
+          })
+        }
+      }
+    }).catch(err => {
+      console.log('err', err)
+    }).finally(res => {
+      this.setData({
+        ticketGetting: false
+      })
+    })
+  },
+
+  loginRequest: function (rData) {
+    this.setData({
+      webLoging: true
+    })
+    util.request('/admin/houtai/login', rData).then(res => {
+      if (res.msg) {
+        wx.showToast({
+          title: res.msg,
+          icon: 'none'
+        })
+      }
+      // if (res.error == 0) {
+      //   let _obj = {}
+      //   _obj.ticket_total = res.data.ticket_total
+      //   _obj.ticket_can_use = res.data.ticket_can_use
+      //   _obj.can_check = res.data.can_check
+      //   _obj.choosedLen = 0
+      //   _obj.tickets = res.data.ticket_list.map(item => ({code: item.code, id: item.id, is_check: item.is_check, order_id: item.order_id, choosed: false}))
+      //   this.setData(_obj, () => {
+      //     this.qr_code_result = e.result
+      //     this.showTickets()
+      //   })
+      // } else {
+      //   if (res.msg) {
+      //     wx.showToast({
+      //       title: res.msg,
+      //       icon: 'none'
+      //     })
+      //   }
+      // }
+    }).catch(err => {
+      console.log('err', err)
+    }).finally(res => {
+      this.setData({
+        webLoging: false
+      })
+    })
+  },
+
+  scanHexiaoCode: function() { // 1为扫码核销权限|2为回复评论权限|3为微信接收下单通知
     if (this.data.data.access.indexOf('1') == -1) {
       wx.showToast({
-        title: '您没有扫码核销权限哦~',
+        title: '您无此操作权限哦~',
         icon: 'none'
       })
     } else {
@@ -207,43 +297,64 @@ Page({
         onlyFromCamera: false,
         scanType: ['qrCode'],
         success: e => {
-          const {ticketGetting, submitting} = this.data
-          if (ticketGetting || submitting) { // 正在获取券码 或 正在核销中
-            return false
-          }
-          this.setData({
-            ticketGetting: true
-          })
-          util.request('/admin/hx/order_ticket', {
-            id: this.data.id,
-            qr_code: e.result
-          }).then(res => {
-            if (res.error == 0) {
-              let _obj = {}
-              _obj.ticket_total = res.data.ticket_total
-              _obj.ticket_can_use = res.data.ticket_can_use
-              _obj.can_check = res.data.can_check
-              _obj.choosedLen = 0
-              _obj.tickets = res.data.ticket_list.map(item => ({code: item.code, id: item.id, is_check: item.is_check, order_id: item.order_id, choosed: false}))
-              this.setData(_obj, () => {
-                this.qr_code_result = e.result
-                this.showTickets()
-              })
-            } else {
-              if (res.msg) {
-                wx.showToast({
-                  title: res.msg,
-                  icon: 'none'
-                })
-              }
+          console.log('scancode', e)
+          const {ticketGetting, submitting, webLoging} = this.data
+          const isLoginQr = e.result.indexOf('login_qr') === 0
+          if (isLoginQr) { // 扫码登录商家后台
+            if (webLoging) { // 正在登录
+              return false
             }
-          }).catch(err => {
-            console.log('err', err)
-          }).finally(res => {
-            this.setData({
-              ticketGetting: false
-            })
-          })
+            let rData = {
+              shop_id: this.data.id,
+              str: e.result
+            }
+            this.loginRequest(rData)
+          } else { // 扫码核销
+            if (ticketGetting || submitting) { // 正在获取券码 或 正在核销中
+              return false
+            }
+            let rData = {
+              id: this.data.id,
+              qr_code: e.result
+            }
+            this.hexiaoRequest(rData)
+          }
+          // if (ticketGetting || submitting) { // 正在获取券码 或 正在核销中
+          //   return false
+          // }
+          // this.setData({
+          //   ticketGetting: true
+          // })
+          // util.request('/admin/hx/order_ticket', {
+          //   id: this.data.id,
+          //   qr_code: e.result
+          // }).then(res => {
+          //   if (res.error == 0) {
+          //     let _obj = {}
+          //     _obj.ticket_total = res.data.ticket_total
+          //     _obj.ticket_can_use = res.data.ticket_can_use
+          //     _obj.can_check = res.data.can_check
+          //     _obj.choosedLen = 0
+          //     _obj.tickets = res.data.ticket_list.map(item => ({code: item.code, id: item.id, is_check: item.is_check, order_id: item.order_id, choosed: false}))
+          //     this.setData(_obj, () => {
+          //       this.qr_code_result = e.result
+          //       this.showTickets()
+          //     })
+          //   } else {
+          //     if (res.msg) {
+          //       wx.showToast({
+          //         title: res.msg,
+          //         icon: 'none'
+          //       })
+          //     }
+          //   }
+          // }).catch(err => {
+          //   console.log('err', err)
+          // }).finally(res => {
+          //   this.setData({
+          //     ticketGetting: false
+          //   })
+          // })
         },
         fail: e => {
           console.log('fail', e)
@@ -255,7 +366,7 @@ Page({
   entranceTapHx: function(e) {
     if (this.data.data.access.indexOf('1') == -1) {
       wx.showToast({
-        title: '您没有扫码核销权限哦~',
+        title: '您无此操作权限哦~',
         icon: 'none'
       })
     } else {
@@ -268,6 +379,13 @@ Page({
       path,
       phone
     } = e.detail
+    if (path.indexOf('/pages/commentmanager/commentmanager') !== -1 && this.data.data.access.indexOf('2') == -1) { // 是评价管理入口，且无回复权限，则提示暂无权限
+      wx.showToast({
+        title: '您无此操作权限哦~',
+        icon: 'none'
+      })
+      return false
+    }
     if (path) {
       this.navigateTo({
         url: path

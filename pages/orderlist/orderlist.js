@@ -13,7 +13,7 @@ Page({
     refreshing: false,
     refreshed: true,
     index: 0,
-    states: ['', '0', '4', '1', '6', '7', '2', '-4'], // -4普通退款|-3为手动下架|-2拼团失败|-1为失效订单|0为待付款|1为待参与|2为待评价|3已评价|4待成团|5已过期|6待发货|7已发货
+    states: ['', '0', '4', '1', '6', '7', '2'], // -4普通退款|-3为手动下架|-2拼团失败|-1为失效订单|0为待付款|1为待参与|2为待评价|3已评价|4待成团|5已过期|6待发货|7已发货
     tabCurrentColor: '#000000',
     tabs: [{
       title: '全部',
@@ -71,15 +71,7 @@ Page({
       },
       loaded: false,
       loading: false
-    },{
-      title: '退款',
-      list: [],
-      page: {
-        pn: 1
-      },
-      loaded: false,
-      loading: false
-    },]
+    }]
   },
 
   /**
@@ -294,6 +286,12 @@ Page({
           product.valid_etime = util.formatDateTimeDefault('d', product.valid_etime)
         }
         item.product = product
+        item.created_at = util.formatDateTimeDefault('d', item.created_at)
+        if (item.ticket) {
+          item.ticket.forEach(it => {
+            it.price = util.formatMoney(it.price).showMoney
+          })
+        }
         item.ticket_text = item.ticket.map((item) => {
           return item.name + '×' + item.quantity
         }).join(',')
@@ -340,45 +338,6 @@ Page({
         }
       })
     })
-    // this.setData({
-    //   [`index`]: 0,
-    //   [`tabs[0].page`]: {
-    //     pn: 1
-    //   },
-    //   [`tabs[0].list`]: [],
-    //   [`tabs[0].loaded`]: false,
-    //   [`tabs[0].loading`]: false,
-
-    //   [`tabs[1].page`]: {
-    //     pn: 1
-    //   },
-    //   [`tabs[1].list`]: [],
-    //   [`tabs[1].loaded`]: false,
-    //   [`tabs[1].loading`]: false,
-
-    //   [`tabs[2].page`]: {
-    //     pn: 1
-    //   },
-    //   [`tabs[2].list`]: [],
-    //   [`tabs[2].loaded`]: false,
-    //   [`tabs[2].loading`]: false,
-
-    //   [`tabs[3].page`]: {
-    //     pn: 1
-    //   },
-    //   [`tabs[3].list`]: [],
-    //   [`tabs[3].loaded`]: false,
-    //   [`tabs[3].loading`]: false,
-
-    //   [`tabs[4].page`]: {
-    //     pn: 1
-    //   },
-    //   [`tabs[4].list`]: [],
-    //   [`tabs[4].loaded`]: false,
-    //   [`tabs[4].loading`]: false
-    // }, () => {
-    //   this.loadList(0, 1)
-    // })
   },
 
   shareTap: function (e) {

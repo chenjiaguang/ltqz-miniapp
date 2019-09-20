@@ -2,7 +2,7 @@
 @import "../../app.wxss";
 
 .card {
-  padding: 30rpx;
+  padding: 0;
   margin: 0;
   border-radius: 0;
 }
@@ -88,13 +88,19 @@
   white-space: nowrap;
 }
 
+.top-box{
+  padding: 30rpx 30rpx 18rpx 30rpx !important;
+  box-sizing: content-box;
+}
+
 .bottom-box {
   height: 86rpx;
   font-size: 26rpx;
   color: #666;
   display: flex;
   align-items: stretch;
-  margin-top: 35rpx;
+  padding: 18rpx 30rpx 30rpx 30rpx !important;
+  box-sizing: content-box;
 }
 
 .lutu-users {

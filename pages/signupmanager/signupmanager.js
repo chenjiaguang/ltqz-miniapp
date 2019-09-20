@@ -7,6 +7,13 @@ Page({
    * 页面的初始数据
    */
   data: {
+    showFixedFilter: true,
+    offline: false, // 表示该商品是否下架
+    dateFilter: [],
+    dateSelected: '',
+    dateSelectedShow: '',
+    statusFilter: [],
+    statusSelected: 0,
     shippingMap: [],
     shippingIndex: '',
     shippingNumber: '',
@@ -28,8 +35,6 @@ Page({
       '4': '',
       '5': ''
     },
-    id: '',
-    product_id: '',
     join_num: '',
     js_price: '',
     list: [],
@@ -41,9 +46,32 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
+    this.options = options
+    const now = new Date()
+    const start = '2019-01'
+    const end = [now.getFullYear(), (now.getMonth() + 1) > 9 ? now.getMonth() + 1 : ('0' + (now.getMonth() + 1))].join('-')
+    const offline = options.status == -3 || options.status == -2 || options.status == -1 || options.status == 0
+    let statusArr = []
+    if (options.type == 3) { // 物流商品
+      if (offline) {
+        statusArr = [{status: '', text: '全部'}, {status: '-3', text: '已取消'}, {status: ['2', '3'], text: '已完成'}, {status: '-4', text: '已退款'}]
+      } else {
+        statusArr = [{status: '', text: '全部'}, {status: '6', text: '待发货', hx_status: '0'}, {status: '7', text: '已发货'}, {status: ['2', '3'], text: '已完成'}, {status: '-4', text: '已退款'}]
+      }
+    } else {
+      if (offline) {
+        statusArr = [{status: '', text: '全部'}, {status: '-3', text: '已取消'}, {status: ['2', '3'], text: '已完成'}, {status: '-4', text: '已退款'}]
+      } else {
+        statusArr = [{status: '', text: '全部'}, {status: '1', text: '待使用', hx_status: '0'}, {status: '1', text: '已核销', hx_status: '1'}, {status: ['2', '3'], text: '已完成'}, {status: '-4', text: '已退款'}]
+      }
+    }
     this.setData({
-      id: options.id,
-      product_id: options.product_id
+      dateFilter: [start, end],
+      dateSelectedShow: end.split('-').map(item => parseInt(item)).join('年') + '月',
+      statusFilter: statusArr,
+      offline: offline
+    }, () => {
+      this.fetchData(1)
     })
   },
 
@@ -51,7 +79,7 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function() {
-    this.fetchData(1)
+    this.initObserver()
   },
 
   /**
@@ -65,14 +93,14 @@ Page({
    * 生命周期函数--监听页面隐藏
    */
   onHide: function() {
-
+    
   },
 
   /**
    * 生命周期函数--监听页面卸载
    */
   onUnload: function() {
-
+    this.clearObserver()
   },
 
   /**
@@ -100,19 +128,27 @@ Page({
 
   // },
   fetchData: function(pn = 1) {
+    const {dateSelected, dateFilter, statusSelected, statusFilter, loading} = this.data
+    let rData = {
+      id: this.options.id,
+      product_id: this.options.product_id,
+      date: dateSelected || dateFilter[1],
+      status: statusFilter[statusSelected].status,
+      pn: pn
+    }
+    if (loading) {
+      return false
+    }
     this.setData({
       loading: true
     })
-    util.request('/admin/product/detail', {
-      id: this.data.id,
-      product_id: this.data.product_id,
-      pn: pn
-    }).then(res => {
+    util.request('/admin/product/detail', rData).then(res => {
       const {genderText} = this.data
       res.data.js_price = util.formatMoney(res.data.js_price).showMoney
       res.data.list.forEach((item) => {
         item.js_price = util.formatMoney(item.js_price).showMoney
         item.real_income = util.formatMoney(item.real_income).showMoney
+        item.unit_price = util.formatMoney(item.unit_price).showMoney
         // item.content = item.ticket.map((ticket) => {
         //   return ticket.name + 'x' + ticket.quantity
         // }).join('，') + '，共计￥' + item.order.js_price
@@ -122,10 +158,15 @@ Page({
         } else {
           item.tableContent.push({title: '实际收入', content: '¥' + item.real_income})
         }
-        // item.tableContent.push({title: '预计收入', content: '¥' + item.order.js_price})
+        if (res.data.type == 1 || res.data.type == 2) { // 非物流商品
+          item.tableContent.push({title: '结算单价', content: '¥' + item.unit_price})
+        } else if (res.data.type == 3) { // 物流商品
+
+        }
         item.tableContent.push({title: '已购数量', content: item.ticket.map((ticket) => {
           return ticket.name + 'x' + ticket.quantity
         }).join('，')})
+        item.tableContent.push({title: '下单时间', content: item.created_at})
         if (item.traveler_infos && item.traveler_infos.length) {
           item.traveler_infos.forEach((traveler, idx) => {
             item.tableContent.push({title: '出行人' + (idx + 1), content: traveler.name + (genderText[traveler.sex] ? ('，' + genderText[traveler.sex]) : '') + (traveler.id_number ? ('，' + traveler.id_number) : '')})
@@ -173,6 +214,10 @@ Page({
           list: res.data.list,
           page: res.data.page,
           loading: false
+        }, () => { // 每次更新数据，获取悬浮筛选框的高度
+          wx.createSelectorQuery().select('#fixed-header').boundingClientRect(rect => {
+            this.fixedHeight = rect.height
+          }).exec()
         })
       } else {
         let list = this.data.list
@@ -194,7 +239,7 @@ Page({
   },
   goDetail() {
     this.navigateTo({
-      url: '/pages/goodsdetail/goodsdetail?id=' + this.data.product_id
+      url: '/pages/goodsdetail/goodsdetail?id=' + this.options.product_id
     })
   },
   tapItem() {
@@ -271,12 +316,12 @@ Page({
     const s_id = this.shop_id
     const o_id = this.order_id
     const ship_num = shippingNumber
-    const ship_index = shippingMap[shippingIndex]
+    const ship_company = shippingMap[shippingIndex]
     let rData = {
       id: s_id,
       order_id: o_id,
       express_number: ship_num,
-      express_company: ship_index,
+      express_company: ship_company,
     }
     if (this.confirmTimer) {
       clearTimeout(this.confirmTimer)
@@ -288,7 +333,7 @@ Page({
           title: res.msg || '确认发货成功啦~',
           icon: 'none'
         })
-        this.updateItemStatus(o_id, '7', ship_index, ship_num)
+        this.updateItemStatus(o_id, '7', ship_company, ship_num)
         this.hideConfirmModal()
       } else {
         if (res.msg) {
@@ -317,5 +362,65 @@ Page({
       }
     })
     this.setData({list})
+  },
+  statusChange: function (e) {
+    const {value} = e.detail
+    const {statusSelected} = this.data
+    this.setData({statusSelected: value}, () => {
+      if (statusSelected !== value) {
+        this.fetchData(1)
+      }
+    })
+  },
+  dateChange: function (e) {
+    const {value} = e.detail
+    const {dateSelected} = this.data
+    this.setData({dateSelected: value, dateSelectedShow: value.split('-').map(item => parseInt(item)).join('年') + '月'}, () => {
+      if (dateSelected !== value) {
+        this.fetchData(1)
+      }
+    })
+  },
+  onPageScroll: function (e) {
+    if (!this.fixedHeight || e.scrollTop < 0) {
+      return
+    }
+    if (this.reachTop) { // 滚动距离未超过悬浮筛选框的高度，显示悬浮
+      if (!this.data.showFixedFilter) {
+        this.setData({showFixedFilter: true})
+      }
+      return
+    }
+    if (this.lastScrollTop) {
+      const dist = e.scrollTop - this.lastScrollTop
+      if (dist < -30 && !this.data.showFixedFilter) { // 下拉，且单次距离大于5
+        this.setData({showFixedFilter: true})
+      } else if (dist > 0 && this.data.showFixedFilter) {
+        this.setData({showFixedFilter: false})
+      }
+    }
+    this.lastScrollTop = e.scrollTop
+  },
+  initObserver() {
+    this.observer = this.createIntersectionObserver()
+    this.observer.relativeToViewport().observe(".intersection-dot", (res) => {
+      if (res.intersectionRatio > 0) {
+        this.reachTop = true
+        this.setData({
+          showFixedFilter: true
+        })
+      } else {
+        this.reachTop = false
+        this.setData({
+          showFixedFilter: false
+        })
+      }
+    })
+  },
+  clearObserver() {
+    if (this.observer) {
+      this.observer.disconnect()
+      this.observer = null
+    }
   }
 })

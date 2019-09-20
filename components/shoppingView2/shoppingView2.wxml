@@ -12,7 +12,8 @@
           </view>
         </scroll-view>
       </view>
-      <view class="sub-sessions{{subSessions[saletype] && subSessions[saletype].length ? ' show' : ' hide'}}">
+      <!-- <view class="sub-sessions{{subSessions[saletype] && subSessions[saletype].length ? ' show' : ' hide'}}"> -->
+      <view class="sub-sessions show">
         <view class='line-separator-h'></view>
         <view class='ticket-header' style="padding-top:32rpx">{{(subSessions[saletype] && subSessions[saletype][0] && subSessions[saletype][0].type) ? subSessions[saletype][0].type : '选择商品'}}</view>
         <scroll-view scroll-x class='sessions'>

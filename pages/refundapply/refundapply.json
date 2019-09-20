@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "退款申请",
+  "usingComponents": {
+    "ft-custom-nav": "../../ftcomponents/ftCustomNav/ftCustomNav",
+    "ft-bottom-box": "../../ftcomponents/ftBottomBox/ftBottomBox"
+  }
+}

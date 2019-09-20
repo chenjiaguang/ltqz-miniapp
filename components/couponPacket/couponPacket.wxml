@@ -1,33 +1,44 @@
 <!--components/couponPacket/couponPacket.wxml-->
-<ft-modal id="c-ft-modal" hide-cancel mode="2">
-  <view slot="top" class="packet-box" catchtap="stopPropagation">
-    <image class="packet-bg" src="/assets/images/coupon_packet.png" mode="aspectFit" data-ele="bg" bindload="imageLoaded" binderror="imageLoaded" />
-    <view class="header-box"></view>
-    <scroll-view class="coupon-scroller" scroll-y>
-      <view wx:for="{{coupons}}" wx:for-item="coupon" wx:for-index="idx" wx:key="id" class="coupon-box-wrapper">
-        <image hidden="{{!received[coupon.id]}}" class="coupon-uncheck" src="/assets/images/coupon_packet_coupon_uncheck.png" mode="aspectFit" data-ele="uncheck" bindload="imageLoaded" binderror="imageLoaded" />
-        <image hidden="{{received[coupon.id]}}" class="coupon-checked" src="/assets/images/coupon_packet_coupon_checked.png" mode="aspectFit" data-ele="checked" bindload="imageLoaded" binderror="imageLoaded" />
-        <view class="coupon-box" data-coupon="{{coupon}}" catchtap="receiveCoupon">
-          <view class="left-box">
-            <view class="price">
-              <text class="price-sign theme-color">¥</text>
-              <text class="price-num theme-color">{{coupon.show_price}}</text>
+<ft-modal id="c-ft-modal" hide-cancel mode="2" mask-tap-hide="{{false}}">
+  <view slot="top" class="packet-box-wrapper">
+    <view class="packet-box" catchtap="stopPropagation">
+      <image class="packet-bg" src="/assets/images/coupon_packet.png" mode="aspectFit" data-ele="bg" bindload="imageLoaded" binderror="imageLoaded" />
+      <view class="header-box"></view>
+      <scroll-view class="coupon-scroller" scroll-y>
+        <view wx:for="{{coupons}}" wx:for-item="coupon" wx:for-index="idx" wx:key="id" class="coupon-box-wrapper">
+          <image hidden="{{!received[coupon.id]}}" class="coupon-uncheck" src="/assets/images/coupon_packet_coupon_uncheck.png" mode="aspectFit" data-ele="uncheck" bindload="imageLoaded" binderror="imageLoaded" />
+          <image hidden="{{received[coupon.id]}}" class="coupon-checked" src="/assets/images/coupon_packet_coupon_checked.png" mode="aspectFit" data-ele="checked" bindload="imageLoaded" binderror="imageLoaded" />
+          <view class="coupon-box" data-coupon="{{coupon}}" catchtap="receiveCoupon">
+            <view class="left-box">
+              <view class="price">
+                <text class="price-sign theme-color">¥</text>
+                <text class="price-num theme-color">{{coupon.show_price}}</text>
+              </view>
+              <view wx:if="{{coupon.threshold_text}}" class="threshold">{{coupon.threshold_text}}</view>
             </view>
-            <view wx:if="{{coupon.threshold_text}}" class="threshold">{{coupon.threshold_text}}</view>
-          </view>
-          <view class="right-box">
-            <view class="coupon-title">{{coupon.title}}</view>
-            <view wx:if="{{coupon.tip}}" class="coupon-tip">{{coupon.tip}}</view>
-          </view>
-          <view class="receive-btn">
-            <view class="receive-btn-text{{received[coupon.id] ? ' disabled' : ''}}">{{received[coupon.id] ? '已领取' : '立即领取'}}</view>
+            <view class="right-box">
+              <view class="coupon-title">{{coupon.title}}</view>
+              <view wx:if="{{coupon.tip}}" class="coupon-tip">{{coupon.tip}}</view>
+            </view>
+            <view class="receive-btn">
+              <view class="receive-btn-text{{received[coupon.id] ? ' disabled' : ''}}">{{received[coupon.id] ? '已领取' : '立即领取'}}</view>
+            </view>
           </view>
         </view>
+      </scroll-view>
+      <view class="packet-footer-wrapper">
+        <image class="packet-footer" src="/assets/images/coupon_packet_footer.png" mode="aspectFit" data-ele="footer" bindload="imageLoaded" binderror="imageLoaded" />
+        <view class="packet-footer-tip">领取的优惠券已放入“我的优惠券”</view>
+        <view class="packet-footer-tip2" catchtap="goCouponlist">点此查看>></view>
       </view>
-    </scroll-view>
-    <view class="packet-footer-wrapper">
-      <image class="packet-footer" src="/assets/images/coupon_packet_footer.png" mode="aspectFit" data-ele="footer" bindload="imageLoaded" binderror="imageLoaded" />
-      <view class="packet-footer-tip">领取的优惠券已放入“我的优惠券”</view>
+    </view>
+    <view class="close-box" catchtap="toggleModal">
+      <view class="close-line-wrapper1">
+        <view class="close-line"></view>
+      </view>
+      <view class="close-line-wrapper2">
+        <view class="close-line"></view>
+      </view>
     </view>
   </view>
 </ft-modal>

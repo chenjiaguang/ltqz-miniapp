@@ -7,15 +7,67 @@
   background: #F5F5F5;
 }
 .goods-info{
-  padding-left: 32rpx;
+  padding: 24rpx 32rpx 15rpx;
   background: #fff;
 }
+.info-box{
+  display: flex;
+  overflow: hidden;
+}
+.info-left{
+  display: block;
+  width: 164rpx;
+  height: 164rpx;
+  border-radius: 8rpx;
+  margin-right: 18rpx;
+}
+.info-right{
+  flex: 1;
+  min-height: 164rpx;
+  display: flex;
+  flex-direction: column;
+}
 .title{
-  font-size: 32rpx;
-  line-height: 46rpx;
+  font-size: 26rpx;
+  line-height: 30rpx;
   color: #333;
-  font-weight: bold;
-  padding: 10rpx 32rpx 0 0;
+  padding: 0 0 3rpx;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+.ticket-name{
+  font-size: 24rpx;
+  line-height: 28rpx;
+  padding: 3rpx 0;
+  color: #999999;
+}
+.hx-rule{
+  flex: 1;
+  font-size: 24rpx;
+  line-height: 28rpx;
+  padding: 3rpx 0;
+  color: #999999;
+  box-sizing: border-box;
+}
+.price-and-amount{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 3rpx;
+  overflow: visible;
+}
+.single-price{
+  font-size: 28rpx;
+  line-height: 28rpx;
+  color: #333333;
+  overflow: visible;
+}
+.submit-amount{
+  font-size: 24rpx;
+  line-height: 28rpx;
+  color: #999999;
 }
 .hx-rule{
   font-size: 24rpx;
@@ -61,7 +113,7 @@
   padding: 10rpx 32rpx 0 0;
 }
 .tags-box{
-  padding: 7rpx 32rpx 0 0;
+  padding-top: 7rpx;
   display: flex;
   align-items: center;
   flex-wrap: wrap;
@@ -635,4 +687,34 @@ button.submit-btn.disabled{
   margin-left: 22rpx;
   overflow: visible;
   color: #999;
+}
+
+.price-area{
+  background: #FFFFFF;
+}
+.price-list{
+  padding: 16rpx 0; 
+}
+.price-item{
+  font-size: 24rpx;
+  line-height: 48rpx;
+  color: #666666;
+  padding: 0 32rpx;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.real-pay-price{
+  padding: 0 32rpx;
+  height: 80rpx;
+  line-height: 80rpx;
+  text-align: right;
+}
+.real-pay-title{
+  font-size: 24rpx;
+  color: #333333;
+}
+.real-pay-amount{
+  font-size: 32rpx;
+  color: #333333;
 }

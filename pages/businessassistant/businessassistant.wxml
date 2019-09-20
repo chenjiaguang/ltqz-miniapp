@@ -3,16 +3,17 @@
 <!-- <official-account></official-account> -->
 <view class='page-businessassistant'>
   <view class="block-separator"></view>
-  <view class='card overview'>
+  <view class='card overview' hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}" catchtap="goShopInfo">
     <view class='overview-top'>
       <image class='business-avatar' mode="aspectFill" src="{{data.logo_url}}"></image>
       <view class='business-shortcut column'>
         <view class='business-name bold'>{{data.name}}</view>
         <view class='business-intro'>{{data.introduce}}</view>
       </view>
+      <text class="shopinfo-btn lutufont lutu-next2"></text>
     </view>
     <!-- <view class='line-separator-h'></view> -->
-    <view class='overview-bottom row center'>
+    <!-- <view class='overview-bottom row center'>
       <view class='overview-bottom-item'>
         <view class='overview-bottom-header'>
           <text>总收入</text>
@@ -25,6 +26,34 @@
           <text>发布商品数</text>
         </view>
         <view class='overview-bottom-amount bold'>{{data.product_num}}</view>
+      </view>
+    </view> -->
+  </view>
+  <view class="block-separator"></view>
+  <view class="shop-overview">
+    <view class='shop-overview-item'>
+      <view class='shop-overview-header'>
+        <text>总收入</text>
+        <text class='unit'>(元)</text>
+      </view>
+      <view class='shop-overview-amount'>{{data.total_income}}</view>
+    </view>
+    <view class="line-separator-h" style="width:auto;margin:0 50rpx"></view>
+    <view class="shop-overview-item-wrapper">
+      <view class='shop-overview-item'>
+        <view class='shop-overview-header'>
+          <text>已结算金额</text>
+          <text class='unit'>(元)</text>
+        </view>
+        <view class='shop-overview-amount'>{{data.has_js_income}}</view>
+      </view>
+      <view class="line-separator-v" style="height:85rpx"></view>
+      <view class='shop-overview-item'>
+        <view class='shop-overview-header'>
+          <text>待结算金额</text>
+          <text class='unit'>(元)</text>
+        </view>
+        <view class='shop-overview-amount'>{{data.no_js_income}}</view>
       </view>
     </view>
   </view>
@@ -41,11 +70,15 @@
   <view class='card other-entrance-box'>
     <ft-entrance height="84rpx" title="{{other_entrances[0].title}}" extra-data="{{other_entrances[0]}}" catchtap="entranceTap" />
     <ft-entrance height="84rpx" top-border title="{{other_entrances[1].title}}" extra-data="{{other_entrances[1]}}" catchtap="entranceTap">
-      <view slot="content" wx:if="{{wait_refund && wait_refund !== '0'}}" class="refund-num theme-bg"><text>{{wait_refund}}</text></view>
+      <view slot="content" wx:if="{{remit_num && remit_num !== '0'}}" class="refund-num theme-bg"><text>{{remit_num}}</text></view>
     </ft-entrance>
     <ft-entrance height="84rpx" top-border title="{{other_entrances[2].title}}" extra-data="{{other_entrances[2]}}" catchtap="entranceTap">
+      <view slot="content" wx:if="{{wait_refund && wait_refund !== '0'}}" class="refund-num theme-bg"><text>{{wait_refund}}</text></view>
+    </ft-entrance>
+    <ft-entrance height="84rpx" top-border title="{{other_entrances[3].title}}" extra-data="{{other_entrances[3]}}" catchtap="entranceTap">
       <ft-star-box slot="content" size="{{30}}" score="{{data.rate}}"/>
     </ft-entrance>
+    <ft-entrance height="84rpx" top-border title="{{other_entrances[4].title}}" extra-data="{{other_entrances[4]}}" catchtap="entranceTap" />
   </view>
 </view>
 <view hidden="{{!ticketGetting}}" class="ticket-getting-tip">正在识别...</view>

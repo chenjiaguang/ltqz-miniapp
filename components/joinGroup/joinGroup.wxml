@@ -1,0 +1,21 @@
+<!--components/joinGroup/joinGroup.wxml-->
+<view class="wrapper">
+  <view class="block-separator"></view>
+  <view class="box-wrapper">
+    <image class="left-avatar" src="{{groupData.cover_url || '/assets/images/wx_group_logo.png'}}" mode="aspectFill" />
+    <view class="center-box">
+      <view class="title">{{groupData.title}}</view>
+      <view class="intro">{{groupData.desc}}</view>
+    </view>
+    <view class="right-btn theme-bg" catchtap="getGroupData">立即添加</view>
+  </view>
+</view>
+<ft-modal hide-cancel id="c-ft-modal" mode="2">
+  <view slot="top" class="reply-box" catchtap="stopPropagation">
+    <view class="reply-top">
+      <view class="reply-content">点击下方按钮，发送“{{groupData.reply}}” 可立即添加哦</view>
+      <button class="reply-btn theme-border-color theme-color" open-type="contact" hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}"><text>去回复</text></button>
+    </view>
+    <view class="reply-closer lutufont lutu-bianzu" catchtap="hideModal"></view>
+  </view>
+</ft-modal>

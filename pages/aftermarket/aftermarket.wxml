@@ -1,0 +1,8 @@
+<!--pages/aftermarket/aftermarket.wxml-->
+<ft-custom-nav title="{{navTitle}}" />
+<ft-list-loader visible="{{!loaded}}" />
+<order-card wx:for="{{list}}" item="{{item}}" wx:key="order_id"></order-card>
+<ft-list-footer loaded="{{loaded}}" loading="{{loading}}" page="{{page}}" show-no-more="{{page && page.pn && list && list[0]}}" no-more-text="没有更多了" />
+<image wx:if="{{loaded && list.length == 0}}" class='empty-img' src='/assets/images/order.png' />
+<text wx:if="{{loaded && list.length == 0}}" class='empty-text'>您还没有相关订单~</text>
+<ft-iphone-bottom-adapter wx:if="{{list && list[0]}}" />

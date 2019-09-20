@@ -163,6 +163,12 @@ Page({
     })
   },
 
+  goAftermarket: function () {
+    this.navigateTo({
+      url: '/pages/aftermarket/aftermarket'
+    })
+  },
+
   goProfit: function() {
     this.navigateTo({
       url: '/pages/userprofit/userprofit'

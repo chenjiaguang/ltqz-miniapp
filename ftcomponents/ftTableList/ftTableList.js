@@ -4,6 +4,10 @@ Component({
    * 组件的属性列表
    */
   properties: {
+    mode: { // 1默认状态，title的宽度按照最长的算，2则表示title的宽度不固定
+      type: String,
+      value: '1'
+    },
     tableData: {
       type: Object,
       value: []

@@ -3,7 +3,7 @@
 <view wx:if="{{goodsStatusData.sale_type == 1 || (goodsStatusData.sale_type == 3 && goodsStatusData.qg_status != 2 && goodsStatusData.qg_status != 3)}}" class="wrapper">
   <view wx:if="{{!isFree}}" class='actual-price theme-color'><text style="font-size:38rpx;padding-top:10rpx;margin-right:6rpx">¥</text><text>{{priceText}}</text><text wx:if="{{hasMore}}" class='text-qi'>起</text></view>
   <view wx:if="{{isFree}}" class='free-price theme-color'>免费</view>
-  <view wx:if="{{goodsStatusData.show_min_origin_price && goodsStatusData.show_min_origin_price > 0}}" class='origin-price' style="color:#999999">
+  <view wx:if="{{goodsStatusData.show_min_origin_price && goodsStatusData.show_min_origin_price > 0 && goodsStatusData.min_origin_price != goodsStatusData.min_price}}" class='origin-price' style="color:#999999">
     <text>¥{{goodsStatusData.show_min_origin_price}}</text>
   </view>
   <!-- <view class="status{{goodsStatusData.status == 1 ? ' status-able' : ' status-other'}}">{{statusText}}</view> -->
@@ -16,9 +16,9 @@
 <view wx:if="{{goodsStatusData.sale_type == 2}}" class="wrapper theme-linear-gradient-secondary-h">
   <view wx:if="{{!isFree}}" class='actual-price'><text style="font-size:38rpx;padding-top:10rpx;margin-right:6rpx">¥</text><text>{{priceText}}</text><text wx:if="{{hasMore}}" class='text-qi'>起</text></view>
   <view wx:if="{{isFree}}" class='free-price'>免费</view>
-  <view wx:if="{{goodsStatusData.show_min_origin_price && goodsStatusData.show_min_origin_price > 0}}" class='origin-price'>
+  <view wx:if="{{goodsStatusData.spell_num && goodsStatusData.spell_num !== '0'}}" class='origin-price'>
     <view wx:if="{{goodsStatusData.spell_num}}" class='group-sign'><ft-bubble content="{{goodsStatusData.spell_num + '人拼团价'}}" /></view>
-    <text>¥{{goodsStatusData.show_min_origin_price}}</text>
+    <text style="opacity:{{(goodsStatusData.show_min_origin_price && goodsStatusData.show_min_origin_price > 0 && goodsStatusData.min_origin_price != goodsStatusData.min_price) ? 1 : 0}}">¥{{goodsStatusData.show_min_origin_price}}</text>
   </view>
   <view class="status{{goodsStatusData.status == 1 ? ' status-able' : ' status-other'}}">{{statusText}}</view>
 </view>
@@ -30,9 +30,9 @@
   </view>
   <view wx:if="{{!isFree}}" class='actual-price'><text style="font-size:38rpx;padding-top:10rpx;margin-right:6rpx">¥</text><text>{{priceText}}</text><text wx:if="{{hasMore}}" class='text-qi'>起</text></view>
   <view wx:if="{{isFree}}" class='free-price'>免费</view>
-  <view wx:if="{{goodsStatusData.show_min_origin_price && goodsStatusData.show_min_origin_price > 0}}" class='origin-price'>
+  <view class='origin-price'>
     <view class='group-sign'><ft-bubble content="限时抢购价" /></view>
-    <text>¥{{goodsStatusData.show_min_origin_price}}</text>
+    <text style="opacity:{{(goodsStatusData.show_min_origin_price && goodsStatusData.show_min_origin_price > 0 && goodsStatusData.min_origin_price != goodsStatusData.min_price) ? 1 : 0}}">¥{{goodsStatusData.show_min_origin_price}}</text>
   </view>
   <view wx:if="{{remainTimeText && !timeout}}" class="count-down-box">
     <view class="count-down-text theme-color">距结束还剩</view>

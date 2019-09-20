@@ -1,15 +1,59 @@
 /* components/couponPacket/couponPacket.wxss */
 @import "../../app.wxss";
+.packet-box-wrapper{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
 .packet-box{
-  position: absolute;
+  position: relative;
   width: 690rpx;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
   border-radius: 32rpx;
-  overflow: hidden;
+  overflow: visible;
   background: linear-gradient(180deg,rgba(255,86,89,1) 0%,rgba(212,23,78,1) 100%);
   box-shadow: 0 8rpx 30rpx 0 rgba(175,10,41,0.4);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.close-box{
+  position: relative;
+  width: 60rpx;
+  height: 60rpx;
+  background: linear-gradient(135deg,rgba(255,85,129,1) 0%,rgba(255,100,100,1) 100%);
+  border-radius: 50%;
+  margin-top: 36rpx;
+}
+.close-line-wrapper1{
+  position: absolute;
+  width: 56%;
+  height: 56%;
+  transform: rotate(-45deg);
+  left: 22%;
+  top: 22%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.close-line-wrapper2{
+  position: absolute;
+  width: 56%;
+  height: 56%;
+  transform: rotate(45deg);
+  left: 22%;
+  top: 22%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.close-line{
+  width: 100%;
+  height: 4px;
+  border-radius: 2px;
+  background: #FFFFFF;
 }
 .packet-bg{
   display: block;
@@ -29,7 +73,6 @@
   width: 628rpx;
   min-height: 162rpx;
   max-height: 648rpx;
-  left: 31rpx;
   z-index: 2;
 }
 .coupon-box-wrapper{
@@ -128,11 +171,15 @@
 }
 .packet-footer-wrapper{
   position: relative;
-  width: 100%;
-  height: 160rpx;
+  width: 706rpx;
+  height: 206rpx;
   z-index: 3;
-  margin-top: -30rpx;
+  margin-top: -48rpx;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 .packet-footer{
   display: block;
@@ -140,7 +187,7 @@
   height: 100%;
   position: absolute;
   left: 0;
-  top: 0;
+  top: 4rpx;
   z-index: 1;
 }
 .packet-footer-tip{
@@ -150,5 +197,14 @@
   line-height: 40rpx;
   color: #FFFFFF;
   text-align: center;
-  margin-top: 67rpx;
+  padding-top: 38rpx;
+}
+.packet-footer-tip2{
+  position: relative;
+  z-index: 2;
+  font-size: 28rpx;
+  line-height: 40rpx;
+  color: #FFF7C3;
+  text-align: center;
+  margin-top: 10rpx;
 }

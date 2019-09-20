@@ -7,7 +7,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-    navTitle: '商品管理',
+    navTitle: '商品列表',
     id: '',
     list: [],
     page: null,

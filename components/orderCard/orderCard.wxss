@@ -8,17 +8,28 @@
 }
 
 .head {
-  height: 88rpx;
-  font-size: 30rpx;
+  height: 72rpx;
   padding: 0 32rpx;
 }
 
-/* .state0 {
-  color: #64b631;
-} */
-
+.date{
+  font-size: 24rpx;
+  color: #999999;
+}
 .state-normal{
   color: #666;
+}
+
+.state-normal2{
+  font-size: 28rpx;
+  color: #333333;
+}
+
+.cover{
+  width: 134rpx;
+  height: 134rpx;
+  border-radius: 8rpx;
+  margin-right: 20rpx;
 }
 
 .money {
@@ -30,10 +41,39 @@
   width: unset;
 }
 
+.bottom-bar{
+  padding: 20rpx 32rpx;
+}
+
+.pay-price{
+  height: 36rpx;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+.total-amount{
+  font-size: 28rpx;
+  color: #666666;
+  margin-right: 20rpx;
+  vertical-align: middle;
+}
+.total-pay-title{
+  font-size: 28rpx;
+  color: #666666;
+  margin-right: 20rpx;
+  vertical-align: middle;
+}
+.total-pay-amount{
+  font-size: 36rpx;
+  color: #F24724;
+  vertical-align: middle;
+}
+
 .foot {
   display: flex;
-  padding: 0 32rpx;
-  height: 95rpx;
+  justify-content: flex-end;
+  align-items: center;
+  padding-top: 20rpx;
 }
 
 .btn {
@@ -89,5 +129,43 @@
   color: #fff;
 }
 .content-wrapper{
-  padding: 0 32rpx;
+  padding: 20rpx 32rpx;
+  display: flex;
+}
+.content-wrapper-right{
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.title{
+  font-size: 26rpx;
+  line-height: 30rpx;
+  color: #333333;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+.ticket{
+  flex: 1;
+  font-size: 24rpx;
+  line-height: 28rpx;
+  color: #999999;
+  padding-top: 8rpx;
+}
+.ticket-price-and-amount{
+  padding-top: 8rpx;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.ticket-price{
+  font-size: 28rpx;
+  line-height: 32rpx;
+  color: #333333;
+}
+.ticket-amount{
+  line-height: 32rpx;
+  color: #999999;
 }

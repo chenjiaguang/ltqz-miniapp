@@ -128,7 +128,7 @@ const showErrorToast = (msg) => {
     duration: 2000
   })
 }
-const backAndToast = (msg) => {
+const backAndToast = (msg, duration = 1500) => {
   if (getCurrentPages().length > 1) {
     wx.navigateBack({
       delta: 1,
@@ -137,6 +137,7 @@ const backAndToast = (msg) => {
           wx.showToast({
             title: msg,
             icon: 'none',
+            duration: duration
           })
         }, 500)
       }
@@ -149,6 +150,7 @@ const backAndToast = (msg) => {
           wx.showToast({
             title: msg,
             icon: 'none',
+            duration: duration
           })
         }, 500)
       }
@@ -214,7 +216,7 @@ const request = (url, data, config = {}) => {
   const timeStamp = new Date().getTime()
   return new Promise((resolve, reject) => {
     const requestTask = wx.request({
-      url: app.config.baseUrl + apiVersion + url,
+      url: (config.baseUrl || app.config.baseUrl) + (config.apiVersion || apiVersion) + url,
       data: data,
       method: (config && config.method) || 'POST', // 使用传入的method值，或者默认的post
       header: {

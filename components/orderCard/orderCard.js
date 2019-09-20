@@ -18,7 +18,7 @@ Component({
   data: {
     statusText: { // -4普通退款|-3为手动下架|-2拼团失败|-1为失效订单|0为待付款|1为待参与|2为待评价|3已评价|4待成团|5已过期|6待发货|7已发货
       '-4': '已退款',
-      '-3': '已取消',
+      '-3': '已退款',
       '-2': '已取消',
       '-1': '已取消',
       '0': '待付款',
@@ -119,41 +119,18 @@ Component({
         })
       })
     },
-    goRefund(e) {
-      const {formId} = e.detail
-      const {item: {type, can_refund, refund_all, refund_amount}, refunding} = this.data
+    goRefund() {
+      const {item: {can_refund}, refunding} = this.data
       if (refunding || !can_refund) {
         return false
       }
-      const app = getApp()
-      const confirmColor = app.globalData.themeModalConfirmColor || '#576B95' // #576B95是官方颜色
-      if (refund_all) {
-        wx.showModal({
-          title: type == 3 ? '申请退款' : '订单退款',
-          content: '退款后您可能会错过此商品哦，确定要退款吗？',
-          showCancel: true,
-          confirmText: '确定',
-          confirmColor,
-          success: res => {
-            if (res.confirm) {
-              this.refund(formId)
-            }
-          }
-        })
-      } else {
-        wx.showModal({
-          title: type == 3 ? '申请退款' : '订单退款',
-          content: '本商品属于特价商品，退款需用户承担一定手续费，退款金额为' + refund_amount + '元，您确定要退款吗？',
-          showCancel: true,
-          confirmText: '确定',
-          confirmColor,
-          success: res => {
-            if (res.confirm) {
-              this.refund(formId)
-            }
-          }
-        })
-      }
+      const pages = getCurrentPages()
+      const page = pages[pages.length - 1]
+      page.refundData = this.data.item
+      this.navigateTo({
+        url: '/pages/refundapply/refundapply'
+      })
+      return false
     },
     refund(form_id) {
       const {item: {can_refund, order_id }, refunding} = this.data

@@ -12,7 +12,8 @@ Page({
       1: '用户须知',
       2: '免责声明',
       3: '拼团规则',
-      4: '常见问题'
+      4: '常见问题', // 分销常见问题
+      5: '常见问题' // 商家助手常见问题
     },
     content: ''
   },
@@ -85,7 +86,8 @@ Page({
       1: '/article/agreement',
       2: '/article/disclaimer',
       3: '/article/pt_rule',
-      4: '/article/fx_faq'
+      4: '/article/fx_faq',
+      5: '/article/ua_faq',
     }
     const url = urlMap[type]
     util.request(url).then(res => {

@@ -1,0 +1,26 @@
+<!--pages/businessinfo/businessinfo.wxml-->
+<ft-custom-nav title="{{navTitle}}" />
+<view wx:if="{{principalInfo && principalInfo.length}}" class="list-area">
+  <view class="list-header">负责人信息</view>
+  <view wx:for="{{principalInfo}}" wx:key="title" class="list-line">
+    <view class="list-key">{{item.title}}</view>
+    <view class="list-value">{{item.content}}</view>
+  </view>
+</view>
+<view wx:if="{{settlementInfo && settlementInfo.length}}" class="list-area">
+  <view class="line-separator-h" style="width:auto;margin:0 32rpx"></view>
+  <view class="list-header">结算信息</view>
+  <view wx:for="{{settlementInfo}}" wx:key="title" class="list-line">
+    <view class="list-key">{{item.title}}</view>
+    <view class="list-value">{{item.content}}</view>
+  </view>
+</view>
+<view wx:if="{{managerInfo && managerInfo.length}}" class="list-area">
+  <view class="line-separator-h" style="width:auto;margin:0 32rpx"></view>
+  <view class="list-header">管理员信息</view>
+  <view wx:for="{{managerInfo}}" wx:key="nick_name" class="list-line">
+    <image class="list-avatar" src="{{item.avatar}}" mode="aspectFill" />
+    <view class="list-name">{{item.nick_name}}</view>
+  </view>
+</view>
+  

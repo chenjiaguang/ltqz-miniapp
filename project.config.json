@@ -104,7 +104,7 @@
 					"id": 7,
 					"name": "订单-订单详情",
 					"pathName": "pages/orderdetail/orderdetail",
-					"query": "id=156654427836272823",
+					"query": "id=156871073988848671",
 					"scene": null
 				},
 				{
@@ -146,7 +146,7 @@
 					"id": 13,
 					"name": "商助-首页",
 					"pathName": "pages/businessassistant/businessassistant",
-					"query": "id=5",
+					"query": "id=20",
 					"scene": 1011
 				},
 				{
@@ -167,7 +167,7 @@
 					"id": 16,
 					"name": "商助-订单详情",
 					"pathName": "pages/signupmanager/signupmanager",
-					"query": "id=20&product_id=229",
+					"query": "id=20&product_id=229&status=1&type=3&fromnav=true",
 					"scene": null
 				},
 				{
@@ -195,7 +195,7 @@
 					"id": 20,
 					"name": "活动详情",
 					"pathName": "pages/goodsdetail/goodsdetail",
-					"query": "id=301",
+					"query": "id=227",
 					"scene": null
 				},
 				{
@@ -293,6 +293,20 @@
 					"name": "我的优惠券",
 					"pathName": "pages/couponlist/couponlist",
 					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "商家资料",
+					"pathName": "pages/businessinfo/businessinfo",
+					"query": "id=20",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "到账明细",
+					"pathName": "pages/billlist/billlist",
+					"query": "id=20",
 					"scene": null
 				}
 			]

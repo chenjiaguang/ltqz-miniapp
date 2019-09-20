@@ -173,8 +173,8 @@ Page({
         res.data.show_min_pt_price = util.formatMoney(res.data.min_pt_price).showMoney
         res.data.min_qg_price = util.formatMoney(res.data.min_qg_price).money
         res.data.show_min_qg_price = util.formatMoney(res.data.min_qg_price).showMoney
-        const { id, title, desc, type, sale_type, price_num, spell_num, status, qg_status, remain_qg, start_qg, show_min_price, show_min_origin_price, show_min_pt_price, show_min_qg_price, qg_btime, qg_etime, qg_max_limit, total_qg_count, is_book_remind } = res.data
-        res.data.goods_status_data = JSON.parse(JSON.stringify({ id, title, desc, type, sale_type, price_num, spell_num, status, qg_status, remain_qg, start_qg, show_min_price, show_min_origin_price, show_min_pt_price, show_min_qg_price, qg_btime, qg_etime, qg_max_limit, total_qg_count, is_book_remind }))
+        const { id, title, desc, type, sale_type, price_num, spell_num, status, qg_status, remain_qg, start_qg, min_price, min_origin_price, show_min_price, show_min_origin_price, show_min_pt_price, show_min_qg_price, qg_btime, qg_etime, qg_max_limit, total_qg_count, is_book_remind } = res.data
+        res.data.goods_status_data = JSON.parse(JSON.stringify({ id, title, desc, type, sale_type, price_num, spell_num, status, qg_status, remain_qg, start_qg, min_price, min_origin_price, show_min_price, show_min_origin_price, show_min_pt_price, show_min_qg_price, qg_btime, qg_etime, qg_max_limit, total_qg_count, is_book_remind }))
         if (res.data.product_img_urls && res.data.product_img_urls.length) {
           res.data.banners = res.data.product_img_urls.map(item => {
             return {image: item}
@@ -241,7 +241,7 @@ Page({
         const total = (page && page.total) ? page.total : 0
         this.setData({
           commentLoaded: true,
-          avg_score: avg_score,
+          avg_score: avg_score && avg_score > 0 ? avg_score.toFixed(1) : 0,
           comment_num: total,
           comments: list
         })
@@ -473,15 +473,17 @@ Page({
   },
 
   nextTap: function (e) {
-    const { saletype, currentSession, currentSubSession, currentTickets, subSessions, selectedTicketLength, totalPrice, totalPriceCal } = e.detail
-    const { type, id, tuanId: tuan_id, fromUid, fill_info, fill_form, title, valid_btime, valid_etime, address, session, sale_type, can_refund = false, include_bx, hx_rule, has_postage, shop_id } = this.data
-    let dataObj = {type, id, fromUid, fill_info, fill_form, title, address, valid_btime, valid_etime, session, sale_type, saletype, selectedTicketLength: selectedTicketLength[saletype], currentSession: currentSession[saletype], can_refund, include_bx, totalPrice: totalPrice[saletype], totalPriceCal: totalPriceCal[saletype], tuan_id, hx_rule, has_postage, shop_id}
-    if (type == 1) { // 活动
-      dataObj.currentTickets = currentTickets[saletype]
-    } else if (type == 2 || type == 3) { // 非活动
-      dataObj.currentSubSession = currentSubSession[saletype]
-      dataObj.subSessions = subSessions[saletype]
-    }
+    const { saletype, currentSession, currentSubSession, currentTickets, subSessions, selectedTicketLength, singlePriceCal, totalPrice, totalPriceCal } = e.detail
+    const { type, id, tuanId: tuan_id, fromUid, fill_info, fill_form, title, valid_btime, valid_etime, address, session, sale_type, can_refund = false, include_bx, hx_rule, has_postage, shop_id, product_cover_url } = this.data
+    let dataObj = {type, id, fromUid, fill_info, fill_form, title, address, valid_btime, valid_etime, session, sale_type, saletype, selectedTicketLength: selectedTicketLength[saletype], currentSession: currentSession[saletype], can_refund, include_bx, singlePriceCal: singlePriceCal[saletype], totalPrice: totalPrice[saletype], totalPriceCal: totalPriceCal[saletype], tuan_id, hx_rule, has_postage, shop_id, product_cover_url}
+    // if (type == 1) { // 活动
+    //   dataObj.currentTickets = currentTickets[saletype]
+    // } else if (type == 2 || type == 3) { // 非活动
+    //   dataObj.currentSubSession = currentSubSession[saletype]
+    //   dataObj.subSessions = subSessions[saletype]
+    // }
+    dataObj.currentSubSession = currentSubSession[saletype]
+    dataObj.subSessions = subSessions[saletype]
     let dataJson = JSON.stringify(dataObj)
     storageHelper.setStorage('orderSubmitJson', dataJson)
     this.navigateTo({

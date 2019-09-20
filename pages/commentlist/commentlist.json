@@ -1,6 +1,6 @@
 {
   "backgroundColorBottom": "#FFFFFF",
-  "navigationBarTitleText": "全部评价",
+  "navigationBarTitleText": "评价管理",
   "usingComponents": {
     "ft-custom-nav": "../../ftcomponents/ftCustomNav/ftCustomNav",
     "ft-tabs": "../../ftcomponents/ftTabs/ftTabs",

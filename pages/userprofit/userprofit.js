@@ -154,8 +154,8 @@ Page({
 
   requestCash: function() {
     const {withdraw, show_can_remit} = this.data
-    let titleAmount = show_can_remit
-    if (titleAmount && titleAmount.indexOf('.00') !== -1) {
+    let titleAmount = ''
+    if (show_can_remit && show_can_remit.indexOf('.00') !== -1) {
       titleAmount = show_can_remit.replace('.00', '')
     } else {
       titleAmount = show_can_remit

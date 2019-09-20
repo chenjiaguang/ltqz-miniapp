@@ -1,0 +1,81 @@
+<!--components/shoppingView/shoppingView3.wxml-->
+<ft-modal id="c-ft-modal" hide-cancel bottom-touch-hide mode="1">
+  <view slot="bottom" class="session-context">
+    <view class='session-box'>
+      <scroll-view scroll-y class='style-scroller'>
+        <view wx:for="{{ticket_group}}" wx:for-item="level" wx:for-index="lidx" wx:key="id" class="style-box">
+          <view class='style-header'><text>{{level.title || '选择商品'}}</text><text wx:if="{{lidx === 0}}" catchtap="toggleModal">关闭</text></view>
+          <view class="style-list">
+            <view wx:for="{{level.list}}" wx:for-index="idx" wx:for-item="ss" wx:key="id" class="style-item-wrapper">
+              <view class="style-item{{ss.selected ? ' style-selected theme-border-color theme-color' : ''}}{{ss.disabled ? ' style-disaled' : ''}}" catchtap="styleTap" data-id="{{ss.id}}" data-level="{{level.id}}">
+                <text>{{ss.name}}</text>
+              </view>
+            </view>
+          </view>
+          <view style="width:auto;padding:16rpx 32rpx">
+            <view class="line-separator-h"></view>
+          </view>
+        </view>
+        <view class='style-box'>
+          <view class="style-header">
+            <text>选择数量</text>
+            <view wx:if="{{currentStock[saletype] !== ''}}" class="stock-text{{currentStock[saletype] == 0 ? ' disabled' : ''}}">{{currentStock[saletype] == 0 ? '售罄' : ((currentStock[saletype] == null || currentStock[saletype] > 20) ? '库存充足' : ('库存' + currentStock[saletype]) + '件')}}</view>
+            <view class='ticket-buttons'>
+              <view class="minus-btn{{selectedTicketLength[saletype] <= 0 ? ' disabled' : ''}}" catchtap="countTicket" data-type="minus" data-idx="{{currentSubSession[saletype]}}">
+                <text class="lutufont lutu-jian{{selectedTicketLength[saletype] <= 0 ? ' disabled' : ''}}"></text>
+              </view>
+              <view class='choose-num'><text class="choose-num-text{{selectedTicketLength[saletype] <= 0 ? ' disabled' : ''}}">{{selectedTicketLength[saletype] || 0}}</text></view>
+              <view class="add-btn{{(currentStock[saletype] == 0 || (currentStock[saletype] && currentStock[saletype] <= selectedTicketLength[saletype])) ? ' disabled' : ' theme-bg theme-border-color'}}" catchtap="countTicket" data-type="add" data-idx="{{currentSubSession[saletype]}}">
+                <text class="lutufont lutu-jia{{(currentStock[saletype] == 0 || (currentStock[saletype] && currentStock[saletype] <= selectedTicketLength[saletype])) ? ' disabled' : ''}}"></text>
+              </view>
+            </view>
+          </view>
+        </view>
+      </scroll-view>
+      <!-- <view class="big-sessions">
+        <view class='session-header'>{{(showSession && showSession[0] && showSession[0].type) ? showSession[0].type : '选择商品'}}</view>
+        <scroll-view scroll-x class='sessions'>
+          <view wx:for="{{showSession}}" wx:for-index="idx" wx:for-item="ss" wx:key="id" class="session{{idx == 0 ? ' first' : ''}}{{(idx + 1) == showSession.length ? ' last' : ''}}{{ss[stockObj[saletype]] == 0 ? ' session-disabled' : ((ss[stockObj[saletype]] == null || ss[stockObj[saletype]] > 20) ? ' session-ample' : ' session-normal')}}{{currentSession[saletype] == idx ? ' theme-bg-shopping-view theme-color-shopping-view' : ''}}" catchtap="sessionTap" data-status="{{ss[stockObj[saletype]] == 0 ? 'disabled' : ((ss[stockObj[saletype]] == null || ss[stockObj[saletype]] > 20) ? 'ample' : 'normal')}}" data-idx="{{idx}}">
+            <view class='session-content'>
+              <view class='session-content-text'>{{ss.name}}</view>
+            </view>
+          </view>
+        </scroll-view>
+      </view>
+      <view class="sub-sessions show">
+        <view class='line-separator-h'></view>
+        <view class='ticket-header' style="padding-top:32rpx">{{(subSessions[saletype] && subSessions[saletype][0] && subSessions[saletype][0].type) ? subSessions[saletype][0].type : '选择商品'}}</view>
+        <scroll-view scroll-x class='sessions'>
+          <view wx:for="{{subSessions[saletype]}}" wx:for-index="idx" wx:for-item="ss" wx:key="id" class="session{{idx == 0 ? ' first' : ''}}{{(idx + 1) == subSessions[saletype].length ? ' last' : ''}}{{ss[stockObj[saletype]] == 0 ? ' session-disabled' : ((ss[stockObj[saletype]] == null || ss[stockObj[saletype]] > 20) ? ' session-ample' : ' session-normal')}}{{currentSubSession[saletype] == idx ? ' theme-bg-shopping-view theme-color-shopping-view' : ''}}" catchtap="subSessionTap" data-idx="{{idx}}">
+            <view class='session-content'>
+              <view class='session-content-text'>{{ss.name}}</view>
+            </view>
+          </view>
+        </scroll-view>
+        <view class='line-separator-h'></view>
+        <view style="height:40rpx"></view>
+        <view class='ticket-item'>
+          <view class='ticket-name'>选择数量</view>
+          <view wx:if="{{currentStock[saletype] !== ''}}" class="stock-text{{currentStock[saletype] == 0 ? ' disabled' : ''}}">{{currentStock[saletype] == 0 ? '售罄' : ((currentStock[saletype] == null || currentStock[saletype] > 20) ? '库存充足' : ('库存' + currentStock[saletype]) + '件')}}</view>
+          <view class='ticket-buttons'>
+            <view class="minus-btn{{selectedTicketLength[saletype] <= 0 ? ' disabled' : ''}}" catchtap="countTicket" data-type="minus" data-idx="{{currentSubSession[saletype]}}">
+              <text class="lutufont lutu-jian{{selectedTicketLength[saletype] <= 0 ? ' disabled' : ''}}"></text>
+            </view>
+            <view class='choose-num'><text class="choose-num-text{{selectedTicketLength[saletype] <= 0 ? ' disabled' : ''}}">{{selectedTicketLength[saletype] || 0}}</text></view>
+            <view class="add-btn{{(currentStock[saletype] == 0 || (currentStock[saletype] && currentStock[saletype] <= selectedTicketLength[saletype])) ? ' disabled' : ' theme-bg theme-border-color'}}" catchtap="countTicket" data-type="add" data-idx="{{currentSubSession[saletype]}}">
+              <text class="lutufont lutu-jia{{(currentStock[saletype] == 0 || (currentStock[saletype] && currentStock[saletype] <= selectedTicketLength[saletype])) ? ' disabled' : ''}}"></text>
+            </view>
+          </view>
+        </view>
+      </view> -->
+    </view>
+    <view class='line-separator-h' style="transform-origin:50% 100%"></view>
+    <view class='next-step-button'>
+      <view class='total-price'>
+        <text class='total-price-title'>总计</text>
+        <text class='total-price-text'>¥{{totalPrice[saletype]}}</text>
+      </view>
+      <button class="next-btn{{!selectedTicketLength[saletype] ? ' disabled' : ' theme-bg'}}" disabled="{{!selectedTicketLength[saletype]}}" catchtap="order">下一步</button>
+    </view>
+  </view>
+</ft-modal>

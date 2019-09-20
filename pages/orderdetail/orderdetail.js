@@ -18,13 +18,43 @@ Page({
     repaying: false,
     canceling: false,
     refunding: false,
-    confirming: false
+    confirming: false,
+    statusTextObj: {
+      '-4': '退款成功',
+      '-3': '退款成功',
+      '-2': '已取消',
+      '-1': '已取消',
+      '0': '待付款',
+      '1': '待使用',
+      '2': '待评价',
+      '3': '已完成',
+      '4': '拼团中',
+      '5': '已完成',
+      '6': '待发货',
+      '7': '待收货'
+    },
+    showMoreStatus: false,
+    statusIconData: {
+      '-4': {url: '/assets/images/order_status3.png', style: 'width:168rpx;height:126rpx;right:0;bottom:0'},
+      '-3': {url: '/assets/images/order_status3.png', style: 'width:168rpx;height:126rpx;right:0;bottom:0'},
+      '-2': {url: '/assets/images/order_status9.png', style: 'width:147rpx;height:119rpx;right:66rpx;bottom:0'},
+      '-1': {url: '/assets/images/order_status9.png', style: 'width:147rpx;height:119rpx;right:66rpx;bottom:0'},
+      '0': {url: '/assets/images/order_status7.png', style: 'width:294rpx;height:150rpx;right:0;bottom:0'},
+      '1': {url: '/assets/images/order_status5.png', style: 'width:137rpx;height:106rpx;right:19rpx;bottom:0'},
+      '2': {url: '/assets/images/order_status1.png', style: 'width:169rpx;height:124rpx;right:30rpx;bottom:0'},
+      '3': {url: '/assets/images/order_status1.png', style: 'width:169rpx;height:124rpx;right:30rpx;bottom:0'},
+      '4': {url: '/assets/images/order_status6.png', style: 'width:158rpx;height:109rpx;right:54rpx;bottom:0'},
+      '5': {url: '/assets/images/order_status1.png', style: 'width:169rpx;height:124rpx;right:30rpx;bottom:0'},
+      '6': {url: '/assets/images/order_status4.png', style: 'width:174rpx;height:125rpx;right:24rpx;bottom:0'},
+      '7': {url: '/assets/images/order_status2.png', style: 'width:203rpx;height:184rpx;right:32rpx;bottom:0'}
+    }
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
+    this.options = options
     this.fetchOrder(options.id)
   },
 
@@ -79,6 +109,27 @@ Page({
 
   // },
 
+  changeMoreStatus: function () {
+    this.setData({showMoreStatus: !this.data.showMoreStatus})
+  },
+
+  secondToTimeText: function (seconds) { // format:d|h|m|s(天|小时|分|秒)
+    if (seconds <= 0) {
+      return '00分00秒'
+    }
+    let day = parseInt(seconds / 86400)
+    let hour = (seconds < 3600) ? 0 : parseInt(seconds >= 86400 ? (seconds % 86400 / 3600) : (seconds / 3600))
+    let min = (seconds < 60) ? 0 : parseInt(seconds >= 3600 ? (seconds % 3600 / 60) : (seconds / 60))
+    let second = parseInt(seconds % 60)
+    let text = ''
+    if (seconds >= 3600) {
+      text = `${day > 9 ? day : ('0' + day)}天${hour > 9 ? hour : ('0' + hour)}小时`
+    } else {
+      text = `${min > 9 ? min : ('0' + min)}分${second > 9 ? second : ('0' + second)}秒`
+    }
+    return text
+  },
+
   secondToMinute: function (seconds) {
     if (seconds <= 0) {
       return '00:00'
@@ -94,6 +145,9 @@ Page({
     util.request('/order/detail', {id}).then(res => {
       if (res.error == 0 && res.data) {
         // let navWrapperHeight = this.data.navWrapperHeight || 0
+        res.data.ticket.forEach(item => {
+          item.price = util.formatMoney(item.price).showMoney
+        })
         res.data.ticket_text = res.data.ticket.map((item) => {
           return item.name + '×' + item.quantity
         }).join(',')
@@ -108,14 +162,27 @@ Page({
         res.data.show_yh_price = util.formatMoney(res.data.yh_price).showMoney
         res.data.refund_amount = util.formatMoney(res.data.refund_amount).showMoney
         res.data.status = res.data.status.toString()
-        let countdown = 0
+        this.countdown = 0
         let countdown_text = ''
         if (this.countdownTimer) {
           clearInterval(this.countdownTimer)
         }
         if (res.data.remain_time) {
-          countdown = res.data.remain_time
-          countdown_text = '剩余支付时间' + this.secondToMinute(res.data.remain_time)
+          this.countdown = res.data.remain_time
+          this.countdownType = '1'
+          // countdown_text = '剩余支付时间' + this.secondToMinute(res.data.remain_time)
+          countdown_text = '您的订单已提交，请在' + this.secondToTimeText(res.data.remain_time) + '内完成支付，超时订单自动取消'
+          this.countdownTimer = setInterval(this.startCountdown, 1000)
+        } else if (res.data.refund_deal_remain) {
+          this.countdown = res.data.refund_deal_remain
+          this.countdownType = '2'
+          // countdown_text = '剩余支付时间' + this.secondToMinute(res.data.remain_time)
+          countdown_text = '您已成功发起退款申请，商家将在' + this.secondToTimeText(res.data.refund_deal_remain) + '内处理'
+          this.countdownTimer = setInterval(this.startCountdown, 1000)
+        } else if (res.data.auto_receipt_remain) {
+          this.countdown = res.data.auto_receipt_remain
+          this.countdownType = '3'
+          countdown_text = '卖家已发货，还剩' + this.secondToTimeText(res.data.auto_receipt_remain) + '自动确认'
           this.countdownTimer = setInterval(this.startCountdown, 1000)
         }
         let traveler_name_text = ''
@@ -128,7 +195,7 @@ Page({
         }
         this.setData({
           traveler_name_text: traveler_name_text,
-          countdown: countdown,
+          countdown: this.countdown,
           countdown_text: countdown_text,
           product: product,
           order: res.data,
@@ -140,15 +207,12 @@ Page({
   },
 
   startCountdown: function (time) {
-    const { countdown } = this.data
-    
-    let _countdown = 0
     let _countdown_text = ''
-    let remain_time = countdown - 1
-    if (remain_time <= 0) {
+    this.countdown -= 1
+    if (this.countdown <= 0) {
       clearInterval(this.countdownTimer)
       this.setData({
-        countdown: _countdown,
+        countdown: this.countdown,
         countdown_text: _countdown_text,
       })
       this.fetchOrder(this.data.order.order_id)
@@ -164,10 +228,17 @@ Page({
       }
       return false
     }
-    _countdown = remain_time
-    _countdown_text = '剩余支付时间' + this.secondToMinute(remain_time)
+    if (this.countdownType === '1') {
+      this.remain_time
+      _countdown_text = '您的订单已提交，请在' + this.secondToTimeText(this.countdown) + '内完成支付，超时订单自动取消'
+    } else if (this.countdownType === '2') {
+      _countdown_text = '您已成功发起退款申请，商家将在' + this.secondToTimeText(this.countdown) + '内处理'
+    } else if (this.countdownType === '3') {
+      _countdown_text = '卖家已发货，还剩' + this.secondToTimeText(this.countdown) + '自动确认'
+    }
+    // _countdown_text = '剩余支付时间' + this.secondToMinute(remain_time)
     this.setData({
-      countdown: _countdown,
+      countdown: this.countdown,
       countdown_text: _countdown_text,
     })
   },
@@ -185,40 +256,16 @@ Page({
   },
 
   goRefund(e) {
-    const {formId} = e.detail
-    const {order: {can_refund, refund_all, refund_amount}, refunding} = this.data
+    const {order: {can_refund}, refunding} = this.data
     if (refunding || !can_refund) {
       return false
     }
-    const app = getApp()
-    const confirmColor = app.globalData.themeModalConfirmColor || '#576B95' // #576B95是官方颜色
-    if (refund_all) {
-      wx.showModal({
-        title: '订单退款',
-        content: '退款后您可能会错过此商品哦，确定要退款吗？',
-        showCancel: true,
-        confirmText: '确定',
-        confirmColor,
-        success: res => {
-          if (res.confirm) {
-            this.refund(formId)
-          }
-        }
-      })
-    } else {
-      wx.showModal({
-        title: '订单退款',
-        content: '本商品属于特价商品，退款需用户承担一定手续费，退款金额为' + refund_amount + '元，您确定要退款吗？',
-        showCancel: true,
-        confirmText: '确定',
-        confirmColor,
-        success: res => {
-          if (res.confirm) {
-            this.refund(formId)
-          }
-        }
-      })
-    }
+    const pages = getCurrentPages()
+    const page = pages[pages.length - 1]
+    page.refundData = this.data.order
+    this.navigateTo({
+      url: '/pages/refundapply/refundapply'
+    })
   },
   refund(form_id) {
     const {order: {can_refund, order_id }, refunding} = this.data

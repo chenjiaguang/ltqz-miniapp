@@ -1,33 +1,5 @@
 <!-- components/drawPoster/drawPoster.wxml -->
 <view class="wrapper" id="wrapper">
-  <!-- <view class='poster-body'>
-    <view class="share-from draw-text" data-text="{{'来自 ' + hName + ' 的分享'}}">{{'来自 ' + hName + ' 的分享'}}</view>
-    <image class='banner draw-image' src="{{banner}}" mode="aspectFill"></image>
-    <view class='title draw-text' data-text="{{title}}" data-maxline="{{2}}">{{title}}</view>
-    <view class='price draw-text' data-text="{{price > 0 ? ('¥' + price) : '免费'}}">
-      <text>{{price > 0 ? ('¥' + price) : '免费'}}</text>
-      <view wx:if="{{saleType == 2 && pintuan && pintuan > 0}}" class='pintuan-tag theme-border-color theme-color draw-stroke draw-text' data-text="{{pintuan + '人拼团价'}}">{{pintuan}}人拼团价</view>
-      <view wx:if="{{saleType == 3}}" class='pintuan-tag theme-border-color theme-color draw-stroke draw-text' data-text="限时抢购">限时抢购</view>
-    </view>
-    <view wx:if="{{joinUsers && joinUsers.length}}" class='join-user-box'>
-      <view wx:for="{{joinUsers}}" class='join-user-item' wx:key="id">
-        <image class='join-user-avatar draw-image' src="{{item.avatar || '/assets/images/empty_join_user.png'}}" mode="{{item.avatar ? 'aspectFill' : 'aspectFit'}}" data-islocal="{{!item.avatar}}"></image>
-        <view wx:if="{{index === 0 && item.avatar}}" class='master theme-bg draw-fill draw-text' data-text="团长">团长</view>
-      </view>
-    </view>
-    <view wx:if="{{joinUsers && joinUsers.length && leftNum}}" class='left-num theme-border-color theme-color draw-stroke draw-text' data-text="{{'仅剩' + leftNum + '个名额'}}">仅剩{{leftNum}}个名额</view>
-    <view class='logo-and-qrcode'>
-      <image class='logo draw-image' src="/assets/images/draw_logo.png" mode="aspectFit" data-islocal="{{true}}"></image>
-      <view class='qrcode-box'>
-        <image class='qrcode draw-image' src="{{qrcode}}" mode="aspectFit"></image>
-        <view class='tip-box'>
-          <view class='tip draw-text' data-text="长按图片识别二维码">长按图片识别二维码</view>
-          <view wx:if="{{joinUsers && joinUsers.length > 0}}" class='tip draw-text' data-text="立即参与拼团">立即参与拼团</view>
-          <view wx:else class='tip draw-text' data-text="立即购买">立即购买</view>
-        </view>
-      </view>
-    </view>
-  </view> -->
   <view class="poster-body">
     <view class="head-logo">
       <image class="poster-logo draw-image" src="/assets/images/poster_logo.png" data-islocal="{{true}}" mode="aspectFit" />
@@ -49,7 +21,7 @@
         <view class="discount-price-typeother theme-color draw-text" data-text="{{'¥' + reduce_amount}}">¥{{reduce_amount}}</view>
       </view>
       <view class="real-price-text{{saleType == 2 ? ' real-price-text-type2' : ' real-price-text-typeother'}}">
-        <view class="origin-price{{saleType == 2 ? ' origin-price-type2' : ' origin-price-typeother'}}"><text class="draw-text" data-text="原价 ">原价 </text><text class="origin-price-show-text draw-text" data-text="{{'¥' + (originPrice || '0.00')}}">¥{{originPrice || '0.00'}}</text></view>
+        <view wx:if="{{originPrice && price != originPrice}}" class="origin-price{{saleType == 2 ? ' origin-price-type2' : ' origin-price-typeother'}}"><text class="draw-text" data-text="原价 ">原价 </text><text class="origin-price-show-text draw-text" data-text="{{'¥' + (originPrice || '0.00')}}">¥{{originPrice || '0.00'}}</text></view>
         <text wx:if="{{saleType == 2 && pintuan && pintuan > 0}}" class="real-price-title theme-color draw-text{{saleType == 2 ? ' real-price-title-type2' : ' real-price-title-typeother'}}" data-text="{{pintuan + '人拼团价'}}">{{pintuan}}人拼团价</text>
         <text wx:elif="{{saleType == 1}}" class="real-price-title theme-color draw-text{{saleType == 2 ? ' real-price-title-type2' : ' real-price-title-typeother'}}" data-text="精选价">精选价</text>
         <text wx:elif="{{saleType == 3}}" class="real-price-title theme-color draw-text{{saleType == 2 ? ' real-price-title-type2' : ' real-price-title-typeother'}}" data-text="抢购价">抢购价</text>
@@ -96,7 +68,7 @@
         <text class="poster-card-price-text theme-color draw-text-card" data-text="{{price > 0 ? ('¥' + price) : '免费'}}">{{price > 0 ? ('¥' + price) : '免费'}}</text>
         <text wx:if="{{priceNum && priceNum > 1 && price != '免费'}}" class="poster-card-price-qi theme-color draw-text-card" data-text="起">起</text>
       </view>
-      <view wx:if="{{originPrice}}" class="poster-card-origin-price-text draw-text-card" data-text="{{'¥' + originPrice}}">{{'¥' + originPrice}}</view>
+      <view wx:if="{{originPrice && price != originPrice}}" class="poster-card-origin-price-text draw-text-card" data-text="{{'¥' + originPrice}}">{{'¥' + originPrice}}</view>
     </view>
   </view>
   <canvas canvas-id="c-draw-poster-card" class="draw-poster-card" catcherror="canvasError" data-iscard="{{true}}"></canvas>
@@ -104,7 +76,7 @@
 <ft-modal wx:if="{{!hideComponent}}" id="c-ft-modal" hide-cancel mode="1">
   <view slot="top" id="top-wrapper" class="top-wrapper" catchtap="hidePoster">
     <!-- <view style="width:100%;height:{{_nav_data_.navWrapperHeight}}px"></view> -->
-    <view wx:if="{{!localPoster}}" class='loading-image'><text>正在生成图片...</text></view>
+    <view wx:if="{{!localPoster}}" class='loading-image'><text>正在生成海报...</text></view>
     <image wx:if="{{localPoster}}" class='poster' src="{{localPoster}}" style="width:{{posterWidth ? (posterWidth + 'px') : '88%'}};height:{{posterHeight ? (posterHeight + 'px') : '88%'}}" mode="aspectFit" catchtap="getFantuanAppShareLink"></image>
   </view>
   <view slot="bottom" class="bottom-wrapper">

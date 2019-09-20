@@ -51,6 +51,7 @@
       </view>
     </view>
   </view>
+  <join-group wx:if="{{yh_banner && yh_banner.status}}" group-data="{{yh_banner}}" />
   <!-- 参加活动人数 -->
   <!-- <view wx:if="{{join_num && join_num > 0}}" class='join-box'>
     <view class='block-separator'></view>
@@ -105,7 +106,7 @@
         <view class='detail-and-comment-header'>
           <view catchtap="changeTab" data-idx="{{0}}" data-scrollid="#goods-content" class="detail-and-comment-tab{{currentTab == 0 ? ' theme-color' : ' black-color'}}"><text>详情</text><view class="tab-indicator{{currentTab == 0 ? ' theme-bg' : ' transparent-bg'}}"></view></view>
           <view wx:if="{{notice}}" catchtap="changeTab" data-idx="{{1}}" data-scrollid="#goods-notice" class="detail-and-comment-tab{{currentTab == 1 ? ' theme-color' : ' black-color'}}"><text>购买须知</text><view class="tab-indicator{{currentTab == 1 ? ' theme-bg' : ' transparent-bg'}}"></view></view>
-          <view catchtap="changeTab" data-idx="{{notice ? 2 : 1}}" data-scrollid="#comment-content" class="detail-and-comment-tab{{currentTab == (notice ? 2 : 1) ? ' theme-color' : ' black-color'}}"><text>评价{{(comment_num && comment_num) > 0 ? ('(' + comment_num + ')') : ''}}</text><view class="tab-indicator{{currentTab == (notice ? 2 : 1) ? ' theme-bg' : ' transparent-bg'}}"></view></view>
+          <view catchtap="changeTab" data-idx="{{notice ? 2 : 1}}" data-scrollid="#comment-content" class="detail-and-comment-tab{{currentTab == (notice ? 2 : 1) ? ' theme-color' : ' black-color'}}"><text>评价</text><view class="tab-indicator{{currentTab == (notice ? 2 : 1) ? ' theme-bg' : ' transparent-bg'}}"></view></view>
         </view>
         <view class='line-separator-h'></view>
       </view>
@@ -114,6 +115,7 @@
       <view class="scrollpoint goodsdetail-content" data-tabindex="{{0}}" id="goods-content">
         <view class="block-separator"></view>
         <view class='overview-content'>
+          <view class="overview-separator-block theme-bg"></view>
           <view class="overview-separator theme-border-color">详情</view>
         </view>
         <view class='line-separator-h'></view>
@@ -126,6 +128,7 @@
         <view wx:if="{{notice}}">
           <view class="block-separator"></view>
           <view class='overview-content'>
+            <view class="overview-separator-block theme-bg"></view>
             <view class="overview-separator theme-border-color">购买须知</view>
           </view>
           <view class='line-separator-h'></view>
@@ -138,8 +141,13 @@
         <view class="block-separator"></view>
         <view class='score-overview'>
           <view class='overview-content'>
-            <view class="overview-separator theme-border-color">评价</view>
-            <ft-star-box wx:if="{{avg_score && avg_score > 0}}" score="{{avg_score}}" size="{{30}}" />
+            <view class="overview-separator-block theme-bg"></view>
+            <view class="overview-separator theme-border-color">评价{{(comment_num && comment_num) > 0 ? ('（' + (comment_num > 99 ? '99+' : comment_num) + '）') : ''}}</view>
+            <view wx:if="{{avg_score && avg_score > 0}}" class='overview-score'>
+              <view class="overview-score-text">商家评分</view>
+              <view class="overview-score-amount theme-color">{{avg_score}}</view>
+            </view>
+            <!-- <ft-star-box wx:if="{{avg_score && avg_score > 0}}" score="{{avg_score}}" size="{{30}}" /> -->
           </view>
         </view>
         <view class='line-separator-h'></view>
@@ -158,7 +166,8 @@
   <goods-detail-bottom-button wx:if="{{goodsLoaded}}" btndata="{{bottomButtonData}}" timestamp="{{goodsTimestamp}}" bindnext="showShoppingView" />
 </view>
 <draw-poster id="c-draw-poster" />
-<shopping-view wx:if="{{status == 1 && session && session.length > 0 && type == 1}}" id="c-shopping-view" remain-count="{{person_remain_count}}" session="{{session}}" timestamp="{{goodsTimestamp}}" catchnextstep="nextTap" />
-<shopping-view2 wx:if="{{status == 1 && session && session.length > 0 && (type == 2 || type == 3)}}" id="c-shopping-view" remain-count="{{person_remain_count}}" session="{{session}}" timestamp="{{goodsTimestamp}}" catchnextstep="nextTap" />
+<!-- <shopping-view wx:if="{{status == 1 && session && session.length > 0 && type == 1}}" id="c-shopping-view" remain-count="{{person_remain_count}}" session="{{session}}" timestamp="{{goodsTimestamp}}" catchnextstep="nextTap" />
+<shopping-view2 wx:if="{{status == 1 && session && session.length > 0 && (type == 2 || type == 3)}}" id="c-shopping-view" remain-count="{{person_remain_count}}" session="{{session}}" timestamp="{{goodsTimestamp}}" catchnextstep="nextTap" /> -->
+<shopping-view3 id="c-shopping-view" remain-count="{{person_remain_count}}" session="{{session}}" timestamp="{{goodsTimestamp}}" catchnextstep="nextTap" />
 <login-modal id="c-login-modal" />
 <coupon-packet wx:if="{{coupon && coupon.length}}" coupons="{{coupon}}" bindcouponchange="couponChange" />

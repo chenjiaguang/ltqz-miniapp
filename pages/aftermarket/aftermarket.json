@@ -1,0 +1,10 @@
+{
+  "navigationBarTitleText": "退款/售后",
+  "usingComponents": {
+    "ft-custom-nav": "../../ftcomponents/ftCustomNav/ftCustomNav",
+    "order-card": "../../components/orderCard/orderCard",
+    "ft-iphone-bottom-adapter": "../../ftcomponents/ftIphoneBottomAdapter/ftIphoneBottomAdapter",
+    "ft-list-loader": "../../ftcomponents/ftListLoader/ftListLoader",
+    "ft-list-footer": "../../ftcomponents/ftListFooter/ftListFooter"
+  }
+}

@@ -99,6 +99,7 @@ Component({
     currentStock: { 1: '', 2: '', 3: '' },
     subSessions: { 1: [], 2: [], 3: [] },
     selectedTicketLength: { 1: 0, 2: 0, 3: 0 },
+    singlePriceCal: { 1: 0, 2: 0, 3: 0 },
     totalPrice: { 1: 0, 2: 0, 3: 0 },
     totalPriceCal: { 1: 0, 2: 0, 3: 0 }
   },
@@ -162,6 +163,7 @@ Component({
       // }
 
       let selectedTicketLength = { 1: 0, 2: 0, 3: 0 }
+      let singlePriceCal = { 1: 0, 2: 0, 3: 0 }
       let totalPriceCal = { 1: 0, 2: 0, 3: 0 }
       let totalPrice = { 1: 0, 2: 0, 3: 0 }
       let currentSession = { 1: null, 2: null, 3: null }
@@ -205,6 +207,7 @@ Component({
         // 初始选择个数initNum
         const initNum = _subSessions.length == 0 ? 1 : (subIndex === null ? 0 : 1)
         if (initNum !== 0) {
+          singlePriceCal[saletype] = parseInt(singlePrice)
           totalPriceCal[saletype] = parseInt(initNum * singlePrice)
           totalPrice[saletype] = parseFloat((initNum * singlePrice / 100).toFixed(2))
         }
@@ -227,6 +230,7 @@ Component({
         saletype: saletype,
         showSession: _session,
         selectedTicketLength,
+        singlePriceCal,
         totalPriceCal,
         totalPrice,
         currentSession,
@@ -284,6 +288,7 @@ Component({
 
       let _obj = {}
       _obj['selectedTicketLength.' + saletype] = num
+      _obj['singlePriceCal.' + saletype] = parseInt(singlePrice)
       _obj['totalPriceCal.' + saletype] = parseInt(total)
       _obj['totalPrice.' + saletype] = parseFloat((total / 100).toFixed(2))
       if (idx) {
@@ -307,8 +312,8 @@ Component({
 
     order: function () {
       this.toggleSession()
-      const { saletype, currentSession, currentSubSession, subSessions, selectedTicketLength, totalPrice, totalPriceCal} = this.data
-      this.triggerEvent('nextstep', { saletype, currentSession, currentSubSession, subSessions, selectedTicketLength, totalPrice, totalPriceCal})
+      const { saletype, currentSession, currentSubSession, subSessions, selectedTicketLength, singlePriceCal, totalPrice, totalPriceCal} = this.data
+      this.triggerEvent('nextstep', { saletype, currentSession, currentSubSession, subSessions, selectedTicketLength, singlePriceCal, totalPrice, totalPriceCal})
     },
 
     stopPropagation: function () {

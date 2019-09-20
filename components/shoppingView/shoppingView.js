@@ -78,6 +78,7 @@ Component({
     currentSubSession: { 1: null, 2: null, 3: null },
     currentTickets: { 1: [], 2: [], 3: [] },
     selectedTicketLength: { 1: 0, 2: 0, 3: 0 },
+    singlePriceCal: { 1: 0, 2: 0, 3: 0 },
     totalPrice: { 1: 0, 2: 0, 3: 0 },
     totalPriceCal: { 1: 0, 2: 0, 3: 0 }
   },
@@ -158,6 +159,7 @@ Component({
 
       let selectedTicketLength = { 1: 0, 2: 0, 3: 0 }
       let totalPrice = { 1: 0, 2: 0, 3: 0 }
+      let singlePriceCal = { 1: 0, 2: 0, 3: 0 }
       let totalPriceCal = { 1: 0, 2: 0, 3: 0 }
       let currentSession = { 1: null, 2: null, 3: null }
       let currentSubSession = { 1: null, 2: null, 3: null }
@@ -192,6 +194,7 @@ Component({
         }
         
         selectedTicketLength[saletype] = initNum
+        singlePriceCal[saletype] = parseInt(singlePrice)
         totalPriceCal[saletype] = parseInt(initNum * singlePrice)
         totalPrice[saletype] = parseFloat((initNum * singlePrice / 100).toFixed(2))
       }
@@ -202,6 +205,7 @@ Component({
       this.setData({
         saletype: saletype,
         selectedTicketLength,
+        singlePriceCal: singlePriceCal,
         totalPriceCal,
         totalPrice,
         currentSession,
@@ -249,14 +253,16 @@ Component({
         })
         return false
       }
+      let singlePrice = null
       tickets.forEach((item, index) => {
         selectedTicketLen += index === idx ? (item.num + (type === 'minus' ? -1 : 1)) : item.num
-        const singlePrice = item.type[singlePriceObj[saletype]]
+        singlePrice = item.type[singlePriceObj[saletype]]
         total += index === idx ? ((item.num + (type === 'minus' ? -1 : 1)) * singlePrice) : (item.num * singlePrice)
       })
       let num = ticket.num + (type === 'minus' ? -1 : 1)
       let _obj = {}
       _obj['selectedTicketLength.' + saletype] = selectedTicketLen
+      _obj['singlePriceCal.' + saletype] = parseInt(singlePrice)
       _obj['totalPriceCal.' + saletype] = parseInt(total)
       _obj['totalPrice.' + saletype] = parseFloat((total / 100).toFixed(2))
       _obj['currentTickets.' + saletype + '[' + idx + '].num'] = num
@@ -278,8 +284,8 @@ Component({
 
     order: function () {
       this.toggleSession()
-      const { saletype, currentSession, currentTickets, selectedTicketLength, totalPrice, totalPriceCal} = this.data
-      this.triggerEvent('nextstep', { saletype, currentSession, currentTickets, selectedTicketLength, totalPrice, totalPriceCal})
+      const { saletype, currentSession, currentTickets, selectedTicketLength, singlePriceCal, totalPrice, totalPriceCal} = this.data
+      this.triggerEvent('nextstep', { saletype, currentSession, currentTickets, selectedTicketLength, singlePriceCal, totalPrice, totalPriceCal})
     },
 
     stopPropagation: function () {

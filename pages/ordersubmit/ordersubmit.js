@@ -48,6 +48,7 @@ Page({
       { name: '平台免责声明', path: '/pages/statement/statement?type=2'}
     ],
     clause_checked: true,
+    totalShowPrice: 0,
     totalPrice: 0,
     disabled_submit: false,
     submitting: false
@@ -71,19 +72,31 @@ Page({
       })
       data.contact = shouldFill
     }
-    if (data.type == 1) { // 活动，已购买的票
-      data.selectedTickets = data.currentTickets.filter(item => item.num > 0)
-    } else if (data.type == 2 || data.type == 3) { // 非活动，已购买的商品
-      data.selectedSessions = [data.session[data.currentSession]]
-      data.selectedSessions.forEach(item => {
-        item.num = data.selectedTicketLength
-        if (data.subSessions && data.subSessions.length) {
-          const sub = data.subSessions.filter(item => item.num > 0)[0]
-          item.subName = sub.name
-          item.subId = sub.id
-        }
-      })
-    }
+    console.log('data', data)
+    data.singlePrice = parseFloat((data.singlePriceCal / 100).toFixed(2))
+    data.totalShowPrice = parseFloat((data.totalPriceCal / 100).toFixed(2))
+    // if (data.type == 1) { // 活动，已购买的票
+    //   data.selectedTickets = data.currentTickets.filter(item => item.num > 0)
+    // } else if (data.type == 2 || data.type == 3) { // 非活动，已购买的商品
+    //   data.selectedSessions = [data.session[data.currentSession]]
+    //   data.selectedSessions.forEach(item => {
+    //     item.num = data.selectedTicketLength
+    //     if (data.subSessions && data.subSessions.length) {
+    //       const sub = data.subSessions.filter(item => item.num > 0)[0]
+    //       item.subName = sub.name
+    //       item.subId = sub.id
+    //     }
+    //   })
+    // }
+    data.selectedSessions = [data.session[data.currentSession]]
+    data.selectedSessions.forEach(item => {
+      item.num = data.selectedTicketLength
+      if (data.subSessions && data.subSessions.length) {
+        const sub = data.subSessions.filter(item => item.num > 0)[0]
+        item.subName = sub.name
+        item.subId = sub.id
+      }
+    })
     this.setData(data)
     this.initShippingInfo()
     this.fetchCoupon(data.totalPriceCal)
@@ -324,9 +337,12 @@ Page({
     // 提交支付信息
     let ticket = null
     if (type == 1) { // 活动
-      ticket = selectedTickets.map(item => {
-        return {id: item.id, quantity: item.num}
-      })
+      ticket = []
+      // ticket = selectedTickets.map(item => {
+      //   return {id: item.id, quantity: item.num}
+      // })
+      let selected = selectedSessions[0]
+      ticket.push({id: selected.subId || selected.id, quantity: selected.num})
     } else if (type == 2 || type == 3) { // 非活动
       ticket = {}
       let selected = selectedSessions[0]
@@ -334,6 +350,7 @@ Page({
       ticket.quantity = selected.num
       ticket.style_id = selected.subId
     }
+
     let contact_info = null
     if (provinceName && cityName && countyName && detailInfo && telNumber && userName) { // 收货地址信息
       contact_info = {}

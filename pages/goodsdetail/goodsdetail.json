@@ -13,7 +13,9 @@
     "goods-detail-bottom-button": "../../components/goodsDetailBottomButton/goodsDetailBottomButton",
     "shopping-view": "../../components/shoppingView/shoppingView",
     "shopping-view2": "../../components/shoppingView2/shoppingView2",
+    "shopping-view3": "../../components/shoppingView3/shoppingView3",
     "group-purchase": "../../components/groupPurchase/groupPurchase",
+    "join-group": "../../components/joinGroup/joinGroup",
     "qg-overview": "../../components/qgOverview/qgOverview",
     "coupon-packet": "../../components/couponPacket/couponPacket"
   }

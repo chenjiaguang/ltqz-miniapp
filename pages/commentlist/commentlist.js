@@ -7,7 +7,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-    navTitle: '全部评价',
+    navTitle: '评价管理',
     role: 'user',
     showGoods: false,
     showTicket: false,
@@ -31,11 +31,11 @@ Page({
       })
     } else if (options.pid) { // 展示的是活动评价，则显示已购买的票
       wx.setNavigationBarTitle({
-        title: '全部评价',
+        title: '活动评价',
       })
       this.setData({
         showTicket: true,
-        navTitle: '全部评价'
+        navTitle: '活动评价'
       })
     }
     this.options = options // 把options保存下来

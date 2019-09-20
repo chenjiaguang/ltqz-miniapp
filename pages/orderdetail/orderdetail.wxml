@@ -1,20 +1,54 @@
 <!--pages/orderdetail/orderdetail.wxml-->
 <ft-custom-nav title="{{navTitle}}" />
 <view class='page-orderdetail'>
-  <view class="left-time theme-bg-85{{(countdown > 0 && countdown_text) ? ' show' : ''}}" style="top:{{_nav_data_.navHeight}}px"><text>{{countdown_text}}</text></view>
-  
-  <view class='row goods' bindtap='goGoodsDetail'>
-    <image class='goods-cover' src="{{product.product_cover_url || product.cover_url}}" mode="aspectFill"></image>
-    <view class='goods-content flex1 column'>
-      <text class='goods-title bold'>{{product.title}}</text>
-      <text wx:if="{{product.valid_btime && product.valid_etime}}" class='goods-time'>{{product.valid_btime}} 至 {{product.valid_etime}}</text>
+  <!-- <view class="left-time theme-bg-85{{(countdown > 0 && countdown_text) ? ' show' : ''}}" style="top:{{_nav_data_.navHeight}}px"><text>{{countdown_text}}</text></view> -->
+  <view class="status-wrapper">
+    <!-- 其他状态 -->
+    <view class="status-box-wrapper">
+      <image class="status-icon" src="{{(order.status == 6 && order.refund_status == 1) ? '/assets/images/order_status8.png' : statusIconData[order.status].url}}" mode="aspectFit" style="{{(order.status == 6 && order.refund_status == 1) ? 'width:192rpx;height:164rpx;right:32rpx;bottom:0' : statusIconData[order.status].style}}" />
+      <view class="status-box">
+        <view class="status-title">{{(order.status == 6 && order.refund_status == 1) ? '等待商家处理' : statusTextObj[order.status]}}</view>
+        <view wx:if="{{order.status === -1 || order.status === '-1'}}" class="status-sub-title">订单超时未支付</view>
+        <view wx:elif="{{countdown > 0 && countdown_text}}" class="status-sub-title">{{countdown_text}}</view>
+      </view>
+    </view>
+    <view wx:if="{{order.status == 6 && order.refund_status == 1}}" class="status-tip-wrapper">
+      <view class="line-separator-h" style="width:auto;margin:0"></view>
+      <view class="status-tip-box-wrapper{{showMoreStatus ? ' show' : ' hide'}}">
+        <view class="status-tip-box">
+          <view class="status-tip-text">如果商家同意，申请通过后将已退款给您；</view>
+          <view class="status-tip-text">如果商家拒绝，您不能再次发起申请，您可拨打商家电话进行沟通了解；</view>
+          <view class="status-tip-text">如果商家逾期未处理，退款申请将自动通过并退款给您。</view>
+        </view>
+      </view>
+      <view class="status-tip-btn" catchtap="changeMoreStatus">
+        <view hidden="{{!showMoreStatus}}" class="line-separator-h" style="position:absolute;width:100%;left:0;top:0;margin:0"></view>
+        <view class="status-tip-btn-text">更多说明</view>
+        <view class="status-tip-btn-sign{{showMoreStatus ? ' show' : ' hide'}}">
+          <image class="status-tip-btn-icon" src="/assets/images/arrow2.svg" mode="aspectFit" />
+          <image class="status-tip-btn-icon" src="/assets/images/arrow2.svg" mode="aspectFit" />
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class='block-separator'></view>
+  <view class='goods' bindtap='goGoodsDetail' hover-stop-propagation hover-class='bg-touched' hover-start-time="{{50}}" hover-stay-time="{{200}}">
+    <image class='goods-cover' src="{{product.cover_url}}" mode="aspectFill"></image>
+    <view class='goods-content'>
+      <view class='goods-title'>{{product.title}}</view>
+      <view class='goods-ticket'>{{order.ticket[0].name}}</view>
+      <view class="ticket-price-and-amount">
+        <view class="ticket-price">¥{{order.ticket[0].price}}</view>
+        <view class="ticket-amount"><text style="font-size:24rpx;margin-right:4rpx">数量</text><text style="font-size:28rpx">{{order.ticket[0].quantity}}</text></view>
+      </view>
+      <!-- <text wx:if="{{product.valid_btime && product.valid_etime}}" class='goods-time'>{{product.valid_btime}} 至 {{product.valid_etime}}</text>
       <text wx:if="{{product.address}}" class='goods-location'>{{product.address}}</text>
       <view wx:if="{{product.type == 3}}" class='tags-box'>
         <view class='tag-item theme-color theme-border-color'><text>{{product.can_refund ? '发货前可申请退款' : '本商品不支持退款'}}</text></view>
         <view class='tag-item theme-color theme-border-color'><text>{{product.has_postage ? '包邮' : '邮费到付'}}</text></view>
-      </view>
+      </view> -->
     </view>
-    <text class='lutufont lutu-next2'></text>
+    <!-- <text class='lutufont lutu-next2'></text> -->
   </view>
 
   <view wx:if="{{order.tuan && order.tuan.id}}">
@@ -70,13 +104,43 @@
     </block>
   </view>
 
-  <view class='list'>
+  <!-- 已退款订单信息 -->
+  <view wx:if="{{order.status == -4 || order.status == -3}}" class='list'>
     <view class='title'>订单信息</view>
     <view class='line-separator-h'></view>
     <view class='item row'>
+      <text class='key'>退款金额</text>
+      <text class='value'>¥{{order.show_price}}</text>
+    </view>
+    <view class='line-separator-h'></view>
+    <view class='item row'>
+      <text class='key'>退款数量</text>
+      <text class='value'>{{order.ticket[0].quantity}}</text>
+    </view>
+    <view class='line-separator-h'></view>
+    <view class='item row'>
+      <text class='key'>退款方式</text>
+      <text class='value'>原路退回</text>
+    </view>
+    <view class='line-separator-h'></view>
+    <view class='item row'>
+      <text class='key'>订单编号</text>
+      <text class='value'>{{order.order_id}}</text>
+    </view>
+    <view class='line-separator-h'></view>
+    <view class='item row'>
+      <text class='key'>申请退款时间</text>
+      <text class='value'>{{order.refund_apply_time}}</text>
+    </view>
+  </view>
+  <!-- 其他状态订单信息 -->
+  <view wx:else class='list'>
+    <view class='title'>订单信息</view>
+    <!-- <view class='line-separator-h'></view>
+    <view class='item row'>
       <text class='key'>商品名称</text>
       <text class='value'>{{product.title}}</text>
-    </view>
+    </view> -->
     <view wx:if="{{product.address}}" class='line-separator-h'></view>
     <view wx:if="{{product.address}}" class='item row'>
       <text class='key'>{{order.type == 1 ? '活动地点' : '地点'}}</text>
@@ -89,11 +153,6 @@
         <text class='value'>{{order.hx_rule || '--'}}</text>
       </view>
     </block>
-    <!-- <view wx:if="{{order.type == 1}}" class='line-separator-h'></view>
-    <view wx:if="{{order.type == 1}}" class='item row'>
-      <text class='key'>活动场次</text>
-      <text class='value'>{{product.session}}</text>
-    </view> -->
     <view class='line-separator-h'></view>
     <view class='item row'>
       <text class='key'>购买数量</text>
@@ -129,7 +188,8 @@
       <text class='value'>{{order.created_at}}</text>
     </view>
   </view>
-
+  
+  <!-- 出行人信息 -->
   <view class='list' wx:if="{{traveler_infos && traveler_infos.length}}">
     <view class='title'>出行人信息</view>
     <block wx:if="{{product.include_bx}}">
@@ -148,7 +208,7 @@
       </view>
     </block>
   </view>
-
+  <!-- 联系人信息 -->
   <view wx:if="{{contact_info && contact_info.length}}" class='list'>
     <view class='title'>联系人信息</view>
     <view wx:for="{{contact_info}}" wx:key="label">
@@ -159,7 +219,7 @@
       </view>
     </view>
   </view>
-  <ft-bottom-box wx:if="{{order.status === 0 || order.status === '0' || order.can_refund || order.status == 1 || order.status == 2 || order.status == 3 || order.status == 5 || (order.status == 6 && order.refund_status == 1) || order.status == 7}}" box-height="{{114}}" bg="#FFFFFF">
+  <ft-bottom-box wx:if="{{order.status === 0 || order.status === '0' || order.can_refund || order.status == 1 || order.status == 2 || order.status == 3 || order.status == 5 || order.status == 7}}" box-height="{{114}}" bg="#FFFFFF">
     <view class="bottom-button-wrapper">
       <view class='line-separator-h' style="width:100%;margin:0;transform-origin:50% 0"></view>
       <view class='bottom-button'>
@@ -167,9 +227,9 @@
           <text>取消订单</text>
         </view>
         <form wx:if="{{order.can_refund}}" report-submit catchsubmit="goRefund">
-          <button class='bottom-inner-button refund' form-type="submit" hover-stop-propagation hover-class="none" catchtap><text>{{order.type == 3 ? '申请退款' : '退款'}}</text></button>
+          <button class='bottom-inner-button refund' form-type="submit" hover-stop-propagation hover-class="none" catchtap><text>申请退款</text></button>
         </form>
-        <view class='bottom-inner-button apply-refund' wx:if="{{order.status == 6 && order.refund_status == 1}}" hover-stop-propagation catchtap><text>退款中</text></view>
+        <!-- <view class='bottom-inner-button apply-refund' wx:if="{{order.status == 6 && order.refund_status == 1}}" hover-stop-propagation catchtap><text>退款中</text></view> -->
         <view class='bottom-inner-button confirm theme-color theme-border-color' wx:if="{{order.status == 7}}" catchtap='goConfirm' hover-stop-propagation><text>确认收货</text></view>
         <view wx:if="{{order.status === 0 || order.status === '0'}}" class="bottom-inner-button pay theme-color theme-border-color" catchtap="repay">
           <text>立即支付</text>

@@ -65,27 +65,24 @@
   margin: 24rpx auto;
 }
 .shipping-info-box{
-  padding: 24rpx 32rpx;
+  padding: 12rpx 32rpx;
 }
 .delivery-line{
   font-size: 24rpx;
   line-height: 24rpx;
-  padding-top: 15rpx;
   display: flex;
   align-items: center;
 }
-.delivery-line:first-child{
-  padding-top: 0;
-}
 .delivery-title{
-  min-width: 132rpx;
-  padding-right: 12rpx;
+  padding-right: 14rpx;
   color: #999999;
   box-sizing: border-box;
+  line-height: 48rpx;
 }
 .delivery-title-text{
   flex: 1;
   color: #333333;
+  line-height: 48rpx;
 }
 .copy-number-btn{
   font-size: 22rpx;
@@ -104,4 +101,19 @@
   align-items: center;
   background: #FFFFFF;
   margin-left: 20rpx;
+}
+
+.hx-detail-box{
+  font-size: 24rpx;
+  line-height: 32rpx;
+  color: #333333;
+  padding: 18rpx 32rpx;
+  display: flex;
+}
+.hx-detail-title{
+  margin-right: 14rpx;
+  color: #999999;
+}
+.hx-detail-content{
+  flex: 1;
 }

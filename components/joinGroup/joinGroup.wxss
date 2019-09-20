@@ -1,0 +1,86 @@
+/* components/joinGroup/joinGroup.wxss */
+@import "../../app.wxss";
+
+.wrapper{
+  background: #FFFFFF;
+}
+.box-wrapper{
+  padding: 32rpx 32rpx;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.left-avatar{
+  width: 96rpx;
+  height: 96rpx;
+  border-radius: 50%;
+  margin-right: 30rpx;
+}
+.center-box{
+  flex: 1;
+}
+.title{
+  font-size: 30rpx;
+  line-height: 44rpx;
+  color: #333333;
+  font-weight: bold;
+}
+.intro{
+  font-size: 24rpx;
+  line-height: 38rpx;
+  color: #999999;
+}
+.right-btn{
+  width: 144rpx;
+  height: 48rpx;
+  margin-left: 30rpx;
+  border-radius: 24rpx;
+  font-size: 24rpx;
+  color: #FFFFFF;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.reply-box{
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.reply-top{
+  width: 480rpx;
+  padding: 84rpx 56rpx 68rpx;
+  background: #FFFFFF;
+  border-radius: 48rpx;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.reply-content{
+  font-size: 28rpx;
+  line-height: 48rpx;
+  color: #999999;
+  text-align: center;
+  padding-bottom: 38rpx;
+}
+.reply-btn{
+  width: 150rpx;
+  height: 60rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 28rpx;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 32rpx;
+}
+.reply-closer{
+  font-size: 46rpx;
+  line-height: 46rpx;
+  color: #FFFFFF;
+  margin-top: 60rpx;
+}

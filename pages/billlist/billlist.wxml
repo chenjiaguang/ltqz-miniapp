@@ -1,0 +1,22 @@
+<!--pages/billlist/billlist.wxml-->
+<ft-custom-nav title="{{navTitle}}" />
+<ft-list-loader visible="{{!page}}" />
+<view wx:for="{{list}}" wx:key="id" class="bill-area">
+  <view wx:if="{{index !== 0}}" class="block-separator"></view>
+  <view class="bill-header"><text>到账记录</text><view wx:if="{{item.unread}}" class="unread-sign"></view></view>
+  <view class="bill-content">
+    <view wx:for="{{item.datalist}}" wx:key="title" class="bill-line">
+      <view class="bill-key">{{item.title}}</view>
+      <view class="bill-value">{{item.content}}</view>
+    </view>
+  </view>
+  <!-- <view wx:if="{{item.time}}">
+    <view class="line-separator-h" style="width:auto;margin:0 32rpx"></view>
+    <view class="bill-time">{{item.time}}</view>
+  </view> -->
+</view>
+<ft-list-footer loaded="{{page && list && list.length}}" loading="{{loading}}" page="{{page}}" show-no-more="{{list && list[0]}}" />
+<image wx:if="{{page && list && !list.length}}" class='empty-img' src='/assets/images/empty_billlist.png' />
+<text wx:if="{{page && list && !list.length}}" class='empty-text'>您还没有到账记录哦～</text>
+<ft-iphone-bottom-adapter />
+  
